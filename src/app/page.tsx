@@ -39,7 +39,7 @@ export default function Home() {
           </Link>
           <Link
             href={locale === 'th' ? '/contact?lang=th' : '/contact'}
-            className="border border-gray-300 px-6 py-3 rounded hover:bg-gray-50 transition-colors"
+            className="bg-black text-white px-6 py-3 rounded hover:bg-gray-800 transition-colors"
           >
             {translations.home.buttons.contact}
           </Link>
