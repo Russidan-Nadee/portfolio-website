@@ -1,7 +1,7 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
-  /* config options here */
-};
+  // ลบ i18n ออกเพราะ App Router ไม่รองรับ
+}
 
-export default nextConfig;
+export default nextConfig

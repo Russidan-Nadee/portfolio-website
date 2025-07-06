@@ -1,0 +1,69 @@
+{
+   "header": {
+      "logo": "Russidan",
+      "nav": {
+         "home": "Home",
+         "about": "About",
+         "portfolio": "Portfolio",
+         "contact": "Contact"
+      }
+   },
+   "footer": {
+      "copyright": "© 2024 My Portfolio. All rights reserved."
+   },
+   "home": {
+      "intro": "My name is Russidan and I am a Developer",
+      "title": "Developer",
+      "subtitle": "cross-platform, full-stack, and mobile",
+      "location": "based in Bangkok, Thailand.",
+      "buttons": {
+         "portfolio": "Portfolio",
+         "contact": "Contact"
+      }
+   },
+   "about": {
+      "title": "About Me",
+      "paragraph1": "Hi, I'm John - a passionate web designer and photographer based in Bangkok, Thailand.",
+      "paragraph2": "I've been creating digital experiences for over 5 years, specializing in modern web design and user interface development. My work focuses on creating clean, functional, and beautiful designs that help businesses connect with their audiences.",
+      "paragraph3": "When I'm not designing websites, you can find me behind the camera capturing moments and telling stories through photography."
+   },
+   "portfolio": {
+      "title": "My Portfolio",
+      "projects": {
+         "web1": {
+            "title": "Web Design Project 1",
+            "description": "A modern e-commerce website with clean design and smooth user experience.",
+            "tech": "Technologies: Next.js, Tailwind CSS"
+         },
+         "photo1": {
+            "title": "Photography Project 1",
+            "description": "Portrait photography session capturing authentic moments.",
+            "tech": "Genre: Portrait Photography"
+         },
+         "web2": {
+            "title": "Web Design Project 2",
+            "description": "Corporate website with professional design and responsive layout.",
+            "tech": "Technologies: React, CSS"
+         }
+      }
+   },
+   "contact": {
+      "title": "Get In Touch",
+      "info": {
+         "title": "Contact Information",
+         "email": "Email",
+         "phone": "Phone",
+         "location": "Location"
+      },
+      "form": {
+         "title": "Send Message",
+         "name": "Name",
+         "namePlaceholder": "Your name",
+         "email": "Email",
+         "emailPlaceholder": "Your email",
+         "message": "Message",
+         "messagePlaceholder": "Your message",
+         "submit": "Send Message"
+      }
+   }
+}
