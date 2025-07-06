@@ -35,7 +35,8 @@ export default function LanguageSwitcher() {
       <div className="relative">
          <button
             onClick={() => setIsOpen(!isOpen)}
-            className="flex items-center gap-1 text-white hover:text-gray-300 transition-colors"
+            className="flex items-center gap-1 hover:opacity-70 transition-all"
+            style={{ color: 'var(--foreground)' }}
          >
             <span className="text-sm">{currentLanguage}</span>
             <svg
@@ -49,14 +50,24 @@ export default function LanguageSwitcher() {
          </button>
 
          {isOpen && (
-            <div className="absolute right-0 mt-2 w-32 bg-gray-900 border border-gray-700 rounded-md shadow-lg z-10">
+            <div
+               className="absolute right-0 mt-2 w-32 border rounded-md shadow-lg z-10"
+               style={{
+                  backgroundColor: 'var(--background)',
+                  borderColor: 'var(--border)'
+               }}
+            >
                <div className="py-1">
                   {locales.map((availableLocale) => (
                      <button
                         key={availableLocale}
                         onClick={() => switchLanguage(availableLocale)}
-                        className={`w-full px-4 py-2 text-left text-gray-300 hover:text-white hover:bg-gray-800 flex items-center gap-2 transition-colors text-sm ${currentLocale === availableLocale ? 'bg-gray-800 text-white' : ''
+                        className={`w-full px-4 py-2 text-left hover:opacity-70 flex items-center gap-2 transition-all text-sm ${currentLocale === availableLocale ? 'opacity-100' : 'opacity-75'
                            }`}
+                        style={{
+                           color: 'var(--foreground)',
+                           backgroundColor: currentLocale === availableLocale ? 'var(--muted)' : 'transparent'
+                        }}
                      >
                         <span>{availableLocale === 'th' ? '🇹🇭' : '🇺🇸'}</span>
                         <span>
