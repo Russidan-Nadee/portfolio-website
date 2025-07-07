@@ -20,9 +20,39 @@
    },
    "about": {
       "title": "About Me",
-      "paragraph1": "I'm a passionate full-stack developer with experience in modern web technologies. I love creating beautiful, functional applications that solve real-world problems.",
-      "paragraph2": "With a strong background in both frontend and backend development, I enjoy working with technologies like React, Node.js, and various databases to build scalable solutions.",
-      "paragraph3": "When I'm not coding, you can find me exploring new technologies, contributing to open-source projects, or sharing knowledge with the developer community."
+      "paragraph1": "I'm a passionate developer...",
+      "paragraph2": "My expertise includes...",
+      "paragraph3": "I'm always eager to learn...",
+      "name": "Russidan Nadee",
+      "intro": "I'm a",
+      "role": "Developer",
+      "description": "A passionate fresh graduate from Silpakorn University with expertise in cross-platform development. I specialize in creating efficient, user-friendly applications using modern technologies like Flutter, TypeScript, and Node.js. Always eager to learn and grow, I'm ready to contribute to innovative projects and bring creative solutions to life.",
+      "skills": {
+         "title": "Technical Skills & Expertise",
+         "subtitle": "Technologies and tools I work with",
+         "learning": "Currently expanding my knowledge in Docker and C# .NET for advanced system development"
+      },
+      "timeline": {
+         "title": "Experience & Background",
+         "tabs": {
+            "work": "Work Experience",
+            "education": "Education"
+         }
+      },
+      "cta": {
+         "title": "Let's Connect & Collaborate",
+         "description": "Interested in working together or learning more about my projects? I'd love to hear from you!",
+         "contact": "Get In Touch",
+         "projects": "View Projects"
+      },
+      "experience": {
+         "title": "Experience & Education Journey"
+      },
+      "contact": {
+         "title": "Ready to Work Together?",
+         "description": "I'm actively seeking opportunities to apply my skills and grow as a developer. Let's discuss how I can contribute to your next project!",
+         "button": "Contact Me"
+      }
    },
    "portfolio": {
       "title": "My Projects",
