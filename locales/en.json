@@ -4,7 +4,7 @@
       "nav": {
          "home": "Home",
          "about": "About",
-         "portfolio": "Portfolio",
+         "portfolio": "Projects",
          "contact": "Contact"
       }
    },
@@ -14,7 +14,7 @@
       "subtitle": "cross-platform, full-stack, and mobile",
       "location": "based in Bangkok, Thailand.",
       "buttons": {
-         "portfolio": "Portfolio",
+         "portfolio": "Projects",
          "contact": "Contact"
       }
    },
@@ -25,7 +25,7 @@
       "paragraph3": "When I'm not coding, you can find me exploring new technologies, contributing to open-source projects, or sharing knowledge with the developer community."
    },
    "portfolio": {
-      "title": "My Portfolio",
+      "title": "My Projects",
       "projects": {
          "web1": {
             "title": "E-commerce Platform",
