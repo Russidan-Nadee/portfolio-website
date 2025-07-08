@@ -29,54 +29,77 @@ export default function LanguageSwitcher() {
    const currentLanguage = currentLocale === 'th' ? 'ไทย' : 'English'
    const flagEmoji = currentLocale === 'th' ? '🇹🇭' : '🇺🇸'
 
-   const locales = ['en', 'th']
+   const locales = [
+      { code: 'en', name: 'English', flag: '🇺🇸' },
+      { code: 'th', name: 'ไทย', flag: '🇹🇭' }
+   ]
 
    return (
       <div className="relative">
          <button
             onClick={() => setIsOpen(!isOpen)}
-            className="flex items-center gap-1 hover:opacity-70 transition-all"
-            style={{ color: 'var(--foreground)' }}
+            className="flex items-center gap-2 px-3 py-2 rounded-lg hover:opacity-70 transition-all duration-200"
+            style={{
+               color: 'var(--foreground)',
+               backgroundColor: isOpen ? 'var(--muted)' : 'transparent'
+            }}
          >
-            <span className="text-sm">{currentLanguage}</span>
+            <span className="text-lg">{flagEmoji}</span>
+            <span className="text-sm font-medium">{currentLanguage}</span>
             <svg
-               className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+               className={`w-4 h-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : 'rotate-0'}`}
                fill="none"
                stroke="currentColor"
                viewBox="0 0 24 24"
+               xmlns="http://www.w3.org/2000/svg"
             >
-               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+               <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+               />
             </svg>
          </button>
 
          {isOpen && (
-            <div
-               className="absolute right-0 mt-2 w-32 border rounded-md shadow-lg z-10"
-               style={{
-                  backgroundColor: 'var(--background)',
-                  borderColor: 'var(--border)'
-               }}
-            >
-               <div className="py-1">
-                  {locales.map((availableLocale) => (
-                     <button
-                        key={availableLocale}
-                        onClick={() => switchLanguage(availableLocale)}
-                        className={`w-full px-4 py-2 text-left hover:opacity-70 flex items-center gap-2 transition-all text-sm ${currentLocale === availableLocale ? 'opacity-100' : 'opacity-75'
-                           }`}
-                        style={{
-                           color: 'var(--foreground)',
-                           backgroundColor: currentLocale === availableLocale ? 'var(--muted)' : 'transparent'
-                        }}
-                     >
-                        <span>{availableLocale === 'th' ? '🇹🇭' : '🇺🇸'}</span>
-                        <span>
-                           {availableLocale === 'th' ? 'ไทย' : 'English'}
-                        </span>
-                     </button>
-                  ))}
+            <>
+               {/* Backdrop to close dropdown */}
+               <div
+                  className="fixed inset-0 z-10"
+                  onClick={() => setIsOpen(false)}
+               />
+
+               {/* Dropdown menu */}
+               <div
+                  className="absolute right-0 mt-2 w-40 border rounded-lg shadow-lg z-20"
+                  style={{
+                     backgroundColor: 'var(--card)',
+                     borderColor: 'var(--border)'
+                  }}
+               >
+                  <div className="py-1">
+                     {locales.map((locale) => (
+                        <button
+                           key={locale.code}
+                           onClick={() => switchLanguage(locale.code)}
+                           className={`w-full px-4 py-3 text-left hover:opacity-80 flex items-center gap-3 transition-all duration-200 ${currentLocale === locale.code ? 'font-medium' : 'font-normal'
+                              }`}
+                           style={{
+                              color: 'var(--foreground)',
+                              backgroundColor: currentLocale === locale.code ? 'var(--muted)' : 'transparent'
+                           }}
+                        >
+                           <span className="text-lg">{locale.flag}</span>
+                           <span className="text-sm">{locale.name}</span>
+                           {currentLocale === locale.code && (
+                              <span className="ml-auto text-xs opacity-60">✓</span>
+                           )}
+                        </button>
+                     ))}
+                  </div>
                </div>
-            </div>
+            </>
          )}
       </div>
    )

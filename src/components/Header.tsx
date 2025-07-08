@@ -5,25 +5,37 @@ import Link from 'next/link'
 import { useSearchParams, usePathname } from 'next/navigation'
 import LanguageSwitcher from './LanguageSwitcher'
 import ThemeToggle from './ThemeToggle'
+import { useTheme } from './ThemeProvider'
 
 export default function Header() {
    const searchParams = useSearchParams()
    const pathname = usePathname()
    const locale = searchParams.get('lang') || 'en'
+   const { theme } = useTheme()
 
    // Load translations based on current locale
    const translations = locale === 'th' ? require('../../locales/th.json') : require('../../locales/en.json')
 
    return (
-      <header className="p-4 border-b transition-colors" style={{
+      <header className="h-16 flex items-center px-4 border-b-2 transition-colors relative z-10" style={{
          backgroundColor: 'var(--background)',
          borderColor: 'var(--border)',
          color: 'var(--foreground)'
       }}>
-         <nav className="flex justify-between items-center max-w-6xl mx-auto">
+         <nav className="flex justify-between items-center max-w-6xl mx-auto w-full">
             {/* Logo */}
-            <div className="text-xl font-bold" style={{ color: 'var(--foreground)' }}>
-               <Link href={locale === 'th' ? '/?lang=th' : '/'}>{translations.header.logo}</Link>
+            <div className="flex items-center">
+               <Link href={locale === 'th' ? '/?lang=th' : '/'} className="flex items-center">
+                  <img
+                     src={theme === 'dark' ? '/logo-dark.png' : '/logo-light.png'}
+                     alt="Russidan Nadee"
+                     className="w-auto transition-all duration-300 hover:scale-105"
+                     style={{
+                        height: '120px',
+                        clipPath: 'inset(28px 0)'
+                     }}
+                  />
+               </Link>
             </div>
 
             {/* Navigation Menu */}
