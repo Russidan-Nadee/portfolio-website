@@ -8,10 +8,15 @@ interface TimelineProps {
 
 export default function Timeline({ translations }: TimelineProps) {
    const timelineRef = useRef<HTMLDivElement>(null)
+   const headerRef = useRef<HTMLDivElement>(null)
+   const titleRef = useRef<HTMLHeadingElement>(null)
+   const tabsRef = useRef<HTMLDivElement>(null)
+
    const [activeTab, setActiveTab] = useState<'work' | 'education'>('work')
    const [scrollProgress, setScrollProgress] = useState(0)
    const [visibleItems, setVisibleItems] = useState<number[]>([])
    const [animationComplete, setAnimationComplete] = useState(false)
+   const [headerAnimated, setHeaderAnimated] = useState(false)
 
    // Get data from translations with fallback
    const workExperienceData = translations?.about?.timeline?.work || []
@@ -21,6 +26,16 @@ export default function Timeline({ translations }: TimelineProps) {
 
    useEffect(() => {
       const handleScroll = () => {
+         // Header animation
+         if (headerRef.current && !headerAnimated) {
+            const headerRect = headerRef.current.getBoundingClientRect()
+            const windowHeight = window.innerHeight
+
+            if (headerRect.top <= windowHeight * 0.8) {
+               setHeaderAnimated(true)
+            }
+         }
+
          if (!timelineRef.current || animationComplete) return
 
          const rect = timelineRef.current.getBoundingClientRect()
@@ -84,13 +99,18 @@ export default function Timeline({ translations }: TimelineProps) {
       handleScroll() // Initial check
 
       return () => window.removeEventListener('scroll', handleScroll)
-   }, [currentData.length, animationComplete])
+   }, [currentData.length, animationComplete, headerAnimated])
 
    // Reset when tab changes
    useEffect(() => {
       setScrollProgress(0)
       setVisibleItems([])
       setAnimationComplete(false)
+   }, [activeTab])
+
+   // Reset header animation when tab changes
+   useEffect(() => {
+      setHeaderAnimated(false)
    }, [activeTab])
 
    // Handle empty data
@@ -137,6 +157,34 @@ export default function Timeline({ translations }: TimelineProps) {
                   opacity: 1;
                }
             }
+
+            @keyframes titleSlideUp {
+               0% { 
+                  transform: translateY(60px) scale(0.8);
+                  opacity: 0;
+               }
+               100% { 
+                  transform: translateY(0) scale(1);
+                  opacity: 1;
+               }
+            }
+
+            @keyframes tabsFadeIn {
+               0% { 
+                  transform: translateY(30px);
+                  opacity: 0;
+               }
+               100% { 
+                  transform: translateY(0);
+                  opacity: 1;
+               }
+            }
+
+            @keyframes gradientShift {
+               0% { background-position: 0% 50%; }
+               50% { background-position: 100% 50%; }
+               100% { background-position: 0% 50%; }
+            }
             
             .timeline-line {
                transform: scaleY(${scrollProgress});
@@ -174,20 +222,55 @@ export default function Timeline({ translations }: TimelineProps) {
                0%, 100% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.3) !important; }
                50% { box-shadow: 0 0 40px rgba(59, 130, 246, 0.8) !important; }
             }
+
+            .header-title {
+               transform: translateY(60px) scale(0.8);
+               opacity: 0;
+               transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            }
+
+            .header-title.animated {
+               animation: titleSlideUp 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            }
+
+            .header-tabs {
+               transform: translateY(30px);
+               opacity: 0;
+               transition: all 0.6s ease-out;
+            }
+
+            .header-tabs.animated {
+               animation: tabsFadeIn 0.8s ease-out 0.3s forwards;
+            }
+
+            .animated-gradient {
+               background: linear-gradient(-45deg, var(--foreground), var(--muted-foreground), var(--foreground));
+               background-size: 400% 400%;
+               animation: gradientShift 3s ease infinite;
+               background-clip: text;
+               -webkit-background-clip: text;
+               -webkit-text-fill-color: transparent !important;
+               text-fill-color: transparent !important;
+               color: transparent !important;
+            }
          `}</style>
 
          <section ref={timelineRef} className="py-16 mb-16">
             <div className="max-w-6xl mx-auto px-8">
-               <div className="text-center mb-16">
+               <div ref={headerRef} className="text-center mb-16">
                   <h2
-                     className="text-4xl md:text-5xl font-bold mb-8"
-                     style={{ color: 'var(--foreground)' }}
+                     ref={titleRef}
+                     className={`header-title text-4xl md:text-5xl font-bold mb-8 ${headerAnimated ? 'animated animated-gradient' : ''}`}
+                     style={{
+                        color: headerAnimated ? 'transparent' : 'var(--foreground)'
+                     }}
                   >
                      {translations?.about?.timeline?.title || 'Experience & Background'}
                   </h2>
 
                   <div
-                     className="inline-flex rounded-xl p-1 mb-8"
+                     ref={tabsRef}
+                     className={`header-tabs inline-flex rounded-xl p-1 mb-8 ${headerAnimated ? 'animated' : ''}`}
                      style={{ backgroundColor: 'var(--muted)' }}
                   >
                      <button

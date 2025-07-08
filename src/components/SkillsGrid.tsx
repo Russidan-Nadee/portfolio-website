@@ -29,6 +29,10 @@ const skills = [
 export default function SkillsGrid({ translations }: SkillsGridProps) {
    const skillsRef = useRef<HTMLDivElement>(null)
    const rowRefs = useRef<(HTMLDivElement | null)[]>([])
+   const headerRef = useRef<HTMLDivElement>(null)
+   const titleRef = useRef<HTMLHeadingElement>(null)
+   const subtitleRef = useRef<HTMLParagraphElement>(null)
+   const learningRef = useRef<HTMLParagraphElement>(null)
 
    const skillRows = []
    for (let i = 0; i < skills.length; i += 3) {
@@ -38,6 +42,51 @@ export default function SkillsGrid({ translations }: SkillsGridProps) {
    useEffect(() => {
       if (!skillsRef.current) return
 
+      // Header Animation
+      if (headerRef.current && titleRef.current && subtitleRef.current) {
+         const tl = gsap.timeline({
+            scrollTrigger: {
+               trigger: headerRef.current,
+               start: 'top 85%',
+               toggleActions: 'play none none none',
+            }
+         })
+
+         // Title animation - slide up with scale
+         tl.fromTo(
+            titleRef.current,
+            {
+               opacity: 0,
+               y: 50,
+               scale: 0.8
+            },
+            {
+               opacity: 1,
+               y: 0,
+               scale: 1,
+               duration: 0.8,
+               ease: 'power3.out'
+            }
+         )
+
+         // Subtitle animation - fade in with slight delay
+         tl.fromTo(
+            subtitleRef.current,
+            {
+               opacity: 0,
+               y: 30
+            },
+            {
+               opacity: 1,
+               y: 0,
+               duration: 0.6,
+               ease: 'power2.out'
+            },
+            '-=0.3'
+         )
+      }
+
+      // Skills Grid Animation
       rowRefs.current.forEach((row, rowIndex) => {
          if (!row) return
          const cards = row.querySelectorAll('.skill-card')
@@ -76,6 +125,28 @@ export default function SkillsGrid({ translations }: SkillsGridProps) {
          )
       })
 
+      // Learning text animation
+      if (learningRef.current) {
+         gsap.fromTo(
+            learningRef.current,
+            {
+               opacity: 0,
+               y: 20
+            },
+            {
+               opacity: 1,
+               y: 0,
+               duration: 0.6,
+               ease: 'power2.out',
+               scrollTrigger: {
+                  trigger: learningRef.current,
+                  start: 'top 85%',
+                  toggleActions: 'play none none none',
+               },
+            }
+         )
+      }
+
       return () => {
          ScrollTrigger.getAll().forEach(trigger => trigger.kill())
       }
@@ -88,14 +159,16 @@ export default function SkillsGrid({ translations }: SkillsGridProps) {
          style={{ backgroundColor: 'var(--background)' }}
       >
          <div className="max-w-6xl mx-auto px-8">
-            <div className="text-center mb-16">
+            <div ref={headerRef} className="text-center mb-16">
                <h2
+                  ref={titleRef}
                   className="text-4xl md:text-5xl font-bold mb-4"
                   style={{ color: 'var(--foreground)' }}
                >
                   {translations.about.skills.title}
                </h2>
                <p
+                  ref={subtitleRef}
                   className="text-lg opacity-70"
                   style={{ color: 'var(--muted-foreground)' }}
                >
@@ -174,6 +247,7 @@ export default function SkillsGrid({ translations }: SkillsGridProps) {
 
             <div className="mt-16 text-center">
                <p
+                  ref={learningRef}
                   className="text-lg opacity-70"
                   style={{ color: 'var(--muted-foreground)' }}
                >
