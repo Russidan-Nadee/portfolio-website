@@ -55,22 +55,17 @@
       }
    },
    "portfolio": {
-      "title": "My Projects",
+      "title": "Portfolio",
       "projects": {
-         "web1": {
-            "title": "E-commerce Platform",
-            "description": "A full-stack e-commerce solution with modern design and secure payment integration.",
-            "tech": "React, Node.js, MongoDB"
+         "calculator": {
+            "title": "Calculator App",
+            "description": "A modern calculator app featuring a clean and minimalist interface",
+            "tech": "Pyhton, Tkinter"
          },
-         "photo1": {
-            "title": "Photography Portfolio",
-            "description": "A stunning portfolio website showcasing professional photography work.",
-            "tech": "Next.js, Tailwind CSS"
-         },
-         "web2": {
-            "title": "Task Management App",
-            "description": "A collaborative task management application with real-time updates.",
-            "tech": "React, Express, Socket.io"
+         "assetManagement": {
+            "title": "Asset Management",
+            "description": "Mobile asset management system featuring real-time tracking, dashboard analytics, and comprehensive reporting",
+            "tech": "Flutter, Node.js, Express, MySQL"
          }
       }
    },
