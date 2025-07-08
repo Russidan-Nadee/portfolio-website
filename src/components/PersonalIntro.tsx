@@ -12,6 +12,7 @@ export default function PersonalIntro({ translations }: PersonalIntroProps) {
    const textRef = useRef<HTMLDivElement>(null)
    const imageRef = useRef<HTMLDivElement>(null)
    const roleRef = useRef<HTMLHeadingElement>(null)
+   const postTitleRef = useRef<HTMLDivElement>(null)
 
    const [isVisible, setIsVisible] = useState(false)
    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
@@ -19,6 +20,7 @@ export default function PersonalIntro({ translations }: PersonalIntroProps) {
    // Typing animation for role text
    const [displayedRole, setDisplayedRole] = useState('')
    const [isTyping, setIsTyping] = useState(false)
+   const [showContentReveal, setShowContentReveal] = useState(false)
 
    useEffect(() => {
       const observer = new IntersectionObserver(
@@ -71,6 +73,10 @@ export default function PersonalIntro({ translations }: PersonalIntroProps) {
             index++
          } else {
             clearInterval(timer)
+            // Wait 0.5s before starting content reveal animation
+            setTimeout(() => {
+               setShowContentReveal(true)
+            }, 500)
          }
       }, 100)
 
@@ -134,11 +140,12 @@ export default function PersonalIntro({ translations }: PersonalIntroProps) {
             {/* Text Content - Left Side */}
             <div
                ref={textRef}
-               className="flex-1 text-left lg:text-left transition-all duration-1000 ease-out"
+               className="flex-1 text-left lg:text-left transition-all duration-1000 ease-out relative"
                style={{
                   transform: 'translateX(-50px)',
                   opacity: 0,
-                  color: 'var(--foreground)'
+                  color: 'var(--foreground)',
+                  minHeight: '400px' // Fixed height to prevent layout shifts
                }}
             >
                <p
@@ -151,62 +158,100 @@ export default function PersonalIntro({ translations }: PersonalIntroProps) {
                   {translations.about.intro}
                </p>
 
-               <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 leading-tight">
-                  <span
-                     ref={roleRef}
-                     className="block relative"
+               {/* Fixed container for Developer text */}
+               <div className="relative" style={{ height: '200px', transform: 'translateZ(0)' }}>
+                  <h1
+                     className="text-5xl md:text-7xl lg:text-8xl font-bold leading-tight"
                      style={{
-                        background: 'linear-gradient(135deg, var(--foreground) 0%, var(--muted-foreground) 100%)',
-                        WebkitBackgroundClip: 'text',
-                        WebkitTextFillColor: 'transparent',
-                        backgroundClip: 'text'
+                        position: 'absolute',
+                        top: '50px',
+                        left: '0',
+                        width: '100%',
+                        transform: showContentReveal ? 'translate3d(0, -10px, 0)' : 'translate3d(0, 0, 0)',
+                        transition: 'transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                        willChange: 'transform',
+                        backfaceVisibility: 'hidden'
                      }}
                   >
-                     {displayedRole}
-                     {/* Typing Cursor */}
-                     {isTyping && displayedRole.length < translations.about.role.length && (
-                        <span
-                           className="inline-block w-1 ml-1 animate-pulse"
-                           style={{
-                              backgroundColor: 'var(--foreground)',
-                              height: '0.8em'
-                           }}
-                        />
-                     )}
-                  </span>
-               </h1>
-
-               <p
-                  className="text-lg md:text-xl mb-8 max-w-lg leading-relaxed opacity-80 transition-all duration-700 delay-200"
-                  style={{
-                     color: 'var(--muted-foreground)',
-                     transform: isVisible ? 'translateY(0)' : 'translateY(30px)'
-                  }}
-               >
-                  {translations.about.description}
-               </p>
-
-               {/* Subtle Skills Highlight */}
-               <div
-                  className="flex flex-wrap gap-2 opacity-60 transition-all duration-1000 delay-500"
-                  style={{
-                     transform: isVisible ? 'translateY(0)' : 'translateY(20px)'
-                  }}
-               >
-                  {['Flutter', 'TypeScript', 'Node.js'].map((skill, index) => (
                      <span
-                        key={skill}
-                        className="px-3 py-1 text-sm rounded-full transition-all duration-300 hover:opacity-100"
+                        ref={roleRef}
+                        className="block relative"
                         style={{
-                           backgroundColor: 'var(--muted)',
-                           color: 'var(--muted-foreground)',
-                           border: '1px solid var(--border)',
-                           animationDelay: `${index * 200}ms`
+                           background: 'linear-gradient(135deg, var(--foreground) 0%, var(--muted-foreground) 100%)',
+                           WebkitBackgroundClip: 'text',
+                           WebkitTextFillColor: 'transparent',
+                           backgroundClip: 'text'
                         }}
                      >
-                        {skill}
+                        {displayedRole}
+                        {/* Typing Cursor */}
+                        {isTyping && displayedRole.length < translations.about.role.length && (
+                           <span
+                              className="inline-block w-1 ml-1 animate-pulse"
+                              style={{
+                                 backgroundColor: 'var(--foreground)',
+                                 height: '0.8em'
+                              }}
+                           />
+                        )}
                      </span>
-                  ))}
+                  </h1>
+               </div>
+
+               {/* Description with line-by-line reveal */}
+               <div
+                  className="overflow-hidden"
+                  style={{
+                     height: showContentReveal ? 'auto' : '0',
+                     transition: 'height 0.6s ease-out 0.2s',
+                     marginTop: '20px' // Add some space after Developer text
+                  }}
+               >
+                  <p
+                     className="text-lg md:text-xl max-w-lg leading-relaxed opacity-80"
+                     style={{
+                        color: 'var(--muted-foreground)',
+                        transform: showContentReveal ? 'translateY(0)' : 'translateY(-100%)',
+                        transition: 'transform 0.6s ease-out 0.3s'
+                     }}
+                  >
+                     {translations.about.description}
+                  </p>
+               </div>
+
+               {/* Subtle Skills Highlight with line-by-line reveal */}
+               <div
+                  className="overflow-hidden"
+                  style={{
+                     height: showContentReveal ? 'auto' : '0',
+                     transition: 'height 0.6s ease-out 0.4s',
+                     marginTop: '20px'
+                  }}
+               >
+                  <div
+                     className="flex gap-2 opacity-60"
+                     style={{
+                        transform: showContentReveal ? 'translateY(0)' : 'translateY(-100%)',
+                        transition: 'transform 0.6s ease-out 0.5s'
+                     }}
+                  >
+                     {['Flutter', 'TypeScript', 'Node.js'].map((skill, index) => (
+                        <span
+                           key={skill}
+                           className="px-3 py-1 text-sm rounded-full transition-all duration-300 hover:opacity-100 whitespace-nowrap"
+                           style={{
+                              backgroundColor: 'var(--muted)',
+                              color: 'var(--muted-foreground)',
+                              border: '1px solid var(--border)',
+                              opacity: showContentReveal ? 1 : 0,
+                              transform: showContentReveal ? 'translateY(0) scale(1)' : 'translateY(20px) scale(0.8)',
+                              transition: `all 0.4s ease-out ${0.6 + index * 0.1}s`
+                           }}
+                        >
+                           {skill}
+                        </span>
+                     ))}
+                  </div>
                </div>
             </div>
 
@@ -296,7 +341,7 @@ export default function PersonalIntro({ translations }: PersonalIntroProps) {
             </div>
          </div>
 
-         {/* CSS Animations */}
+         {/* Simplified CSS Animations */}
          <style jsx>{`
             @keyframes gradientShift {
                0%, 100% { transform: translateX(-100%); }

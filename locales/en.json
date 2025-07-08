@@ -20,9 +20,9 @@
    },
    "about": {
       "title": "About Me",
-      "paragraph1": "I'm a passionate developer...",
-      "paragraph2": "My expertise includes...",
-      "paragraph3": "I'm always eager to learn...",
+      "paragraph1": "I'm a passionate developer with a focus on creating innovative solutions that bridge technology and user experience.",
+      "paragraph2": "My expertise includes cross-platform development, full-stack web applications, and mobile technologies.",
+      "paragraph3": "I'm always eager to learn new technologies and collaborate on projects that make a meaningful impact.",
       "name": "Russidan Nadee",
       "intro": "I'm a",
       "role": "Developer",
@@ -37,7 +37,85 @@
          "tabs": {
             "work": "Work Experience",
             "education": "Education"
-         }
+         },
+         "work": [
+            {
+               "id": 1,
+               "period": "Apr 2025 - Oct 2025",
+               "title": "Developer Intern",
+               "company": "Thai Parkerizing",
+               "description": "Developed Cross-platform Asset Management System with RFID integration using Flutter, Node.js, Express, and MySQL. Created full-stack solution including mobile app, web application, and Windows desktop app.",
+               "skills": [
+                  "Flutter",
+                  "Node.js",
+                  "Express",
+                  "MySQL",
+                  "RFID",
+                  "Cross-platform"
+               ],
+               "icon": "💼",
+               "isCurrent": true
+            },
+            {
+               "id": 2,
+               "period": "Jul 2024 - Mar 2025",
+               "title": "Beverage Staff",
+               "company": "Fly Club",
+               "description": "Delivered food and beverages, ensuring exceptional customer satisfaction. Managed daily operations and maintained a clean, efficient service area.",
+               "skills": [
+                  "Customer Service",
+                  "Operations Management",
+                  "Team Work"
+               ],
+               "icon": "🍹",
+               "isCurrent": false
+            },
+            {
+               "id": 3,
+               "period": "Apr 2024 - Jun 2024",
+               "title": "Food and Beverage Staff",
+               "company": "Tonson Ar-Ee Restaurant",
+               "description": "Provided friendly service and assisted in food preparation. Ensured cleanliness in the kitchen and dining areas, meeting health standards.",
+               "skills": [
+                  "Food Service",
+                  "Kitchen Operations",
+                  "Health Standards"
+               ],
+               "icon": "🍽️",
+               "isCurrent": false
+            },
+            {
+               "id": 4,
+               "period": "Apr 2022 - Jun 2022",
+               "title": "Cook",
+               "company": "KFC",
+               "description": "Prepared food according to company standards. Monitored inventory to ensure sufficient stock levels.",
+               "skills": [
+                  "Food Preparation",
+                  "Inventory Management",
+                  "Quality Control"
+               ],
+               "icon": "🍗",
+               "isCurrent": false
+            }
+         ],
+         "education": [
+            {
+               "id": 1,
+               "period": "2020 - 2026",
+               "title": "Bachelor Degree",
+               "company": "Silpakorn University",
+               "description": "Electronic and Computer System - Comprehensive study of computer systems, electronics, software development, and system architecture. Expected graduation: March 2026.",
+               "skills": [
+                  "Electronics",
+                  "Computer Systems",
+                  "Software Development",
+                  "System Architecture"
+               ],
+               "icon": "🎓",
+               "isCurrent": true
+            }
+         ]
       },
       "cta": {
          "title": "Let's Connect & Collaborate",

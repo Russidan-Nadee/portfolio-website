@@ -12,13 +12,20 @@
 }
 
 [data-theme="dark"] {
-  --background: #000000;
-  --foreground: #ffffff;
-  --card: #111111;
-  --card-foreground: #ffffff;
-  --border: #333333;
-  --muted: #1a1a1a;
-  --muted-foreground: #cccccc;
+  --background: #1a1a1a;
+  /* เทาเข้มอุ่น */
+  --foreground: #e8e8e8;
+  /* เทาอ่อนอุ่น */
+  --card: #2d2d2d;
+  /* เทาเข้มกว่า background นิดหน่อย */
+  --card-foreground: #f0f0f0;
+  /* เทาอ่อนมาก */
+  --border: #404040;
+  /* เทากลางอุ่น */
+  --muted: #262626;
+  /* เทาเข้มนุ่ม */
+  --muted-foreground: #a0a0a0;
+  /* เทากลางอ่อน */
 }
 
 @theme inline {

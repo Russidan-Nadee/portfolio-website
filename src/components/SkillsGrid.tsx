@@ -2,6 +2,10 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import gsap from 'gsap'
+import ScrollTrigger from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
 
 interface SkillsGridProps {
    translations: any
@@ -26,46 +30,55 @@ export default function SkillsGrid({ translations }: SkillsGridProps) {
    const skillsRef = useRef<HTMLDivElement>(null)
    const rowRefs = useRef<(HTMLDivElement | null)[]>([])
 
-   // Split skills into rows of 3
    const skillRows = []
    for (let i = 0; i < skills.length; i += 3) {
       skillRows.push(skills.slice(i, i + 3))
    }
 
    useEffect(() => {
-      const observer = new IntersectionObserver(
-         (entries) => {
-            entries.forEach((entry) => {
-               if (entry.isIntersecting) {
-                  // Animate each row with stagger
-                  rowRefs.current.forEach((rowRef, index) => {
-                     if (rowRef) {
-                        setTimeout(() => {
-                           rowRef.style.transform = 'translateY(0)'
-                           rowRef.style.opacity = '1'
+      if (!skillsRef.current) return
 
-                           // Animate cards within the row
-                           const cards = rowRef.querySelectorAll('.skill-card')
-                           cards.forEach((card, cardIndex) => {
-                              setTimeout(() => {
-                                 ; (card as HTMLElement).style.transform = 'translateY(0)'
-                                    ; (card as HTMLElement).style.opacity = '1'
-                              }, cardIndex * 100)
-                           })
-                        }, index * 150)
-                     }
-                  })
-               }
-            })
-         },
-         { threshold: 0.2 }
-      )
+      rowRefs.current.forEach((row, rowIndex) => {
+         if (!row) return
+         const cards = row.querySelectorAll('.skill-card')
 
-      if (skillsRef.current) {
-         observer.observe(skillsRef.current)
+         gsap.fromTo(
+            row,
+            { opacity: 0, y: 30 },
+            {
+               opacity: 1,
+               y: 0,
+               duration: 0.6,
+               ease: 'power2.out',
+               scrollTrigger: {
+                  trigger: row,
+                  start: 'top 80%',
+                  toggleActions: 'play none none none',
+               },
+            }
+         )
+
+         gsap.fromTo(
+            cards,
+            { opacity: 0, y: 20 },
+            {
+               opacity: 1,
+               y: 0,
+               duration: 0.5,
+               stagger: 0.1,
+               ease: 'power2.out',
+               scrollTrigger: {
+                  trigger: row,
+                  start: 'top 80%',
+                  toggleActions: 'play none none none',
+               },
+            }
+         )
+      })
+
+      return () => {
+         ScrollTrigger.getAll().forEach(trigger => trigger.kill())
       }
-
-      return () => observer.disconnect()
    }, [])
 
    return (
@@ -95,20 +108,12 @@ export default function SkillsGrid({ translations }: SkillsGridProps) {
                   <div
                      key={rowIndex}
                      ref={(el) => { rowRefs.current[rowIndex] = el }}
-                     className="grid grid-cols-1 md:grid-cols-3 gap-6 transition-all duration-700 ease-out"
-                     style={{
-                        transform: 'translateY(30px)',
-                        opacity: 0
-                     }}
+                     className="grid grid-cols-1 md:grid-cols-3 gap-6"
                   >
                      {row.map((skill, skillIndex) => (
                         <div
                            key={skillIndex}
                            className="skill-card group cursor-pointer transition-all duration-300 ease-out hover:scale-105"
-                           style={{
-                              transform: 'translateY(20px)',
-                              opacity: 0
-                           }}
                            onClick={(e) => {
                               e.preventDefault()
                               const newWindow = window.open(skill.url, '_blank')
@@ -129,7 +134,6 @@ export default function SkillsGrid({ translations }: SkillsGridProps) {
                                        alt={skill.name}
                                        className="w-full h-full object-contain transition-all duration-300 group-hover:scale-110"
                                        onError={(e) => {
-                                          // Fallback if CDN fails
                                           e.currentTarget.style.display = 'none'
                                           if (e.currentTarget.parentElement) {
                                              e.currentTarget.parentElement.innerHTML = `
