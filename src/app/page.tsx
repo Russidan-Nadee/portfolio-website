@@ -8,12 +8,24 @@ export default function Home() {
   const searchParams = useSearchParams()
   const locale = searchParams.get('lang') || 'en'
 
-  // Load translations based on current locale
-  const translations = locale === 'th' ? require('../../locales/th.json') : require('../../locales/en.json')
+  // Helper function to get translations based on locale
+  const getTranslations = (locale: string) => {
+    switch (locale) {
+      case 'th':
+        return require('../../locales/th.json')
+      case 'ja':
+        return require('../../locales/ja.json')
+      default:
+        return require('../../locales/en.json')
+    }
+  }
+
+  // Load translations with fallback
+  const translations = getTranslations(locale)
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: 'var(--background)' }}>
-      <CreativeHero />
+      <CreativeHero translations={translations} />
     </div>
   )
 }

@@ -13,8 +13,28 @@ export default function Header() {
    const locale = searchParams.get('lang') || 'en'
    const { theme } = useTheme()
 
-   // Load translations based on current locale
-   const translations = locale === 'th' ? require('../../locales/th.json') : require('../../locales/en.json')
+   // Helper function to get translations based on locale
+   const getTranslations = (locale: string) => {
+      switch (locale) {
+         case 'th':
+            return require('../../locales/th.json')
+         case 'ja':
+            return require('../../locales/ja.json')
+         default:
+            return require('../../locales/en.json')
+      }
+   }
+
+   // Load translations with fallback
+   const translations = getTranslations(locale)
+
+   // Helper function to generate localized links
+   const getLocalizedLink = (path: string) => {
+      if (locale === 'en') {
+         return path
+      }
+      return `${path}?lang=${locale}`
+   }
 
    return (
       <header className="h-16 flex items-center px-4 border-b-2 transition-colors relative z-10" style={{
@@ -25,7 +45,7 @@ export default function Header() {
          <nav className="flex justify-between items-center max-w-6xl mx-auto w-full">
             {/* Logo */}
             <div className="flex items-center">
-               <Link href={locale === 'th' ? '/?lang=th' : '/'} className="flex items-center">
+               <Link href={getLocalizedLink('/')} className="flex items-center">
                   <img
                      src={theme === 'dark' ? '/logo-dark.png' : '/logo-light.png'}
                      alt="Russidan Nadee"
@@ -41,7 +61,7 @@ export default function Header() {
             {/* Navigation Menu */}
             <div className="flex items-center space-x-6">
                <Link
-                  href={locale === 'th' ? '/?lang=th' : '/'}
+                  href={getLocalizedLink('/')}
                   className={`hover:opacity-70 pb-1 transition-all ${pathname === '/' ? 'border-b-2' : ''
                      }`}
                   style={{
@@ -49,10 +69,10 @@ export default function Header() {
                      borderColor: pathname === '/' ? 'var(--foreground)' : 'transparent'
                   }}
                >
-                  {translations.header.nav.home}
+                  {translations?.header?.nav?.home || 'Home'}
                </Link>
                <Link
-                  href={locale === 'th' ? '/about?lang=th' : '/about'}
+                  href={getLocalizedLink('/about')}
                   className={`hover:opacity-70 pb-1 transition-all ${pathname === '/about' ? 'border-b-2' : ''
                      }`}
                   style={{
@@ -60,10 +80,10 @@ export default function Header() {
                      borderColor: pathname === '/about' ? 'var(--foreground)' : 'transparent'
                   }}
                >
-                  {translations.header.nav.about}
+                  {translations?.header?.nav?.about || 'About'}
                </Link>
                <Link
-                  href={locale === 'th' ? '/portfolio?lang=th' : '/portfolio'}
+                  href={getLocalizedLink('/portfolio')}
                   className={`hover:opacity-70 pb-1 transition-all ${pathname === '/portfolio' ? 'border-b-2' : ''
                      }`}
                   style={{
@@ -71,10 +91,10 @@ export default function Header() {
                      borderColor: pathname === '/portfolio' ? 'var(--foreground)' : 'transparent'
                   }}
                >
-                  {translations.header.nav.portfolio}
+                  {translations?.header?.nav?.portfolio || 'Portfolio'}
                </Link>
                <Link
-                  href={locale === 'th' ? '/contact?lang=th' : '/contact'}
+                  href={getLocalizedLink('/contact')}
                   className={`hover:opacity-70 pb-1 transition-all ${pathname === '/contact' ? 'border-b-2' : ''
                      }`}
                   style={{
@@ -82,7 +102,7 @@ export default function Header() {
                      borderColor: pathname === '/contact' ? 'var(--foreground)' : 'transparent'
                   }}
                >
-                  {translations.header.nav.contact}
+                  {translations?.header?.nav?.contact || 'Contact'}
                </Link>
                <ThemeToggle />
                <LanguageSwitcher />

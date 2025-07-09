@@ -1,12 +1,17 @@
+// src/components/Timeline.tsx
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 
 interface TimelineProps {
    translations: any
 }
 
 export default function Timeline({ translations }: TimelineProps) {
+   const searchParams = useSearchParams()
+   const locale = searchParams.get('lang') || 'en'
+
    const timelineRef = useRef<HTMLDivElement>(null)
    const headerRef = useRef<HTMLDivElement>(null)
    const titleRef = useRef<HTMLHeadingElement>(null)
@@ -18,11 +23,38 @@ export default function Timeline({ translations }: TimelineProps) {
    const [animationComplete, setAnimationComplete] = useState(false)
    const [headerAnimated, setHeaderAnimated] = useState(false)
 
+   // Helper function to get translations based on locale
+   const getTranslations = (locale: string) => {
+      switch (locale) {
+         case 'th':
+            return require('../../locales/th.json')
+         case 'ja':
+            return require('../../locales/ja.json')
+         default:
+            return require('../../locales/en.json')
+      }
+   }
+
+   // Load translations with fallback
+   const currentTranslations = translations || getTranslations(locale)
+
    // Get data from translations with fallback
-   const workExperienceData = translations?.about?.timeline?.work || []
-   const educationData = translations?.about?.timeline?.education || []
+   const workExperienceData = currentTranslations?.about?.timeline?.work || []
+   const educationData = currentTranslations?.about?.timeline?.education || []
 
    const currentData = activeTab === 'work' ? workExperienceData : educationData
+
+   // Get localized current text
+   const getCurrentText = (locale: string) => {
+      switch (locale) {
+         case 'th':
+            return '🔥 ปัจจุบัน'
+         case 'ja':
+            return '🔥 現在'
+         default:
+            return '🔥 Current'
+      }
+   }
 
    useEffect(() => {
       const handleScroll = () => {
@@ -108,13 +140,13 @@ export default function Timeline({ translations }: TimelineProps) {
       setAnimationComplete(false)
    }, [activeTab])
 
-   // Reset header animation when tab changes
+   // Reset header animation when tab changes or locale changes
    useEffect(() => {
       setHeaderAnimated(false)
-   }, [activeTab])
+   }, [activeTab, locale])
 
    // Handle empty data
-   if (!translations?.about?.timeline) {
+   if (!currentTranslations?.about?.timeline) {
       return (
          <section className="py-16 mb-16">
             <div className="max-w-6xl mx-auto px-8 text-center">
@@ -265,7 +297,7 @@ export default function Timeline({ translations }: TimelineProps) {
                         color: headerAnimated ? 'transparent' : 'var(--foreground)'
                      }}
                   >
-                     {translations?.about?.timeline?.title || 'Experience & Background'}
+                     {currentTranslations?.about?.timeline?.title || 'Experience & Background'}
                   </h2>
 
                   <div
@@ -282,7 +314,7 @@ export default function Timeline({ translations }: TimelineProps) {
                            color: activeTab === 'work' ? 'var(--foreground)' : 'var(--muted-foreground)',
                         }}
                      >
-                        💼 {translations?.about?.timeline?.tabs?.work || 'Work Experience'}
+                        💼 {currentTranslations?.about?.timeline?.tabs?.work || 'Work Experience'}
                      </button>
                      <button
                         onClick={() => setActiveTab('education')}
@@ -293,7 +325,7 @@ export default function Timeline({ translations }: TimelineProps) {
                            color: activeTab === 'education' ? 'var(--foreground)' : 'var(--muted-foreground)',
                         }}
                      >
-                        🎓 {translations?.about?.timeline?.tabs?.education || 'Education'}
+                        🎓 {currentTranslations?.about?.timeline?.tabs?.education || 'Education'}
                      </button>
                   </div>
                </div>
@@ -325,7 +357,7 @@ export default function Timeline({ translations }: TimelineProps) {
 
                            return (
                               <div
-                                 key={`${activeTab}-${item.id}`}
+                                 key={`${activeTab}-${item.id}-${locale}`}
                                  className="relative flex items-center justify-center min-h-[200px]"
                               >
                                  {/* Timeline Item - Show when visible */}
@@ -349,7 +381,7 @@ export default function Timeline({ translations }: TimelineProps) {
                                                 color: item.isCurrent ? 'var(--background)' : 'var(--muted-foreground)'
                                              }}
                                           >
-                                             {item.isCurrent ? '🔥 Current' : item.period}
+                                             {item.isCurrent ? getCurrentText(locale) : item.period}
                                           </span>
                                           {item.isCurrent && isVisible && (
                                              <div

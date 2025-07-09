@@ -26,13 +26,20 @@ export default function LanguageSwitcher() {
       setIsOpen(false)
    }
 
-   const currentLanguage = currentLocale === 'th' ? 'ไทย' : 'English'
-   const flagEmoji = currentLocale === 'th' ? '🇹🇭' : '🇺🇸'
-
+   // Language configuration with names and flags
    const locales = [
-      { code: 'en', name: 'English', flag: '🇺🇸' },
-      { code: 'th', name: 'ไทย', flag: '🇹🇭' }
+      { code: 'en', name: 'English', flag: '🇺🇸', nativeName: 'English' },
+      { code: 'th', name: 'Thai', flag: '🇹🇭', nativeName: 'ไทย' },
+      { code: 'ja', name: 'Japanese', flag: '🇯🇵', nativeName: '日本語' }
    ]
+
+   // Get current language info
+   const getCurrentLanguage = () => {
+      const current = locales.find(locale => locale.code === currentLocale)
+      return current || locales[0] // fallback to English
+   }
+
+   const currentLanguage = getCurrentLanguage()
 
    return (
       <div className="relative">
@@ -43,9 +50,10 @@ export default function LanguageSwitcher() {
                color: 'var(--foreground)',
                backgroundColor: isOpen ? 'var(--muted)' : 'transparent'
             }}
+            aria-label={`Current language: ${currentLanguage.nativeName}. Click to change language.`}
          >
-            <span className="text-lg">{flagEmoji}</span>
-            <span className="text-sm font-medium">{currentLanguage}</span>
+            <span className="text-lg">{currentLanguage.flag}</span>
+            <span className="text-sm font-medium">{currentLanguage.nativeName}</span>
             <svg
                className={`w-4 h-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : 'rotate-0'}`}
                fill="none"
@@ -72,7 +80,7 @@ export default function LanguageSwitcher() {
 
                {/* Dropdown menu */}
                <div
-                  className="absolute right-0 mt-2 w-40 border rounded-lg shadow-lg z-20"
+                  className="absolute right-0 mt-2 w-48 border rounded-lg shadow-lg z-20"
                   style={{
                      backgroundColor: 'var(--card)',
                      borderColor: 'var(--border)'
@@ -89,9 +97,13 @@ export default function LanguageSwitcher() {
                               color: 'var(--foreground)',
                               backgroundColor: currentLocale === locale.code ? 'var(--muted)' : 'transparent'
                            }}
+                           aria-label={`Switch to ${locale.nativeName}`}
                         >
                            <span className="text-lg">{locale.flag}</span>
-                           <span className="text-sm">{locale.name}</span>
+                           <div className="flex flex-col">
+                              <span className="text-sm">{locale.nativeName}</span>
+                              <span className="text-xs opacity-60">{locale.name}</span>
+                           </div>
                            {currentLocale === locale.code && (
                               <span className="ml-auto text-xs opacity-60">✓</span>
                            )}

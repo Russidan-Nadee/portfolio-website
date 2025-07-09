@@ -14,8 +14,44 @@ export default function Contact() {
    const [mounted, setMounted] = useState(false)
    const [visibleItems, setVisibleItems] = useState<Set<number>>(new Set())
 
-   // Load translations based on current locale
-   const translations = locale === 'th' ? require('../../../locales/th.json') : require('../../../locales/en.json')
+   // Helper function to get translations based on locale
+   const getTranslations = (locale: string) => {
+      switch (locale) {
+         case 'th':
+            return require('../../../locales/th.json')
+         case 'ja':
+            return require('../../../locales/ja.json')
+         default:
+            return require('../../../locales/en.json')
+      }
+   }
+
+   // Load translations with fallback
+   const translations = getTranslations(locale)
+
+   // Get localized text for copied notification
+   const getCopiedText = (locale: string) => {
+      switch (locale) {
+         case 'th':
+            return 'คัดลอกแล้ว!'
+         case 'ja':
+            return 'コピーしました！'
+         default:
+            return 'Copied to clipboard!'
+      }
+   }
+
+   // Get localized text for opening status
+   const getOpeningText = (locale: string) => {
+      switch (locale) {
+         case 'th':
+            return 'กำลังเปิด...'
+         case 'ja':
+            return '開いています...'
+         default:
+            return 'Opening...'
+      }
+   }
 
    useEffect(() => {
       setMounted(true)
@@ -30,15 +66,15 @@ export default function Contact() {
       }, 300)
 
       return () => clearTimeout(timer)
-   }, [])
+   }, [locale]) // Re-run when locale changes
 
    const contactChannels = [
       {
          id: 'email',
          icon: MdEmail,
-         title: translations.contact.channels.email.title,
+         title: translations?.contact?.channels?.email?.title || 'Email',
          info: 'russidan.nadee@gmail.com',
-         action: translations.contact.channels.email.action,
+         action: translations?.contact?.channels?.email?.action || 'Send Message',
          href: 'mailto:russidan.nadee@gmail.com',
          color: 'transparent',
          iconColor: '#ef4444', // Gmail red
@@ -52,9 +88,9 @@ export default function Contact() {
       {
          id: 'github',
          icon: FaGithub,
-         title: translations.contact.channels.github.title,
+         title: translations?.contact?.channels?.github?.title || 'GitHub',
          info: 'Russidan-Nadee',
-         action: translations.contact.channels.github.action,
+         action: translations?.contact?.channels?.github?.action || 'View Code',
          href: 'https://github.com/Russidan-Nadee',
          color: 'transparent',
          iconColor: '#6b7280', // GitHub gray
@@ -63,9 +99,9 @@ export default function Contact() {
       {
          id: 'linkedin',
          icon: FaLinkedin,
-         title: translations.contact.channels.linkedin.title,
+         title: translations?.contact?.channels?.linkedin?.title || 'LinkedIn',
          info: 'Russidan Nadee',
-         action: translations.contact.channels.linkedin.action,
+         action: translations?.contact?.channels?.linkedin?.action || 'Connect',
          href: 'https://www.linkedin.com/in/russidan-nadee-1734a2352/',
          color: 'transparent',
          iconColor: '#0ea5e9', // LinkedIn blue
@@ -74,9 +110,9 @@ export default function Contact() {
       {
          id: 'phone',
          icon: MdPhone,
-         title: translations.contact.channels.phone.title,
+         title: translations?.contact?.channels?.phone?.title || 'Phone',
          info: '+66 93-108-9420',
-         action: translations.contact.channels.phone.action,
+         action: translations?.contact?.channels?.phone?.action || 'Call Now',
          href: 'tel:+66931089420',
          color: 'transparent',
          iconColor: '#10b981', // Phone green
@@ -93,9 +129,9 @@ export default function Contact() {
       {
          id: 'instagram',
          icon: FaInstagram,
-         title: translations.contact.channels.instagram.title,
+         title: translations?.contact?.channels?.instagram?.title || 'Instagram',
          info: '@firstl._',
-         action: translations.contact.channels.instagram.action,
+         action: translations?.contact?.channels?.instagram?.action || 'Follow Me',
          href: 'https://www.instagram.com/firstl._/',
          color: 'transparent',
          iconColor: '#e91e63', // Instagram pink
@@ -104,9 +140,9 @@ export default function Contact() {
       {
          id: 'facebook',
          icon: FaFacebook,
-         title: translations.contact.channels.facebook.title,
+         title: translations?.contact?.channels?.facebook?.title || 'Facebook',
          info: 'russidan.nadee.2025',
-         action: translations.contact.channels.facebook.action,
+         action: translations?.contact?.channels?.facebook?.action || 'Visit Profile',
          href: 'https://www.facebook.com/russidan.nadee.2025',
          color: 'transparent',
          iconColor: '#1877f2',  // Facebook blue
@@ -166,7 +202,7 @@ export default function Contact() {
                   animationFillMode: 'both'
                }}
             >
-               {translations.contact.title}
+               {translations?.contact?.title || 'Get in Touch'}
             </h1>
             <p
                className="text-lg max-w-2xl mx-auto animate-fade-in-up"
@@ -176,7 +212,7 @@ export default function Contact() {
                   animationFillMode: 'both'
                }}
             >
-               {translations.contact.subtitle}
+               {translations?.contact?.subtitle || 'Let\'s connect and discuss opportunities'}
             </p>
          </div>
 
@@ -274,7 +310,7 @@ export default function Contact() {
                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
 
                            <span className="relative z-10">
-                              {isLoading ? 'Opening...' : channel.action}
+                              {isLoading ? getOpeningText(locale) : channel.action}
                            </span>
                         </button>
                      </div>
@@ -294,7 +330,7 @@ export default function Contact() {
                }}>
                <div className="flex items-center gap-2">
                   <MdContentCopy size={16} className="animate-bounce" />
-                  <span>Copied to clipboard!</span>
+                  <span>{getCopiedText(locale)}</span>
                </div>
             </div>
          )}

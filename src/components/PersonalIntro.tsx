@@ -2,12 +2,16 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 
 interface PersonalIntroProps {
    translations: any
 }
 
 export default function PersonalIntro({ translations }: PersonalIntroProps) {
+   const searchParams = useSearchParams()
+   const locale = searchParams.get('lang') || 'en'
+
    const introRef = useRef<HTMLDivElement>(null)
    const textRef = useRef<HTMLDivElement>(null)
    const imageRef = useRef<HTMLDivElement>(null)
@@ -21,6 +25,21 @@ export default function PersonalIntro({ translations }: PersonalIntroProps) {
    const [displayedRole, setDisplayedRole] = useState('')
    const [isTyping, setIsTyping] = useState(false)
    const [showContentReveal, setShowContentReveal] = useState(false)
+
+   // Helper function to get translations based on locale
+   const getTranslations = (locale: string) => {
+      switch (locale) {
+         case 'th':
+            return require('../../locales/th.json')
+         case 'ja':
+            return require('../../locales/ja.json')
+         default:
+            return require('../../locales/en.json')
+      }
+   }
+
+   // Load translations with fallback
+   const currentTranslations = translations || getTranslations(locale)
 
    useEffect(() => {
       const observer = new IntersectionObserver(
@@ -62,9 +81,9 @@ export default function PersonalIntro({ translations }: PersonalIntroProps) {
 
    // Typing animation effect
    useEffect(() => {
-      if (!isTyping) return
+      if (!isTyping || !currentTranslations?.about?.role) return
 
-      const roleText = translations.about.role
+      const roleText = currentTranslations.about.role
       let index = 0
 
       const timer = setInterval(() => {
@@ -81,7 +100,7 @@ export default function PersonalIntro({ translations }: PersonalIntroProps) {
       }, 100)
 
       return () => clearInterval(timer)
-   }, [isTyping, translations.about.role])
+   }, [isTyping, currentTranslations?.about?.role])
 
    // Mouse tracking for parallax effect
    useEffect(() => {
@@ -100,6 +119,14 @@ export default function PersonalIntro({ translations }: PersonalIntroProps) {
          return () => section.removeEventListener('mousemove', handleMouseMove)
       }
    }, [])
+
+   // Reset animations when locale changes
+   useEffect(() => {
+      setIsVisible(false)
+      setDisplayedRole('')
+      setIsTyping(false)
+      setShowContentReveal(false)
+   }, [locale])
 
    return (
       <section
@@ -155,7 +182,7 @@ export default function PersonalIntro({ translations }: PersonalIntroProps) {
                      transform: isVisible ? 'translateY(0)' : 'translateY(20px)'
                   }}
                >
-                  {translations.about.intro}
+                  {currentTranslations?.about?.intro || 'I\'m a'}
                </p>
 
                {/* Fixed container for Developer text */}
@@ -185,7 +212,7 @@ export default function PersonalIntro({ translations }: PersonalIntroProps) {
                      >
                         {displayedRole}
                         {/* Typing Cursor */}
-                        {isTyping && displayedRole.length < translations.about.role.length && (
+                        {isTyping && displayedRole.length < (currentTranslations?.about?.role?.length || 0) && (
                            <span
                               className="inline-block w-1 ml-1 animate-pulse"
                               style={{
@@ -215,7 +242,7 @@ export default function PersonalIntro({ translations }: PersonalIntroProps) {
                         transition: 'transform 0.6s ease-out 0.3s'
                      }}
                   >
-                     {translations.about.description}
+                     {currentTranslations?.about?.description || 'A passionate developer with expertise in cross-platform development.'}
                   </p>
                </div>
 
@@ -286,7 +313,7 @@ export default function PersonalIntro({ translations }: PersonalIntroProps) {
                      <div className="w-full h-full relative z-10">
                         <img
                            src="/images/about/profile-main.jpg"
-                           alt="Russidan Nadee Profile"
+                           alt={`${currentTranslations?.about?.name || 'Russidan Nadee'} Profile`}
                            className="w-full h-full object-cover transition-all duration-500 group-hover:scale-110"
                            onError={(e) => {
                               // Fallback to placeholder if image fails to load

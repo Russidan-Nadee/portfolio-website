@@ -6,12 +6,36 @@ import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 
-export default function CreativeHero() {
+interface CreativeHeroProps {
+   translations?: any
+}
+
+export default function CreativeHero({ translations: propTranslations }: CreativeHeroProps) {
    const searchParams = useSearchParams()
    const locale = searchParams.get('lang') || 'en'
 
-   // Load translations
-   const translations = locale === 'th' ? require('../../locales/th.json') : require('../../locales/en.json')
+   // Helper function to get translations based on locale
+   const getTranslations = (locale: string) => {
+      switch (locale) {
+         case 'th':
+            return require('../../locales/th.json')
+         case 'ja':
+            return require('../../locales/ja.json')
+         default:
+            return require('../../locales/en.json')
+      }
+   }
+
+   // Load translations - support 3 languages
+   const translations = propTranslations || getTranslations(locale)
+
+   // Helper function to generate localized links
+   const getLocalizedLink = (path: string) => {
+      if (locale === 'en') {
+         return path
+      }
+      return `${path}?lang=${locale}`
+   }
 
    const heroRef = useRef<HTMLDivElement>(null)
    const textRef = useRef<HTMLDivElement>(null)
@@ -80,14 +104,14 @@ export default function CreativeHero() {
                }
             }
 
-            @keyframes fadeInRight {
+            @keyframes fadeInPop {
                from {
                   opacity: 0;
-                  transform: translateX(80px) scale(0.9);
+                  transform: scale(0.6);
                }
                to {
                   opacity: 1;
-                  transform: translateX(0) scale(1);
+                  transform: scale(1);
                }
             }
 
@@ -117,7 +141,7 @@ export default function CreativeHero() {
             }
 
             .hero-image {
-               animation: ${isVisible ? 'fadeInRight 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s both' : 'none'};
+               animation: ${isVisible ? 'fadeInPop 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s both' : 'none'};
             }
 
             .hero-title {
@@ -237,7 +261,7 @@ export default function CreativeHero() {
                   {/* Main Layout Container */}
                   <div className="relative flex flex-col items-center justify-center">
 
-                     {/* Top Typography - Webdesigner (Above Image) */}
+                     {/* Top Typography - Title (Above Image) */}
                      <div className="relative z-30 mb-10">
                         <h1
                            ref={titleRef}
@@ -247,14 +271,14 @@ export default function CreativeHero() {
                               color: 'var(--foreground)'
                            }}
                         >
-                           {translations.home.title}
+                           {translations?.home?.title || 'Developer'}
                         </h1>
                      </div>
 
                      {/* Middle Section - Image Overlapping with Text */}
                      <div className="relative flex flex-col items-center justify-center mb-14">
 
-                        {/* Bottom Typography - Photographer (Behind Image) */}
+                        {/* Bottom Typography - Subtitle (Behind Image) */}
                         <div className="relative z-10 mb-[-180px] md:mb-[-200px] lg:mb-[-240px] xl:mb-[-270px]">
                            <h2
                               ref={subtitleRef}
@@ -266,7 +290,7 @@ export default function CreativeHero() {
                                  filter: 'drop-shadow(0 0 8px rgba(0,0,0,0.3))'
                               } as React.CSSProperties}
                            >
-                              {translations.home.subtitle}
+                              {translations?.home?.subtitle || 'cross-platform application'}
                            </h2>
                         </div>
 
@@ -287,7 +311,7 @@ export default function CreativeHero() {
                                  {/* Image with filters - Grayscale filter */}
                                  <Image
                                     src="/profile-image.jpg"
-                                    alt="Russidan Nadee - Web Designer & Photographer"
+                                    alt={`${translations?.about?.name || 'Russidan Nadee'} - ${translations?.home?.title || 'Developer'}`}
                                     fill
                                     className="object-cover object-center transition-all duration-500 hover:scale-105"
                                     style={{
@@ -317,7 +341,7 @@ export default function CreativeHero() {
                                  {/* CTA Buttons - Positioned for new image proportions */}
                                  <div ref={buttonsRef} className="hero-buttons absolute bottom-6 left-1/2 transform -translate-x-1/2 flex flex-col sm:flex-row gap-3 z-30">
                                     <Link
-                                       href={locale === 'th' ? '/portfolio?lang=th' : '/portfolio'}
+                                       href={getLocalizedLink('/portfolio')}
                                        className="button-shine group inline-flex items-center justify-center px-5 py-2.5 lg:px-6 lg:py-3 text-xs lg:text-sm font-semibold rounded-md transition-all duration-300 hover:scale-105 hover:shadow-lg backdrop-blur-sm"
                                        style={{
                                           backgroundColor: 'var(--foreground)',
@@ -325,12 +349,12 @@ export default function CreativeHero() {
                                        }}
                                     >
                                        <span className="relative z-10 whitespace-nowrap">
-                                          {translations.home.buttons.portfolio}
+                                          {translations?.home?.buttons?.portfolio || 'Projects'}
                                        </span>
                                     </Link>
 
                                     <Link
-                                       href={locale === 'th' ? '/contact?lang=th' : '/contact'}
+                                       href={getLocalizedLink('/contact')}
                                        className="button-shine group inline-flex items-center justify-center px-5 py-2.5 lg:px-6 lg:py-3 text-xs lg:text-sm font-semibold rounded-md border border-opacity-50 transition-all duration-300 hover:scale-105 backdrop-blur-sm"
                                        style={{
                                           backgroundColor: 'rgba(255, 255, 255, 0.9)',
@@ -339,7 +363,7 @@ export default function CreativeHero() {
                                        }}
                                     >
                                        <span className="relative z-10 whitespace-nowrap">
-                                          {translations.home.buttons.contact}
+                                          {translations?.home?.buttons?.contact || 'Contact'}
                                        </span>
                                     </Link>
                                  </div>
@@ -354,14 +378,14 @@ export default function CreativeHero() {
                            className="text-sm md:text-base lg:text-lg opacity-60 tracking-widest uppercase mb-4"
                            style={{ color: 'var(--muted-foreground)' }}
                         >
-                           {translations.home.location}
+                           {translations?.home?.location || 'based in Bangkok, Thailand.'}
                         </p>
 
                         <p
                            className="text-lg md:text-xl lg:text-2xl opacity-80 tracking-wide"
                            style={{ color: 'var(--muted-foreground)' }}
                         >
-                           {translations.home.intro}
+                           {translations?.home?.intro || 'My name is Russidan and I am a Developer'}
                         </p>
                      </div>
                   </div>

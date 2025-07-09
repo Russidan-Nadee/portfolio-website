@@ -18,8 +18,28 @@ export default function About() {
    const titleRef = useRef<HTMLHeadingElement>(null)
    const descriptionRef = useRef<HTMLParagraphElement>(null)
 
-   // Load translations based on current locale
-   const translations = locale === 'th' ? require('../../../locales/th.json') : require('../../../locales/en.json')
+   // Helper function to get translations based on locale
+   const getTranslations = (locale: string) => {
+      switch (locale) {
+         case 'th':
+            return require('../../../locales/th.json')
+         case 'ja':
+            return require('../../../locales/ja.json')
+         default:
+            return require('../../../locales/en.json')
+      }
+   }
+
+   // Load translations with fallback
+   const translations = getTranslations(locale)
+
+   // Helper function to generate localized links
+   const getLocalizedLink = (path: string) => {
+      if (locale === 'en') {
+         return path
+      }
+      return `${path}?lang=${locale}`
+   }
 
    useEffect(() => {
       // Title animation
@@ -63,7 +83,7 @@ export default function About() {
       return () => {
          ScrollTrigger.getAll().forEach(trigger => trigger.kill())
       }
-   }, [])
+   }, [locale]) // Re-run when locale changes
 
    return (
       <div className="min-h-screen" style={{ backgroundColor: 'var(--background)' }}>
@@ -95,28 +115,28 @@ export default function About() {
                   className="text-3xl font-bold mb-4"
                   style={{ color: 'var(--foreground)' }}
                >
-                  {translations.about.cta.title}
+                  {translations?.about?.cta?.title || 'Let\'s Connect & Collaborate'}
                </h2>
                <p
                   ref={descriptionRef}
                   className="text-xl mb-8 opacity-80"
                   style={{ color: 'var(--muted-foreground)' }}
                >
-                  {translations.about.cta.description}
+                  {translations?.about?.cta?.description || 'Interested in working together or learning more about my projects? I\'d love to hear from you!'}
                </p>
                <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <a
-                     href={locale === 'th' ? '/contact?lang=th' : '/contact'}
+                     href={getLocalizedLink('/contact')}
                      className="inline-block px-8 py-4 rounded-lg font-semibold transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl"
                      style={{
                         backgroundColor: 'var(--foreground)',
                         color: 'var(--background)'
                      }}
                   >
-                     {translations.about.cta.contact}
+                     {translations?.about?.cta?.contact || 'Get In Touch'}
                   </a>
                   <a
-                     href={locale === 'th' ? '/portfolio?lang=th' : '/portfolio'}
+                     href={getLocalizedLink('/portfolio')}
                      className="inline-block px-8 py-4 rounded-lg font-semibold transition-all duration-300 hover:scale-105 border-2 hover:shadow-lg"
                      style={{
                         backgroundColor: 'var(--card)',
@@ -124,7 +144,7 @@ export default function About() {
                         borderColor: 'var(--border)'
                      }}
                   >
-                     {translations.about.cta.projects}
+                     {translations?.about?.cta?.projects || 'View Projects'}
                   </a>
                </div>
             </div>

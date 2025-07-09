@@ -1,0 +1,183 @@
+{
+   "header": {
+      "logo": "Russidan",
+      "nav": {
+         "home": "ホーム",
+         "about": "概要",
+         "portfolio": "ポートフォリオ",
+         "contact": "お問い合わせ"
+      }
+   },
+   "home": {
+      "intro": "私の名前はルシダンで、開発者です",
+      "title": "開発者",
+      "subtitle": "クロスプラットフォームアプリケーション",
+      "location": "タイ、バンコクを拠点としています。",
+      "buttons": {
+         "portfolio": "ポートフォリオ",
+         "contact": "お問い合わせ"
+      }
+   },
+   "about": {
+      "title": "私について",
+      "paragraph1": "テクノロジーとユーザーエクスペリエンスを橋渡しする革新的なソリューションの作成に焦点を当てた情熱的な開発者です。",
+      "paragraph2": "私の専門分野には、クロスプラットフォーム開発、フルスタックWebアプリケーション、モバイル技術が含まれます。",
+      "paragraph3": "新しい技術を学び、意味のある影響を与えるプロジェクトでコラボレーションすることを常に熱望しています。",
+      "name": "ルシダン・ナディー",
+      "intro": "私は",
+      "role": "開発者",
+      "description": "クロスプラットフォーム開発の専門知識を持つシラパコーン大学の情熱的な新卒者です。Flutter、TypeScript、Node.jsなどの最新技術を使用して、効率的でユーザーフレンドリーなアプリケーションの作成を専門としています。常に学び、成長することを熱望し、革新的なプロジェクトに貢献し、創造的なソリューションを実現する準備ができています。",
+      "skills": {
+         "title": "技術スキルと専門知識",
+         "subtitle": "私が使用する技術とツール",
+         "learning": "現在、高度なシステム開発のためにDockerとC# .NETの知識を拡張中"
+      },
+      "timeline": {
+         "title": "経験と経歴",
+         "tabs": {
+            "work": "職歴",
+            "education": "学歴"
+         },
+         "work": [
+            {
+               "id": 1,
+               "period": "2025年4月 - 2025年10月",
+               "title": "開発者インターン",
+               "company": "タイ・パーカライジング",
+               "description": "Flutter、Node.js、Express、MySQLを使用して、RFID統合を備えたクロスプラットフォーム資産管理システムを開発。モバイルアプリ、Webアプリケーション、Windowsデスクトップアプリを含むフルスタックソリューションを作成。",
+               "skills": [
+                  "Flutter",
+                  "Node.js",
+                  "Express",
+                  "MySQL",
+                  "RFID",
+                  "Cross-platform"
+               ],
+               "icon": "💼",
+               "isCurrent": true
+            },
+            {
+               "id": 2,
+               "period": "2024年7月 - 2025年3月",
+               "title": "飲料スタッフ",
+               "company": "フライクラブ",
+               "description": "食べ物と飲み物を提供し、優れた顧客満足を保証。日常業務を管理し、清潔で効率的なサービスエリアを維持。",
+               "skills": [
+                  "カスタマーサービス",
+                  "運営管理",
+                  "チームワーク"
+               ],
+               "icon": "🍹",
+               "isCurrent": false
+            },
+            {
+               "id": 3,
+               "period": "2024年4月 - 2024年6月",
+               "title": "食品・飲料スタッフ",
+               "company": "トンソン・アリー・レストラン",
+               "description": "フレンドリーなサービスを提供し、食品の準備を支援。キッチンとダイニングエリアの清潔さを確保し、健康基準を満たす。",
+               "skills": [
+                  "食品サービス",
+                  "キッチン運営",
+                  "健康基準"
+               ],
+               "icon": "🍽️",
+               "isCurrent": false
+            },
+            {
+               "id": 4,
+               "period": "2022年4月 - 2022年6月",
+               "title": "調理師",
+               "company": "KFC",
+               "description": "会社の基準に従って食品を準備。十分な在庫レベルを確保するため在庫を監視。",
+               "skills": [
+                  "食品調理",
+                  "在庫管理",
+                  "品質管理"
+               ],
+               "icon": "🍗",
+               "isCurrent": false
+            }
+         ],
+         "education": [
+            {
+               "id": 1,
+               "period": "2020年 - 2026年",
+               "title": "学士号",
+               "company": "シラパコーン大学",
+               "description": "電子・コンピュータシステム - コンピュータシステム、電子工学、ソフトウェア開発、システム設計の包括的な研究。卒業予定：2026年3月。",
+               "skills": [
+                  "電子工学",
+                  "コンピュータシステム",
+                  "ソフトウェア開発",
+                  "システム設計"
+               ],
+               "icon": "🎓",
+               "isCurrent": true
+            }
+         ]
+      },
+      "cta": {
+         "title": "つながって協力しましょう",
+         "description": "一緒に仕事をしたり、私のプロジェクトについて詳しく知りたいですか？ぜひご連絡ください！",
+         "contact": "お問い合わせ",
+         "projects": "プロジェクトを見る"
+      },
+      "experience": {
+         "title": "経験と教育の旅"
+      },
+      "contact": {
+         "title": "一緒に働く準備はできていますか？",
+         "description": "スキルを活用し、開発者として成長する機会を積極的に求めています。次のプロジェクトにどのように貢献できるかを話し合いましょう！",
+         "button": "お問い合わせ"
+      }
+   },
+   "portfolio": {
+      "title": "ポートフォリオ",
+      "projects": {
+         "calculator": {
+            "title": "電卓アプリ",
+            "description": "クリーンでミニマリストなインターフェースを特徴とする現代的な電卓アプリ",
+            "tech": "Python, Tkinter"
+         },
+         "assetManagement": {
+            "title": "資産管理",
+            "description": "リアルタイム追跡、ダッシュボード分析、包括的なレポート機能を備えたモバイル資産管理システム",
+            "tech": "Flutter, Node.js, Express, MySQL"
+         }
+      }
+   },
+   "contact": {
+      "title": "お問い合わせ",
+      "subtitle": "つながって機会について話し合いましょう",
+      "channels": {
+         "email": {
+            "title": "メール",
+            "action": "メッセージを送信"
+         },
+         "phone": {
+            "title": "電話",
+            "action": "今すぐ電話"
+         },
+         "facebook": {
+            "title": "Facebook",
+            "action": "プロフィールを見る"
+         },
+         "instagram": {
+            "title": "Instagram",
+            "action": "フォローする"
+         },
+         "linkedin": {
+            "title": "LinkedIn",
+            "action": "つながる"
+         },
+         "github": {
+            "title": "GitHub",
+            "action": "コードを見る"
+         }
+      }
+   },
+   "footer": {
+      "copyright": "© 2024 ルシダン・ナディー。全著作権所有。"
+   }
+}

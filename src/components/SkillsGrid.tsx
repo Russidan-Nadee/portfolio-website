@@ -2,6 +2,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import { useSearchParams } from 'next/navigation'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
 
@@ -27,12 +28,30 @@ const skills = [
 ]
 
 export default function SkillsGrid({ translations }: SkillsGridProps) {
+   const searchParams = useSearchParams()
+   const locale = searchParams.get('lang') || 'en'
+
    const skillsRef = useRef<HTMLDivElement>(null)
    const rowRefs = useRef<(HTMLDivElement | null)[]>([])
    const headerRef = useRef<HTMLDivElement>(null)
    const titleRef = useRef<HTMLHeadingElement>(null)
    const subtitleRef = useRef<HTMLParagraphElement>(null)
    const learningRef = useRef<HTMLParagraphElement>(null)
+
+   // Helper function to get translations based on locale
+   const getTranslations = (locale: string) => {
+      switch (locale) {
+         case 'th':
+            return require('../../locales/th.json')
+         case 'ja':
+            return require('../../locales/ja.json')
+         default:
+            return require('../../locales/en.json')
+      }
+   }
+
+   // Load translations with fallback
+   const currentTranslations = translations || getTranslations(locale)
 
    const skillRows = []
    for (let i = 0; i < skills.length; i += 3) {
@@ -41,6 +60,9 @@ export default function SkillsGrid({ translations }: SkillsGridProps) {
 
    useEffect(() => {
       if (!skillsRef.current) return
+
+      // Clear previous animations
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill())
 
       // Header Animation
       if (headerRef.current && titleRef.current && subtitleRef.current) {
@@ -150,7 +172,19 @@ export default function SkillsGrid({ translations }: SkillsGridProps) {
       return () => {
          ScrollTrigger.getAll().forEach(trigger => trigger.kill())
       }
-   }, [])
+   }, [locale]) // Re-run when locale changes
+
+   // Get localized button text
+   const getLearnMoreText = (locale: string) => {
+      switch (locale) {
+         case 'th':
+            return 'เรียนรู้เพิ่มเติม'
+         case 'ja':
+            return 'もっと学ぶ'
+         default:
+            return 'Learn More'
+      }
+   }
 
    return (
       <section
@@ -165,14 +199,14 @@ export default function SkillsGrid({ translations }: SkillsGridProps) {
                   className="text-4xl md:text-5xl font-bold mb-4"
                   style={{ color: 'var(--foreground)' }}
                >
-                  {translations.about.skills.title}
+                  {currentTranslations?.about?.skills?.title || 'Technical Skills & Expertise'}
                </h2>
                <p
                   ref={subtitleRef}
                   className="text-lg opacity-70"
                   style={{ color: 'var(--muted-foreground)' }}
                >
-                  {translations.about.skills.subtitle}
+                  {currentTranslations?.about?.skills?.subtitle || 'Technologies and tools I work with'}
                </p>
             </div>
 
@@ -235,7 +269,7 @@ export default function SkillsGrid({ translations }: SkillsGridProps) {
                                        color: 'var(--muted-foreground)'
                                     }}
                                  >
-                                    Learn More
+                                    {getLearnMoreText(locale)}
                                  </div>
                               </div>
                            </div>
@@ -251,7 +285,7 @@ export default function SkillsGrid({ translations }: SkillsGridProps) {
                   className="text-lg opacity-70"
                   style={{ color: 'var(--muted-foreground)' }}
                >
-                  {translations.about.skills.learning}
+                  {currentTranslations?.about?.skills?.learning || 'Currently expanding my knowledge in Docker and C# .NET for advanced system development'}
                </p>
             </div>
          </div>
