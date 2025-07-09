@@ -66,3 +66,29 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--foreground);
 }
+
+/* Force Header and Navigation to be on top always */
+header {
+  z-index: 9999 !important;
+}
+
+/* Force Language Switcher to be on top */
+header nav div:last-child {
+  z-index: 9999 !important;
+}
+
+/* Force all dropdown menus to be on top */
+header [role="menu"],
+header .absolute,
+header .fixed {
+  z-index: 9999 !important;
+}
+
+/* Ensure language switcher dropdown is always clickable */
+.language-switcher,
+.language-switcher *,
+.language-switcher button,
+.language-switcher div {
+  z-index: 9999 !important;
+  pointer-events: auto !important;
+}
