@@ -282,31 +282,33 @@ export default function PersonalIntro({ translations }: PersonalIntroProps) {
                         }}
                      />
 
-                     <div className="w-full h-full flex items-center justify-center relative z-10">
-                        <div className="text-center">
-                           {/* Enhanced Profile Icon */}
-                           <div
-                              className="w-24 h-24 rounded-full mx-auto mb-4 relative transition-all duration-500 group-hover:scale-110"
-                              style={{ backgroundColor: 'var(--muted-foreground)' }}
-                           >
-                              {/* Rotating Ring */}
-                              <div
-                                 className="absolute inset-0 rounded-full border-2 border-transparent transition-all duration-1000"
-                                 style={{
-                                    borderTopColor: 'var(--foreground)',
-                                    borderRightColor: 'var(--foreground)',
-                                    animation: isVisible ? 'spin 4s linear infinite' : 'none',
-                                    opacity: 0.3
-                                 }}
-                              />
-                           </div>
-                           <p
-                              className="text-sm opacity-50 transition-opacity duration-300 group-hover:opacity-70"
-                              style={{ color: 'var(--muted-foreground)' }}
-                           >
-                              Profile Photo
-                           </p>
-                        </div>
+                     {/* Profile Image */}
+                     <div className="w-full h-full relative z-10">
+                        <img
+                           src="/images/about/profile-main.jpg"
+                           alt="Russidan Nadee Profile"
+                           className="w-full h-full object-cover transition-all duration-500 group-hover:scale-110"
+                           onError={(e) => {
+                              // Fallback to placeholder if image fails to load
+                              const target = e.target as HTMLImageElement
+                              target.style.display = 'none'
+                              if (target.parentElement) {
+                                 target.parentElement.innerHTML = `
+                                    <div class="w-full h-full flex items-center justify-center">
+                                       <div class="text-center">
+                                          <div class="w-24 h-24 rounded-full mx-auto mb-4 relative transition-all duration-500 group-hover:scale-110" style="background-color: var(--muted-foreground)">
+                                             <div class="absolute inset-0 rounded-full border-2 border-transparent transition-all duration-1000" style="border-top-color: var(--foreground); border-right-color: var(--foreground); animation: ${isVisible ? 'spin 4s linear infinite' : 'none'}; opacity: 0.3"></div>
+                                          </div>
+                                          <p class="text-sm opacity-50 transition-opacity duration-300 group-hover:opacity-70" style="color: var(--muted-foreground)">Profile Photo</p>
+                                       </div>
+                                    </div>
+                                 `
+                              }
+                           }}
+                        />
+
+                        {/* Hover Overlay Effect */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                      </div>
                   </div>
 
@@ -341,7 +343,7 @@ export default function PersonalIntro({ translations }: PersonalIntroProps) {
             </div>
          </div>
 
-         {/* Simplified CSS Animations */}
+         {/* Enhanced CSS Animations */}
          <style jsx>{`
             @keyframes gradientShift {
                0%, 100% { transform: translateX(-100%); }
