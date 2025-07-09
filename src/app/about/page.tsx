@@ -2,16 +2,68 @@
 'use client'
 
 import { useSearchParams } from 'next/navigation'
+import { useEffect, useRef } from 'react'
+import gsap from 'gsap'
+import ScrollTrigger from 'gsap/ScrollTrigger'
 import PersonalIntro from '../../components/PersonalIntro'
 import SkillsGrid from '../../components/SkillsGrid'
 import Timeline from '../../components/Timeline'
+
+gsap.registerPlugin(ScrollTrigger)
 
 export default function About() {
    const searchParams = useSearchParams()
    const locale = searchParams.get('lang') || 'en'
 
+   const titleRef = useRef<HTMLHeadingElement>(null)
+   const descriptionRef = useRef<HTMLParagraphElement>(null)
+
    // Load translations based on current locale
    const translations = locale === 'th' ? require('../../../locales/th.json') : require('../../../locales/en.json')
+
+   useEffect(() => {
+      // Title animation
+      if (titleRef.current) {
+         gsap.fromTo(
+            titleRef.current,
+            { opacity: 0, y: 30 },
+            {
+               opacity: 1,
+               y: 0,
+               duration: 0.8,
+               ease: 'power2.out',
+               scrollTrigger: {
+                  trigger: titleRef.current,
+                  start: 'top 80%',
+                  toggleActions: 'play none none none',
+               },
+            }
+         )
+      }
+
+      // Description animation
+      if (descriptionRef.current) {
+         gsap.fromTo(
+            descriptionRef.current,
+            { opacity: 0, y: 20 },
+            {
+               opacity: 1,
+               y: 0,
+               duration: 0.6,
+               ease: 'power2.out',
+               scrollTrigger: {
+                  trigger: descriptionRef.current,
+                  start: 'top 80%',
+                  toggleActions: 'play none none none',
+               },
+            }
+         )
+      }
+
+      return () => {
+         ScrollTrigger.getAll().forEach(trigger => trigger.kill())
+      }
+   }, [])
 
    return (
       <div className="min-h-screen" style={{ backgroundColor: 'var(--background)' }}>
@@ -39,12 +91,14 @@ export default function About() {
          >
             <div className="max-w-6xl mx-auto px-8 text-center">
                <h2
+                  ref={titleRef}
                   className="text-3xl font-bold mb-4"
                   style={{ color: 'var(--foreground)' }}
                >
                   {translations.about.cta.title}
                </h2>
                <p
+                  ref={descriptionRef}
                   className="text-xl mb-8 opacity-80"
                   style={{ color: 'var(--muted-foreground)' }}
                >

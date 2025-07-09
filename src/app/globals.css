@@ -13,19 +13,13 @@
 
 [data-theme="dark"] {
   --background: #1a1a1a;
-  /* เทาเข้มอุ่น */
   --foreground: #e8e8e8;
-  /* เทาอ่อนอุ่น */
   --card: #2d2d2d;
-  /* เทาเข้มกว่า background นิดหน่อย */
   --card-foreground: #f0f0f0;
-  /* เทาอ่อนมาก */
   --border: #404040;
-  /* เทากลางอุ่น */
   --muted: #262626;
-  /* เทาเข้มนุ่ม */
   --muted-foreground: #a0a0a0;
-  /* เทากลางอ่อน */
+
 }
 
 @theme inline {
