@@ -33,7 +33,7 @@ export default function CreativeHero() {
       }, 300)
 
       return () => clearTimeout(timer)
-   }, [])
+   }, [locale]) // Add locale dependency
 
    // Mouse tracking for parallax effect
    useEffect(() => {
@@ -247,7 +247,7 @@ export default function CreativeHero() {
                               color: 'var(--foreground)'
                            }}
                         >
-                           webdesigner
+                           {translations.home.title}
                         </h1>
                      </div>
 
@@ -266,7 +266,7 @@ export default function CreativeHero() {
                                  filter: 'drop-shadow(0 0 8px rgba(0,0,0,0.3))'
                               } as React.CSSProperties}
                            >
-                              & Photographer
+                              {translations.home.subtitle}
                            </h2>
                         </div>
 
@@ -325,7 +325,7 @@ export default function CreativeHero() {
                                        }}
                                     >
                                        <span className="relative z-10 whitespace-nowrap">
-                                          You need a designer
+                                          {translations.home.buttons.portfolio}
                                        </span>
                                     </Link>
 
@@ -339,7 +339,7 @@ export default function CreativeHero() {
                                        }}
                                     >
                                        <span className="relative z-10 whitespace-nowrap">
-                                          You need a photographer
+                                          {translations.home.buttons.contact}
                                        </span>
                                     </Link>
                                  </div>
