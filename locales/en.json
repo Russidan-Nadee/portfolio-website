@@ -16,6 +16,23 @@
       "buttons": {
          "portfolio": "Projects",
          "contact": "Contact"
+      },
+      "projectsShowcase": {
+         "title": "Recommended Projects",
+         "projects": {
+            "assetManagement": {
+               "title": "Asset Management",
+               "tech": "Flutter, Node.js, Express, MySQL"
+            },
+            "calculator": {
+               "title": "Calculator App",
+               "tech": "Python, Tkinter"
+            },
+            "portfolio": {
+               "title": "Portfolio Website",
+               "tech": "Next.js, TypeScript, Tailwind CSS"
+            }
+         }
       }
    },
    "about": {

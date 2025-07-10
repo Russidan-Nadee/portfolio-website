@@ -16,6 +16,23 @@
       "buttons": {
          "portfolio": "ポートフォリオ",
          "contact": "お問い合わせ"
+      },
+      "projectsShowcase": {
+         "title": "おすすめプロジェクト",
+         "projects": {
+            "assetManagement": {
+               "title": "資産管理システム",
+               "tech": "Flutter, Node.js, Express, MySQL"
+            },
+            "calculator": {
+               "title": "電卓アプリ",
+               "tech": "Python, Tkinter"
+            },
+            "portfolio": {
+               "title": "ポートフォリオウェブサイト",
+               "tech": "Next.js, TypeScript, Tailwind CSS"
+            }
+         }
       }
    },
    "about": {

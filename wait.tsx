@@ -36,24 +36,24 @@ export default function ProjectsShowcase({ translations }: ProjectsShowcaseProps
    const projects: Project[] = [
       {
          id: 'asset-management',
-         title: translations?.home?.projectsShowcase?.projects?.assetManagement?.title || 'Asset Management',
-         tech: translations?.home?.projectsShowcase?.projects?.assetManagement?.tech || 'Flutter, Node.js, Express, MySQL',
+         title: 'Asset Management',
+         tech: 'Flutter, Node.js, Express, MySQL',
          filter: 'grayscale(100%) contrast(1.2)',
          isCenter: false,
          image: '/images/asset-management-hero.jpg'
       },
       {
          id: 'calculator-app',
-         title: translations?.home?.projectsShowcase?.projects?.calculator?.title || 'Calculator App',
-         tech: translations?.home?.projectsShowcase?.projects?.calculator?.tech || 'Python, Tkinter',
+         title: 'Calculator App',
+         tech: 'Python, Tkinter',
          filter: 'none',
          isCenter: true,
          image: '/images/calculator-hero.jpg'
       },
       {
          id: 'portfolio-website',
-         title: translations?.home?.projectsShowcase?.projects?.portfolio?.title || 'Portfolio Website',
-         tech: translations?.home?.projectsShowcase?.projects?.portfolio?.tech || 'Next.js, TypeScript, Tailwind CSS',
+         title: 'Portfolio Website',
+         tech: 'Next.js, TypeScript, Tailwind CSS',
          filter: 'grayscale(100%) contrast(1.2)',
          isCenter: false,
          image: '/images/portfolio-hero.jpg'
@@ -429,10 +429,10 @@ export default function ProjectsShowcase({ translations }: ProjectsShowcaseProps
                      className="showcase-title text-5xl md:text-6xl lg:text-7xl font-black leading-none"
                      style={{
                         color: 'var(--foreground)',
-                        fontFamily: 'var(--font-inter), "IBM Plex Sans Thai", "Noto Sans JP", system-ui, sans-serif'
+                        fontFamily: 'var(--font-geist-sans), system-ui, sans-serif'
                      }}
                   >
-                     {translations?.home?.projectsShowcase?.title || 'Recommended Projects'}
+                     Recommended Projects
                   </h2>
 
                   <div className="flex gap-4 md:hidden">

@@ -16,6 +16,23 @@
       "buttons": {
          "portfolio": "ดูผลงาน",
          "contact": "ติดต่อ"
+      },
+      "projectsShowcase": {
+         "title": "โปรเจคต์ที่แนะนำ",
+         "projects": {
+            "assetManagement": {
+               "title": "ระบบจัดการทรัพย์สิน",
+               "tech": "Flutter, Node.js, Express, MySQL"
+            },
+            "calculator": {
+               "title": "แอปเครื่องคิดเลข",
+               "tech": "Python, Tkinter"
+            },
+            "portfolio": {
+               "title": "เว็บไซต์พอร์ตโฟลิโอ",
+               "tech": "Next.js, TypeScript, Tailwind CSS"
+            }
+         }
       }
    },
    "about": {
