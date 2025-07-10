@@ -56,7 +56,7 @@ export default function Portfolio() {
                </p>
                <div className="w-full h-48 bg-gray-200 rounded mb-4 overflow-hidden">
                   <img
-                     src="/images/asset-management.png"
+                     src="/images/projects/asset-management.png"
                      alt={translations?.portfolio?.projects?.assetManagement?.title || 'Asset Management'}
                      className="w-full h-full object-cover"
                      onError={(e) => {
@@ -105,7 +105,7 @@ export default function Portfolio() {
                </p>
                <div className="w-full h-48 bg-gray-200 rounded mb-4 overflow-hidden">
                   <img
-                     src="/images/calculator-project.png"
+                     src="/images/projects/calculator-project.png"
                      alt={translations?.portfolio?.projects?.calculator?.title || 'Calculator Project'}
                      className="w-full h-full object-cover"
                      onError={(e) => {

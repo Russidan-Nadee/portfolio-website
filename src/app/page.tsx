@@ -3,6 +3,7 @@
 
 import { useSearchParams } from 'next/navigation'
 import CreativeHero from '../components/CreativeHero'
+import ProjectsShowcase from '../components/ProjectsShowcase'
 import th from '../../locales/th.json'
 import ja from '../../locales/ja.json'
 import en from '../../locales/en.json'
@@ -29,6 +30,7 @@ export default function Home() {
   return (
     <div className="min-h-screen" style={{ backgroundColor: 'var(--background)' }}>
       <CreativeHero translations={translations} />
+      <ProjectsShowcase translations={translations} />
     </div>
   )
 }
