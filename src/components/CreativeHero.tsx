@@ -5,6 +5,9 @@ import { useEffect, useRef, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
+import th from '../../locales/th.json'
+import ja from '../../locales/ja.json'
+import en from '../../locales/en.json'
 
 interface CreativeHeroProps {
    translations?: any
@@ -15,14 +18,16 @@ export default function CreativeHero({ translations: propTranslations }: Creativ
    const locale = searchParams.get('lang') || 'en'
 
    // Helper function to get translations based on locale
+
+
    const getTranslations = (locale: string) => {
       switch (locale) {
          case 'th':
-            return require('../../locales/th.json')
+            return th
          case 'ja':
-            return require('../../locales/ja.json')
+            return ja
          default:
-            return require('../../locales/en.json')
+            return en
       }
    }
 

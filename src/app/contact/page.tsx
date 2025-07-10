@@ -5,6 +5,9 @@ import { useSearchParams } from 'next/navigation'
 import { MdEmail, MdPhone, MdContentCopy } from 'react-icons/md'
 import { FaFacebook, FaInstagram, FaLinkedin, FaGithub } from 'react-icons/fa'
 import { useState, useEffect } from 'react'
+import th from '../../../locales/th.json'
+import ja from '../../../locales/ja.json'
+import en from '../../../locales/en.json'
 
 export default function Contact() {
    const searchParams = useSearchParams()
@@ -18,11 +21,11 @@ export default function Contact() {
    const getTranslations = (locale: string) => {
       switch (locale) {
          case 'th':
-            return require('../../../locales/th.json')
+            return th
          case 'ja':
-            return require('../../../locales/ja.json')
+            return ja
          default:
-            return require('../../../locales/en.json')
+            return en
       }
    }
 

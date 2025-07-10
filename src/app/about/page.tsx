@@ -8,6 +8,10 @@ import ScrollTrigger from 'gsap/ScrollTrigger'
 import PersonalIntro from '../../components/PersonalIntro'
 import SkillsGrid from '../../components/SkillsGrid'
 import Timeline from '../../components/Timeline'
+import th from '../../../locales/th.json'
+import ja from '../../../locales/ja.json'
+import en from '../../../locales/en.json'
+
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -22,11 +26,11 @@ export default function About() {
    const getTranslations = (locale: string) => {
       switch (locale) {
          case 'th':
-            return require('../../../locales/th.json')
+            return th
          case 'ja':
-            return require('../../../locales/ja.json')
+            return ja
          default:
-            return require('../../../locales/en.json')
+            return en
       }
    }
 

@@ -3,7 +3,9 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
-
+import th from '../../locales/th.json'
+import ja from '../../locales/ja.json'
+import en from '../../locales/en.json'
 interface TimelineProps {
    translations: any
 }
@@ -24,14 +26,15 @@ export default function Timeline({ translations }: TimelineProps) {
    const [headerAnimated, setHeaderAnimated] = useState(false)
 
    // Helper function to get translations based on locale
+
    const getTranslations = (locale: string) => {
       switch (locale) {
          case 'th':
-            return require('../../locales/th.json')
+            return th
          case 'ja':
-            return require('../../locales/ja.json')
+            return ja
          default:
-            return require('../../locales/en.json')
+            return en
       }
    }
 
