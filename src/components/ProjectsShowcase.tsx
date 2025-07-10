@@ -65,29 +65,53 @@ export default function ProjectsShowcase({ translations }: ProjectsShowcaseProps
    const totalProjects = projects.length
    const visibleCards = 3 // Show all 3 cards
 
-   // Function to get current display order (shows all 3 with cycling center)
-   const getCurrentProjects = (): Project[] => {
-      const result: Project[] = []
-
-      // Get all 3 projects but reorder based on currentIndex
-      for (let i = 0; i < visibleCards; i++) {
-         const index = (currentIndex + i) % totalProjects
-         result.push({
-            ...projects[index],
-            filter: i === 1 ? 'none' : 'grayscale(100%) contrast(1.2)', // Center card (index 1) always has color
-            isCenter: i === 1
-         })
+   // Create true infinite array (more cards for seamless loop)
+   const createInfiniteArray = () => {
+      const repeats = 4 // repeat 4 times for smoother infinite effect
+      const result = []
+      for (let r = 0; r < repeats; r++) {
+         for (let i = 0; i < totalProjects; i++) {
+            result.push({
+               ...projects[i],
+               originalIndex: i,
+               arrayIndex: r * totalProjects + i
+            })
+         }
       }
       return result
    }
 
-   // Navigation functions
+   const infiniteProjects = createInfiniteArray() // [0,1,2,0,1,2,0,1,2,0,1,2]
+   const [realIndex, setRealIndex] = useState(totalProjects) // Start from middle (index 3)
+
+   // Calculate transform position for true infinite scroll
+   const getTransformX = (): number => {
+      const cardWidth = 350 + 32 // card width + gap
+      const containerWidth = 1200
+      const centerOffset = (containerWidth - (3 * 350 + 2 * 32)) / 2
+      return centerOffset - (realIndex * cardWidth)
+   }
+
+   // Navigation functions for true infinite scroll (swapped directions)
    const goLeft = (): void => {
       if (isTransitioning) return
       setIsTransitioning(true)
       setSlideDirection('left')
-      // Move to next project (clockwise)
-      setCurrentIndex((prev) => (prev + 1) % totalProjects)
+
+      setRealIndex(prev => {
+         const next = prev - 1 // Changed: move left in array (was prev + 1)
+         // Reset position when approaching beginning
+         if (next <= 2) {
+            setTimeout(() => {
+               setRealIndex(totalProjects * 2) // Jump to second cycle without animation
+            }, 600)
+         }
+         return next
+      })
+
+      // Update currentIndex for dots indicator
+      setCurrentIndex(prev => (prev - 1 + totalProjects) % totalProjects) // Changed direction
+
       setTimeout(() => {
          setIsTransitioning(false)
       }, 600)
@@ -97,15 +121,27 @@ export default function ProjectsShowcase({ translations }: ProjectsShowcaseProps
       if (isTransitioning) return
       setIsTransitioning(true)
       setSlideDirection('right')
-      // Move to previous project (counter-clockwise)
-      setCurrentIndex((prev) => (prev - 1 + totalProjects) % totalProjects)
+
+      setRealIndex(prev => {
+         const next = prev + 1 // Changed: move right in array (was prev - 1)
+         // Reset position when approaching end
+         if (next >= infiniteProjects.length - 3) {
+            setTimeout(() => {
+               setRealIndex(totalProjects) // Jump back to middle without animation
+            }, 600)
+         }
+         return next
+      })
+
+      // Update currentIndex for dots indicator  
+      setCurrentIndex(prev => (prev + 1) % totalProjects) // Changed direction
+
       setTimeout(() => {
          setIsTransitioning(false)
       }, 600)
    }
 
-   // Get current projects in display order
-   const displayProjects = getCurrentProjects()
+   // No need for displayProjects anymore - using infiniteProjects directly
 
    useEffect(() => {
       setMounted(true)
@@ -196,22 +232,33 @@ export default function ProjectsShowcase({ translations }: ProjectsShowcaseProps
 
             .showcase-cards {
                animation: ${isVisible ? 'slideInScale 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s both' : 'none'};
-               display: grid;
-               grid-template-columns: repeat(3, 1fr);
-               gap: 2rem;
+               position: relative;
+               overflow: hidden;
+               width: 100%;
                max-width: 1200px;
                margin: 0 auto;
+               height: 500px; /* Fixed height to prevent layout shift */
+            }
+
+            .cards-container {
+               display: flex;
+               gap: 2rem;
+               transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+               height: 100%;
+               align-items: center;
             }
 
             .project-card {
                position: relative;
                overflow: hidden;
-               transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+               transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
                cursor: pointer;
                border-radius: 16px;
                aspect-ratio: 4/5;
                background: #2a2a2a;
-               width: 100%;
+               width: 350px;
+               height: 437px; /* Fixed height based on aspect ratio */
+               flex-shrink: 0;
             }
 
             .project-card:hover {
@@ -447,57 +494,70 @@ export default function ProjectsShowcase({ translations }: ProjectsShowcaseProps
                      </svg>
                   </button>
 
-                  {/* Projects Grid - 3 Cards */}
-                  <div
-                     ref={cardsRef}
-                     className="showcase-cards"
-                     key={currentIndex} // Force re-render when currentIndex changes
-                  >
-                     {displayProjects.map((project: Project, index: number) => (
-                        <div
-                           key={`${project.id}-${index}`}
-                           className="project-card"
-                           onClick={() => {
-                              window.location.href = '/portfolio'
-                           }}
-                        >
-                           {/* Background Image */}
-                           <img
-                              src={project.image}
-                              alt={project.title}
-                              style={{
-                                 filter: project.filter
-                              }}
-                           />
+                  {/* True Infinite Scroll Cards Container */}
+                  <div className="showcase-cards">
+                     <div
+                        ref={cardsRef}
+                        className="cards-container"
+                        style={{
+                           transform: `translateX(${getTransformX()}px)`,
+                           transition: isTransitioning ? 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)' : 'none'
+                        }}
+                     >
+                        {infiniteProjects.map((project, index) => {
+                           const centerIndex = realIndex + 1 // middle card of visible 3
+                           const isCenter = index === centerIndex
 
-                           {/* Overlay */}
-                           <div className="card-overlay" />
-
-                           {/* Content */}
-                           <div className="card-content">
-                              <h3
-                                 className="text-2xl md:text-3xl font-bold mb-3"
-                                 style={{ color: '#ffffff' }}
+                           return (
+                              <div
+                                 key={`${project.originalIndex}-${index}`}
+                                 className="project-card"
+                                 style={{
+                                    filter: isCenter ? 'none' : 'grayscale(100%) contrast(1.2)'
+                                 }}
+                                 onClick={() => {
+                                    window.location.href = '/portfolio'
+                                 }}
                               >
-                                 {project.title}
-                              </h3>
+                                 {/* Background Image */}
+                                 <img
+                                    src={project.image}
+                                    alt={project.title}
+                                    style={{
+                                       filter: 'inherit'
+                                    }}
+                                 />
 
-                              <p
-                                 className="text-sm md:text-base leading-relaxed mb-4 opacity-90"
-                                 style={{ color: '#e8e8e8' }}
-                              >
-                                 {project.description}
-                              </p>
+                                 {/* Overlay */}
+                                 <div className="card-overlay" />
 
-                              <p
-                                 className="text-xs md:text-sm font-medium opacity-70"
-                                 style={{ color: '#a0a0a0' }}
-                              >
-                                 {project.tech}
-                              </p>
-                           </div>
-                        </div>
-                     ))}
+                                 {/* Content */}
+                                 <div className="card-content">
+                                    <h3
+                                       className="text-2xl md:text-3xl font-bold mb-3"
+                                       style={{ color: '#ffffff' }}
+                                    >
+                                       {project.title}
+                                    </h3>
+
+                                    <p
+                                       className="text-sm md:text-base leading-relaxed mb-4 opacity-90"
+                                       style={{ color: '#e8e8e8' }}
+                                    >
+                                       {project.description}
+                                    </p>
+
+                                    <p
+                                       className="text-xs md:text-sm font-medium opacity-70"
+                                       style={{ color: '#a0a0a0' }}
+                                    >
+                                       {project.tech}
+                                    </p>
+                                 </div>
+                              </div>
+                           )
+                        })}
+                     </div>
                   </div>
 
                   {/* Indicator Dots */}
