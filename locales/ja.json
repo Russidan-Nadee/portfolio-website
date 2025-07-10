@@ -195,6 +195,20 @@
       }
    },
    "footer": {
-      "copyright": "© 2024 ルシダン・ナディー。全著作権所有。"
+      "copyright": "© 2024 ルシダン・ナディー。全著作権所有。",
+      "sections": {
+         "quickLinks": "クイックリンク",
+         "contact": "お問い合わせ",
+         "followMe": "フォローする",
+         "skills": "主なスキル",
+         "legal": "法的情報",
+         "language": "言語"
+      },
+      "location": "バンコク, タイ",
+      "builtWith": "Next.js & TypeScript で構築",
+      "legal": {
+         "privacyPolicy": "プライバシーポリシー",
+         "termsOfService": "利用規約"
+      }
    }
 }

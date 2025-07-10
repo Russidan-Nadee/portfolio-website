@@ -283,9 +283,9 @@ export default function CreativeHero({ translations: propTranslations }: Creativ
                               className="hero-subtitle text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black leading-none tracking-tight text-center outline-text-overlay"
                               style={{
                                  fontFamily: 'var(--font-inter), "IBM Plex Sans Thai", "Noto Sans JP", system-ui, sans-serif',
-                                 WebkitTextStroke: '2px var(--foreground)',
+                                 WebkitTextStroke: '1px var(--foreground)',
                                  WebkitTextFillColor: 'transparent',
-                                 filter: 'drop-shadow(0 0 8px rgba(0,0,0,0.3))'
+                                 filter: 'drop-shadow(0 0 8px rgba(0,0,0,0.1))'
                               } as React.CSSProperties}
                            >
                               {translations?.home?.subtitle || 'cross-platform application'}

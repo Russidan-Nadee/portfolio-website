@@ -195,6 +195,20 @@
       }
    },
    "footer": {
-      "copyright": "© 2024 Russidan Nadee. All rights reserved."
+      "copyright": "© 2024 Russidan Nadee. All rights reserved.",
+      "sections": {
+         "quickLinks": "Quick Links",
+         "contact": "Contact",
+         "followMe": "Follow Me",
+         "skills": "Core Skills",
+         "legal": "Legal",
+         "language": "Language"
+      },
+      "location": "Bangkok, Thailand",
+      "builtWith": "Built with Next.js & TypeScript",
+      "legal": {
+         "privacyPolicy": "Privacy Policy",
+         "termsOfService": "Terms of Service"
+      }
    }
 }

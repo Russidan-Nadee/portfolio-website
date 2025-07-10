@@ -191,6 +191,20 @@
       }
    },
    "footer": {
-      "copyright": "© 2024 รุสซีดาน นาดี สงวนลิขสิทธิ์"
+      "copyright": "© 2024 รุสซีดาน นาดี สงวนลิขสิทธิ์",
+      "sections": {
+         "quickLinks": "ลิงก์ด่วน",
+         "contact": "ติดต่อ",
+         "followMe": "ติดตามผม",
+         "skills": "ทักษะหลัก",
+         "legal": "กฎหมาย",
+         "language": "ภาษา"
+      },
+      "location": "กรุงเทพมหานคร, ประเทศไทย",
+      "builtWith": "สร้างด้วย Next.js & TypeScript",
+      "legal": {
+         "privacyPolicy": "นโยบายความเป็นส่วนตัว",
+         "termsOfService": "เงื่อนไขการใช้งาน"
+      }
    }
 }
