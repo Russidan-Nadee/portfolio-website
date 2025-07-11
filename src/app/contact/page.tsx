@@ -83,7 +83,7 @@ export default function Contact() {
          action: translations?.contact?.channels?.email?.action || 'Send Message',
          href: 'mailto:russidan.nadee@gmail.com',
          iconColor: '#ef4444',
-         gradient: 'from-red-500/20 via-red-400/10 to-transparent',
+         gradient: '',
          onClick: () => {
             const email = 'russidan.nadee@gmail.com'
             const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(email)}`
@@ -98,7 +98,7 @@ export default function Contact() {
          action: translations?.contact?.channels?.github?.action || 'View Code',
          href: 'https://github.com/Russidan-Nadee',
          iconColor: '#6b7280',
-         gradient: 'from-gray-500/20 via-gray-400/10 to-transparent',
+         gradient: '',
       },
       {
          id: 'linkedin',
@@ -108,7 +108,7 @@ export default function Contact() {
          action: translations?.contact?.channels?.linkedin?.action || 'Connect',
          href: 'https://www.linkedin.com/in/russidan-nadee-1734a2352/',
          iconColor: '#0ea5e9',
-         gradient: 'from-blue-500/20 via-blue-400/10 to-transparent',
+         gradient: '',
       },
       {
          id: 'phone',
@@ -118,7 +118,7 @@ export default function Contact() {
          action: translations?.contact?.channels?.phone?.action || 'Call Now',
          href: 'tel:+66931089420',
          iconColor: '#10b981',
-         gradient: 'from-green-500/20 via-green-400/10 to-transparent',
+         gradient: '',
          onClick: () => {
             window.location.href = 'tel:+66931089420'
             setTimeout(() => {
@@ -136,7 +136,7 @@ export default function Contact() {
          action: translations?.contact?.channels?.instagram?.action || 'Follow Me',
          href: 'https://www.instagram.com/firstl._/',
          iconColor: '#e91e63',
-         gradient: 'from-pink-500/20 via-pink-400/10 to-transparent',
+         gradient: '',
       },
       {
          id: 'facebook',
@@ -146,7 +146,7 @@ export default function Contact() {
          action: translations?.contact?.channels?.facebook?.action || 'Visit Profile',
          href: 'https://www.facebook.com/russidan.nadee.2025',
          iconColor: '#1877f2',
-         gradient: 'from-blue-600/20 via-blue-500/10 to-transparent',
+         gradient: '',
       }
    ]
 

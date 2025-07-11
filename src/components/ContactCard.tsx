@@ -1,7 +1,7 @@
 // src/components/ContactCard.tsx
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { MdContentCopy } from 'react-icons/md'
 import { IconType } from 'react-icons'
 
@@ -43,6 +43,32 @@ export default function ContactCard({
    const isLoading = loadingItem === id
    const isCopied = copiedItem === id
    const showCopyButton = id === 'email' || id === 'phone'
+   const [isDark, setIsDark] = useState(false)
+
+   // Monitor theme changes
+   useEffect(() => {
+      const checkTheme = () => {
+         const isDarkMode = document.documentElement.classList.contains('dark') ||
+            document.documentElement.getAttribute('data-theme') === 'dark' ||
+            document.body.classList.contains('dark')
+         setIsDark(isDarkMode)
+      }
+
+      checkTheme()
+
+      // Watch for theme changes
+      const observer = new MutationObserver(checkTheme)
+      observer.observe(document.documentElement, {
+         attributes: true,
+         attributeFilter: ['class', 'data-theme']
+      })
+      observer.observe(document.body, {
+         attributes: true,
+         attributeFilter: ['class']
+      })
+
+      return () => observer.disconnect()
+   }, [])
 
    const handleCardClick = () => {
       if (onClick) {
@@ -73,25 +99,18 @@ export default function ContactCard({
          style={{
             backgroundColor: 'var(--card)',
             borderColor: 'var(--border)',
-            transition: 'all 0.7s cubic-bezier(0.4, 0, 0.2, 1)'
-         }}
+            transition: 'all 0.7s cubic-bezier(0.4, 0, 0.2, 1)',
+            '--shine-color': isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)',
+            '--button-shine-color': isDark ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.25)'
+         } as React.CSSProperties}
          onClick={handleCardClick}
       >
-         {/* Animated background gradient */}
-         <div className={`absolute inset-0 bg-gradient-to-br ${gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}></div>
-
-         {/* Shine effect */}
-         <div className="shine-effect absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full opacity-0 group-hover:opacity-100 group-hover:translate-x-full transition-all duration-800 ease-out"></div>
-
-         {/* Pulse animation on hover */}
-         <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-transparent via-white/2 to-transparent opacity-0 group-hover:opacity-100 animate-pulse"></div>
+         {/* Shine effect - Theme responsive */}
+         <div className="shine-effect absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
          <div className="text-center space-y-4 relative z-10">
             {/* Enhanced icon with animations */}
             <div className="inline-flex p-4 rounded-full transition-all duration-500 group-hover:scale-110 group-hover:rotate-12 relative">
-               {/* Icon glow effect */}
-               <div className="absolute inset-0 rounded-full blur-lg opacity-0 group-hover:opacity-50 transition-opacity duration-500" style={{ backgroundColor: iconColor }}></div>
-
                {isLoading ? (
                   <div className="w-12 h-12 border-2 border-current border-t-transparent rounded-full animate-spin relative z-10" style={{ color: iconColor }}></div>
                ) : (
@@ -140,8 +159,8 @@ export default function ContactCard({
                }}
                disabled={isLoading}
             >
-               {/* Button shine effect */}
-               <div className="button-shine absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-600 ease-out"></div>
+               {/* Button shine effect - Theme responsive */}
+               <div className="button-shine absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
                <span className="relative z-10">
                   {isLoading ? getOpeningText(locale) : action}
@@ -170,40 +189,38 @@ export default function ContactCard({
           z-index: 1;
         }
 
+        /* Shine effect base styles */
+        .shine-effect {
+          transform: translateX(100%);
+          transition: transform 0.8s ease-out, opacity 0.3s ease-out;
+          background: linear-gradient(90deg, transparent, var(--shine-color, rgba(0,0,0,0.3)), transparent);
+        }
+
+        .button-shine {
+          transform: translateX(100%);
+          transition: transform 0.6s ease-out, opacity 0.3s ease-out;
+          background: linear-gradient(90deg, transparent, var(--button-shine-color, rgba(0,0,0,0.25)), transparent);
+        }
+
+        /* Hover animations */
         .contact-card:hover .shine-effect {
-          animation: shine 0.8s ease-out;
+          transform: translateX(-100%) !important;
+          opacity: 1 !important;
         }
 
-        .contact-card:hover .action-button:hover .button-shine {
-          animation: buttonShine 0.6s ease-out;
+        .contact-card:not(:hover) .shine-effect {
+          transform: translateX(100%) !important;
+          opacity: 0 !important;
         }
 
-        @keyframes shine {
-          0% {
-            transform: translateX(-100%);
-            opacity: 0;
-          }
-          50% {
-            opacity: 1;
-          }
-          100% {
-            transform: translateX(100%);
-            opacity: 0;
-          }
+        .action-button:hover .button-shine {
+          transform: translateX(-100%) !important;
+          opacity: 1 !important;
         }
 
-        @keyframes buttonShine {
-          0% {
-            transform: translateX(-100%);
-            opacity: 0;
-          }
-          50% {
-            opacity: 1;
-          }
-          100% {
-            transform: translateX(100%);
-            opacity: 0;
-          }
+        .action-button:not(:hover) .button-shine {
+          transform: translateX(100%) !important;
+          opacity: 0 !important;
         }
       `}</style>
       </div>
