@@ -1,7 +1,7 @@
 'use client'
 
 import { useSearchParams } from 'next/navigation'
-import { useState } from 'react'
+import { useState, useEffect } from 'react' // Make sure useEffect is imported
 import th from '../../../locales/th.json'
 import ja from '../../../locales/ja.json'
 import en from '../../../locales/en.json'
@@ -9,6 +9,8 @@ import en from '../../../locales/en.json'
 export default function Portfolio() {
    const searchParams = useSearchParams()
    const locale = searchParams.get('lang') || 'en'
+   const [mounted, setMounted] = useState(false)
+   const [visibleItems, setVisibleItems] = useState<Set<number>>(new Set())
 
    const getTranslations = (locale: string) => {
       switch (locale) {
@@ -62,20 +64,37 @@ export default function Portfolio() {
       { key: 'crossplatform', label: 'Cross-Platform' },
       { key: 'web', label: 'Web' },
       { key: 'desktop', label: 'Desktop' },
-      { key: 'mobile', label: 'Mobile' }
+      { key: 'mobile', 'label': 'Mobile' }
    ]
 
    const filteredProjects = projects.filter(project =>
       activeFilter === 'all' ? true : project.tags.includes(activeFilter)
    )
 
+   // Stagger animation for projects
+   useEffect(() => {
+      setMounted(true)
+
+      const timer = setTimeout(() => {
+         filteredProjects.forEach((_, index) => {
+            setTimeout(() => {
+               setVisibleItems(prev => new Set([...prev, index]))
+            }, index * 100); // Adjust delay as needed for desired stagger effect
+         });
+      }, 100); // Initial delay before staggering starts
+
+      return () => clearTimeout(timer);
+   }, [locale, activeFilter, filteredProjects]);
+
+   if (!mounted) return null;
+
    return (
       <div className="min-h-screen p-8" style={{ backgroundColor: 'var(--background)' }}>
          <div className="w-full max-w-6xl mx-auto">
 
-            {/* Headline + Subtitle */}
+            {/* Headline + Subtitle with fade-in-up animation */}
             <div
-               className="mb-12 animate-fade-up"
+               className="mb-12 animate-fade-in-up"
                style={{
                   minHeight: '40vh',
                   display: 'flex',
@@ -83,7 +102,9 @@ export default function Portfolio() {
                   alignItems: 'center',
                   justifyContent: 'center',
                   textAlign: 'center',
-                  color: 'var(--foreground)'
+                  color: 'var(--foreground)',
+                  animationDelay: '0.1s',
+                  animationFillMode: 'both'
                }}
             >
                <h1 className="text-5xl md:text-7xl font-extrabold mb-2">
@@ -115,12 +136,16 @@ export default function Portfolio() {
                ))}
             </div>
 
-            {/* Project grid */}
+            {/* Project grid with staggered animations */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-               {filteredProjects.map(project => (
-                  <div key={project.id} className="flex flex-col">
+               {filteredProjects.map((project, index) => (
+                  <div
+                     key={project.id}
+                     className={`flex flex-col ${visibleItems.has(index) ? 'animate-fade-in-up' : 'opacity-0'}`}
+                     style={{ animationDelay: `${0.1 + index * 0.05}s` }}
+                  >
                      <div
-                        className="border rounded-lg overflow-hidden hover:shadow-lg transition-shadow relative"
+                        className="border rounded-lg overflow-hidden hover:shadow-xl hover:scale-105 transition-all duration-500 ease-in-out relative" // Added ease-in-out
                         style={{
                            backgroundColor: 'var(--card)',
                            borderColor: 'var(--border)'
@@ -177,8 +202,50 @@ export default function Portfolio() {
                ))}
             </div>
 
+            {/* Global Styles */}
+            <style jsx global>{`
+              @keyframes fade-in-up {
+                from {
+                  opacity: 0;
+                  transform: translateY(20px);
+                }
+                to {
+                  opacity: 1;
+                  transform: translateY(0);
+                }
+              }
+
+              .animate-fade-in-up {
+                animation: fade-in-up 0.6s ease-out;
+                animation-fill-mode: both;
+              }
+
+              /* Smooth transitions for all interactive elements */
+              * {
+                transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+              }
+
+              /* Custom scrollbar for better UX */
+              ::-webkit-scrollbar {
+                width: 8px;
+              }
+
+              ::-webkit-scrollbar-track {
+                background: var(--muted);
+                border-radius: 4px;
+              }
+
+              ::-webkit-scrollbar-thumb {
+                background: var(--muted-foreground);
+                border-radius: 4px;
+                opacity: 0.5;
+              }
+
+              ::-webkit-scrollbar-thumb:hover {
+                opacity: 0.8;
+              }
+            `}</style>
          </div>
       </div>
    )
-
 }

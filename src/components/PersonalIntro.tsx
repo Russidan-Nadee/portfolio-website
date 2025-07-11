@@ -265,7 +265,7 @@ export default function PersonalIntro({ translations }: PersonalIntroProps) {
                         transition: 'transform 0.6s ease-out 0.5s'
                      }}
                   >
-                     {['Flutter', 'TypeScript', 'Node.js'].map((skill, index) => (
+                     {[''].map((skill, index) => (
                         <span
                            key={skill}
                            className="px-3 py-1 text-sm rounded-full transition-all duration-300 hover:opacity-100 whitespace-nowrap"
