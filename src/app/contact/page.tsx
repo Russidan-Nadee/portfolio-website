@@ -2,9 +2,12 @@
 'use client'
 
 import { useSearchParams } from 'next/navigation'
-import { MdEmail, MdPhone, MdContentCopy } from 'react-icons/md'
+import { MdEmail, MdPhone } from 'react-icons/md'
 import { FaFacebook, FaInstagram, FaLinkedin, FaGithub } from 'react-icons/fa'
 import { useState, useEffect } from 'react'
+import ContactCard from '@/components/ContactCard'
+import ToastNotification from '@/components/ToastNotification'
+import AnimatedBackground from '@/components/AnimatedBackground'
 import th from '../../../locales/th.json'
 import ja from '../../../locales/ja.json'
 import en from '../../../locales/en.json'
@@ -69,7 +72,7 @@ export default function Contact() {
       }, 300)
 
       return () => clearTimeout(timer)
-   }, [locale]) // Re-run when locale changes
+   }, [locale])
 
    const contactChannels = [
       {
@@ -79,8 +82,7 @@ export default function Contact() {
          info: 'russidan.nadee@gmail.com',
          action: translations?.contact?.channels?.email?.action || 'Send Message',
          href: 'mailto:russidan.nadee@gmail.com',
-         color: 'transparent',
-         iconColor: '#ef4444', // Gmail red
+         iconColor: '#ef4444',
          gradient: 'from-red-500/20 via-red-400/10 to-transparent',
          onClick: () => {
             const email = 'russidan.nadee@gmail.com'
@@ -95,8 +97,7 @@ export default function Contact() {
          info: 'Russidan-Nadee',
          action: translations?.contact?.channels?.github?.action || 'View Code',
          href: 'https://github.com/Russidan-Nadee',
-         color: 'transparent',
-         iconColor: '#6b7280', // GitHub gray
+         iconColor: '#6b7280',
          gradient: 'from-gray-500/20 via-gray-400/10 to-transparent',
       },
       {
@@ -106,8 +107,7 @@ export default function Contact() {
          info: 'Russidan Nadee',
          action: translations?.contact?.channels?.linkedin?.action || 'Connect',
          href: 'https://www.linkedin.com/in/russidan-nadee-1734a2352/',
-         color: 'transparent',
-         iconColor: '#0ea5e9', // LinkedIn blue
+         iconColor: '#0ea5e9',
          gradient: 'from-blue-500/20 via-blue-400/10 to-transparent',
       },
       {
@@ -117,8 +117,7 @@ export default function Contact() {
          info: '+66 93-108-9420',
          action: translations?.contact?.channels?.phone?.action || 'Call Now',
          href: 'tel:+66931089420',
-         color: 'transparent',
-         iconColor: '#10b981', // Phone green
+         iconColor: '#10b981',
          gradient: 'from-green-500/20 via-green-400/10 to-transparent',
          onClick: () => {
             window.location.href = 'tel:+66931089420'
@@ -136,8 +135,7 @@ export default function Contact() {
          info: '@firstl._',
          action: translations?.contact?.channels?.instagram?.action || 'Follow Me',
          href: 'https://www.instagram.com/firstl._/',
-         color: 'transparent',
-         iconColor: '#e91e63', // Instagram pink
+         iconColor: '#e91e63',
          gradient: 'from-pink-500/20 via-pink-400/10 to-transparent',
       },
       {
@@ -147,8 +145,7 @@ export default function Contact() {
          info: 'russidan.nadee.2025',
          action: translations?.contact?.channels?.facebook?.action || 'Visit Profile',
          href: 'https://www.facebook.com/russidan.nadee.2025',
-         color: 'transparent',
-         iconColor: '#1877f2',  // Facebook blue
+         iconColor: '#1877f2',
          gradient: 'from-blue-600/20 via-blue-500/10 to-transparent',
       }
    ]
@@ -164,10 +161,6 @@ export default function Contact() {
       try {
          if (channel.onClick) {
             channel.onClick()
-         } else if (channel.href.startsWith('mailto:') || channel.href.startsWith('tel:')) {
-            window.location.href = channel.href
-         } else {
-            window.open(channel.href, '_blank', 'noopener,noreferrer')
          }
       } catch (error) {
          console.error('Error opening channel:', error)
@@ -186,14 +179,8 @@ export default function Contact() {
 
    return (
       <div className="max-w-6xl mx-auto p-8 relative">
-         {/* Animated Background Elements */}
-         <div className="fixed inset-0 overflow-hidden pointer-events-none">
-            <div className="absolute -top-1/2 -left-1/2 w-full h-full opacity-30">
-               <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-full blur-3xl animate-pulse"></div>
-               <div className="absolute top-3/4 right-1/4 w-80 h-80 bg-gradient-to-r from-emerald-500/10 to-teal-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
-               <div className="absolute bottom-1/4 left-1/2 w-72 h-72 bg-gradient-to-r from-pink-500/10 to-rose-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '4s' }}></div>
-            </div>
-         </div>
+         {/* Animated Background */}
+         <AnimatedBackground />
 
          {/* Header with enhanced animations */}
          <div className="text-center mb-12 relative">
@@ -221,185 +208,74 @@ export default function Contact() {
 
          {/* Contact Grid with staggered animations */}
          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            {contactChannels.map((channel, index) => {
-               const IconComponent = channel.icon
-               const isLoading = loadingItem === channel.id
-               const isCopied = copiedItem === channel.id
-               const isVisible = visibleItems.has(index)
-
-               return (
-                  <div
-                     key={channel.id}
-                     className={`
-                        relative p-6 rounded-2xl backdrop-blur-sm transition-all duration-700 cursor-pointer
-                        hover:scale-105 hover:shadow-2xl hover:shadow-black/20
-                        border border-gray-700/50 bg-transparent
-                        group overflow-hidden
-                        transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}
-                     `}
-                     style={{
-                        backgroundColor: 'var(--card)',
-                        borderColor: 'var(--border)',
-                        transition: 'all 0.7s cubic-bezier(0.4, 0, 0.2, 1)'
-                     }}
-                     onClick={() => handleChannelClick(channel)}
-                  >
-                     {/* Animated background gradient */}
-                     <div className={`absolute inset-0 bg-gradient-to-br ${channel.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}></div>
-
-                     {/* Enhanced ripple effect */}
-                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
-
-                     {/* Pulse animation on hover */}
-                     <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-transparent via-white/2 to-transparent opacity-0 group-hover:opacity-100 animate-pulse"></div>
-
-                     <div className="text-center space-y-4 relative z-10">
-                        {/* Enhanced icon with animations */}
-                        <div className="inline-flex p-4 rounded-full transition-all duration-500 group-hover:scale-110 group-hover:rotate-12 relative">
-                           {/* Icon glow effect */}
-                           <div className="absolute inset-0 rounded-full blur-lg opacity-0 group-hover:opacity-50 transition-opacity duration-500" style={{ backgroundColor: channel.iconColor }}></div>
-
-                           {isLoading ? (
-                              <div className="w-12 h-12 border-2 border-current border-t-transparent rounded-full animate-spin relative z-10" style={{ color: channel.iconColor }}></div>
-                           ) : (
-                              <IconComponent
-                                 size={48}
-                                 className="relative z-10 transform group-hover:drop-shadow-lg transition-all duration-300"
-                                 style={{ color: channel.iconColor }}
-                              />
-                           )}
-                        </div>
-
-                        {/* Content with slide animations */}
-                        <div className="transform group-hover:translate-y-[-2px] transition-transform duration-300">
-                           <h3 className="font-semibold text-lg mb-1 group-hover:text-shadow-sm" style={{ color: 'var(--foreground)' }}>
-                              {channel.title}
-                           </h3>
-                           <div className="flex items-center justify-center gap-2 mb-2">
-                              <p className="text-sm transition-colors duration-300" style={{ color: 'var(--muted-foreground)' }}>
-                                 {channel.info}
-                              </p>
-                              {(channel.id === 'email' || channel.id === 'phone') && (
-                                 <button
-                                    onClick={(e) => {
-                                       e.stopPropagation()
-                                       handleCopy(channel.info, channel.id)
-                                    }}
-                                    className="p-1 hover:bg-gray-600/50 rounded transition-all duration-300 hover:scale-110 hover:rotate-12"
-                                 >
-                                    <MdContentCopy size={14} style={{ color: 'var(--muted-foreground)' }} />
-                                 </button>
-                              )}
-                           </div>
-                        </div>
-
-                        {/* Enhanced action button */}
-                        <button
-                           className={`
-                              w-full py-3 px-4 rounded-xl font-medium transition-all duration-500
-                              hover:opacity-80 border relative overflow-hidden
-                              ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}
-                              hover:shadow-lg hover:shadow-black/10
-                              transform hover:scale-105 active:scale-95
-                           `}
-                           style={{
-                              backgroundColor: 'var(--muted)',
-                              color: 'var(--foreground)',
-                              borderColor: 'var(--border)'
-                           }}
-                           disabled={isLoading}
-                        >
-                           {/* Button shine effect */}
-                           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
-
-                           <span className="relative z-10">
-                              {isLoading ? getOpeningText(locale) : channel.action}
-                           </span>
-                        </button>
-                     </div>
-                  </div>
-               )
-            })}
+            {contactChannels.map((channel, index) => (
+               <ContactCard
+                  key={channel.id}
+                  {...channel}
+                  isVisible={visibleItems.has(index)}
+                  onClick={() => handleChannelClick(channel)}
+                  onCopy={handleCopy}
+                  loadingItem={loadingItem}
+                  copiedItem={copiedItem}
+                  getOpeningText={getOpeningText}
+                  locale={locale}
+               />
+            ))}
          </div>
 
-         {/* Enhanced Toast Notification */}
-         {copiedItem && (
-            <div className="fixed bottom-6 right-6 px-6 py-3 rounded-lg shadow-lg border animate-slide-up z-50"
-               style={{
-                  backgroundColor: 'var(--card)',
-                  color: 'var(--card-foreground)',
-                  borderColor: 'var(--border)',
-                  animation: 'slideUp 0.3s ease-out'
-               }}>
-               <div className="flex items-center gap-2">
-                  <MdContentCopy size={16} className="animate-bounce" />
-                  <span>{getCopiedText(locale)}</span>
-               </div>
-            </div>
-         )}
+         {/* Toast Notification */}
+         <ToastNotification
+            message={getCopiedText(locale)}
+            isVisible={!!copiedItem}
+         />
 
-         {/* Custom CSS animations */}
-         <style jsx>{`
-            @keyframes fade-in-up {
-               from {
-                  opacity: 0;
-                  transform: translateY(20px);
-               }
-               to {
-                  opacity: 1;
-                  transform: translateY(0);
-               }
-            }
+         {/* Global Styles */}
+         <style jsx global>{`
+        @keyframes fade-in-up {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
 
-            @keyframes slideUp {
-               from {
-                  opacity: 0;
-                  transform: translateY(20px) scale(0.9);
-               }
-               to {
-                  opacity: 1;
-                  transform: translateY(0) scale(1);
-               }
-            }
+        .animate-fade-in-up {
+          animation: fade-in-up 0.6s ease-out;
+        }
 
-            .animate-fade-in-up {
-               animation: fade-in-up 0.6s ease-out;
-            }
+        /* Hover effects for better interactivity */
+        .group:hover .animate-pulse {
+          animation-duration: 1s;
+        }
 
-            .animate-slide-up {
-               animation: slideUp 0.3s ease-out;
-            }
+        /* Smooth transitions for all interactive elements */
+        * {
+          transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-            /* Hover effects for better interactivity */
-            .group:hover .animate-pulse {
-               animation-duration: 1s;
-            }
+        /* Custom scrollbar for better UX */
+        ::-webkit-scrollbar {
+          width: 8px;
+        }
 
-            /* Smooth transitions for all interactive elements */
-            * {
-               transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-            }
+        ::-webkit-scrollbar-track {
+          background: var(--muted);
+          border-radius: 4px;
+        }
 
-            /* Custom scrollbar for better UX */
-            ::-webkit-scrollbar {
-               width: 8px;
-            }
+        ::-webkit-scrollbar-thumb {
+          background: var(--muted-foreground);
+          border-radius: 4px;
+          opacity: 0.5;
+        }
 
-            ::-webkit-scrollbar-track {
-               background: var(--muted);
-               border-radius: 4px;
-            }
-
-            ::-webkit-scrollbar-thumb {
-               background: var(--muted-foreground);
-               border-radius: 4px;
-               opacity: 0.5;
-            }
-
-            ::-webkit-scrollbar-thumb:hover {
-               opacity: 0.8;
-            }
-         `}</style>
+        ::-webkit-scrollbar-thumb:hover {
+          opacity: 0.8;
+        }
+      `}</style>
       </div>
    )
 }
