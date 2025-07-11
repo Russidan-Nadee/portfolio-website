@@ -297,7 +297,7 @@ export default function PersonalIntro({ translations }: PersonalIntroProps) {
                <div className="relative group">
                   {/* Main Profile Container */}
                   <div
-                     className="w-80 h-96 md:w-96 md:h-[450px] rounded-2xl shadow-2xl overflow-hidden transition-all duration-500 hover:scale-105 relative"
+                     className="w-80 h-96 md:w-96 md:h-[450px] rounded-2xl shadow-2xl overflow-hidden transition-all duration-500 hover:scale-105 relative profile-shine"
                      style={{
                         backgroundColor: 'var(--muted)',
                         border: '2px solid var(--border)'
@@ -393,6 +393,34 @@ export default function PersonalIntro({ translations }: PersonalIntroProps) {
             @keyframes pulse {
                0%, 100% { opacity: 0.4; transform: translate(-50%, -50%) scale(1); }
                50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.5); }
+            }
+
+            @keyframes autoShine {
+               0% { left: -100%; }
+               50% { left: 100%; }
+               100% { left: 100%; }
+            }
+
+            .profile-shine {
+               position: relative;
+               overflow: hidden;
+            }
+
+            .profile-shine::before {
+               content: '';
+               position: absolute;
+               top: 0;
+               left: -100%;
+               width: 100%;
+               height: 100%;
+               background: linear-gradient(
+                  90deg,
+                  transparent,
+                  rgba(255, 255, 255, 0.3),
+                  transparent
+               );
+               animation: autoShine 4s ease-in-out infinite;
+               z-index: 20;
             }
          `}</style>
       </section>

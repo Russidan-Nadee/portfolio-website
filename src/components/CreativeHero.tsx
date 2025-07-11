@@ -262,7 +262,7 @@ export default function CreativeHero({ translations: propTranslations }: Creativ
 
                   <div className="relative flex flex-col items-center justify-center">
 
-                     <div className="relative z-30 mb-10">
+                     <div className="relative z-10 mb-10">
                         <h1
                            ref={titleRef}
                            className="hero-title text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black leading-none tracking-tight text-center"
@@ -277,7 +277,7 @@ export default function CreativeHero({ translations: propTranslations }: Creativ
 
                      <div className="relative flex flex-col items-center justify-center mb-14">
 
-                        <div className="relative z-10 mb-[-180px] md:mb-[-200px] lg:mb-[-240px] xl:mb-[-270px]">
+                        <div className="relative z-10 mb-[-135px] md:mb-[-145px] lg:mb-[-170px] xl:mb-[-195px]">
                            <h2
                               ref={subtitleRef}
                               className="hero-subtitle text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black leading-none tracking-tight text-center outline-text-overlay"
@@ -294,18 +294,18 @@ export default function CreativeHero({ translations: propTranslations }: Creativ
 
                         <div
                            ref={imageRef}
-                           className="hero-image relative z-20"
+                           className="hero-image relative z-40"
                         >
                            <div className="relative group">
                               <div
-                                 className="relative w-64 h-96 md:w-72 md:h-[420px] lg:w-80 lg:h-[480px] xl:w-96 xl:h-[540px] overflow-hidden"
+                                 className="relative w-47 h-72 md:w-52 md:h-[305px] lg:w-58 lg:h-[340px] xl:w-64 xl:h-[385px] overflow-hidden"
                                  style={{
                                     transform: `translate(${mousePosition.x * 0.1}px, ${mousePosition.y * 0.1}px)`,
                                     transition: 'transform 0.3s ease-out'
                                  }}
                               >
                                  <Image
-                                    src="/profile-image.jpg"
+                                    src="/profile-main.png"
                                     alt={`${translations?.about?.name || 'Russidan Nadee'} - ${translations?.home?.title || 'Developer'}`}
                                     fill
                                     className="object-cover object-center transition-all duration-500 hover:scale-105"
@@ -314,7 +314,7 @@ export default function CreativeHero({ translations: propTranslations }: Creativ
                                        filter: 'grayscale(100%) contrast(1.2) brightness(1.05)'
                                     }}
                                     priority
-                                    sizes="(max-width: 768px) 256px, (max-width: 1024px) 320px, 384px"
+                                    sizes="(max-width: 768px) 188px, (max-width: 1024px) 232px, 256px"
                                  />
 
                                  <div
