@@ -64,7 +64,7 @@ export default function CreativeHero({ translations: propTranslations }: Creativ
             const rect = heroRef.current.getBoundingClientRect()
             const x = (e.clientX - rect.left - rect.width / 2) / rect.width
             const y = (e.clientY - rect.top - rect.height / 2) / rect.height
-            setMousePosition({ x: x * 15, y: y * 15 })
+            setMousePosition({ x: x * 18, y: y * 18 })
          }
       }
 
@@ -89,7 +89,7 @@ export default function CreativeHero({ translations: propTranslations }: Creativ
                 @keyframes fadeInUp {
                     from {
                         opacity: 0;
-                        transform: translateY(60px);
+                        transform: translateY(72px);
                     }
                     to {
                         opacity: 1;
@@ -100,7 +100,7 @@ export default function CreativeHero({ translations: propTranslations }: Creativ
                 @keyframes fadeInLeft {
                     from {
                         opacity: 0;
-                        transform: translateX(-80px);
+                        transform: translateX(-96px);
                     }
                     to {
                         opacity: 1;
@@ -132,7 +132,7 @@ export default function CreativeHero({ translations: propTranslations }: Creativ
 
                 @keyframes float {
                     0%, 100% { transform: translateY(0px); }
-                    50% { transform: translateY(-10px); }
+                    50% { transform: translateY(-12px); }
                 }
 
                 @keyframes gradientShift {
@@ -174,9 +174,9 @@ export default function CreativeHero({ translations: propTranslations }: Creativ
                 }
 
                 .outline-text {
-                    -webkit-text-stroke: 2px var(--foreground);
+                    -webkit-text-stroke: 2.4px var(--foreground);
                     -webkit-text-fill-color: transparent;
-                    text-stroke: 2px var(--foreground);
+                    text-stroke: 2.4px var(--foreground);
                     text-fill-color: transparent;
                 }
 
@@ -191,8 +191,8 @@ export default function CreativeHero({ translations: propTranslations }: Creativ
                 }
 
                 .glass-effect {
-                    backdrop-filter: blur(10px);
-                    -webkit-backdrop-filter: blur(10px);
+                    backdrop-filter: blur(12px);
+                    -webkit-backdrop-filter: blur(12px);
                     background: rgba(255, 255, 255, 0.1);
                     border: 1px solid rgba(255, 255, 255, 0.2);
                 }
@@ -230,62 +230,64 @@ export default function CreativeHero({ translations: propTranslations }: Creativ
          >
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
                <div
-                  className="absolute top-20 left-10 w-20 h-20 opacity-5 rounded-full floating-element"
+                  className="absolute top-20 left-10 w-24 h-24 opacity-5 rounded-full floating-element"
                   style={{
                      backgroundColor: 'var(--foreground)',
-                     transform: `translate(${mousePosition.x * 0.3}px, ${mousePosition.y * 0.3}px)`,
+                     transform: `translate(${mousePosition.x * 0.36}px, ${mousePosition.y * 0.36}px)`,
                      animationDelay: '0s'
                   }}
                />
                <div
-                  className="absolute bottom-32 right-20 w-16 h-16 opacity-5 floating-element"
+                  className="absolute bottom-32 right-20 w-20 h-20 opacity-5 floating-element"
                   style={{
                      backgroundColor: 'var(--foreground)',
                      clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)',
-                     transform: `translate(${mousePosition.x * -0.2}px, ${mousePosition.y * -0.2}px)`,
+                     transform: `translate(${mousePosition.x * -0.24}px, ${mousePosition.y * -0.24}px)`,
                      animationDelay: '1s'
                   }}
                />
                <div
-                  className="absolute top-1/2 right-1/4 w-12 h-12 opacity-5 floating-element"
+                  className="absolute top-1/2 right-1/4 w-15 h-15 opacity-5 floating-element"
                   style={{
                      backgroundColor: 'var(--foreground)',
                      clipPath: 'polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%)',
-                     transform: `translate(${mousePosition.x * 0.5}px, ${mousePosition.y * 0.5}px)`,
+                     transform: `translate(${mousePosition.x * 0.6}px, ${mousePosition.y * 0.6}px)`,
                      animationDelay: '2s'
                   }}
                />
             </div>
 
-            <div className="max-w-7xl w-full mx-auto px-8 relative z-10">
+            <div className="max-w-7xl w-full mx-auto px-10 relative z-10">
                <div className="relative min-h-[90vh] flex flex-col justify-center items-center">
 
                   <div className="relative flex flex-col items-center justify-center">
 
-                     <div className="relative z-10 mb-10">
+                     <div className="relative z-10 mb-12">
                         <h1
                            ref={titleRef}
-                           className="hero-title text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black leading-none tracking-tight text-center"
+                           className="hero-title text-7xl md:text-8xl lg:text-9xl xl:text-10xl font-black leading-none tracking-tight text-center"
                            style={{
                               fontFamily: 'var(--font-inter), "IBM Plex Sans Thai", "Noto Sans JP", system-ui, sans-serif',
-                              color: 'var(--foreground)'
+                              color: 'var(--foreground)',
+                              fontSize: 'clamp(4.5rem, 8vw, 12rem)'
                            }}
                         >
                            {translations?.home?.title || 'Developer'}
                         </h1>
                      </div>
 
-                     <div className="relative flex flex-col items-center justify-center mb-14">
+                     <div className="relative flex flex-col items-center justify-center mb-17">
 
-                        <div className="relative z-10 mb-[-135px] md:mb-[-145px] lg:mb-[-170px] xl:mb-[-195px]">
+                        <div className="relative z-10 mb-[-210px] md:mb-[-226px] lg:mb-[-265px] xl:mb-[-304px]">
                            <h2
                               ref={subtitleRef}
-                              className="hero-subtitle text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black leading-none tracking-tight text-center outline-text-overlay"
+                              className="hero-subtitle text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black leading-none tracking-tight text-center outline-text-overlay"
                               style={{
                                  fontFamily: 'var(--font-inter), "IBM Plex Sans Thai", "Noto Sans JP", system-ui, sans-serif',
-                                 WebkitTextStroke: '1px var(--foreground)',
+                                 WebkitTextStroke: '1.2px var(--foreground)',
                                  WebkitTextFillColor: 'transparent',
-                                 filter: 'drop-shadow(0 0 8px rgba(0,0,0,0.1))'
+                                 filter: 'drop-shadow(0 0 8px rgba(0,0,0,0.1))',
+                                 fontSize: 'clamp(2.25rem, 5vw, 7rem)'
                               } as React.CSSProperties}
                            >
                               {translations?.home?.subtitle || 'cross-platform application'}
@@ -298,9 +300,9 @@ export default function CreativeHero({ translations: propTranslations }: Creativ
                         >
                            <div className="relative group">
                               <div
-                                 className="relative w-47 h-72 md:w-52 md:h-[305px] lg:w-58 lg:h-[340px] xl:w-64 xl:h-[385px] overflow-hidden"
+                                 className="relative w-73 h-112 md:w-81 md:h-[476px] lg:w-91 lg:h-[530px] xl:w-100 xl:h-[601px] overflow-hidden"
                                  style={{
-                                    transform: `translate(${mousePosition.x * 0.1}px, ${mousePosition.y * 0.1}px)`,
+                                    transform: `translate(${mousePosition.x * 0.12}px, ${mousePosition.y * 0.12}px)`,
                                     transition: 'transform 0.3s ease-out'
                                  }}
                               >
@@ -314,11 +316,11 @@ export default function CreativeHero({ translations: propTranslations }: Creativ
                                        filter: 'grayscale(100%) contrast(1.2) brightness(1.05)'
                                     }}
                                     priority
-                                    sizes="(max-width: 768px) 188px, (max-width: 1024px) 232px, 256px"
+                                    sizes="(max-width: 768px) 292px, (max-width: 1024px) 364px, 400px"
                                  />
 
                                  <div
-                                    className="absolute inset-x-0 bottom-0 h-32 pointer-events-none"
+                                    className="absolute inset-x-0 bottom-0 h-49 pointer-events-none"
                                     style={{
                                        background: 'linear-gradient(to top, var(--background) 0%, transparent 100%)'
                                     }}
@@ -331,10 +333,10 @@ export default function CreativeHero({ translations: propTranslations }: Creativ
                                     }}
                                  />
 
-                                 <div ref={buttonsRef} className="hero-buttons absolute bottom-6 left-1/2 transform -translate-x-1/2 flex flex-col sm:flex-row gap-3 z-30">
+                                 <div ref={buttonsRef} className="hero-buttons absolute bottom-9 left-1/2 transform -translate-x-1/2 flex flex-col sm:flex-row gap-4 z-30">
                                     <Link
                                        href={getLocalizedLink('/portfolio')}
-                                       className="button-shine group inline-flex items-center justify-center px-5 py-2.5 lg:px-6 lg:py-3 text-xs lg:text-sm font-semibold rounded-md transition-all duration-300 hover:scale-105 hover:shadow-lg backdrop-blur-sm border border-opacity-50"
+                                       className="button-shine group inline-flex items-center justify-center px-6 py-3 lg:px-7 lg:py-4 text-sm lg:text-base font-semibold rounded-md transition-all duration-300 hover:scale-105 hover:shadow-lg backdrop-blur-sm border border-opacity-50"
                                        style={buttonStyle}
                                     >
                                        <span className="relative z-10 whitespace-nowrap">
@@ -344,7 +346,7 @@ export default function CreativeHero({ translations: propTranslations }: Creativ
 
                                     <Link
                                        href={getLocalizedLink('/contact')}
-                                       className="button-shine group inline-flex items-center justify-center px-5 py-2.5 lg:px-6 lg:py-3 text-xs lg:text-sm font-semibold rounded-md border border-opacity-50 transition-all duration-300 hover:scale-105 backdrop-blur-sm"
+                                       className="button-shine group inline-flex items-center justify-center px-6 py-3 lg:px-7 lg:py-4 text-sm lg:text-base font-semibold rounded-md border border-opacity-50 transition-all duration-300 hover:scale-105 backdrop-blur-sm"
                                        style={buttonStyle}
                                     >
                                        <span className="relative z-10 whitespace-nowrap">
@@ -357,16 +359,16 @@ export default function CreativeHero({ translations: propTranslations }: Creativ
                         </div>
                      </div>
 
-                     <div ref={textRef} className="hero-text relative z-30 text-center mb-8 max-w-xl">
+                     <div ref={textRef} className="hero-text relative z-30 text-center mb-10 max-w-2xl">
                         <p
-                           className="text-sm md:text-base lg:text-lg opacity-60 tracking-widest uppercase mb-4"
+                           className="text-base md:text-lg lg:text-xl opacity-60 tracking-widest uppercase mb-5"
                            style={{ color: 'var(--muted-foreground)' }}
                         >
                            {translations?.home?.location || 'based in Bangkok, Thailand.'}
                         </p>
 
                         <p
-                           className="text-lg md:text-xl lg:text-2xl opacity-80 tracking-wide"
+                           className="text-xl md:text-2xl lg:text-3xl opacity-80 tracking-wide"
                            style={{ color: 'var(--muted-foreground)' }}
                         >
                            {translations?.home?.intro || 'My name is Russidan and I am a Developer'}

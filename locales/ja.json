@@ -33,6 +33,15 @@
                "tech": "Next.js, TypeScript, Tailwind CSS"
             }
          }
+      },
+      "technologies": {
+         "title": "使用している技術",
+         "subtitle": "モダンなソリューションのためのモダンなツール"
+      },
+      "cta": {
+         "title": "一緒に素晴らしいものを作りましょう",
+         "subtitle": "情熱的な開発者をお探しですか？あなたの次のアイデアに参加する準備ができています。",
+         "button": "お問い合わせ"
       }
    },
    "about": {

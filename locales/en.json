@@ -14,8 +14,8 @@
       "subtitle": "cross-platform application",
       "location": "based in Bangkok, Thailand.",
       "buttons": {
-         "portfolio": "Projects",
-         "contact": "Contact"
+         "portfolio": "View Portfolio",
+         "contact": "Contact Me"
       },
       "projectsShowcase": {
          "title": "Recommended Projects",
@@ -33,6 +33,15 @@
                "tech": "Next.js, TypeScript, Tailwind CSS"
             }
          }
+      },
+      "technologies": {
+         "title": "Technologies I Work With",
+         "subtitle": "Modern tools for modern solutions"
+      },
+      "cta": {
+         "title": "Let’s build something great together.",
+         "subtitle": "Looking for a passionate developer? I'm ready to collaborate on your next idea.",
+         "button": "Contact Me"
       }
    },
    "about": {
