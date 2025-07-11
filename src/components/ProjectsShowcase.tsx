@@ -199,6 +199,17 @@ export default function ProjectsShowcase({ translations }: ProjectsShowcaseProps
       };
    }, []);
 
+   // ------- เพิ่ม useEffect นี้ เพื่อ auto-slide ทุก 3 วินาที ----------
+   useEffect(() => {
+      const autoSlide = setInterval(() => {
+         if (!isTransitioning) {
+            goRight();
+         }
+      }, 3000);
+      return () => clearInterval(autoSlide);
+   }, [goRight, isTransitioning]);
+   // ------------------------------------------------------------------
+
    if (!mounted) return null
 
    return (
