@@ -160,7 +160,11 @@ export default function Contact() {
 
       try {
          if (channel.onClick) {
+            // Use custom onClick function if provided
             channel.onClick()
+         } else if (channel.href) {
+            // Open URL in new tab for all other channels
+            window.open(channel.href, '_blank', 'noopener,noreferrer')
          }
       } catch (error) {
          console.error('Error opening channel:', error)

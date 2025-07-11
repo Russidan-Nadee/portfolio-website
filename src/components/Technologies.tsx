@@ -17,6 +17,8 @@ const technologies = [
    { name: 'GitHub', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg' },
    { name: 'CSS', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg' },
    { name: 'HTML', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg' },
+   { name: 'Python', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg' },
+   { name: 'prisma', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/prisma/prisma-original.svg' }
 ];
 
 // Duplicate the array to create a seamless loop
@@ -72,15 +74,15 @@ export default function Technologies({ translations }: TechnologiesProps) {
    return (
       <section className="py-12" style={{ backgroundColor: 'var(--background)', color: 'var(--foreground)' }}>
          <div className="max-w-6xl mx-auto px-4">
-            <h2 className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black mb-4 md:mb-6 leading-none tracking-tight text-center"
+            <h2 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black mb-4 md:mb-6 leading-none tracking-tight text-center whitespace-nowrap md:whitespace-normal"
                style={{
                   color: 'var(--foreground)',
                   fontFamily: 'var(--font-inter), "IBM Plex Sans Thai", "Noto Sans JP", system-ui, sans-serif',
-                  fontSize: 'clamp(3rem, 6vw, 8rem)'
+                  fontSize: 'clamp(2rem, 4vw, 5rem)'
                }}>
                {t.title}
             </h2>
-            <p className="text-lg md:text-xl lg:text-2xl xl:text-3xl mb-8 md:mb-12 text-center opacity-80 tracking-wide"
+            <p className="text-base md:text-lg lg:text-xl xl:text-2xl mb-8 md:mb-12 text-center opacity-80 tracking-wide"
                style={{
                   color: 'var(--muted-foreground)',
                   fontFamily: 'var(--font-inter), "IBM Plex Sans Thai", "Noto Sans JP", system-ui, sans-serif'
@@ -118,13 +120,6 @@ export default function Technologies({ translations }: TechnologiesProps) {
         .animate-scroll {
           display: inline-flex;
           animation: scroll 30s linear infinite;
-        }
-        @media (max-width: 640px) {
-          .animate-scroll {
-            animation: none;
-            flex-wrap: wrap;
-            justify-content: center;
-          }
         }
         .animate-scroll:hover {
           animation-play-state: paused;

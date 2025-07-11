@@ -96,15 +96,17 @@ export default function About() {
             <PersonalIntro translations={translations} />
          </div>
 
+         {/* Experience Timeline */}
+         <div className="max-w-6xl mx-auto px-8">
+            <Timeline translations={translations} />
+         </div>
+
          {/* Skills Section */}
          <div className="max-w-6xl mx-auto px-8">
             <SkillsGrid translations={translations} />
          </div>
 
-         {/* Experience Timeline */}
-         <div className="max-w-6xl mx-auto px-8">
-            <Timeline translations={translations} />
-         </div>
+
 
          {/* Contact CTA */}
          <div
