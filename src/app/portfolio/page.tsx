@@ -1,9 +1,25 @@
-// src/app/portfolio/page.tsx
 'use client'
 
+import { useSearchParams } from 'next/navigation'
 import { useState } from 'react'
+import th from '../../../locales/th.json'
+import ja from '../../../locales/ja.json'
+import en from '../../../locales/en.json'
 
 export default function Portfolio() {
+   const searchParams = useSearchParams()
+   const locale = searchParams.get('lang') || 'en'
+
+   const getTranslations = (locale: string) => {
+      switch (locale) {
+         case 'th': return th
+         case 'ja': return ja
+         default: return en
+      }
+   }
+
+   const translations = getTranslations(locale)
+
    const [activeFilter, setActiveFilter] = useState('all')
 
    const projects = [
@@ -13,7 +29,7 @@ export default function Portfolio() {
          image: '/images/projects/asset-dashboard.jpg',
          tech: 'Flutter, Express, Node.js, Prisma, MySQL',
          category: 'crossplatform',
-         tags: ['crossplatform', 'web', 'desktop', 'mobile'] // Cross-platform ติดทุกแท็ก
+         tags: ['crossplatform', 'web', 'desktop', 'mobile']
       },
       {
          id: 'portfolio',
@@ -25,7 +41,7 @@ export default function Portfolio() {
       },
       {
          id: 'assetManagement',
-         title: 'Asset Management Mobile App ',
+         title: 'Asset Management Mobile App',
          image: '/images/projects/asset-management-mobile.jpg',
          tech: 'Flutter, Node.js, Express, MySQL',
          category: 'mobile',
@@ -39,33 +55,48 @@ export default function Portfolio() {
          category: 'desktop',
          tags: ['desktop']
       },
-
-
    ]
 
    const filters = [
-      { key: 'all', label: 'All Projects', },
-      { key: 'crossplatform', label: 'Cross-Platform', },
-      { key: 'web', label: 'Web', },
-      { key: 'desktop', label: 'Desktop', },
-      { key: 'mobile', label: 'Mobile', }
+      { key: 'all', label: 'All Projects' },
+      { key: 'crossplatform', label: 'Cross-Platform' },
+      { key: 'web', label: 'Web' },
+      { key: 'desktop', label: 'Desktop' },
+      { key: 'mobile', label: 'Mobile' }
    ]
 
-   const filteredProjects = projects.filter(project => {
-      if (activeFilter === 'all') return true
-      return project.tags.includes(activeFilter)
-   })
+   const filteredProjects = projects.filter(project =>
+      activeFilter === 'all' ? true : project.tags.includes(activeFilter)
+   )
 
    return (
       <div className="min-h-screen p-8" style={{ backgroundColor: 'var(--background)' }}>
          <div className="w-full max-w-6xl mx-auto">
-            <h1 className="text-4xl font-bold text-center mb-8" style={{ color: 'var(--foreground)' }}>
-               Portfolio
-            </h1>
 
-            {/* Filter Buttons */}
+            {/* Headline + Subtitle */}
+            <div
+               className="mb-12 animate-fade-up"
+               style={{
+                  minHeight: '40vh',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  textAlign: 'center',
+                  color: 'var(--foreground)'
+               }}
+            >
+               <h1 className="text-5xl md:text-7xl font-extrabold mb-2">
+                  {translations?.portfolio?.title || 'Portfolio'}
+               </h1>
+               <p className="text-sm md:text-base text-muted-foreground">
+                  {translations?.portfolio?.subtitle || 'Explore my latest projects and technical achievements'}
+               </p>
+            </div>
+
+            {/* Filter buttons */}
             <div className="flex flex-wrap justify-center gap-4 mb-12">
-               {filters.map((filter) => (
+               {filters.map(filter => (
                   <button
                      key={filter.key}
                      onClick={() => setActiveFilter(filter.key)}
@@ -79,14 +110,14 @@ export default function Portfolio() {
                         borderColor: 'var(--border)'
                      }}
                   >
-
                      {filter.label}
                   </button>
                ))}
             </div>
 
+            {/* Project grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-               {filteredProjects.map((project) => (
+               {filteredProjects.map(project => (
                   <div key={project.id} className="flex flex-col">
                      <div
                         className="border rounded-lg overflow-hidden hover:shadow-lg transition-shadow relative"
@@ -104,17 +135,16 @@ export default function Portfolio() {
                               target.style.display = 'none'
                               if (target.parentElement) {
                                  target.parentElement.innerHTML = `
-                                    <div class="w-full h-60 flex items-center justify-center" style="background-color: var(--muted); color: var(--muted-foreground)">
-                                       <div class="text-center">
-                                          <div class="text-4xl mb-2">📱</div>
-                                          <p>${project.title}</p>
-                                       </div>
-                                    </div>
-                                 `
+                      <div class="w-full h-60 flex items-center justify-center" style="background-color: var(--muted); color: var(--muted-foreground)">
+                        <div class="text-center">
+                          <div class="text-4xl mb-2">📱</div>
+                          <p>${project.title}</p>
+                        </div>
+                      </div>
+                    `
                               }
                            }}
                         />
-
                         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6">
                            <h3 className="text-white text-2xl font-bold mb-2">
                               {project.title}
@@ -125,9 +155,9 @@ export default function Portfolio() {
                         </div>
                      </div>
 
-                     {/* Tags - Updated to use CSS variables */}
+                     {/* Tags */}
                      <div className="flex gap-2 mt-4">
-                        {project.tags.map((tag) => {
+                        {project.tags.map(tag => {
                            const tagInfo = filters.find(f => f.key === tag)
                            return tagInfo ? (
                               <div
@@ -146,7 +176,9 @@ export default function Portfolio() {
                   </div>
                ))}
             </div>
+
          </div>
       </div>
    )
+
 }
