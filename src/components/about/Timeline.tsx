@@ -3,9 +3,9 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
-import th from '../../locales/th.json'
-import ja from '../../locales/ja.json'
-import en from '../../locales/en.json'
+import th from '../../../locales/th.json'
+import ja from '../../../locales/ja.json'
+import en from '../../../locales/en.json'
 interface TimelineProps {
    translations: any
 }

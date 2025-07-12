@@ -7,9 +7,9 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { FaGithub, FaLinkedin } from 'react-icons/fa'
 import { MdEmail } from 'react-icons/md'
-import th from '../../locales/th.json'
-import ja from '../../locales/ja.json'
-import en from '../../locales/en.json'
+import th from '../../../locales/th.json'
+import ja from '../../../locales/ja.json'
+import en from '../../../locales/en.json'
 
 interface CreativeHeroProps {
    translations?: any

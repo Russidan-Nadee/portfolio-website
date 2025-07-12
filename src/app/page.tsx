@@ -2,9 +2,9 @@
 
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
-import CreativeHero from '../components/CreativeHero'
-import ProjectsShowcase from '../components/ProjectsShowcase'
-import Technologies from '../components/Technologies'
+import CreativeHero from '../components/home/CreativeHero'
+import ProjectsShowcase from '../components/home/ProjectsShowcase'
+import Technologies from '../components/home/Technologies'
 import th from '../../locales/th.json'
 import ja from '../../locales/ja.json'
 import en from '../../locales/en.json'

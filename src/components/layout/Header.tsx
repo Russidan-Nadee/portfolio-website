@@ -7,9 +7,9 @@ import { useState, useEffect } from 'react'
 import LanguageSwitcher from './LanguageSwitcher'
 import ThemeToggle from './ThemeToggle'
 import { useTheme } from './ThemeProvider'
-import th from '../../locales/th.json'
-import ja from '../../locales/ja.json'
-import en from '../../locales/en.json'
+import th from '../../../locales/th.json'
+import ja from '../../../locales/ja.json'
+import en from '../../../locales/en.json'
 
 export default function Header() {
    const searchParams = useSearchParams()

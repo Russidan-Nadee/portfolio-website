@@ -4,9 +4,9 @@
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { FaFacebook, FaInstagram, FaLinkedin, FaGithub } from 'react-icons/fa'
-import th from '../../locales/th.json'
-import ja from '../../locales/ja.json'
-import en from '../../locales/en.json'
+import th from '../../../locales/th.json'
+import ja from '../../../locales/ja.json'
+import en from '../../../locales/en.json'
 
 export default function Footer() {
    const searchParams = useSearchParams()
