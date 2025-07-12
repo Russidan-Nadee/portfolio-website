@@ -226,5 +226,97 @@
          "privacyPolicy": "Privacy Policy",
          "termsOfService": "Terms of Service"
       }
+   },
+   "legal": {
+      "privacyPolicy": {
+         "title": "Privacy Policy",
+         "lastUpdated": "Last updated: July 2025",
+         "sections": {
+            "dataCollection": {
+               "title": "Information We Collect",
+               "content": "This website does not collect any personal information from visitors:",
+               "items": [
+                  "No cookies or local storage used",
+                  "No tracking or analytics",
+                  "No forms or data submission",
+                  "No usage data collection"
+               ]
+            },
+            "thirdPartyServices": {
+               "title": "Third-Party Services",
+               "content": "This website uses the following external services:",
+               "items": [
+                  {
+                     "name": "Google Fonts",
+                     "description": "For web fonts (no personal data collected)"
+                  },
+                  {
+                     "name": "DevIcons CDN",
+                     "description": "For technology icons"
+                  },
+                  {
+                     "name": "Cloudflare CDN",
+                     "description": "For loading JavaScript libraries"
+                  }
+               ],
+               "note": "These services may have their own privacy policies"
+            },
+            "userRights": {
+               "title": "Your Rights",
+               "content": "Since we don't collect any personal data, there is no information for you to access, modify, or delete."
+            },
+            "contact": {
+               "title": "Contact",
+               "content": "If you have any questions about this policy, please contact:",
+               "email": "russidan.nadee@gmail.com"
+            }
+         }
+      },
+      "termsOfService": {
+         "title": "Terms of Service",
+         "lastUpdated": "Last updated: July 2025",
+         "sections": {
+            "agreement": {
+               "title": "Agreement to Terms",
+               "content": "By accessing this website, you agree to be bound by these Terms of Service. This website is a personal portfolio for showcasing work and contact information only."
+            },
+            "permittedUse": {
+               "title": "Permitted Use",
+               "content": "You may:",
+               "items": [
+                  "View and browse the website content",
+                  "Contact through provided channels",
+                  "Share the website link"
+               ]
+            },
+            "prohibitedUse": {
+               "title": "Prohibited Use",
+               "content": "You may not:",
+               "items": [
+                  "Copy content, images, or code without permission",
+                  "Use the website for illegal purposes",
+                  "Attempt to hack or damage the website",
+                  "Send spam or inappropriate content"
+               ]
+            },
+            "intellectualProperty": {
+               "title": "Intellectual Property",
+               "content": "All content, images, design, and code on this website are copyrighted by Russidan Nadee. Please request permission before using any materials."
+            },
+            "liability": {
+               "title": "Limitation of Liability",
+               "content": "This website is provided \"as is\". The website owner is not responsible for any damages that may arise from using this website. Information may change without notice."
+            },
+            "changes": {
+               "title": "Changes to Terms",
+               "content": "We reserve the right to modify these terms at any time. Changes will be effective immediately upon posting on the website."
+            },
+            "governingLaw": {
+               "title": "Governing Law",
+               "content": "These terms are governed by Thai law. Any disputes will be resolved under Thai jurisdiction.",
+               "contact": "Contact: russidan.nadee@gmail.com"
+            }
+         }
+      }
    }
 }

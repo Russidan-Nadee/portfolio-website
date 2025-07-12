@@ -1,4 +1,4 @@
-// src/components/Footer.tsx
+// src/components/layout/Footer.tsx - Updated Legal Section
 'use client'
 
 import { useSearchParams } from 'next/navigation'
@@ -178,7 +178,7 @@ export default function Footer() {
                   </div>
                </div>
 
-               {/* Legal & Copyright */}
+               {/* Legal & Copyright - UPDATED PATHS */}
                <div>
                   <h3
                      className="font-semibold text-lg mb-4"
@@ -188,14 +188,14 @@ export default function Footer() {
                   </h3>
                   <nav className="space-y-3">
                      <Link
-                        href={getLocalizedLink('/privacy-policy')}
+                        href={getLocalizedLink('/legal/privacy-policy')}
                         className="block hover:opacity-70 transition-opacity"
                         style={{ color: 'var(--muted-foreground)' }}
                      >
                         {translations?.footer?.legal?.privacyPolicy || 'Privacy Policy'}
                      </Link>
                      <Link
-                        href={getLocalizedLink('/terms-of-service')}
+                        href={getLocalizedLink('/legal/terms-of-service')}
                         className="block hover:opacity-70 transition-opacity"
                         style={{ color: 'var(--muted-foreground)' }}
                      >
