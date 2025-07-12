@@ -22,7 +22,7 @@
          "projects": {
             "assetManagement": {
                "title": "ระบบจัดการทรัพย์สิน",
-               "tech": "Flutter, Node.js, Express, MySQL"
+               "tech": "Flutter, Node.js, Express, Prisma, MySQL"
             },
             "calculator": {
                "title": "แอปเครื่องคิดเลข",
@@ -160,64 +160,20 @@
       "projects": {
          "assetManagement": {
             "title": "ระบบจัดการทรัพย์สิน",
-            "description": "ระบบจัดการทรัพย์สินข้ามแพลตฟอร์มพร้อมการรวม RFID มีฟีเจอร์การติดตามแบบเรียลไทม์ แดชบอร์ดวิเคราะห์ และการรายงานครบครัน",
-            "tech": "Flutter, Node.js, Express, MySQL",
-            "category": "แอปพลิเคชันมือถือและเว็บ",
-            "year": "2568",
-            "platforms": [
-               "mobile",
-               "crossPlatform",
-               "fullstack"
-            ]
+            "tech": "Flutter, Node.js, Express, MySQL"
          },
          "calculator": {
             "title": "แอปเครื่องคิดเลข",
-            "description": "แอปพลิเคชันเครื่องคิดเลขสมัยใหม่ที่มาพร้อมอินเทอร์เฟซที่สะอาดและเรียบง่าย พร้อมการคำนวณทางคณิตศาสตร์ขั้นสูง",
-            "tech": "Python, Tkinter",
-            "category": "แอปพลิเคชันเดสก์ท็อป",
-            "year": "2567",
-            "platforms": [
-               "desktop",
-               "frontend"
-            ]
+            "tech": "Python, Tkinter"
          },
          "portfolio": {
             "title": "เว็บไซต์พอร์ตโฟลิโอ",
-            "description": "เว็บไซต์พอร์ตโฟลิโอส่วนตัวที่แสดงทักษะ โปรเจคต์ และประสบการณ์ของผม พร้อมการออกแบบทันสมัยและรองรับหลายภาษา",
-            "tech": "Next.js, TypeScript, Tailwind CSS",
-            "category": "เว็บแอปพลิเคชัน",
-            "year": "2567",
-            "platforms": [
-               "web",
-               "frontend"
-            ]
+            "tech": "Next.js, TypeScript, Tailwind CSS"
          },
          "assetDashboard": {
-            "title": "แดชบอร์ดจัดการทรัพย์สิน",
-            "description": "แดชบอร์ดบนเว็บแบบครอบคลุมสำหรับการจัดการทรัพย์สิน พร้อมการแสดงภาพข้อมูล การรายงาน และฟีเจอร์การวิเคราะห์",
-            "tech": "React, Node.js, Chart.js, MySQL",
-            "category": "แดชบอร์ดเว็บ",
-            "year": "2568",
-            "platforms": [
-               "web",
-               "fullstack"
-            ]
+            "title": "แดชบอร์ดจัดการทรัพย์สินด้วย RFID",
+            "tech": "Flutter, Node.js, Express, Prisma, MySQL"
          }
-      },
-      "filters": {
-         "all": "โปรเจคทั้งหมด",
-         "mobile": "มือถือ",
-         "web": "เว็บ",
-         "desktop": "เดสก์ท็อป",
-         "crossPlatform": "ข้ามแพลตฟอร์ม",
-         "frontend": "ฟรอนต์เอนด์",
-         "backend": "แบ็กเอนด์",
-         "fullstack": "ฟูลสแต็ก"
-      },
-      "actions": {
-         "viewProject": "ดูโปรเจค",
-         "viewCode": "ดูโค้ด",
-         "liveDemo": "ดูตัวอย่างสด"
       }
    },
    "contact": {

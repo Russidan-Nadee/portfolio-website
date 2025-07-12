@@ -164,64 +164,20 @@
       "projects": {
          "assetManagement": {
             "title": "資産管理システム",
-            "description": "RFID統合を備えたクロスプラットフォーム資産管理システム。リアルタイム追跡、ダッシュボード分析、包括的レポート機能を提供",
-            "tech": "Flutter, Node.js, Express, MySQL",
-            "category": "モバイル・ウェブアプリケーション",
-            "year": "2025年",
-            "platforms": [
-               "mobile",
-               "crossPlatform",
-               "fullstack"
-            ]
+            "tech": "Flutter, Node.js, Express, MySQL"
          },
          "calculator": {
             "title": "電卓アプリ",
-            "description": "クリーンでミニマリストなインターフェースと高度な数学演算機能を備えた現代的な電卓アプリケーション",
-            "tech": "Python, Tkinter",
-            "category": "デスクトップアプリケーション",
-            "year": "2024年",
-            "platforms": [
-               "desktop",
-               "frontend"
-            ]
+            "tech": "Python, Tkinter"
          },
          "portfolio": {
             "title": "ポートフォリオウェブサイト",
-            "description": "スキル、プロジェクト、経験を紹介する個人ポートフォリオウェブサイト。モダンなデザインと多言語サポートを特徴とする",
-            "tech": "Next.js, TypeScript, Tailwind CSS",
-            "category": "ウェブアプリケーション",
-            "year": "2024年",
-            "platforms": [
-               "web",
-               "frontend"
-            ]
+            "tech": "Next.js, TypeScript, Tailwind CSS"
          },
          "assetDashboard": {
             "title": "資産管理ダッシュボード",
-            "description": "データ可視化、レポート作成、分析機能を備えた包括的なウェブベース資産管理ダッシュボード",
-            "tech": "React, Node.js, Chart.js, MySQL",
-            "category": "ウェブダッシュボード",
-            "year": "2025年",
-            "platforms": [
-               "web",
-               "fullstack"
-            ]
+            "tech": "Flutter, Node.js, Express, Prisma, MySQL"
          }
-      },
-      "filters": {
-         "all": "全てのプロジェクト",
-         "mobile": "モバイル",
-         "web": "ウェブ",
-         "desktop": "デスクトップ",
-         "crossPlatform": "クロスプラットフォーム",
-         "frontend": "フロントエンド",
-         "backend": "バックエンド",
-         "fullstack": "フルスタック"
-      },
-      "actions": {
-         "viewProject": "プロジェクトを見る",
-         "viewCode": "コードを見る",
-         "liveDemo": "ライブデモ"
       }
    },
    "contact": {

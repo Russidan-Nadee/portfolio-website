@@ -1,7 +1,9 @@
+// src/app/portfolio/page.tsx
 'use client'
 
 import { useSearchParams } from 'next/navigation'
-import { useState, useEffect } from 'react' // Make sure useEffect is imported
+import { useState, useEffect } from 'react'
+import Link from 'next/link'
 import th from '../../../locales/th.json'
 import ja from '../../../locales/ja.json'
 import en from '../../../locales/en.json'
@@ -24,38 +26,50 @@ export default function Portfolio() {
 
    const [activeFilter, setActiveFilter] = useState('all')
 
+   // Helper function to generate localized links
+   const getLocalizedLink = (path: string) => {
+      if (locale === 'en') {
+         return path
+      }
+      return `${path}?lang=${locale}`
+   }
+
    const projects = [
       {
          id: 'assetDashboard',
-         title: 'RFID Asset Management Dashboard',
+         title: translations?.portfolio?.projects?.assetDashboard?.title || 'RFID Asset Dashboard',
          image: '/images/projects/asset-dashboard.jpg',
-         tech: 'Flutter, Express, Node.js, Prisma, MySQL',
+         tech: translations?.portfolio?.projects?.assetDashboard?.tech || 'Flutter, Node.js, Express, MySQL',
          category: 'crossplatform',
-         tags: ['crossplatform', 'web', 'desktop', 'mobile']
+         tags: ['crossplatform', 'web', 'desktop', 'mobile'],
+         slug: 'asset-dashboard'
       },
       {
          id: 'portfolio',
-         title: 'Portfolio Website',
+         title: translations?.portfolio?.projects?.portfolio?.title || 'Portfolio Website',
          image: '/images/projects/portfolio-website.jpg',
-         tech: 'Next.js, TypeScript, Tailwind CSS',
+         tech: translations?.portfolio?.projects?.portfolio?.tech || 'Next.js, TypeScript, Tailwind CSS',
          category: 'web',
-         tags: ['web']
+         tags: ['web'],
+         slug: 'portfolio-website'
       },
       {
          id: 'assetManagement',
-         title: 'Asset Management Mobile App',
+         title: translations?.portfolio?.projects?.assetManagement?.title || 'Asset Management',
          image: '/images/projects/asset-management-mobile.jpg',
-         tech: 'Flutter, Node.js, Express, MySQL',
+         tech: translations?.portfolio?.projects?.assetManagement?.tech || 'Flutter, Node.js, Express, MySQL',
          category: 'mobile',
-         tags: ['mobile']
+         tags: ['mobile'],
+         slug: 'asset-management'
       },
       {
          id: 'calculator',
-         title: 'Calculator App',
+         title: translations?.portfolio?.projects?.calculator?.title || 'Calculator App',
          image: '/images/projects/calculator-app.jpg',
-         tech: 'Python, Tkinter',
+         tech: translations?.portfolio?.projects?.calculator?.tech || 'Python, Tkinter',
          category: 'desktop',
-         tags: ['desktop']
+         tags: ['desktop'],
+         slug: 'calculator'
       },
    ]
 
@@ -64,7 +78,7 @@ export default function Portfolio() {
       { key: 'crossplatform', label: 'Cross-Platform' },
       { key: 'web', label: 'Web' },
       { key: 'desktop', label: 'Desktop' },
-      { key: 'mobile', 'label': 'Mobile' }
+      { key: 'mobile', label: 'Mobile' }
    ]
 
    const filteredProjects = projects.filter(project =>
@@ -79,14 +93,14 @@ export default function Portfolio() {
          filteredProjects.forEach((_, index) => {
             setTimeout(() => {
                setVisibleItems(prev => new Set([...prev, index]))
-            }, index * 100); // Adjust delay as needed for desired stagger effect
-         });
-      }, 100); // Initial delay before staggering starts
+            }, index * 100)
+         })
+      }, 100)
 
-      return () => clearTimeout(timer);
-   }, [locale, activeFilter, filteredProjects]);
+      return () => clearTimeout(timer)
+   }, [locale, activeFilter, filteredProjects])
 
-   if (!mounted) return null;
+   if (!mounted) return null
 
    return (
       <div className="min-h-screen p-8" style={{ backgroundColor: 'var(--background)' }}>
@@ -144,41 +158,43 @@ export default function Portfolio() {
                      className={`flex flex-col ${visibleItems.has(index) ? 'animate-fade-in-up' : 'opacity-0'}`}
                      style={{ animationDelay: `${0.1 + index * 0.05}s` }}
                   >
-                     <div
-                        className="border rounded-lg overflow-hidden hover:shadow-xl hover:scale-105 transition-all duration-500 ease-in-out relative" // Added ease-in-out
-                        style={{
-                           backgroundColor: 'var(--card)',
-                           borderColor: 'var(--border)'
-                        }}
-                     >
-                        <img
-                           src={project.image}
-                           alt={project.title}
-                           className="w-full h-auto block"
-                           onError={(e) => {
-                              const target = e.target as HTMLImageElement
-                              target.style.display = 'none'
-                              if (target.parentElement) {
-                                 target.parentElement.innerHTML = `
-                      <div class="w-full h-60 flex items-center justify-center" style="background-color: var(--muted); color: var(--muted-foreground)">
-                        <div class="text-center">
-                          <div class="text-4xl mb-2">📱</div>
-                          <p>${project.title}</p>
-                        </div>
-                      </div>
-                    `
-                              }
+                     <Link href={getLocalizedLink(`/portfolio/${project.slug}`)}>
+                        <div
+                           className="border rounded-lg overflow-hidden hover:shadow-xl hover:scale-105 transition-all duration-500 ease-in-out relative cursor-pointer"
+                           style={{
+                              backgroundColor: 'var(--card)',
+                              borderColor: 'var(--border)'
                            }}
-                        />
-                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6">
-                           <h3 className="text-white text-2xl font-bold mb-2">
-                              {project.title}
-                           </h3>
-                           <p className="text-white/90 text-sm">
-                              {project.tech}
-                           </p>
+                        >
+                           <img
+                              src={project.image}
+                              alt={project.title}
+                              className="w-full h-auto block"
+                              onError={(e) => {
+                                 const target = e.target as HTMLImageElement
+                                 target.style.display = 'none'
+                                 if (target.parentElement) {
+                                    target.parentElement.innerHTML = `
+                                       <div class="w-full h-60 flex items-center justify-center" style="background-color: var(--muted); color: var(--muted-foreground)">
+                                          <div class="text-center">
+                                             <div class="text-4xl mb-2">📱</div>
+                                             <p>${project.title}</p>
+                                          </div>
+                                       </div>
+                                    `
+                                 }
+                              }}
+                           />
+                           <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6">
+                              <h3 className="text-white text-2xl font-bold mb-2">
+                                 {project.title}
+                              </h3>
+                              <p className="text-white/90 text-sm">
+                                 {project.tech}
+                              </p>
+                           </div>
                         </div>
-                     </div>
+                     </Link>
 
                      {/* Tags */}
                      <div className="flex gap-2 mt-4">

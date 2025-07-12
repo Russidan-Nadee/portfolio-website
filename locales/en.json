@@ -22,7 +22,7 @@
          "projects": {
             "assetManagement": {
                "title": "Asset Management",
-               "tech": "Flutter, Node.js, Express, MySQL"
+               "tech": "Flutter, Node.js, Express, Prisma, MySQL"
             },
             "calculator": {
                "title": "Calculator App",
@@ -164,64 +164,20 @@
       "projects": {
          "assetManagement": {
             "title": "Asset Management",
-            "description": "Cross-platform asset management system with RFID integration featuring real-time tracking, dashboard analytics, and comprehensive reporting",
-            "tech": "Flutter, Node.js, Express, MySQL",
-            "category": "Mobile & Web Application",
-            "year": "2025",
-            "platforms": [
-               "mobile",
-               "crossPlatform",
-               "fullstack"
-            ]
+            "tech": "Flutter, Node.js, Express, MySQL"
          },
          "calculator": {
             "title": "Calculator App",
-            "description": "A modern calculator application featuring a clean and minimalist interface with advanced mathematical operations",
-            "tech": "Python, Tkinter",
-            "category": "Desktop Application",
-            "year": "2024",
-            "platforms": [
-               "desktop",
-               "frontend"
-            ]
+            "tech": "Python, Tkinter"
          },
          "portfolio": {
             "title": "Portfolio Website",
-            "description": "Personal portfolio website showcasing my skills, projects, and experience with modern design and multi-language support",
-            "tech": "Next.js, TypeScript, Tailwind CSS",
-            "category": "Web Application",
-            "year": "2024",
-            "platforms": [
-               "web",
-               "frontend"
-            ]
+            "tech": "Next.js, TypeScript, Tailwind CSS"
          },
          "assetDashboard": {
-            "title": "Asset Management Dashboard",
-            "description": "Comprehensive web-based dashboard for asset management with data visualization, reporting, and analytics features",
-            "tech": "React, Node.js, Chart.js, MySQL",
-            "category": "Web Dashboard",
-            "year": "2025",
-            "platforms": [
-               "web",
-               "fullstack"
-            ]
+            "title": "RFID Asset Dashboard",
+            "tech": "Flutter, Node.js, Express, Prisma, MySQL"
          }
-      },
-      "filters": {
-         "all": "All Projects",
-         "mobile": "Mobile",
-         "web": "Web",
-         "desktop": "Desktop",
-         "crossPlatform": "Cross-Platform",
-         "frontend": "Frontend",
-         "backend": "Backend",
-         "fullstack": "Full-Stack"
-      },
-      "actions": {
-         "viewProject": "View Project",
-         "viewCode": "View Code",
-         "liveDemo": "Live Demo"
       }
    },
    "contact": {
