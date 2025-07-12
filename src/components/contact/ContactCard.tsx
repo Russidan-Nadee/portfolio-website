@@ -1,4 +1,4 @@
-// src/components/ContactCard.tsx
+// src/components/contact/ContactCard.tsx
 'use client'
 
 import { useState, useEffect } from 'react'
@@ -13,7 +13,7 @@ interface ContactCardProps {
    action: string
    href: string
    iconColor: string
-   gradient: string
+   // Fix: Remove unused gradient parameter
    isVisible: boolean
    onClick?: () => void
    onCopy?: (text: string, type: string) => void
@@ -31,7 +31,7 @@ export default function ContactCard({
    action,
    href,
    iconColor,
-   gradient,
+   // Fix: Remove gradient from destructuring
    isVisible,
    onClick,
    onCopy,
@@ -41,7 +41,7 @@ export default function ContactCard({
    locale
 }: ContactCardProps) {
    const isLoading = loadingItem === id
-   const isCopied = copiedItem === id
+   // Fix: Remove unused isCopied variable
    const showCopyButton = id === 'email' || id === 'phone'
    const [isDark, setIsDark] = useState(false)
 

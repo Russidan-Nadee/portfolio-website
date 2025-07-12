@@ -2,17 +2,17 @@
 'use client'
 
 import { useSearchParams } from 'next/navigation'
+import { Suspense } from 'react'
 import th from '../../../../locales/th.json'
 import ja from '../../../../locales/ja.json'
 import en from '../../../../locales/en.json'
 
-// Fix: Add proper type for third party items
 interface ThirdPartyItem {
    name: string;
    description: string;
 }
 
-export default function PrivacyPolicy() {
+function PrivacyPolicyContent() {
    const searchParams = useSearchParams()
    const locale = searchParams.get('lang') || 'en'
 
@@ -86,7 +86,6 @@ export default function PrivacyPolicy() {
                         {legal?.sections?.thirdPartyServices?.content || 'This website uses the following external services:'}
                      </p>
                      <ul className="list-disc pl-6 space-y-2" style={{ color: 'var(--card-foreground)' }}>
-                        {/* Fix: Change any to ThirdPartyItem */}
                         {legal?.sections?.thirdPartyServices?.items?.map((item: ThirdPartyItem, index: number) => (
                            <li key={index}>
                               <strong>{item.name}:</strong> {item.description}
@@ -134,5 +133,13 @@ export default function PrivacyPolicy() {
             </div>
          </div>
       </div>
+   )
+}
+
+export default function PrivacyPolicy() {
+   return (
+      <Suspense fallback={<div>Loading...</div>}>
+         <PrivacyPolicyContent />
+      </Suspense>
    )
 }

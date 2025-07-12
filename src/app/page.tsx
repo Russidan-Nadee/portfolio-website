@@ -1,6 +1,8 @@
+// src/app/page.tsx
 'use client'
 
 import { useSearchParams } from 'next/navigation'
+import { Suspense } from 'react'
 import Link from 'next/link'
 import CreativeHero from '../components/home/CreativeHero'
 import ProjectsShowcase from '../components/home/ProjectsShowcase'
@@ -9,7 +11,7 @@ import th from '../../locales/th.json'
 import ja from '../../locales/ja.json'
 import en from '../../locales/en.json'
 
-export default function Home() {
+function HomeContent() {
   const searchParams = useSearchParams()
   const locale = searchParams.get('lang') || 'en'
 
@@ -40,7 +42,7 @@ export default function Home() {
           className="text-3xl md:text-4xl font-bold mb-4"
           style={{ color: 'var(--foreground)' }}
         >
-          {translations?.home?.cta?.title || "Let’s build something great together."}
+          {translations?.home?.cta?.title || "Let's build something great together."}
         </h2>
         <p
           className="mb-6 text-lg md:text-xl"
@@ -60,7 +62,14 @@ export default function Home() {
           {translations?.home?.cta?.button || "Contact Me"}
         </Link>
       </section>
-
     </div>
+  )
+}
+
+export default function Home() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <HomeContent />
+    </Suspense>
   )
 }

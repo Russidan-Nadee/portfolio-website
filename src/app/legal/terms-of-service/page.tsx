@@ -2,11 +2,12 @@
 'use client'
 
 import { useSearchParams } from 'next/navigation'
+import { Suspense } from 'react'
 import th from '../../../../locales/th.json'
 import ja from '../../../../locales/ja.json'
 import en from '../../../../locales/en.json'
 
-export default function TermsOfService() {
+function TermsOfServiceContent() {
    const searchParams = useSearchParams()
    const locale = searchParams.get('lang') || 'en'
 
@@ -40,7 +41,7 @@ export default function TermsOfService() {
                   className="text-lg"
                   style={{ color: 'var(--muted-foreground)' }}
                >
-                  {legal?.lastUpdated || 'Last updated: January 2025'}
+                  {legal?.lastUpdated || 'Last updated: July 2025'}
                </p>
             </div>
 
@@ -158,5 +159,13 @@ export default function TermsOfService() {
             </div>
          </div>
       </div>
+   )
+}
+
+export default function TermsOfService() {
+   return (
+      <Suspense fallback={<div>Loading...</div>}>
+         <TermsOfServiceContent />
+      </Suspense>
    )
 }

@@ -2,7 +2,7 @@
 'use client'
 
 import { useSearchParams } from 'next/navigation'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, Suspense } from 'react'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
 import PersonalIntro from '../../components/about/PersonalIntro'
@@ -12,10 +12,9 @@ import th from '../../../locales/th.json'
 import ja from '../../../locales/ja.json'
 import en from '../../../locales/en.json'
 
-
 gsap.registerPlugin(ScrollTrigger)
 
-export default function About() {
+function AboutContent() {
    const searchParams = useSearchParams()
    const locale = searchParams.get('lang') || 'en'
 
@@ -106,8 +105,6 @@ export default function About() {
             <SkillsGrid translations={translations} />
          </div>
 
-
-
          {/* Contact CTA */}
          <div
             className="py-16"
@@ -156,5 +153,13 @@ export default function About() {
             </div>
          </div>
       </div>
+   )
+}
+
+export default function About() {
+   return (
+      <Suspense fallback={<div>Loading...</div>}>
+         <AboutContent />
+      </Suspense>
    )
 }

@@ -4,7 +4,7 @@
 import { useSearchParams } from 'next/navigation'
 import { MdEmail, MdPhone } from 'react-icons/md'
 import { FaFacebook, FaInstagram, FaLinkedin, FaGithub } from 'react-icons/fa'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import ContactCard from '@/components/contact/ContactCard'
 import ToastNotification from '@/components/contact/ToastNotification'
 import AnimatedBackground from '@/components/ui/AnimatedBackground'
@@ -12,7 +12,19 @@ import th from '../../../locales/th.json'
 import ja from '../../../locales/ja.json'
 import en from '../../../locales/en.json'
 
-export default function Contact() {
+interface ContactChannel {
+   id: string;
+   icon: any;
+   title: string;
+   info: string;
+   action: string;
+   href: string;
+   iconColor: string;
+   gradient: string;
+   onClick?: () => void;
+}
+
+function ContactContent() {
    const searchParams = useSearchParams()
    const locale = searchParams.get('lang') || 'en'
    const [copiedItem, setCopiedItem] = useState<string | null>(null)
@@ -59,22 +71,7 @@ export default function Contact() {
       }
    }
 
-   useEffect(() => {
-      setMounted(true)
-
-      // Stagger card animations
-      const timer = setTimeout(() => {
-         contactChannels.forEach((_, index) => {
-            setTimeout(() => {
-               setVisibleItems(prev => new Set([...prev, index]))
-            }, index * 200)
-         })
-      }, 300)
-
-      return () => clearTimeout(timer)
-   }, [locale])
-
-   const contactChannels = [
+   const contactChannels: ContactChannel[] = [
       {
          id: 'email',
          icon: MdEmail,
@@ -150,7 +147,22 @@ export default function Contact() {
       }
    ]
 
-   const handleChannelClick = async (channel: any) => {
+   useEffect(() => {
+      setMounted(true)
+
+      // Stagger card animations
+      const timer = setTimeout(() => {
+         contactChannels.forEach((_, index) => {
+            setTimeout(() => {
+               setVisibleItems(prev => new Set([...prev, index]))
+            }, index * 200)
+         })
+      }, 300)
+
+      return () => clearTimeout(timer)
+   }, [locale, contactChannels])
+
+   const handleChannelClick = async (channel: ContactChannel) => {
       setLoadingItem(channel.id)
 
       // Add haptic feedback for mobile
@@ -281,5 +293,13 @@ export default function Contact() {
         }
       `}</style>
       </div>
+   )
+}
+
+export default function Contact() {
+   return (
+      <Suspense fallback={<div>Loading...</div>}>
+         <ContactContent />
+      </Suspense>
    )
 }

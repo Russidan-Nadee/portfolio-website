@@ -6,7 +6,9 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "build:static": "next build",
+    "build:zip": "npm run build:static && zip -r portfolio-website.zip out/"
   },
   "dependencies": {
     "framer-motion": "^12.23.1",

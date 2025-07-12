@@ -2,13 +2,13 @@
 'use client'
 
 import { useSearchParams } from 'next/navigation'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import Link from 'next/link'
 import th from '../../../locales/th.json'
 import ja from '../../../locales/ja.json'
 import en from '../../../locales/en.json'
 
-export default function Portfolio() {
+function PortfolioContent() {
    const searchParams = useSearchParams()
    const locale = searchParams.get('lang') || 'en'
    const [mounted, setMounted] = useState(false)
@@ -263,5 +263,13 @@ export default function Portfolio() {
             `}</style>
          </div>
       </div>
+   )
+}
+
+export default function Portfolio() {
+   return (
+      <Suspense fallback={<div>Loading...</div>}>
+         <PortfolioContent />
+      </Suspense>
    )
 }
