@@ -259,7 +259,7 @@ export default function Footer() {
                   className="text-sm text-center md:text-left"
                   style={{ color: 'var(--muted-foreground)' }}
                >
-                  {translations?.footer?.copyright || '© 2024 Russidan Nadee. All rights reserved.'}
+                  {translations?.footer?.copyright || '© 2025 Russidan Nadee. All rights reserved.'}
                </p>
 
                <p
