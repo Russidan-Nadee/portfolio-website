@@ -29,6 +29,7 @@ export default function ProjectsShowcase({ translations }: ProjectsShowcaseProps
    const [currentIndex, setCurrentIndex] = useState(0)
    const [isTransitioning, setIsTransitioning] = useState(false)
    const [slideDirection, setSlideDirection] = useState<'left' | 'right'>('right')
+   const [isMobile, setIsMobile] = useState(false)
 
    const transitionTimeoutRef = useRef<NodeJS.Timeout | null>(null);
    const resetTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -82,11 +83,20 @@ export default function ProjectsShowcase({ translations }: ProjectsShowcaseProps
    const [realIndex, setRealIndex] = useState(totalProjects)
 
    const getTransformX = useCallback((): number => {
-      const cardWidth = 350 + 32
-      const containerWidth = 1200
-      const offsetForCenteredView = (containerWidth - (visibleCards * 350 + (visibleCards - 1) * 32)) / 2;
-      return offsetForCenteredView - (realIndex * cardWidth);
-   }, [realIndex, visibleCards]);
+      const cardWidth = 350
+      const gap = 32
+
+      if (isMobile) {
+         // ใน mobile: แสดงแค่ 1 card, ไม่มี gap
+         return -realIndex * cardWidth
+      } else {
+         // Desktop แสดงตามเดิม
+         const cardWidthWithGap = cardWidth + gap
+         const containerWidth = 1200
+         const offsetForCenteredView = (containerWidth - (visibleCards * cardWidth + (visibleCards - 1) * gap)) / 2
+         return offsetForCenteredView - (realIndex * cardWidthWithGap)
+      }
+   }, [realIndex, visibleCards, isMobile])
 
    const goLeft = useCallback((): void => {
       if (isTransitioning) return
@@ -150,6 +160,17 @@ export default function ProjectsShowcase({ translations }: ProjectsShowcaseProps
       }, 600);
    }, [isTransitioning, infiniteProjects.length, totalProjects]);
 
+   // Mobile detection
+   useEffect(() => {
+      const checkMobile = () => {
+         setIsMobile(window.innerWidth <= 768)
+      }
+
+      checkMobile()
+      window.addEventListener('resize', checkMobile)
+      return () => window.removeEventListener('resize', checkMobile)
+   }, [])
+
    useEffect(() => {
       setMounted(true)
 
@@ -199,7 +220,7 @@ export default function ProjectsShowcase({ translations }: ProjectsShowcaseProps
       };
    }, []);
 
-   // ------- เพิ่ม useEffect นี้ เพื่อ auto-slide ทุก 3 วินาที ----------
+   // Auto-slide ทุก 3 วินาที
    useEffect(() => {
       const autoSlide = setInterval(() => {
          if (!isTransitioning) {
@@ -208,7 +229,6 @@ export default function ProjectsShowcase({ translations }: ProjectsShowcaseProps
       }, 3000);
       return () => clearInterval(autoSlide);
    }, [goRight, isTransitioning]);
-   // ------------------------------------------------------------------
 
    if (!mounted) return null
 
@@ -284,14 +304,22 @@ export default function ProjectsShowcase({ translations }: ProjectsShowcaseProps
 
                 @media (max-width: 768px) {
                     .showcase-cards {
-                        grid-template-columns: 1fr;
-                        gap: 1rem;
-                        max-width: 400px;
-                        clip-path: inset(0 20px);
+                        width: 350px;
+                        margin: 0 auto;
+                        overflow: hidden;
+                        clip-path: none;
+                        padding: 0;
+                        height: 437px;
+                    }
+                    
+                    .cards-container {
+                        gap: 0;
                     }
                     
                     .project-card {
-                        aspect-ratio: 4/5;
+                        width: 350px;
+                        margin: 0;
+                        flex-shrink: 0;
                     }
 
                     .project-card.center-card {
@@ -543,14 +571,14 @@ export default function ProjectsShowcase({ translations }: ProjectsShowcaseProps
                         }}
                      >
                         {infiniteProjects.map((project, index) => {
-                           const centerIndex = realIndex + 1
+                           const centerIndex = isMobile ? realIndex + 1 : realIndex + 1
 
                            return (
                               <div
                                  key={`${project.originalIndex}-${index}`}
                                  className="project-card"
                                  style={{
-                                    filter: index === centerIndex ? 'none' : 'grayscale(100%) contrast(1.2)'
+                                    filter: isMobile ? 'none' : (index === centerIndex ? 'none' : 'grayscale(100%) contrast(1.2)')
                                  }}
                                  onClick={() => {
                                     window.location.href = '/portfolio'
@@ -564,7 +592,7 @@ export default function ProjectsShowcase({ translations }: ProjectsShowcaseProps
                                     }}
                                  />
 
-                                 <div className="card-overlay" />
+                                 {!isMobile && index !== centerIndex && <div className="card-overlay" />}
 
                                  <div className="card-content">
                                     <h3
