@@ -1,10 +1,9 @@
 // src/app/contact/page.tsx
 'use client'
 
-import { useSearchParams } from 'next/navigation'
+import { useState, useEffect } from 'react'
 import { MdEmail, MdPhone } from 'react-icons/md'
 import { FaFacebook, FaInstagram, FaLinkedin, FaGithub } from 'react-icons/fa'
-import { useState, useEffect, Suspense } from 'react'
 import ContactCard from '@/components/contact/ContactCard'
 import ToastNotification from '@/components/contact/ToastNotification'
 import AnimatedBackground from '@/components/ui/AnimatedBackground'
@@ -25,8 +24,7 @@ interface ContactChannel {
 }
 
 function ContactContent() {
-   const searchParams = useSearchParams()
-   const locale = searchParams.get('lang') || 'en'
+   const [locale, setLocale] = useState('en')
    const [copiedItem, setCopiedItem] = useState<string | null>(null)
    const [loadingItem, setLoadingItem] = useState<string | null>(null)
    const [mounted, setMounted] = useState(false)
@@ -46,6 +44,20 @@ function ContactContent() {
 
    // Load translations with fallback
    const translations = getTranslations(locale)
+
+   // Language change handler
+   useEffect(() => {
+      // Get initial language from localStorage
+      setLocale(localStorage.getItem('lang') || 'en')
+
+      // Listen for language changes
+      const handleLanguageChange = (e: any) => {
+         setLocale(e.detail.language)
+      }
+
+      window.addEventListener('languageChange', handleLanguageChange)
+      return () => window.removeEventListener('languageChange', handleLanguageChange)
+   }, [])
 
    // Get localized text for copied notification
    const getCopiedText = (locale: string) => {
@@ -297,9 +309,5 @@ function ContactContent() {
 }
 
 export default function Contact() {
-   return (
-      <Suspense fallback={<div>Loading...</div>}>
-         <ContactContent />
-      </Suspense>
-   )
+   return <ContactContent />
 }

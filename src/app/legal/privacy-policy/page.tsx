@@ -1,8 +1,7 @@
 // src/app/legal/privacy-policy/page.tsx
 'use client'
 
-import { useSearchParams } from 'next/navigation'
-import { Suspense } from 'react'
+import { useState, useEffect } from 'react'
 import th from '../../../../locales/th.json'
 import ja from '../../../../locales/ja.json'
 import en from '../../../../locales/en.json'
@@ -13,8 +12,7 @@ interface ThirdPartyItem {
 }
 
 function PrivacyPolicyContent() {
-   const searchParams = useSearchParams()
-   const locale = searchParams.get('lang') || 'en'
+   const [locale, setLocale] = useState('en')
 
    // Helper function to get translations based on locale
    const getTranslations = (locale: string) => {
@@ -30,6 +28,20 @@ function PrivacyPolicyContent() {
 
    const translations = getTranslations(locale)
    const legal = translations?.legal?.privacyPolicy
+
+   // Language change handler
+   useEffect(() => {
+      // Get initial language from localStorage
+      setLocale(localStorage.getItem('lang') || 'en')
+
+      // Listen for language changes
+      const handleLanguageChange = (e: any) => {
+         setLocale(e.detail.language)
+      }
+
+      window.addEventListener('languageChange', handleLanguageChange)
+      return () => window.removeEventListener('languageChange', handleLanguageChange)
+   }, [])
 
    return (
       <div className="min-h-screen" style={{ backgroundColor: 'var(--background)' }}>
@@ -137,9 +149,5 @@ function PrivacyPolicyContent() {
 }
 
 export default function PrivacyPolicy() {
-   return (
-      <Suspense fallback={<div>Loading...</div>}>
-         <PrivacyPolicyContent />
-      </Suspense>
-   )
+   return <PrivacyPolicyContent />
 }

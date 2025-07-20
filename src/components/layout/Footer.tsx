@@ -1,7 +1,7 @@
-// src/components/layout/Footer.tsx - Updated Legal Section
+// src/components/layout/Footer.tsx
 'use client'
 
-import { useSearchParams } from 'next/navigation'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { FaFacebook, FaInstagram, FaLinkedin, FaGithub } from 'react-icons/fa'
 import th from '../../../locales/th.json'
@@ -9,8 +9,7 @@ import ja from '../../../locales/ja.json'
 import en from '../../../locales/en.json'
 
 export default function Footer() {
-   const searchParams = useSearchParams()
-   const locale = searchParams.get('lang') || 'en'
+   const [locale, setLocale] = useState('en')
 
    // Helper function to get translations based on locale
    const getTranslations = (locale: string) => {
@@ -27,12 +26,34 @@ export default function Footer() {
    // Load translations with fallback
    const translations = getTranslations(locale)
 
+   // Language change handler
+   useEffect(() => {
+      // Get initial language from localStorage
+      setLocale(localStorage.getItem('lang') || 'en')
+
+      // Listen for language changes
+      const handleLanguageChange = (e: any) => {
+         setLocale(e.detail.language)
+      }
+
+      window.addEventListener('languageChange', handleLanguageChange)
+      return () => window.removeEventListener('languageChange', handleLanguageChange)
+   }, [])
+
    // Helper function to generate localized links
    const getLocalizedLink = (path: string) => {
-      if (locale === 'en') {
-         return path
-      }
-      return `${path}?lang=${locale}`
+      // Since we're not using URL params anymore, just return the path
+      return path
+   }
+
+   const handleLanguageSwitch = (newLocale: string) => {
+      localStorage.setItem('lang', newLocale)
+      setLocale(newLocale)
+
+      // Dispatch custom event to notify other components
+      window.dispatchEvent(new CustomEvent('languageChange', {
+         detail: { language: newLocale }
+      }))
    }
 
    const socialLinks = [
@@ -178,7 +199,7 @@ export default function Footer() {
                   </div>
                </div>
 
-               {/* Legal & Copyright - UPDATED PATHS */}
+               {/* Legal & Copyright */}
                <div>
                   <h3
                      className="font-semibold text-lg mb-4"
@@ -214,33 +235,21 @@ export default function Footer() {
                   </h3>
                   <div className="space-y-2">
                      <button
-                        onClick={() => {
-                           const url = new URL(window.location.href)
-                           url.searchParams.delete('lang')
-                           window.location.href = url.pathname + url.search
-                        }}
+                        onClick={() => handleLanguageSwitch('en')}
                         className={`block text-sm hover:opacity-70 transition-opacity text-left ${locale === 'en' ? 'font-semibold' : ''}`}
                         style={{ color: locale === 'en' ? 'var(--foreground)' : 'var(--muted-foreground)' }}
                      >
                         🇺🇸 English
                      </button>
                      <button
-                        onClick={() => {
-                           const url = new URL(window.location.href)
-                           url.searchParams.set('lang', 'th')
-                           window.location.href = url.pathname + url.search
-                        }}
+                        onClick={() => handleLanguageSwitch('th')}
                         className={`block text-sm hover:opacity-70 transition-opacity text-left ${locale === 'th' ? 'font-semibold' : ''}`}
                         style={{ color: locale === 'th' ? 'var(--foreground)' : 'var(--muted-foreground)' }}
                      >
                         🇹🇭 ไทย
                      </button>
                      <button
-                        onClick={() => {
-                           const url = new URL(window.location.href)
-                           url.searchParams.set('lang', 'ja')
-                           window.location.href = url.pathname + url.search
-                        }}
+                        onClick={() => handleLanguageSwitch('ja')}
                         className={`block text-sm hover:opacity-70 transition-opacity text-left ${locale === 'ja' ? 'font-semibold' : ''}`}
                         style={{ color: locale === 'ja' ? 'var(--foreground)' : 'var(--muted-foreground)' }}
                      >
@@ -259,7 +268,7 @@ export default function Footer() {
                   className="text-sm text-center md:text-left"
                   style={{ color: 'var(--muted-foreground)' }}
                >
-                  {translations?.footer?.copyright || '© 2024 Russidan Nadee. All rights reserved.'}
+                  {translations?.footer?.copyright || '© 2025 Russidan Nadee. All rights reserved.'}
                </p>
 
                <p

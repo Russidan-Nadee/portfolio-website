@@ -1,8 +1,7 @@
 // src/app/about/page.tsx
 'use client'
 
-import { useSearchParams } from 'next/navigation'
-import { useEffect, useRef, Suspense } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
 import PersonalIntro from '../../components/about/PersonalIntro'
@@ -15,8 +14,7 @@ import en from '../../../locales/en.json'
 gsap.registerPlugin(ScrollTrigger)
 
 function AboutContent() {
-   const searchParams = useSearchParams()
-   const locale = searchParams.get('lang') || 'en'
+   const [locale, setLocale] = useState('en')
 
    const titleRef = useRef<HTMLHeadingElement>(null)
    const descriptionRef = useRef<HTMLParagraphElement>(null)
@@ -38,11 +36,23 @@ function AboutContent() {
 
    // Helper function to generate localized links
    const getLocalizedLink = (path: string) => {
-      if (locale === 'en') {
-         return path
-      }
-      return `${path}?lang=${locale}`
+      // Since we're not using URL params anymore, just return the path
+      return path
    }
+
+   // Language change handler
+   useEffect(() => {
+      // Get initial language from localStorage
+      setLocale(localStorage.getItem('lang') || 'en')
+
+      // Listen for language changes
+      const handleLanguageChange = (e: any) => {
+         setLocale(e.detail.language)
+      }
+
+      window.addEventListener('languageChange', handleLanguageChange)
+      return () => window.removeEventListener('languageChange', handleLanguageChange)
+   }, [])
 
    useEffect(() => {
       // Title animation
@@ -157,9 +167,5 @@ function AboutContent() {
 }
 
 export default function About() {
-   return (
-      <Suspense fallback={<div>Loading...</div>}>
-         <AboutContent />
-      </Suspense>
-   )
+   return <AboutContent />
 }

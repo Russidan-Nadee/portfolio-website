@@ -1,8 +1,8 @@
-// src/components/Header.tsx
+// src/components/layout/Header.tsx
 'use client'
 
 import Link from 'next/link'
-import { useSearchParams, usePathname } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import LanguageSwitcher from './LanguageSwitcher'
 import ThemeToggle from './ThemeToggle'
@@ -12,12 +12,25 @@ import ja from '../../../locales/ja.json'
 import en from '../../../locales/en.json'
 
 export default function Header() {
-   const searchParams = useSearchParams()
    const pathname = usePathname()
-   const locale = searchParams.get('lang') || 'en'
    const { theme } = useTheme()
    const [isMenuOpen, setIsMenuOpen] = useState(false)
    const [mounted, setMounted] = useState(false)
+   const [locale, setLocale] = useState('en')
+
+   // Language change handler
+   useEffect(() => {
+      // Get initial language from localStorage
+      setLocale(localStorage.getItem('lang') || 'en')
+
+      // Listen for language changes
+      const handleLanguageChange = (e: any) => {
+         setLocale(e.detail.language)
+      }
+
+      window.addEventListener('languageChange', handleLanguageChange)
+      return () => window.removeEventListener('languageChange', handleLanguageChange)
+   }, [])
 
    useEffect(() => {
       setMounted(true)
@@ -40,10 +53,8 @@ export default function Header() {
 
    // Helper function to generate localized links
    const getLocalizedLink = (path: string) => {
-      if (locale === 'en') {
-         return path
-      }
-      return `${path}?lang=${locale}`
+      // Since we're not using URL params anymore, just return the path
+      return path
    }
 
    // Close menu when clicking outside or on link

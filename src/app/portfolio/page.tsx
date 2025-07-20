@@ -1,16 +1,14 @@
 // src/app/portfolio/page.tsx
 'use client'
 
-import { useSearchParams } from 'next/navigation'
-import { useState, useEffect, Suspense } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import th from '../../../locales/th.json'
 import ja from '../../../locales/ja.json'
 import en from '../../../locales/en.json'
 
 function PortfolioContent() {
-   const searchParams = useSearchParams()
-   const locale = searchParams.get('lang') || 'en'
+   const [locale, setLocale] = useState('en')
    const [mounted, setMounted] = useState(false)
    const [visibleItems, setVisibleItems] = useState<Set<number>>(new Set())
 
@@ -26,12 +24,24 @@ function PortfolioContent() {
 
    const [activeFilter, setActiveFilter] = useState('all')
 
+   // Language change handler
+   useEffect(() => {
+      // Get initial language from localStorage
+      setLocale(localStorage.getItem('lang') || 'en')
+
+      // Listen for language changes
+      const handleLanguageChange = (e: any) => {
+         setLocale(e.detail.language)
+      }
+
+      window.addEventListener('languageChange', handleLanguageChange)
+      return () => window.removeEventListener('languageChange', handleLanguageChange)
+   }, [])
+
    // Helper function to generate localized links
    const getLocalizedLink = (path: string) => {
-      if (locale === 'en') {
-         return path
-      }
-      return `${path}?lang=${locale}`
+      // Since we're not using URL params anymore, just return the path
+      return path
    }
 
    const projects = [
@@ -267,9 +277,5 @@ function PortfolioContent() {
 }
 
 export default function Portfolio() {
-   return (
-      <Suspense fallback={<div>Loading...</div>}>
-         <PortfolioContent />
-      </Suspense>
-   )
+   return <PortfolioContent />
 }

@@ -1,18 +1,17 @@
-// src/components/Timeline.tsx
+// src/components/about/Timeline.tsx
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { useSearchParams } from 'next/navigation'
 import th from '../../../locales/th.json'
 import ja from '../../../locales/ja.json'
 import en from '../../../locales/en.json'
+
 interface TimelineProps {
    translations: any
 }
 
 export default function Timeline({ translations }: TimelineProps) {
-   const searchParams = useSearchParams()
-   const locale = searchParams.get('lang') || 'en'
+   const [locale, setLocale] = useState('en')
 
    const timelineRef = useRef<HTMLDivElement>(null)
    const headerRef = useRef<HTMLDivElement>(null)
@@ -26,7 +25,6 @@ export default function Timeline({ translations }: TimelineProps) {
    const [headerAnimated, setHeaderAnimated] = useState(false)
 
    // Helper function to get translations based on locale
-
    const getTranslations = (locale: string) => {
       switch (locale) {
          case 'th':
@@ -40,6 +38,20 @@ export default function Timeline({ translations }: TimelineProps) {
 
    // Load translations with fallback
    const currentTranslations = translations || getTranslations(locale)
+
+   // Language change handler
+   useEffect(() => {
+      // Get initial language from localStorage
+      setLocale(localStorage.getItem('lang') || 'en')
+
+      // Listen for language changes
+      const handleLanguageChange = (e: any) => {
+         setLocale(e.detail.language)
+      }
+
+      window.addEventListener('languageChange', handleLanguageChange)
+      return () => window.removeEventListener('languageChange', handleLanguageChange)
+   }, [])
 
    // Get data from translations with fallback
    const workExperienceData = currentTranslations?.about?.timeline?.work || []

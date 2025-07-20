@@ -1,8 +1,7 @@
-// src/components/PersonalIntro.tsx
+// src/components/about/PersonalIntro.tsx
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { useSearchParams } from 'next/navigation'
 import th from '../../../locales/th.json'
 import ja from '../../../locales/ja.json'
 import en from '../../../locales/en.json'
@@ -12,8 +11,7 @@ interface PersonalIntroProps {
 }
 
 export default function PersonalIntro({ translations }: PersonalIntroProps) {
-   const searchParams = useSearchParams()
-   const locale = searchParams.get('lang') || 'en'
+   const [locale, setLocale] = useState('en')
 
    const introRef = useRef<HTMLDivElement>(null)
    const textRef = useRef<HTMLDivElement>(null)
@@ -43,6 +41,20 @@ export default function PersonalIntro({ translations }: PersonalIntroProps) {
 
    // Load translations with fallback
    const currentTranslations = translations || getTranslations(locale)
+
+   // Language change handler
+   useEffect(() => {
+      // Get initial language from localStorage
+      setLocale(localStorage.getItem('lang') || 'en')
+
+      // Listen for language changes
+      const handleLanguageChange = (e: any) => {
+         setLocale(e.detail.language)
+      }
+
+      window.addEventListener('languageChange', handleLanguageChange)
+      return () => window.removeEventListener('languageChange', handleLanguageChange)
+   }, [])
 
    useEffect(() => {
       const observer = new IntersectionObserver(

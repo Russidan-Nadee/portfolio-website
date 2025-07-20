@@ -1,8 +1,7 @@
 // src/app/page.tsx
 'use client'
 
-import { useSearchParams } from 'next/navigation'
-import { Suspense } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import CreativeHero from '../components/home/CreativeHero'
 import ProjectsShowcase from '../components/home/ProjectsShowcase'
@@ -12,8 +11,7 @@ import ja from '../../locales/ja.json'
 import en from '../../locales/en.json'
 
 function HomeContent() {
-  const searchParams = useSearchParams()
-  const locale = searchParams.get('lang') || 'en'
+  const [locale, setLocale] = useState('en')
 
   // Helper function to get translations based on locale
   const getTranslations = (locale: string) => {
@@ -29,6 +27,26 @@ function HomeContent() {
 
   // Load translations with fallback
   const translations = getTranslations(locale)
+
+  // Language change handler
+  useEffect(() => {
+    // Get initial language from localStorage
+    setLocale(localStorage.getItem('lang') || 'en')
+
+    // Listen for language changes
+    const handleLanguageChange = (e: any) => {
+      setLocale(e.detail.language)
+    }
+
+    window.addEventListener('languageChange', handleLanguageChange)
+    return () => window.removeEventListener('languageChange', handleLanguageChange)
+  }, [])
+
+  // Helper function to generate localized links
+  const getLocalizedLink = (path: string) => {
+    // Since we're not using URL params anymore, just return the path
+    return path
+  }
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: 'var(--background)' }}>
@@ -51,7 +69,7 @@ function HomeContent() {
           {translations?.home?.cta?.subtitle || "Looking for a passionate developer? I'm ready to collaborate on your next idea."}
         </p>
         <Link
-          href={locale === 'en' ? '/contact' : `/contact?lang=${locale}`}
+          href={getLocalizedLink('/contact')}
           className="inline-block px-8 py-4 rounded-lg font-semibold transition hover:scale-105 shadow-md"
           style={{
             backgroundColor: 'var(--foreground)',
@@ -67,9 +85,5 @@ function HomeContent() {
 }
 
 export default function Home() {
-  return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <HomeContent />
-    </Suspense>
-  )
+  return <HomeContent />
 }

@@ -1,15 +1,13 @@
 // src/app/legal/terms-of-service/page.tsx
 'use client'
 
-import { useSearchParams } from 'next/navigation'
-import { Suspense } from 'react'
+import { useState, useEffect } from 'react'
 import th from '../../../../locales/th.json'
 import ja from '../../../../locales/ja.json'
 import en from '../../../../locales/en.json'
 
 function TermsOfServiceContent() {
-   const searchParams = useSearchParams()
-   const locale = searchParams.get('lang') || 'en'
+   const [locale, setLocale] = useState('en')
 
    // Helper function to get translations based on locale
    const getTranslations = (locale: string) => {
@@ -25,6 +23,20 @@ function TermsOfServiceContent() {
 
    const translations = getTranslations(locale)
    const legal = translations?.legal?.termsOfService
+
+   // Language change handler
+   useEffect(() => {
+      // Get initial language from localStorage
+      setLocale(localStorage.getItem('lang') || 'en')
+
+      // Listen for language changes
+      const handleLanguageChange = (e: any) => {
+         setLocale(e.detail.language)
+      }
+
+      window.addEventListener('languageChange', handleLanguageChange)
+      return () => window.removeEventListener('languageChange', handleLanguageChange)
+   }, [])
 
    return (
       <div className="min-h-screen" style={{ backgroundColor: 'var(--background)' }}>
@@ -163,9 +175,5 @@ function TermsOfServiceContent() {
 }
 
 export default function TermsOfService() {
-   return (
-      <Suspense fallback={<div>Loading...</div>}>
-         <TermsOfServiceContent />
-      </Suspense>
-   )
+   return <TermsOfServiceContent />
 }

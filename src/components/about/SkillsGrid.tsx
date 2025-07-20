@@ -1,8 +1,7 @@
-// src/components/SkillsGrid.tsx
+// src/components/about/SkillsGrid.tsx
 'use client'
 
-import { useEffect, useRef } from 'react'
-import { useSearchParams } from 'next/navigation'
+import { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
 import th from '../../../locales/th.json'
@@ -31,8 +30,7 @@ const skills = [
 ]
 
 export default function SkillsGrid({ translations }: SkillsGridProps) {
-   const searchParams = useSearchParams()
-   const locale = searchParams.get('lang') || 'en'
+   const [locale, setLocale] = useState('en')
 
    const skillsRef = useRef<HTMLDivElement>(null)
    const rowRefs = useRef<(HTMLDivElement | null)[]>([])
@@ -55,6 +53,20 @@ export default function SkillsGrid({ translations }: SkillsGridProps) {
 
    // Load translations with fallback
    const currentTranslations = translations || getTranslations(locale)
+
+   // Language change handler
+   useEffect(() => {
+      // Get initial language from localStorage
+      setLocale(localStorage.getItem('lang') || 'en')
+
+      // Listen for language changes
+      const handleLanguageChange = (e: any) => {
+         setLocale(e.detail.language)
+      }
+
+      window.addEventListener('languageChange', handleLanguageChange)
+      return () => window.removeEventListener('languageChange', handleLanguageChange)
+   }, [])
 
    const skillRows = []
    for (let i = 0; i < skills.length; i += 3) {

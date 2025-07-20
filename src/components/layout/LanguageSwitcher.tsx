@@ -1,28 +1,28 @@
-// src/components/LanguageSwitcher.tsx
+// src/components/layout/LanguageSwitcher.tsx
 'use client'
 
-import { useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
 
 export default function LanguageSwitcher() {
-   const router = useRouter()
    const [isOpen, setIsOpen] = useState(false)
    const [currentLocale, setCurrentLocale] = useState('en')
 
    useEffect(() => {
-      const searchParams = new URLSearchParams(window.location.search)
-      setCurrentLocale(searchParams.get('lang') || 'en')
+      // Get language from localStorage on mount
+      const savedLang = localStorage.getItem('lang') || 'en'
+      setCurrentLocale(savedLang)
    }, [])
 
    const switchLanguage = (newLocale: string) => {
-      const url = new URL(window.location.href)
-      if (newLocale === 'en') {
-         url.searchParams.delete('lang')
-      } else {
-         url.searchParams.set('lang', newLocale)
-      }
-      router.push(url.pathname + url.search)
+      // Save to localStorage
+      localStorage.setItem('lang', newLocale)
       setCurrentLocale(newLocale)
+
+      // Dispatch custom event to notify other components
+      window.dispatchEvent(new CustomEvent('languageChange', {
+         detail: { language: newLocale }
+      }))
+
       setIsOpen(false)
    }
 

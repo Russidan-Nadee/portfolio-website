@@ -1,8 +1,7 @@
-// src/components/CreativeHero.tsx
+// src/components/home/CreativeHero.tsx
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import { FaGithub, FaLinkedin } from 'react-icons/fa'
@@ -16,8 +15,7 @@ interface CreativeHeroProps {
 }
 
 export default function CreativeHero({ translations: propTranslations }: CreativeHeroProps) {
-   const searchParams = useSearchParams()
-   const locale = searchParams.get('lang') || 'en'
+   const [locale, setLocale] = useState('en')
 
    const getTranslations = (locale: string) => {
       switch (locale) {
@@ -32,11 +30,23 @@ export default function CreativeHero({ translations: propTranslations }: Creativ
 
    const translations = propTranslations || getTranslations(locale)
 
-   const getLocalizedLink = (path: string) => {
-      if (locale === 'en') {
-         return path
+   // Language change handler
+   useEffect(() => {
+      // Get initial language from localStorage
+      setLocale(localStorage.getItem('lang') || 'en')
+
+      // Listen for language changes
+      const handleLanguageChange = (e: any) => {
+         setLocale(e.detail.language)
       }
-      return `${path}?lang=${locale}`
+
+      window.addEventListener('languageChange', handleLanguageChange)
+      return () => window.removeEventListener('languageChange', handleLanguageChange)
+   }, [])
+
+   const getLocalizedLink = (path: string) => {
+      // Since we're not using URL params anymore, just return the path
+      return path
    }
 
    const heroRef = useRef<HTMLDivElement>(null)
