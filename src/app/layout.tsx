@@ -4,15 +4,18 @@ import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "../components/layout/ThemeProvider";
 import Header from "../components/layout/Header";
+import Footer from "../components/layout/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
 });
+
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
+
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin", "latin-ext"],
@@ -26,7 +29,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{ children: React.ReactNode; }>) {
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -42,7 +47,10 @@ export default function RootLayout({
         <ThemeProvider>
           <div className="min-h-screen flex flex-col">
             <Header />
-            <main className="flex-1">{children}</main>
+            <main className="flex-1">
+              {children}
+            </main>
+            <Footer />
           </div>
         </ThemeProvider>
       </body>
