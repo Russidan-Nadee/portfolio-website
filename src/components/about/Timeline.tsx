@@ -104,13 +104,15 @@ export default function Timeline({ translations }: TimelineProps) {
 
             setScrollProgress(progress)
 
-            // Show items based on progress
+            // Show items based on progress - Faster for education with 2 items
             const totalItems = currentData.length
             const itemsToShow: number[] = []
 
             for (let i = 0; i < totalItems; i++) {
                const itemThreshold = (i + 1) / totalItems
-               if (progress >= itemThreshold * 0.7) { // Show items when line reaches 70% to that point
+               // Use different threshold based on tab and number of items
+               const threshold = activeTab === 'education' && totalItems === 2 ? 0.6 : 0.7
+               if (progress >= itemThreshold * threshold) {
                   itemsToShow.push(i)
                }
             }
@@ -146,7 +148,7 @@ export default function Timeline({ translations }: TimelineProps) {
       handleScroll() // Initial check
 
       return () => window.removeEventListener('scroll', handleScroll)
-   }, [currentData.length, animationComplete, headerAnimated])
+   }, [currentData.length, animationComplete, headerAnimated, activeTab])
 
    // Reset when tab changes
    useEffect(() => {
@@ -352,8 +354,8 @@ export default function Timeline({ translations }: TimelineProps) {
                      </p>
                   </div>
                ) : (
-                  <div className="relative max-w-4xl mx-auto min-h-[600px]">
-                     {/* Inverted Tree Trunk (Main Line) */}
+                  <div className="relative max-w-4xl mx-auto" style={{ minHeight: currentData.length === 2 ? '800px' : '600px' }}>
+                     {/* Timeline Line */}
                      <div className="absolute left-1/2 transform -translate-x-1/2 top-0 bottom-0 flex justify-center">
                         <div
                            className="timeline-line w-2 h-full"
@@ -364,8 +366,12 @@ export default function Timeline({ translations }: TimelineProps) {
                         />
                      </div>
 
-                     {/* Timeline Items (Branches) */}
-                     <div className="relative z-10 space-y-32 pt-8">
+                     {/* Timeline Items */}
+                     <div className="relative z-10 pt-8" style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: currentData.length === 2 ? '12rem' : '8rem'
+                     }}>
                         {currentData.map((item: any, index: number) => {
                            const isRight = index % 2 === 0
                            const isVisible = visibleItems.includes(index)
@@ -375,7 +381,7 @@ export default function Timeline({ translations }: TimelineProps) {
                                  key={`${activeTab}-${item.id}-${locale}`}
                                  className="relative flex items-center justify-center min-h-[200px]"
                               >
-                                 {/* Timeline Item - Show when visible */}
+                                 {/* Timeline Item */}
                                  <div
                                     className={`timeline-item absolute w-80 ${isRight ? 'left-1/2 ml-16' : 'right-1/2 mr-16'} ${isVisible ? 'visible' : ''} ${isRight ? 'right' : 'left'}`}
                                  >
@@ -455,7 +461,7 @@ export default function Timeline({ translations }: TimelineProps) {
                                     </div>
                                  </div>
 
-                                 {/* Icon - Show when line reaches this point */}
+                                 {/* Icon */}
                                  <div
                                     className={`timeline-icon absolute left-1/2 w-16 h-16 rounded-full flex items-center justify-center text-2xl z-20 ${isVisible ? 'visible' : ''}`}
                                     style={{

@@ -128,10 +128,10 @@
          "education": [
             {
                "id": 1,
-               "period": "2020 - 2026",
-               "title": "Bachelor Degree",
+               "period": "2022 - 2025",
+               "title": "Bachelor's Degree",
                "company": "Silpakorn University",
-               "description": "Electronic and Computer System - Comprehensive study of computer systems, electronics, software development, and system architecture. Expected graduation: March 2026.",
+               "description": "Electronic and Computer Systems - Comprehensive study of computer systems, electronics, software development, and system architecture. Expected graduation: March 2025.",
                "skills": [
                   "Electronics",
                   "Computer Systems",
@@ -139,7 +139,22 @@
                   "System Architecture"
                ],
                "icon": "🎓",
-               "isCurrent": true
+               "isCurrent": false
+            },
+            {
+               "id": 2,
+               "period": "2019 - 2021",
+               "title": "High School - Science-Math Program",
+               "company": "Khlong Yang Pracha Nusan School",
+               "description": "Completed high school education with focus on Science and Mathematics program, building strong foundation in mathematical thinking and scientific principles essential for computer science studies.",
+               "skills": [
+                  "Mathematics",
+                  "Physics",
+                  "Chemistry",
+                  "Logical Thinking"
+               ],
+               "icon": "🏫",
+               "isCurrent": false
             }
          ]
       },
