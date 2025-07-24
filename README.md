@@ -40,7 +40,7 @@ A personal portfolio website designed to showcase development skills, work exper
 1. **Clone repository**
 ```bash
 git clone https://github.com/Russidan-Nadee/portfolio.git
-cd portfolio
+cd portfolio-website
 ```
 
 2. **Install dependencies**
