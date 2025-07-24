@@ -14,6 +14,9 @@ export default function CalculatorPage() {
    const [projectData, setProjectData] = useState<any>(null)
    const [loading, setLoading] = useState(true)
 
+   // Image path for this project
+   const projectImagePath = '/images/projects/calculator-app/calculator-overview.png'
+
    // Load project data based on language
    useEffect(() => {
       const loadData = async () => {
@@ -126,7 +129,7 @@ export default function CalculatorPage() {
             <ProjectInfoBar data={projectData.infoBar} />
 
             {/* Main Content with Tabs */}
-            <ProjectTabsContent data={projectData.tabsContent} />
+            <ProjectTabsContent data={projectData.tabsContent} imagePath={projectImagePath} />
          </div>
 
          {/* Floating Action Buttons */}
