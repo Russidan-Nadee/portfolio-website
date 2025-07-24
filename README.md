@@ -8,7 +8,7 @@ A personal portfolio website designed to showcase development skills, work exper
 
 ## ✨ Key Features
 
-- **Multilingual Support**: Thai, English, Japanese with Real-time language switching system
+- **Multilingual Support**: Thai, English, Japanese with real-time language switching system
 - **Dark/Light Mode**: Theme switching according to preference
 - **Responsive Design**: Works well on all devices (mobile, tablet, computer)
 - **Portfolio Display**: Project gallery with filter system
