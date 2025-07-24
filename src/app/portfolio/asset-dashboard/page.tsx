@@ -14,6 +14,9 @@ export default function AssetDashboardPage() {
    const [projectData, setProjectData] = useState<any>(null)
    const [loading, setLoading] = useState(true)
 
+   // Image path for this project
+   const projectImagePath = '/images/projects/asset-dashboard/dashboard-overview.jpg'
+
    // Load project data based on language
    useEffect(() => {
       const loadData = async () => {
@@ -125,8 +128,8 @@ export default function AssetDashboardPage() {
             {/* Key Info Bar */}
             <ProjectInfoBar data={projectData.infoBar} />
 
-            {/* Main Content with Tabs */}
-            <ProjectTabsContent data={projectData.tabsContent} />
+            {/* Main Content with Tabs - Pass image path */}
+            <ProjectTabsContent data={projectData.tabsContent} imagePath={projectImagePath} />
          </div>
 
          {/* Floating Action Buttons */}

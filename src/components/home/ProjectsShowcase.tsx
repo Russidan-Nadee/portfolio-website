@@ -41,7 +41,7 @@ export default function ProjectsShowcase({ translations }: ProjectsShowcaseProps
          tech: translations?.home?.projectsShowcase?.projects?.assetManagement?.tech || 'Flutter, Node.js, Express, MySQL',
          filter: 'grayscale(100%) contrast(1.2)',
          isCenter: false,
-         image: '/images/asset-management-hero.jpg'
+         image: '/images/projects/asset-dashboard.jpg'
       },
       {
          id: 'calculator-app',
@@ -49,7 +49,7 @@ export default function ProjectsShowcase({ translations }: ProjectsShowcaseProps
          tech: translations?.home?.projectsShowcase?.projects?.calculator?.tech || 'Python, Tkinter',
          filter: 'none',
          isCenter: true,
-         image: '/images/calculator-hero.jpg'
+         image: '/images/projects/calculator-app.jpg'
       },
       {
          id: 'portfolio-website',
@@ -57,7 +57,7 @@ export default function ProjectsShowcase({ translations }: ProjectsShowcaseProps
          tech: translations?.home?.projectsShowcase?.projects?.portfolio?.tech || 'Next.js, TypeScript, Tailwind CSS',
          filter: 'grayscale(100%) contrast(1.2)',
          isCenter: false,
-         image: '/images/portfolio-hero.jpg'
+         image: '/images/projects/portfolio-website.jpg'
       }
    ]
 

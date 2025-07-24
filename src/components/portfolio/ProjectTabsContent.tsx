@@ -75,9 +75,10 @@ interface ProjectTabsContentData {
 
 interface ProjectTabsContentProps {
    data: ProjectTabsContentData
+   imagePath?: string
 }
 
-export default function ProjectTabsContent({ data }: ProjectTabsContentProps) {
+export default function ProjectTabsContent({ data, imagePath }: ProjectTabsContentProps) {
    const [activeTab, setActiveTab] = useState('overview')
 
    const tabs = [
@@ -118,17 +119,49 @@ export default function ProjectTabsContent({ data }: ProjectTabsContentProps) {
          {activeTab === 'overview' && (
             <div>
                <div className="mb-8">
-                  <div
-                     className="w-full h-70 rounded-2xl flex items-center justify-center text-lg font-semibold border-2 border-dashed mb-5"
-                     style={{
-                        backgroundColor: 'var(--muted)',
-                        borderColor: 'var(--border)',
-                        color: 'var(--muted-foreground)',
-                        height: '280px'
-                     }}
-                  >
-                     {data.overview.imageAlt}
-                  </div>
+                  {imagePath ? (
+                     <div className="w-full mb-5">
+                        <img
+                           src={imagePath}
+                           alt={data.overview.imageAlt}
+                           className="w-full h-auto rounded-2xl shadow-lg object-contain"
+                           style={{
+                              maxWidth: '100%',
+                              height: 'auto'
+                           }}
+                           onError={(e) => {
+                              const target = e.target as HTMLImageElement
+                              target.style.display = 'none'
+                              if (target.parentElement) {
+                                 target.parentElement.innerHTML = `
+                                    <div class="w-full rounded-2xl flex items-center justify-center text-lg font-semibold border-2 border-dashed" style="
+                                       background-color: var(--muted);
+                                       border-color: var(--border);
+                                       color: var(--muted-foreground);
+                                       height: 280px;
+                                       aspect-ratio: 16/9;
+                                    ">
+                                       ${data.overview.imageAlt}
+                                    </div>
+                                 `
+                              }
+                           }}
+                        />
+                     </div>
+                  ) : (
+                     <div
+                        className="w-full rounded-2xl flex items-center justify-center text-lg font-semibold border-2 border-dashed mb-5"
+                        style={{
+                           backgroundColor: 'var(--muted)',
+                           borderColor: 'var(--border)',
+                           color: 'var(--muted-foreground)',
+                           height: '280px',
+                           aspectRatio: '16/9'
+                        }}
+                     >
+                        {data.overview.imageAlt}
+                     </div>
+                  )}
                   <div className="text-center text-sm" style={{ color: 'var(--muted-foreground)' }}>
                      {data.overview.title}
                   </div>
