@@ -12,15 +12,15 @@ export const assetManagementData = {
 
    header: {
       title: "แอปจัดการทรัพย์สินมือถือ",
-      description: "แอปพลิเคชันมือถือสำหรับจัดการทรัพย์สิน พร้อมฟีเจอร์สแกน QR Code และรายงานแบบ Real-time",
-      tags: ["Flutter", "Mobile App", "QR Scanner", "Real-time", "Cross-Platform"],
-      githubUrl: "https://github.com/Russidan-Nadee/asset-management-mobile"
+      description: "แอปพลิเคชันมือถือสำหรับจัดการทรัพย์สิน",
+      tags: ["Mobile App", "Flutter", "Node.js", "Express", "MySQL"],
+      githubUrl: "https://github.com/Russidan-Nadee/learn-flutter-express"
    },
 
    infoBar: {
-      duration: "4 เดือน",
-      status: "Internship Project",
-      company: "Thai Parkerizing",
+      duration: "3 เดือน",
+      status: "Training Project",
+      company: "Self-Development",
       technologies: ["Flutter", "Node.js", "Express", "MySQL"]
    },
 
@@ -45,7 +45,7 @@ export const assetManagementData = {
          },
          objectives: {
             title: "วัตถุประสงค์",
-            content: "เพิ่มความสะดวกในการจัดการทรัพย์สินภาคสนาม • ลดเวลาในการตรวจสอบและบันทึกข้อมูล • รองรับการทำงานแบบ Offline • สร้าง Mobile Experience ที่ดีสำหรับเจ้าหน้าที่"
+            content: "เพิ่มฝึกฝนการพัฒนาแอปพลิเคชันมือถือแบบครบวงจร • ลดเวลาในการตรวจสอบและบันทึกข้อมูล • สร้าง Mobile Experience ที่ดีสำหรับเจ้าหน้าที่"
          }
       },
 
@@ -53,28 +53,16 @@ export const assetManagementData = {
          title: "ฟีเจอร์หลัก",
          items: [
             {
-               title: "QR Code Scanner",
-               description: "สแกน QR Code เพื่อเข้าถึงข้อมูลทรัพย์สินได้ทันที"
+               title: "Asset Registration",
+               description: "ลงทะเบียนทรัพย์สินใหม่พร้อมกรอกข้อมูล"
             },
             {
-               title: "Asset Registration",
-               description: "ลงทะเบียนทรัพย์สินใหม่พร้อมถ่ายรูปและกรอกข้อมูล"
+               title: "Login & Authentication",
+               description: "ระบบล็อกอินที่ปลอดภัยสำหรับผู้ใช้งาน"
             },
             {
                title: "Real-time Updates",
                description: "อัพเดทสถานะทรัพย์สินและซิงค์กับเซิร์ฟเวอร์แบบ Real-time"
-            },
-            {
-               title: "Offline Support",
-               description: "ทำงานได้แม้ไม่มีอินเทอร์เน็ต และซิงค์ข้อมูลเมื่อกลับมาออนไลน์"
-            },
-            {
-               title: "Photo Capture",
-               description: "ถ่ายรูปทรัพย์สินและอัพโหลดไปยังระบบ"
-            },
-            {
-               title: "Location Tracking",
-               description: "บันทึกตำแหน่งที่ตั้งของทรัพย์สินด้วย GPS"
             },
             {
                title: "Reports Generation",
@@ -91,13 +79,10 @@ export const assetManagementData = {
          title: "ภาพหน้าจอ",
          items: [
             "Login & Dashboard Screen",
-            "QR Code Scanner Interface",
             "Asset Details View",
             "Asset Registration Form",
             "Camera & Photo Capture",
             "Reports & Analytics",
-            "Offline Mode Indicator",
-            "Settings & Profile"
          ]
       },
 
@@ -107,11 +92,7 @@ export const assetManagementData = {
             "Mobile Framework": "Flutter 3.x",
             "Programming Language": "Dart",
             "Backend API": "Node.js + Express",
-            "Database": "MySQL with Prisma ORM",
-            "State Management": "Provider + Riverpod",
-            "Local Storage": "SQLite (sqflite)",
-            "Image Handling": "image_picker, image_cropper",
-            "QR Scanner": "qr_code_scanner",
+            "Storage": "MySQL",
             "HTTP Client": "dio",
             "Authentication": "JWT Token"
          },
@@ -119,20 +100,20 @@ export const assetManagementData = {
             title: "ความท้าทาย",
             items: [
                {
-                  title: "Offline Data Synchronization",
-                  description: "การจัดการข้อมูลแบบ Offline และซิงค์เมื่อกลับมาออนไลน์"
+                  title: "Authentication Flow",
+                  description: "การจัดการระบบล็อกอินและการยืนยันตัวตนที่ปลอดภัย"
                },
                {
-                  title: "Camera & Image Optimization",
-                  description: "การจัดการรูปภาพให้มีคุณภาพดีแต่ไฟล์ไม่ใหญ่เกินไป"
+                  title: "Data Synchronization",
+                  description: "การซิงค์ข้อมูลระหว่าง Mobile App และ Backend Server แบบ Real-time"
                },
                {
-                  title: "QR Code Performance",
-                  description: "การทำให้ QR Scanner ทำงานได้รวดเร็วและแม่นยำ"
+                  title: "UI/UX Design",
+                  description: "การออกแบบ UI ที่ใช้งานง่ายและตอบสนองได้ดีบนอุปกรณ์มือถือ"
                },
                {
-                  title: "Battery Optimization",
-                  description: "การจัดการการใช้พลังงานให้มีประสิทธิภาพ"
+                  title: "Performance Optimization",
+                  description: "การปรับปรุงประสิทธิภาพของแอปให้ทำงานได้รวดเร็วและราบรื่น"
                },
                {
                   title: "Cross-platform Compatibility",
@@ -146,35 +127,38 @@ export const assetManagementData = {
          title: "ผลลัพธ์",
          items: [
             {
-               title: "การใช้งานจริงในองค์กร",
-               description: "แอปถูกนำไปใช้งานจริงโดยเจ้าหน้าที่ใน Department pilot"
-            },
-            {
                title: "ความเร็วในการทำงาน",
                description: "ลดเวลาในการตรวจสอบทรัพย์สินจาก 5-10 นาที เหลือ 1-2 นาที ต่อรายการ"
             },
             {
                title: "ความแม่นยำข้อมูล",
-               description: "ลดข้อผิดพลาดจากการป้อนข้อมูลด้วยมือลง 90%"
+               description: "ลดข้อผิดพลาดจากการป้อนข้อมูลด้วยมือลง"
             },
             {
                title: "User Experience",
                description: "ได้รับ Feedback เชิงบวกจากผู้ใช้งานเรื่องความสะดวกและใช้งานง่าย"
             },
             {
-               title: "Performance",
-               description: "แอปทำงานได้ราบรื่นและใช้แบตเตอรี่อย่างมีประสิทธิภาพ"
+               title: "เรียนรู้การพัฒนา Mobile App ด้วย Flutter",
+               description: "เรียนรู้การพัฒนาแอปพลิเคชันด้วยFlutter"
+            },
+            {
+               title: "เรียนรู้การพัฒนา Backend ด้วย Node.js และ Express",
+               description: "เรียนรู้การพัฒนา Backend API ที่เชื่อมต่อกับฐานข้อมูล MySQL"
+            },
+            {
+               tile: "เรียนรู้การทำระบบ Authentication ด้วย JWT",
+               description: "เรียนรู้การทำระบบล็อกอินและการยืนยันตัวตนด้วย JWT Token"
             }
+
          ],
          futureGoals: {
             title: "แผนการพัฒนาต่อ",
             items: [
                { description: "เพิ่ม Push Notifications สำหรับการแจ้งเตือนสำคัญ" },
-               { description: "ระบบ Barcode Scanner รองรับ Barcode หลายรูปแบบ" },
+               { description: "QR Code Scanner สําหรับการสแกน QR Code" },
+               { description: "Barcode Scanner สําหรับการสแกนบาร์โค้ด" },
                { description: "Dashboard Analytics แบบ Mobile-optimized" },
-               { description: "เพิ่ม Voice Commands สำหรับการใช้งานแฮนด์ฟรี" },
-               { description: "ระบบ Machine Learning สำหรับ Auto-categorization" },
-               { description: "เชื่อมต่อกับ IoT Devices เพื่อ Real-time Monitoring" }
             ]
          }
       }

@@ -13,7 +13,7 @@ export const assetDashboardData = {
    header: {
       title: "ระบบจัดการทรัพย์สินด้วย RFID",
       description: "ระบบจัดการทรัพย์สินแบบครบวงจรด้วยเทคโนโลยี RFID สำหรับลดค่าใช้จ่ายและเพิ่มประสิทธิภาพ",
-      tags: ["Cross-Platform", "RFID Technology", "2025", "กำลังพัฒนา"],
+      tags: ["Cross-Platform", "RFID Technology", "2025",],
       githubUrl: "https://github.com/Russidan-Nadee/intern-project-rfid"
    },
 
@@ -45,7 +45,7 @@ export const assetDashboardData = {
          },
          objectives: {
             title: "วัตถุประสงค์",
-            content: "Phase 1: นำไปใช้งานภายใน Department เพื่อทดสอบประสิทธิภาพและปรับปรุงระบบ • อนาคต: หากระบบทำงานได้ดี จะขยายการใช้งานไปยังทั้งบริษัทเพื่อเพิ่มประสิทธิภาพในการจัดการทรัพย์สินโดยรวม"
+            content: "นำไปใช้งานภายในแผนกเพื่อทดสอบประสิทธิภาพและปรับปรุงระบบ • อนาคตหากระบบทำงานได้ดี จะขยายการใช้งานไปยังทั้งบริษัทเพื่อเพิ่มประสิทธิภาพในการจัดการทรัพย์สินโดยรวม"
          }
       },
 
@@ -54,7 +54,7 @@ export const assetDashboardData = {
          items: [
             {
                title: "Dashboard",
-               description: "แดชบอร์ดแสดงสถิติและข้อมูลทรัพย์สินแบบ Real-time"
+               description: "แดชบอร์ดแสดงสถิติและข้อมูลทรัพย์สินในรูปแบบกราฟ"
             },
             {
                title: "Scan",
@@ -62,15 +62,15 @@ export const assetDashboardData = {
             },
             {
                title: "Search",
-               description: "ค้นหาทรัพย์สินด้วยเลขครุภัณฑ์, ชื่อ, หรือหมวดหมู่"
+               description: "ค้นหาทรัพย์สินด้วยเลขครุภัณฑ์, ชื่อ, หรือหมวดหมู่ หรือข้อมูลอื่นๆที่เกี่ยวข้อง"
             },
             {
                title: "Export",
-               description: "ส่งออกรายงานเป็นไฟล์ Excel, PDF หรือ CSV"
+               description: "ส่งออกรายงานเป็นไฟล์ CSV หรือ Excel"
             },
             {
                title: "Setting",
-               description: "ตั้งค่าระบบ, จัดการผู้ใช้งาน และกำหนดสิทธิ์การเข้าถึง"
+               description: "ตั้งค่าระบบ, จัดการผู้ใช้งาน และกำหนดสิทธิ์การเข้าถึง ภาษา และธีม"
             },
             {
                title: "Sync",
@@ -96,10 +96,10 @@ export const assetDashboardData = {
          details: {
             "Frontend (Mobile)": "Flutter, Dart",
             "Frontend (Web)": "Flutter Web",
-            "Frontend (Desktop)": "Flutter Desktop (Windows)",
+            "Frontend (Desktop)": "Flutter Desktop",
             "Backend": "Node.js, Express.js",
             "Database": "MySQL, Prisma ORM",
-            "RFID Integration": "NFC/RFID Reader API",
+            "RFID Integration": "RFID Reader API",
             "Authentication": "JWT Token-based"
          },
          challenges: {
@@ -120,6 +120,10 @@ export const assetDashboardData = {
                {
                   title: "Database Performance",
                   description: "การปรับปรุงประสิทธิภาพฐานข้อมูลเมื่อข้อมูลทรัพย์สินมีจำนวนมาก"
+               },
+               {
+                  title: "User Experience",
+                  description: "การออกแบบ UI/UX ที่ใช้งานง่ายและตอบสนองได้ดีบนทุกอุปกรณ์"
                }
             ]
          }
@@ -134,24 +138,25 @@ export const assetDashboardData = {
             },
             {
                title: "การประหยัดค่าใช้จ่าย",
-               description: "คาดการณ์ว่าจะประหยัดค่าซื้อซอฟต์แวร์ภายนอกได้มากกว่า 80%"
+               description: "คาดการณ์ว่าจะประหยัดค่าซื้อซอฟต์แวร์ภายนอกได้มากกว่า ≈76.21%"
             },
             {
                title: "ประสิทธิภาพการทำงาน",
-               description: "ลดเวลาในการตรวจนับทรัพย์สินจาก 2-3 วัน เหลือเพียง 2-3 ชั่วโมง"
+               description: "ลดเวลาในการตรวจนับทรัพย์สินจาก วัน เหลือเพียง ชั่วโมง"
             },
             {
-               title: "ความพร้อมใช้งาน",
-               description: "ระบบจะรองรับการใช้งานทั้ง Online และ Offline Mode"
+               title: "UX/UI Friendly",
+               description: "ได้รับ Feedback เชิงบวกจากผู้ใช้งานเรื่องความสะดวกและใช้งานง่าย"
             }
          ],
          futureGoals: {
             title: "เป้าหมายในอนาคต",
             items: [
                { description: "ขยายการใช้งานไปยังทั้งบริษัทหากผลการทดสอบใน Department เป็นไปตามเป้าหมาย" },
-               { description: "เพิ่มฟีเจอร์ AI สำหรับการพยากรณ์การบำรุงรักษาทรัพย์สิน" },
-               { description: "พัฒนา Mobile App สำหรับการใช้งานภาคสนาม" },
-               { description: "เชื่อมต่อกับระบบ ERP ของบริษัทเพื่อการจัดการแบบรวมศูนย์" }
+               { description: "เพิ่มระบบความปลอดภัยขั้นสูง" },
+               { description: "เชื่อมต่อกับระบบ ERP ของบริษัทเพื่อการจัดการแบบรวมศูนย์" },
+               { description: "พัฒนาระบบแจ้งเตือนเมื่อทรัพย์สินมีการเปลี่ยนแปลงสถานะ" },
+               { description: "เพิ่มระบบตัดจ่ายทรัพย์สิน" },
             ]
          }
       }

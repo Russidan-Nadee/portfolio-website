@@ -14,12 +14,12 @@ export const calculatorData = {
       title: "แอปเครื่องคิดเลขขั้นสูง",
       description: "เครื่องคิดเลขที่มีฟีเจอร์ครบครัน สร้างด้วย Python และ Tkinter พร้อม UI ที่ใช้งานง่าย",
       tags: ["Python", "Tkinter", "Desktop App", "GUI"],
-      githubUrl: "https://github.com/Russidan-Nadee/calculator-app"
+      githubUrl: "https://github.com/Russidan-Nadee/calculator_intern_test"
    },
 
    infoBar: {
       duration: "2 สัปดาห์",
-      status: "Personal Project",
+      status: "Intern test Project",
       company: "Self-Development",
       technologies: ["Python", "Tkinter", "Math"]
    },
@@ -34,7 +34,7 @@ export const calculatorData = {
       },
 
       overview: {
-         title: "แอปเครื่องคิดเลขขั้นสูงสร้างด้วย Python",
+         title: "แอปเครื่องคิดเลขสร้างด้วย Python",
          imageAlt: "หน้าจอหลักของแอปเครื่องคิดเลข",
          about: {
             title: "เกี่ยวกับโปรเจค",
@@ -61,14 +61,6 @@ export const calculatorData = {
                description: "ฟังก์ชันทางวิทยาศาสตร์ เช่น sin, cos, tan, log"
             },
             {
-               title: "Memory Functions",
-               description: "เก็บและเรียกใช้ค่าที่คำนวณแล้ว (MC, MR, M+, M-)"
-            },
-            {
-               title: "History",
-               description: "ประวัติการคำนวณที่ผ่านมา"
-            },
-            {
                title: "Keyboard Support",
                description: "รองรับการกดปุ่มจากคีย์บอร์ด"
             },
@@ -86,7 +78,6 @@ export const calculatorData = {
             "Scientific Mode",
             "Memory Functions Panel",
             "Calculation History",
-            "Settings Menu",
             "Error Display Example"
          ]
       },
@@ -97,9 +88,7 @@ export const calculatorData = {
             "Programming Language": "Python 3.8+",
             "GUI Framework": "Tkinter (built-in)",
             "Math Library": "Math, NumPy",
-            "Architecture": "Event-Driven Programming",
             "Design Pattern": "MVC (Model-View-Controller)",
-            "Testing": "Unit Testing with pytest"
          },
          challenges: {
             title: "ความท้าทาย",
@@ -133,7 +122,7 @@ export const calculatorData = {
             },
             {
                title: "ทักษะที่ได้รับ",
-               description: "เชี่ยวชาญ Python GUI Programming และ Event-Driven Architecture"
+               description: "พัฒนาการใช้ภาษา Python และการพัฒนา GUI ด้วย Tkinter ให้มีประสิทธิภาพมากขึ้น"
             },
             {
                title: "การใช้งาน",
@@ -147,11 +136,8 @@ export const calculatorData = {
          futureGoals: {
             title: "แผนการพัฒนาต่อ",
             items: [
-               { description: "เพิ่มโหมดการคำนวณเกี่ยวกับการเงิน (Financial Calculator)" },
-               { description: "สร้าง Unit Converter สำหรับแปลงหน่วยต่างๆ" },
-               { description: "เพิ่ม Graph Plotting สำหรับแสดงกราฟฟังก์ชัน" },
-               { description: "พัฒนา Dark/Light Theme Switcher" },
-               { description: "ปรับปรุง UI ให้ทันสมัยและใช้งานง่ายยิ่งขึ้น" }
+               { description: "เพิ่มการใช้งานให้ง่ายขึ้นดเหมือนการใช้งานเครื่องคิดเลขราคาแพง" },
+
             ]
          }
       }

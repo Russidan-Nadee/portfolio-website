@@ -14,11 +14,11 @@ export const portfolioWebsiteData = {
       title: "เว็บไซต์พอร์ตโฟลิโอส่วนตัว",
       description: "เว็บไซต์แสดงผลงานส่วนตัวที่รองรับหลายภาษา สร้างด้วย Next.js และ TypeScript พร้อมระบบ Dark Mode",
       tags: ["Next.js", "TypeScript", "Tailwind CSS", "Multilingual", "Responsive"],
-      githubUrl: "https://github.com/Russidan-Nadee/portfolio-website"
+      githubUrl: "https://github.com/Russidan-Nadee/portfolio"
    },
 
    infoBar: {
-      duration: "3 สัปดาห์",
+      duration: "2 เดือน",
       status: "Personal Project",
       company: "Self-Development",
       technologies: ["Next.js", "TypeScript", "Tailwind"]
@@ -66,7 +66,7 @@ export const portfolioWebsiteData = {
             },
             {
                title: "Interactive Portfolio",
-               description: "แสดงผลงานแบบ Interactive พร้อม Filter และ Search"
+               description: "แสดงผลงานแบบ Interactive พร้อม Filter"
             },
             {
                title: "Contact Integration",
@@ -82,7 +82,7 @@ export const portfolioWebsiteData = {
       gallery: {
          title: "ภาพหน้าจอ",
          items: [
-            "Landing Page Hero Section",
+            "Landing Page",
             "About Me Page",
             "Portfolio Showcase",
             "Contact Page",
@@ -100,7 +100,7 @@ export const portfolioWebsiteData = {
             "Animations": "GSAP, CSS Transitions",
             "Icons": "React Icons, Lucide React",
             "Fonts": "Google Fonts (Inter, Geist)",
-            "Deployment": "Vercel",
+            "Deployment": "Netlify",
             "Version Control": "Git, GitHub"
          },
          challenges: {
@@ -115,8 +115,8 @@ export const portfolioWebsiteData = {
                   description: "การปรับแต่งประสิทธิภาพให้โหลดเร็วและ SEO-friendly"
                },
                {
-                  title: "Cross-browser Compatibility",
-                  description: "ทำให้ website ทำงานได้ดีในทุก Browser"
+                  title: "User-friendly UI",
+                  description: "ทำให้ website ทำงานง่ายและเข้าถึงได้สำหรับผู้ใช้ทุกคน"
                },
                {
                   title: "Responsive Layout",
@@ -143,17 +143,13 @@ export const portfolioWebsiteData = {
             },
             {
                title: "Performance Score",
-               description: "ได้คะแนน Lighthouse สูงในทุกด้าน (Performance, SEO, Accessibility)"
+               description: "ได้คะแนน Lighthouse สูงมากในด้าน SEO, Accessibility"
             }
          ],
          futureGoals: {
             title: "แผนการพัฒนาต่อ",
             items: [
-               { description: "เพิ่ม Blog Section สำหรับเขียนบทความเทคนิค" },
-               { description: "ระบบ Admin Panel สำหรับจัดการ Content" },
-               { description: "เชื่อมต่อกับ CMS (Strapi หรือ Sanity)" },
-               { description: "เพิ่ม Analytics และ Visitor Tracking" },
-               { description: "PWA Support สำหรับการใช้งานแบบ Offline" }
+               { description: "เพิ่มโปรเจกต์ใหม่ๆใน Portfolio ที่มีการใช้งานเป็นไปตามเป้าหมาย" }
             ]
          }
       }
