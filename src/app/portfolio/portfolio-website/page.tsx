@@ -14,6 +14,10 @@ export default function PortfolioWebsitePage() {
    const [projectData, setProjectData] = useState<any>(null)
    const [loading, setLoading] = useState(true)
 
+   // Image path for this project
+   const projectImagePath = '/images/projects/portfolio-website/portfolio-website-overview.jpg'
+
+
    // Load project data based on language
    useEffect(() => {
       const loadData = async () => {
@@ -126,7 +130,7 @@ export default function PortfolioWebsitePage() {
             <ProjectInfoBar data={projectData.infoBar} />
 
             {/* Main Content with Tabs */}
-            <ProjectTabsContent data={projectData.tabsContent} />
+            <ProjectTabsContent data={projectData.tabsContent} imagePath={projectImagePath} />
          </div>
 
          {/* Floating Action Buttons */}
