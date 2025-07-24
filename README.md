@@ -64,45 +64,45 @@ pnpm dev
 4. **Open browser**
 Go to [http://localhost:3000](http://localhost:3000)
 
-## 📁 โครงสร้างโปรเจค
+## 📁 Project Structure
 
 ```
 src/
 ├── app/                    # Next.js App Router
-│   ├── about/             # หน้า About
-│   ├── contact/           # หน้า Contact  
-│   ├── portfolio/         # หน้า Portfolio และหน้าย่อย
-│   ├── legal/             # หน้า Privacy Policy, Terms
+│   ├── about/             # About page
+│   ├── contact/           # Contact page  
+│   ├── portfolio/         # Portfolio page and subpages
+│   ├── legal/             # Privacy Policy, Terms pages
 │   └── globals.css        # Global styles
 ├── components/            # React Components
-│   ├── home/             # Components หน้าแรก
-│   ├── about/            # Components หน้า About
-│   ├── contact/          # Components หน้า Contact
-│   ├── portfolio/        # Components หน้า Portfolio
+│   ├── home/             # Homepage components
+│   ├── about/            # About page components
+│   ├── contact/          # Contact page components
+│   ├── portfolio/        # Portfolio page components
 │   ├── layout/           # Header, Footer, Theme Provider
-│   └── ui/               # UI Components ทั่วไป
-├── data/                 # ข้อมูลโปรเจค
-│   └── projects/         # ข้อมูลโปรเจคแต่ละภาษา
-└── locales/              # ไฟล์แปลภาษา (JSON)
-    ├── en.json           # ภาษาอังกฤษ
-    ├── th.json           # ภาษาไทย
-    └── ja.json           # ภาษาญี่ปุ่น
+│   └── ui/               # General UI Components
+├── data/                 # Project data
+│   └── projects/         # Project data for each language
+└── locales/              # Translation files (JSON)
+    ├── en.json           # English
+    ├── th.json           # Thai
+    └── ja.json           # Japanese
 ```
 
-## 🌍 ระบบหลายภาษา
+## 🌍 Multilingual System
 
-เว็บไซต์รองรับ 3 ภาषา:
-- 🇹🇭 **ไทย** - ภาษาหลัก
-- 🇺🇸 **English** - ภาษาสากล  
-- 🇯🇵 **日本語** - ภาษาญี่ปุ่น
+The website supports 3 languages:
+- 🇹🇭 **Thai** - Main language
+- 🇺🇸 **English** - International language  
+- 🇯🇵 **Japanese** - Japanese language
 
-ระบบจะจำภาษาที่เลือกใน localStorage และสามารถเปลี่ยนได้แบบ Real-time
+The system will remember the selected language in localStorage and can be changed in real-time
 
-## 🎨 ระบบธีม
+## 🎨 Theme System
 
-- **Light Mode**: ธีมสว่าง (default)
-- **Dark Mode**: ธีมมืด
-- **Auto Detection**: ตรวจจับธีมระบบอัตโนมัติ
+- **Light Mode**: Light theme (default)
+- **Dark Mode**: Dark theme
+- **Auto Detection**: Automatic system theme detection
 
 ## 📱 Responsive Design
 
