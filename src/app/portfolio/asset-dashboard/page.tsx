@@ -10,9 +10,34 @@ import ProjectTabsContent from '@/components/portfolio/ProjectTabsContent'
 
 export default function AssetDashboardPage() {
    const [scrollProgress, setScrollProgress] = useState(0)
+   const [locale, setLocale] = useState('th')
+   const [projectData, setProjectData] = useState<any>(null)
+   const [loading, setLoading] = useState(true)
 
-   // Get project data
-   const projectData = getProjectData('asset-dashboard')
+   // Load project data based on language
+   useEffect(() => {
+      const loadData = async () => {
+         setLoading(true)
+         const data = await getProjectData('asset-dashboard', locale)
+         setProjectData(data)
+         setLoading(false)
+      }
+      loadData()
+   }, [locale])
+
+   // Language change handler
+   useEffect(() => {
+      // Get initial language from localStorage
+      setLocale(localStorage.getItem('lang') || 'th')
+
+      // Listen for language changes
+      const handleLanguageChange = (e: any) => {
+         setLocale(e.detail.language)
+      }
+
+      window.addEventListener('languageChange', handleLanguageChange)
+      return () => window.removeEventListener('languageChange', handleLanguageChange)
+   }, [])
 
    // Progress bar update
    useEffect(() => {
@@ -47,6 +72,18 @@ export default function AssetDashboardPage() {
          navigator.clipboard.writeText(window.location.href)
          alert('คัดลอกลิงก์แล้ว!')
       }
+   }
+
+   // Loading state
+   if (loading) {
+      return (
+         <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--background)' }}>
+            <div className="text-center">
+               <div className="animate-spin rounded-full h-32 w-32 border-b-2 mb-4" style={{ borderColor: 'var(--foreground)' }}></div>
+               <p style={{ color: 'var(--muted-foreground)' }}>Loading project data...</p>
+            </div>
+         </div>
+      )
    }
 
    // If no project data found

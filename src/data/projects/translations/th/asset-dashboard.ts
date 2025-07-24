@@ -1,4 +1,4 @@
-// src/data/projects/asset-dashboard.ts
+// src/data/projects/translations/th/asset-dashboard.ts
 
 export const assetDashboardData = {
    navigation: {
@@ -13,7 +13,7 @@ export const assetDashboardData = {
    header: {
       title: "ระบบจัดการทรัพย์สินด้วย RFID",
       description: "ระบบจัดการทรัพย์สินแบบครบวงจรด้วยเทคโนโลยี RFID สำหรับลดค่าใช้จ่ายและเพิ่มประสิทธิภาพ",
-      tags: ["Cross-Platform", "RFID Technology", "2025",],
+      tags: ["Cross-Platform", "RFID Technology", "2025"],
       githubUrl: "https://github.com/Russidan-Nadee/intern-project-rfid"
    },
 
@@ -21,7 +21,13 @@ export const assetDashboardData = {
       duration: "6 เดือน",
       status: "Developer Intern",
       company: "Thai Parkerizing",
-      technologies: ["Flutter", "Node.js", "MySQL"]
+      technologies: ["Flutter", "Node.js", "MySQL"],
+      labels: {
+         duration: "ระยะเวลาพัฒนา",
+         status: "สถานะ",
+         company: "บริษัท",
+         technology: "เทคโนโลยีหลัก"
+      }
    },
 
    tabsContent: {
@@ -156,7 +162,7 @@ export const assetDashboardData = {
                { description: "เพิ่มระบบความปลอดภัยขั้นสูง" },
                { description: "เชื่อมต่อกับระบบ ERP ของบริษัทเพื่อการจัดการแบบรวมศูนย์" },
                { description: "พัฒนาระบบแจ้งเตือนเมื่อทรัพย์สินมีการเปลี่ยนแปลงสถานะ" },
-               { description: "เพิ่มระบบตัดจ่ายทรัพย์สิน" },
+               { description: "เพิ่มระบบตัดจ่ายทรัพย์สิน" }
             ]
          }
       }

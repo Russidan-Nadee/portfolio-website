@@ -1,4 +1,4 @@
-// src/data/projects/asset-management.ts
+// src/data/projects/translations/th/asset-management.ts
 
 export const assetManagementData = {
    navigation: {
@@ -21,7 +21,13 @@ export const assetManagementData = {
       duration: "3 เดือน",
       status: "Training Project",
       company: "Self-Development",
-      technologies: ["Flutter", "Node.js", "Express", "MySQL"]
+      technologies: ["Flutter", "Node.js", "Express", "MySQL"],
+      labels: {
+         duration: "ระยะเวลาพัฒนา",
+         status: "สถานะ",
+         company: "บริษัท",
+         technology: "เทคโนโลยีหลัก"
+      }
    },
 
    tabsContent: {
@@ -82,7 +88,7 @@ export const assetManagementData = {
             "Asset Details View",
             "Asset Registration Form",
             "Camera & Photo Capture",
-            "Reports & Analytics",
+            "Reports & Analytics"
          ]
       },
 
@@ -147,10 +153,9 @@ export const assetManagementData = {
                description: "เรียนรู้การพัฒนา Backend API ที่เชื่อมต่อกับฐานข้อมูล MySQL"
             },
             {
-               tile: "เรียนรู้การทำระบบ Authentication ด้วย JWT",
+               title: "เรียนรู้การทำระบบ Authentication ด้วย JWT",
                description: "เรียนรู้การทำระบบล็อกอินและการยืนยันตัวตนด้วย JWT Token"
             }
-
          ],
          futureGoals: {
             title: "แผนการพัฒนาต่อ",
@@ -158,7 +163,7 @@ export const assetManagementData = {
                { description: "เพิ่ม Push Notifications สำหรับการแจ้งเตือนสำคัญ" },
                { description: "QR Code Scanner สําหรับการสแกน QR Code" },
                { description: "Barcode Scanner สําหรับการสแกนบาร์โค้ด" },
-               { description: "Dashboard Analytics แบบ Mobile-optimized" },
+               { description: "Dashboard Analytics แบบ Mobile-optimized" }
             ]
          }
       }

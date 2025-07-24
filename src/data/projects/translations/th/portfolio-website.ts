@@ -1,4 +1,4 @@
-// src/data/projects/portfolio-website.ts
+// src/data/projects/translations/th/portfolio-website.ts
 
 export const portfolioWebsiteData = {
    navigation: {
@@ -21,7 +21,13 @@ export const portfolioWebsiteData = {
       duration: "2 เดือน",
       status: "Personal Project",
       company: "Self-Development",
-      technologies: ["Next.js", "TypeScript", "Tailwind"]
+      technologies: ["Next.js", "TypeScript", "Tailwind"],
+      labels: {
+         duration: "ระยะเวลาพัฒนา",
+         status: "สถานะ",
+         company: "บริษัท",
+         technology: "เทคโนโลยีหลัก"
+      }
    },
 
    tabsContent: {

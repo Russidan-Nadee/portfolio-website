@@ -1,4 +1,4 @@
-// src/data/projects/calculator.ts
+// src/data/projects/translations/th/calculator.ts
 
 export const calculatorData = {
    navigation: {
@@ -21,7 +21,13 @@ export const calculatorData = {
       duration: "2 สัปดาห์",
       status: "Intern test Project",
       company: "Self-Development",
-      technologies: ["Python", "Tkinter", "Math"]
+      technologies: ["Python", "Tkinter", "Math"],
+      labels: {
+         duration: "ระยะเวลาพัฒนา",
+         status: "สถานะ",
+         company: "บริษัท",
+         technology: "เทคโนโลยีหลัก"
+      }
    },
 
    tabsContent: {
@@ -88,7 +94,7 @@ export const calculatorData = {
             "Programming Language": "Python 3.8+",
             "GUI Framework": "Tkinter (built-in)",
             "Math Library": "Math, NumPy",
-            "Design Pattern": "MVC (Model-View-Controller)",
+            "Design Pattern": "MVC (Model-View-Controller)"
          },
          challenges: {
             title: "ความท้าทาย",
@@ -136,8 +142,7 @@ export const calculatorData = {
          futureGoals: {
             title: "แผนการพัฒนาต่อ",
             items: [
-               { description: "เพิ่มการใช้งานให้ง่ายขึ้นดเหมือนการใช้งานเครื่องคิดเลขราคาแพง" },
-
+               { description: "เพิ่มการใช้งานให้ง่ายขึ้นดเหมือนการใช้งานเครื่องคิดเลขราคาแพง" }
             ]
          }
       }

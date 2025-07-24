@@ -2,6 +2,7 @@
 'use client'
 
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 interface ProjectNavigationData {
    backLink: string
@@ -17,6 +18,12 @@ interface ProjectNavigationProps {
 }
 
 export default function ProjectNavigation({ data }: ProjectNavigationProps) {
+   const router = useRouter()
+
+   const handleNavigation = (slug: string) => {
+      router.push(`/portfolio/${slug}`)
+   }
+
    return (
       <div
          className="rounded-2xl p-4 mb-5 backdrop-blur-sm border flex justify-between items-center shadow-lg"
@@ -56,7 +63,7 @@ export default function ProjectNavigation({ data }: ProjectNavigationProps) {
                   disabled={!data.prevProjectSlug}
                   onClick={() => {
                      if (data.prevProjectSlug) {
-                        window.location.href = `/portfolio/${data.prevProjectSlug}`
+                        handleNavigation(data.prevProjectSlug)
                      }
                   }}
                >
@@ -75,7 +82,7 @@ export default function ProjectNavigation({ data }: ProjectNavigationProps) {
                   disabled={!data.nextProjectSlug}
                   onClick={() => {
                      if (data.nextProjectSlug) {
-                        window.location.href = `/portfolio/${data.nextProjectSlug}`
+                        handleNavigation(data.nextProjectSlug)
                      }
                   }}
                >
