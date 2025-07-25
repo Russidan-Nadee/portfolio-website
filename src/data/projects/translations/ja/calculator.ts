@@ -14,7 +14,8 @@ export const calculatorData = {
       title: "高度な電卓アプリ",
       description: "PythonとTkinterで構築された機能豊富な電卓で、使いやすいUIを備えています",
       tags: ["Python", "Tkinter", "Desktop App", "GUI"],
-      githubUrl: "https://github.com/Russidan-Nadee/calculator_intern_test"
+      githubUrl: "https://github.com/Russidan-Nadee/calculator_intern_test",
+      demoUrl: "https://github.com/Russidan-Nadee/python-calculator/releases/download/v1.0/Python-Calculator.exe"
    },
 
    infoBar: {

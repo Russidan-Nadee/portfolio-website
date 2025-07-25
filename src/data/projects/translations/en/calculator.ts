@@ -14,6 +14,7 @@ export const calculatorData = {
       title: "Advanced Calculator App",
       description: "Feature-rich calculator built with Python and Tkinter with user-friendly UI",
       tags: ["Python", "Tkinter", "Desktop App", "GUI"],
+      demoUrl: "https://github.com/Russidan-Nadee/python-calculator/releases/download/v1.0/Python-Calculator.exe",
       githubUrl: "https://github.com/Russidan-Nadee/calculator_intern_test"
    },
 

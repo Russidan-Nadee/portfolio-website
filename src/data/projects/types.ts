@@ -18,6 +18,7 @@ export interface ProjectHeaderData {
    description: string
    tags: string[]
    githubUrl?: string
+   demoUrl?: string
 }
 
 // ProjectInfoBar Data

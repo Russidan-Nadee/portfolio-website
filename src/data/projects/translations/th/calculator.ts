@@ -14,6 +14,7 @@ export const calculatorData = {
       title: "แอปเครื่องคิดเลขขั้นสูง",
       description: "เครื่องคิดเลขที่มีฟีเจอร์ครบครัน สร้างด้วย Python และ Tkinter พร้อม UI ที่ใช้งานง่าย",
       tags: ["Python", "Tkinter", "Desktop App", "GUI"],
+      demoUrl: "https://github.com/Russidan-Nadee/python-calculator/releases/download/v1.0/Python-Calculator.exe",
       githubUrl: "https://github.com/Russidan-Nadee/calculator_intern_test"
    },
 
