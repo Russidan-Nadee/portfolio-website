@@ -6,6 +6,7 @@ import Link from 'next/link'
 import th from '../../../locales/th.json'
 import ja from '../../../locales/ja.json'
 import en from '../../../locales/en.json'
+import AnimatedSection from '../../components/ui/AnimatedSection'
 
 function PortfolioContent() {
    const [locale, setLocale] = useState('en')
@@ -163,74 +164,77 @@ function PortfolioContent() {
          <div className="w-full max-w-6xl mx-auto relative z-10">
 
             {/* Headline + Subtitle with fade-in-up animation */}
-            <div
-               className="mb-12 animate-fade-in-up"
-               style={{
-                  minHeight: '40vh',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  textAlign: 'center',
-                  color: 'var(--foreground)',
-                  animationDelay: '0.1s',
-                  animationFillMode: 'both'
-               }}
-            >
-               <h1 className="text-5xl md:text-7xl font-extrabold mb-2">
-                  {translations?.portfolio?.title || 'Portfolio'}
-               </h1>
-               <p className="text-sm md:text-base text-muted-foreground">
-                  {translations?.portfolio?.subtitle || 'Explore my latest projects and technical achievements'}
-               </p>
-            </div>
+            <AnimatedSection animationType="fadeInUp" delay={0.1} duration={1}>
+               <div
+                  className="mb-12 animate-fade-in-up"
+                  style={{
+                     minHeight: '40vh',
+                     display: 'flex',
+                     flexDirection: 'column',
+                     alignItems: 'center',
+                     justifyContent: 'center',
+                     textAlign: 'center',
+                     color: 'var(--foreground)',
+                     animationDelay: '0.1s',
+                     animationFillMode: 'both'
+                  }}
+               >
+                  <h1 className="text-5xl md:text-7xl font-extrabold mb-2">
+                     {translations?.portfolio?.title || 'Portfolio'}
+                  </h1>
+                  <p className="text-sm md:text-base text-muted-foreground">
+                     {translations?.portfolio?.subtitle || 'Explore my latest projects and technical achievements'}
+                  </p>
+               </div>
+            </AnimatedSection>
 
             {/* Filter buttons */}
-            <div className="flex flex-wrap justify-center gap-4 mb-12">
-               {filters.map(filter => (
-                  <button
-                     key={filter.key}
-                     onClick={() => setActiveFilter(filter.key)}
-                     className={`px-6 py-3 rounded-lg font-medium transition-all duration-300 hover:scale-105 border ${activeFilter === filter.key
-                        ? 'bg-foreground text-background border-foreground'
-                        : 'bg-card text-foreground border-border hover:bg-muted'
-                        }`}
-                     style={{
-                        backgroundColor: activeFilter === filter.key ? 'var(--foreground)' : 'var(--card)',
-                        color: activeFilter === filter.key ? 'var(--background)' : 'var(--foreground)',
-                        borderColor: 'var(--border)'
-                     }}
-                  >
-                     {filter.label}
-                  </button>
-               ))}
-            </div>
+            <AnimatedSection animationType="fadeInUp" delay={0.3} duration={0.8} stagger={true} staggerDelay={0.1}>
+               <div className="flex flex-wrap justify-center gap-4 mb-12">
+                  {filters.map(filter => (
+                     <button
+                        key={filter.key}
+                        onClick={() => setActiveFilter(filter.key)}
+                        className={`px-6 py-3 rounded-lg font-medium transition-all duration-300 hover:scale-105 border ${activeFilter === filter.key
+                           ? 'bg-foreground text-background border-foreground'
+                           : 'bg-card text-foreground border-border hover:bg-muted'
+                           }`}
+                        style={{
+                           backgroundColor: activeFilter === filter.key ? 'var(--foreground)' : 'var(--card)',
+                           color: activeFilter === filter.key ? 'var(--background)' : 'var(--foreground)',
+                           borderColor: 'var(--border)'
+                        }}
+                     >
+                        {filter.label}
+                     </button>
+                  ))}
+               </div>
 
-            {/* Project grid with staggered animations */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-               {filteredProjects.map((project, index) => (
-                  <div
-                     key={project.id}
-                     className={`flex flex-col ${visibleItems.has(index) ? 'animate-fade-in-up' : 'opacity-0'}`}
-                     style={{ animationDelay: `${0.1 + index * 0.05}s` }}
-                  >
-                     <Link href={getLocalizedLink(`/portfolio/${project.slug}`)}>
-                        <div
-                           className="project-card border rounded-lg overflow-hidden transition-all duration-500 ease-in-out relative cursor-pointer"
-                           style={{
-                              backgroundColor: 'var(--card)',
-                              borderColor: 'var(--border)'
-                           }}
-                        >
-                           <img
-                              src={project.image}
-                              alt={project.title}
-                              className="w-full h-auto block"
-                              onError={(e) => {
-                                 const target = e.target as HTMLImageElement
-                                 target.style.display = 'none'
-                                 if (target.parentElement) {
-                                    target.parentElement.innerHTML = `
+               {/* Project grid with staggered animations */}
+               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+                  {filteredProjects.map((project, index) => (
+                     <div
+                        key={project.id}
+                        className={`flex flex-col ${visibleItems.has(index) ? 'animate-fade-in-up' : 'opacity-0'}`}
+                        style={{ animationDelay: `${0.1 + index * 0.05}s` }}
+                     >
+                        <Link href={getLocalizedLink(`/portfolio/${project.slug}`)}>
+                           <div
+                              className="project-card border rounded-lg overflow-hidden transition-all duration-500 ease-in-out relative cursor-pointer"
+                              style={{
+                                 backgroundColor: 'var(--card)',
+                                 borderColor: 'var(--border)'
+                              }}
+                           >
+                              <img
+                                 src={project.image}
+                                 alt={project.title}
+                                 className="w-full h-auto block"
+                                 onError={(e) => {
+                                    const target = e.target as HTMLImageElement
+                                    target.style.display = 'none'
+                                    if (target.parentElement) {
+                                       target.parentElement.innerHTML = `
                                        <div class="w-full h-60 flex items-center justify-center" style="background-color: var(--muted); color: var(--muted-foreground)">
                                           <div class="text-center">
                                              <div class="text-4xl mb-2">📱</div>
@@ -238,41 +242,42 @@ function PortfolioContent() {
                                           </div>
                                        </div>
                                     `
-                                 }
-                              }}
-                           />
-                           <div className="absolute bottom-0 left-0 right-0 p-6 z-10 bg-gradient-to-t from-black/60 via-transparent to-transparent">
-                              <h3 className="text-white text-2xl font-bold mb-2 drop-shadow-lg">
-                                 {project.title}
-                              </h3>
-                              <p className="text-white/95 text-sm drop-shadow-md">
-                                 {project.tech}
-                              </p>
-                           </div>
-                        </div>
-                     </Link>
-
-                     {/* Tags */}
-                     <div className="flex gap-2 mt-4">
-                        {project.tags.map(tag => {
-                           const tagInfo = filters.find(f => f.key === tag)
-                           return tagInfo ? (
-                              <div
-                                 key={tag}
-                                 className="px-3 py-1 rounded text-xs font-medium transition-all duration-300 hover:opacity-80"
-                                 style={{
-                                    backgroundColor: 'var(--foreground)',
-                                    color: 'var(--background)'
+                                    }
                                  }}
-                              >
-                                 {tagInfo.label}
+                              />
+                              <div className="absolute bottom-0 left-0 right-0 p-6 z-10 bg-gradient-to-t from-black/60 via-transparent to-transparent">
+                                 <h3 className="text-white text-2xl font-bold mb-2 drop-shadow-lg">
+                                    {project.title}
+                                 </h3>
+                                 <p className="text-white/95 text-sm drop-shadow-md">
+                                    {project.tech}
+                                 </p>
                               </div>
-                           ) : null
-                        })}
+                           </div>
+                        </Link>
+
+                        {/* Tags */}
+                        <div className="flex gap-2 mt-4">
+                           {project.tags.map(tag => {
+                              const tagInfo = filters.find(f => f.key === tag)
+                              return tagInfo ? (
+                                 <div
+                                    key={tag}
+                                    className="px-3 py-1 rounded text-xs font-medium transition-all duration-300 hover:opacity-80"
+                                    style={{
+                                       backgroundColor: 'var(--foreground)',
+                                       color: 'var(--background)'
+                                    }}
+                                 >
+                                    {tagInfo.label}
+                                 </div>
+                              ) : null
+                           })}
+                        </div>
                      </div>
-                  </div>
-               ))}
-            </div>
+                  ))}
+               </div>
+            </AnimatedSection>
 
             {/* Enhanced Styles */}
             <style jsx global>{`

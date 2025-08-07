@@ -5,6 +5,7 @@ import "./globals.css";
 import { ThemeProvider } from "../components/layout/ThemeProvider";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
+import CustomCursor from "../components/ui/CustomCursor";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -51,6 +52,7 @@ export default function RootLayout({
               {children}
             </main>
             <Footer />
+            <CustomCursor />
           </div>
         </ThemeProvider>
       </body>

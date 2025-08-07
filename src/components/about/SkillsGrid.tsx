@@ -6,6 +6,7 @@ import ScrollTrigger from 'gsap/ScrollTrigger'
 import th from '../../../locales/th.json'
 import ja from '../../../locales/ja.json'
 import en from '../../../locales/en.json'
+import AnimatedSection from '../ui/AnimatedSection'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -316,24 +317,32 @@ export default function SkillsGrid({ translations }: SkillsGridProps) {
             />
          </div>
          <div className="max-w-6xl mx-auto px-8 relative z-10">
-            <div ref={headerRef} className="text-center mb-16">
-               <h2 ref={titleRef} className="text-4xl md:text-5xl font-bold mb-4" style={{ color: 'var(--foreground)' }}>
-                  {currentTranslations?.about?.skills?.title || 'Technical Skills & Expertise'}
-               </h2>
-               <p ref={subtitleRef} className="text-lg opacity-70" style={{ color: 'var(--muted-foreground)' }}>
-                  {currentTranslations?.about?.skills?.subtitle || 'Technologies and tools I work with'}
-               </p>
-            </div>
+            <AnimatedSection animationType="fadeInUp" delay={0.2} duration={1}>
+               <div ref={headerRef} className="text-center mb-16">
+                  <h2 ref={titleRef} className="text-4xl md:text-5xl font-bold mb-4" style={{ color: 'var(--foreground)' }}>
+                     {currentTranslations?.about?.skills?.title || 'Technical Skills & Expertise'}
+                  </h2>
+                  <p ref={subtitleRef} className="text-lg opacity-70" style={{ color: 'var(--muted-foreground)' }}>
+                     {currentTranslations?.about?.skills?.subtitle || 'Technologies and tools I work with'}
+                  </p>
+               </div>
+            </AnimatedSection>
 
             {/* ...ใน return */}
-            {categorizedSkillRows.map(({ category, rows }) => (
-               <div key={category} className="mb-12">
-                  <h3
-                     className="text-2xl font-semibold mb-6 capitalize text-center"  // <-- กึ่งกลาง
-                     style={{ color: 'var(--foreground)' }}
-                  >
-                     {category}
-                  </h3>
+            {categorizedSkillRows.map(({ category, rows }, categoryIndex) => (
+               <AnimatedSection 
+                  key={category} 
+                  animationType="fadeInUp" 
+                  delay={0.5 + (categoryIndex * 0.2)} 
+                  duration={0.8}
+               >
+                  <div className="mb-12">
+                     <h3
+                        className="text-2xl font-semibold mb-6 capitalize text-center"
+                        style={{ color: 'var(--foreground)' }}
+                     >
+                        {category}
+                     </h3>
                   <div className="space-y-8">
                      {rows.map((row, rowIndex) => (
                         <div
@@ -344,7 +353,7 @@ export default function SkillsGrid({ translations }: SkillsGridProps) {
                            {row.map((skill, skillIndex) => (
                               <div
                                  key={skillIndex}
-                                 className="skill-card-container"
+                                 className="skill-card-container cursor-pointer"
                               >
                                  <div className="skill-card flip-card">
                                     {/* Front of the card */}
@@ -416,7 +425,8 @@ export default function SkillsGrid({ translations }: SkillsGridProps) {
                         </div>
                      ))}
                   </div>
-               </div>
+                  </div>
+               </AnimatedSection>
             ))}
          </div>
 

@@ -9,6 +9,7 @@ import { MdEmail } from 'react-icons/md'
 import th from '../../../locales/th.json'
 import ja from '../../../locales/ja.json'
 import en from '../../../locales/en.json'
+import AnimatedSection from '../ui/AnimatedSection'
 
 interface CreativeHeroProps {
    translations?: any
