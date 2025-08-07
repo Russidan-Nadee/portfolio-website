@@ -1,7 +1,7 @@
 // src/app/portfolio/page.tsx
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import th from '../../../locales/th.json'
 import ja from '../../../locales/ja.json'
@@ -11,6 +11,8 @@ function PortfolioContent() {
    const [locale, setLocale] = useState('en')
    const [mounted, setMounted] = useState(false)
    const [visibleItems, setVisibleItems] = useState<Set<number>>(new Set())
+   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+   const portfolioRef = useRef<HTMLDivElement>(null)
 
    const getTranslations = (locale: string) => {
       switch (locale) {
@@ -110,11 +112,55 @@ function PortfolioContent() {
       return () => clearTimeout(timer)
    }, [locale, activeFilter, filteredProjects])
 
+   // Mouse tracking for background elements
+   useEffect(() => {
+      const handleMouseMove = (e: MouseEvent): void => {
+         if (portfolioRef.current) {
+            const rect = portfolioRef.current.getBoundingClientRect()
+            const x = (e.clientX - rect.left - rect.width / 2) / rect.width
+            const y = (e.clientY - rect.top - rect.height / 2) / rect.height
+            setMousePosition({ x: x * 10, y: y * 10 })
+         }
+      }
+
+      const section = portfolioRef.current
+      if (section) {
+         section.addEventListener('mousemove', handleMouseMove)
+         return () => section.removeEventListener('mousemove', handleMouseMove)
+      }
+   }, [])
+
    if (!mounted) return null
 
    return (
-      <div className="min-h-screen p-8" style={{ backgroundColor: 'var(--background)' }}>
-         <div className="w-full max-w-6xl mx-auto">
+      <div ref={portfolioRef} className="min-h-screen p-8 relative overflow-hidden" style={{ backgroundColor: 'var(--background)' }}>
+         {/* Floating background elements */}
+         <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <div
+               className="absolute top-20 left-10 w-20 h-20 rounded-full floating-element"
+               style={{
+                  transform: `translate(${mousePosition.x * 0.3}px, ${mousePosition.y * 0.3}px)`,
+                  animationDelay: '0s'
+               }}
+            />
+            <div
+               className="absolute bottom-32 right-20 w-16 h-16 floating-element"
+               style={{
+                  clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)',
+                  transform: `translate(${mousePosition.x * -0.2}px, ${mousePosition.y * -0.2}px)`,
+                  animationDelay: '1s'
+               }}
+            />
+            <div
+               className="absolute top-1/2 right-1/4 w-12 h-12 floating-element"
+               style={{
+                  clipPath: 'polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%)',
+                  transform: `translate(${mousePosition.x * 0.5}px, ${mousePosition.y * 0.5}px)`,
+                  animationDelay: '2s'
+               }}
+            />
+         </div>
+         <div className="w-full max-w-6xl mx-auto relative z-10">
 
             {/* Headline + Subtitle with fade-in-up animation */}
             <div
@@ -170,7 +216,7 @@ function PortfolioContent() {
                   >
                      <Link href={getLocalizedLink(`/portfolio/${project.slug}`)}>
                         <div
-                           className="border rounded-lg overflow-hidden hover:shadow-xl hover:scale-105 transition-all duration-500 ease-in-out relative cursor-pointer"
+                           className="project-card border rounded-lg overflow-hidden transition-all duration-500 ease-in-out relative cursor-pointer"
                            style={{
                               backgroundColor: 'var(--card)',
                               borderColor: 'var(--border)'
@@ -195,11 +241,11 @@ function PortfolioContent() {
                                  }
                               }}
                            />
-                           <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6">
-                              <h3 className="text-white text-2xl font-bold mb-2">
+                           <div className="absolute bottom-0 left-0 right-0 p-6 z-10 bg-gradient-to-t from-black/60 via-transparent to-transparent">
+                              <h3 className="text-white text-2xl font-bold mb-2 drop-shadow-lg">
                                  {project.title}
                               </h3>
-                              <p className="text-white/90 text-sm">
+                              <p className="text-white/95 text-sm drop-shadow-md">
                                  {project.tech}
                               </p>
                            </div>
@@ -228,12 +274,12 @@ function PortfolioContent() {
                ))}
             </div>
 
-            {/* Global Styles */}
+            {/* Enhanced Styles */}
             <style jsx global>{`
               @keyframes fade-in-up {
                 from {
                   opacity: 0;
-                  transform: translateY(20px);
+                  transform: translateY(30px);
                 }
                 to {
                   opacity: 1;
@@ -241,10 +287,63 @@ function PortfolioContent() {
                 }
               }
 
+              @keyframes float {
+                0%, 100% { transform: translateY(0px); }
+                50% { transform: translateY(-8px); }
+              }
+
+              @keyframes slideInScale {
+                from {
+                  opacity: 0;
+                  transform: scale(0.8) translateY(40px);
+                }
+                to {
+                  opacity: 1;
+                  transform: scale(1) translateY(0);
+                }
+              }
+
               .animate-fade-in-up {
-                animation: fade-in-up 0.6s ease-out;
+                animation: slideInScale 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
                 animation-fill-mode: both;
               }
+
+              .floating-element {
+                animation: float 3s ease-in-out infinite;
+                background: var(--foreground) !important;
+                opacity: 0.05;
+              }
+
+              .project-card {
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+              }
+
+              .project-card:hover {
+                transform: translateY(-12px) scale(1.02);
+                box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+              }
+
+              .project-card::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(
+                  90deg,
+                  transparent,
+                  rgba(255, 255, 255, 0.1),
+                  transparent
+                );
+                transition: left 0.6s ease;
+                z-index: 5;
+              }
+
+              .project-card:hover::before {
+                left: 100%;
+              }
+
 
               /* Smooth transitions for all interactive elements */
               * {
