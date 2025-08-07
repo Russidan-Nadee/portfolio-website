@@ -16,6 +16,7 @@ interface Project {
    filter: string
    isCenter: boolean
    image: string
+   slug: string
 }
 
 export default function ProjectsShowcase({ translations }: ProjectsShowcaseProps) {
@@ -41,7 +42,8 @@ export default function ProjectsShowcase({ translations }: ProjectsShowcaseProps
          tech: translations?.home?.projectsShowcase?.projects?.assetManagement?.tech || 'Flutter, Node.js, Express, MySQL',
          filter: 'grayscale(100%) contrast(1.2)',
          isCenter: false,
-         image: '/images/projects/asset-dashboard.jpg'
+         image: '/images/projects/asset-dashboard.jpg',
+         slug: 'asset-management'
       },
       {
          id: 'calculator-app',
@@ -49,7 +51,8 @@ export default function ProjectsShowcase({ translations }: ProjectsShowcaseProps
          tech: translations?.home?.projectsShowcase?.projects?.calculator?.tech || 'Python, Tkinter',
          filter: 'none',
          isCenter: true,
-         image: '/images/projects/calculator-app.jpg'
+         image: '/images/projects/calculator-app.jpg',
+         slug: 'calculator'
       },
       {
          id: 'portfolio-website',
@@ -57,7 +60,8 @@ export default function ProjectsShowcase({ translations }: ProjectsShowcaseProps
          tech: translations?.home?.projectsShowcase?.projects?.portfolio?.tech || 'Next.js, TypeScript, Tailwind CSS',
          filter: 'grayscale(100%) contrast(1.2)',
          isCenter: false,
-         image: '/images/projects/portfolio-website.jpg'
+         image: '/images/projects/portfolio-website.jpg',
+         slug: 'portfolio-website'
       }
    ]
 
@@ -581,7 +585,7 @@ export default function ProjectsShowcase({ translations }: ProjectsShowcaseProps
                                     filter: isMobile ? 'none' : (index === centerIndex ? 'none' : 'grayscale(100%) contrast(1.2)')
                                  }}
                                  onClick={() => {
-                                    window.location.href = '/portfolio'
+                                    window.location.href = `/portfolio/${project.slug}`
                                  }}
                               >
                                  <img
