@@ -2,6 +2,9 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { MdWork, MdSchool, MdCode, MdBusiness, MdTrendingUp } from 'react-icons/md'
+import { HiLightningBolt } from 'react-icons/hi'
+import { FaGraduationCap, FaBriefcase, FaLaptopCode, FaBuilding, FaRocket, FaStar } from 'react-icons/fa'
 import th from '../../../locales/th.json'
 import ja from '../../../locales/ja.json'
 import en from '../../../locales/en.json'
@@ -63,12 +66,47 @@ export default function Timeline({ translations }: TimelineProps) {
    const getCurrentText = (locale: string) => {
       switch (locale) {
          case 'th':
-            return '🔥 ปัจจุบัน'
+            return 'ปัจจุบัน'
          case 'ja':
-            return '🔥 現在'
+            return '現在'
          default:
-            return '🔥 Current'
+            return 'Current'
       }
+   }
+
+   // Get professional icon based on type and content
+   const getTimelineIcon = (item: any, index: number) => {
+      // Check for current item
+      if (item.isCurrent) {
+         return <FaRocket className="text-blue-500" />
+      }
+      
+      // Check item type or content to determine appropriate icon
+      const title = item.title?.toLowerCase() || ''
+      const company = item.company?.toLowerCase() || ''
+      
+      if (activeTab === 'education') {
+         if (title.includes('degree') || title.includes('bachelor') || title.includes('master')) {
+            return <FaGraduationCap className="text-purple-600" />
+         }
+         return <MdSchool className="text-blue-600" />
+      }
+      
+      if (activeTab === 'work') {
+         if (title.includes('developer') || title.includes('engineer') || title.includes('programmer')) {
+            return <FaLaptopCode className="text-green-600" />
+         }
+         if (title.includes('manager') || title.includes('lead') || title.includes('senior')) {
+            return <MdBusiness className="text-orange-600" />
+         }
+         if (title.includes('intern') || title.includes('junior')) {
+            return <MdCode className="text-cyan-600" />
+         }
+         return <FaBriefcase className="text-gray-600" />
+      }
+      
+      // Default fallback
+      return <FaStar className="text-yellow-500" />
    }
 
    useEffect(() => {
@@ -324,25 +362,27 @@ export default function Timeline({ translations }: TimelineProps) {
                   >
                      <button
                         onClick={() => setActiveTab('work')}
-                        className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 ${activeTab === 'work' ? 'shadow-md' : 'hover:opacity-70'
+                        className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 flex items-center gap-2 ${activeTab === 'work' ? 'shadow-md' : 'hover:opacity-70'
                            }`}
                         style={{
                            backgroundColor: activeTab === 'work' ? 'var(--card)' : 'transparent',
                            color: activeTab === 'work' ? 'var(--foreground)' : 'var(--muted-foreground)',
                         }}
                      >
-                        💼 {currentTranslations?.about?.timeline?.tabs?.work || 'Work Experience'}
+                        <FaBriefcase className="text-blue-600" />
+                        {currentTranslations?.about?.timeline?.tabs?.work || 'Work Experience'}
                      </button>
                      <button
                         onClick={() => setActiveTab('education')}
-                        className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 ${activeTab === 'education' ? 'shadow-md' : 'hover:opacity-70'
+                        className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 flex items-center gap-2 ${activeTab === 'education' ? 'shadow-md' : 'hover:opacity-70'
                            }`}
                         style={{
                            backgroundColor: activeTab === 'education' ? 'var(--card)' : 'transparent',
                            color: activeTab === 'education' ? 'var(--foreground)' : 'var(--muted-foreground)',
                         }}
                      >
-                        🎓 {currentTranslations?.about?.timeline?.tabs?.education || 'Education'}
+                        <FaGraduationCap className="text-purple-600" />
+                        {currentTranslations?.about?.timeline?.tabs?.education || 'Education'}
                      </button>
                   </div>
                </div>
@@ -396,12 +436,13 @@ export default function Timeline({ translations }: TimelineProps) {
                                     >
                                        <div className="mb-2">
                                           <span
-                                             className="inline-block px-3 py-1 text-sm font-medium rounded-full"
+                                             className="inline-flex items-center gap-2 px-3 py-1 text-sm font-medium rounded-full"
                                              style={{
                                                 backgroundColor: item.isCurrent ? 'var(--foreground)' : 'var(--muted)',
                                                 color: item.isCurrent ? 'var(--background)' : 'var(--muted-foreground)'
                                              }}
                                           >
+                                             {item.isCurrent && <HiLightningBolt className="text-yellow-400" />}
                                              {item.isCurrent ? getCurrentText(locale) : item.period}
                                           </span>
                                           {item.isCurrent && isVisible && (
@@ -463,14 +504,14 @@ export default function Timeline({ translations }: TimelineProps) {
 
                                  {/* Icon */}
                                  <div
-                                    className={`timeline-icon absolute left-1/2 w-16 h-16 rounded-full flex items-center justify-center text-2xl z-20 ${isVisible ? 'visible' : ''}`}
+                                    className={`timeline-icon absolute left-1/2 w-16 h-16 rounded-full flex items-center justify-center text-xl z-20 ${isVisible ? 'visible' : ''}`}
                                     style={{
                                        backgroundColor: 'var(--card)',
                                        border: item.isCurrent ? '4px solid var(--foreground)' : '3px solid var(--foreground)',
-                                       boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+                                       boxShadow: item.isCurrent ? '0 0 20px rgba(59, 130, 246, 0.4), 0 4px 6px -1px rgba(0, 0, 0, 0.1)' : '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
                                     }}
                                  >
-                                    {item.icon || '📝'}
+                                    {getTimelineIcon(item, index)}
                                  </div>
                               </div>
                            )

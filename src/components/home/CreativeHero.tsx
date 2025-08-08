@@ -190,6 +190,10 @@ export default function CreativeHero({ translations: propTranslations }: Creativ
                     animation: ${isVisible ? 'fadeInUp 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1.2s both' : 'none'};
                 }
 
+                .social-icons {
+                    animation: ${isVisible ? 'fadeInUp 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1.4s both' : 'none'};
+                }
+
                 .floating-element {
                     animation: float 4s ease-in-out infinite;
                 }
@@ -359,7 +363,7 @@ export default function CreativeHero({ translations: propTranslations }: Creativ
                            >
                               {translations?.home?.location || 'based in Bangkok, Thailand.'}
                            </p>
-                           <div className="flex items-center gap-6">
+                           <div className="flex items-center gap-6 social-icons">
                               {socialLinks.map((social, index) => (
                                  <div key={index} className="social-icon">
                                     {social.href ? (
@@ -423,7 +427,7 @@ export default function CreativeHero({ translations: propTranslations }: Creativ
                {/* Desktop: Right side - Social Icons below outline text */}
                <div className="absolute top-1/2 z-40 transform translate-y-32 md:translate-y-40 lg:translate-y-48 hidden lg:block"
                   style={{ right: 'clamp(1rem, 18vw, 20rem)' }}>
-                  <div className="flex items-center gap-6">
+                  <div className="flex items-center gap-6 social-icons">
                      {socialLinks.map((social, index) => (
                         <div key={index} className="social-icon">
                            {social.href ? (

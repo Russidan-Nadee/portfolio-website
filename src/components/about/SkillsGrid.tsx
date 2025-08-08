@@ -401,7 +401,7 @@ export default function SkillsGrid({ translations }: SkillsGridProps) {
                                           className="text-sm mb-6 opacity-90 leading-relaxed px-2"
                                           style={{ color: 'var(--muted-foreground)' }}
                                        >
-                                          {skill.descriptions[locale] || skill.descriptions.en}
+                                          {skill.descriptions[locale as keyof typeof skill.descriptions] || skill.descriptions.en}
                                        </p>
                                        <button
                                           onClick={e => {

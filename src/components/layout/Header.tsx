@@ -115,33 +115,33 @@ export default function Header() {
                   </Link>
                   <Link
                      href={getLocalizedLink('/about')}
-                     className={`hover:opacity-70 pb-1 transition-all ${pathname === '/about' ? 'border-b-2' : ''
+                     className={`hover:opacity-70 pb-1 transition-all ${pathname.startsWith('/about') ? 'border-b-2' : ''
                         }`}
                      style={{
                         color: 'var(--foreground)',
-                        borderColor: pathname === '/about' ? 'var(--foreground)' : 'transparent'
+                        borderColor: pathname.startsWith('/about') ? 'var(--foreground)' : 'transparent'
                      }}
                   >
                      {translations?.header?.nav?.about || 'About'}
                   </Link>
                   <Link
                      href={getLocalizedLink('/portfolio')}
-                     className={`hover:opacity-70 pb-1 transition-all ${pathname === '/portfolio' ? 'border-b-2' : ''
+                     className={`hover:opacity-70 pb-1 transition-all ${pathname.startsWith('/portfolio') ? 'border-b-2' : ''
                         }`}
                      style={{
                         color: 'var(--foreground)',
-                        borderColor: pathname === '/portfolio' ? 'var(--foreground)' : 'transparent'
+                        borderColor: pathname.startsWith('/portfolio') ? 'var(--foreground)' : 'transparent'
                      }}
                   >
                      {translations?.header?.nav?.portfolio || 'Portfolio'}
                   </Link>
                   <Link
                      href={getLocalizedLink('/contact')}
-                     className={`hover:opacity-70 pb-1 transition-all ${pathname === '/contact' ? 'border-b-2' : ''
+                     className={`hover:opacity-70 pb-1 transition-all ${pathname.startsWith('/contact') ? 'border-b-2' : ''
                         }`}
                      style={{
                         color: 'var(--foreground)',
-                        borderColor: pathname === '/contact' ? 'var(--foreground)' : 'transparent'
+                        borderColor: pathname.startsWith('/contact') ? 'var(--foreground)' : 'transparent'
                      }}
                   >
                      {translations?.header?.nav?.contact || 'Contact'}
@@ -238,12 +238,12 @@ export default function Header() {
                <Link
                   href={getLocalizedLink('/about')}
                   onClick={closeMenu}
-                  className={`text-lg py-3 px-4 rounded-lg transition-all hover:bg-opacity-80 ${pathname === '/about' ? 'border-l-4' : ''
+                  className={`text-lg py-3 px-4 rounded-lg transition-all hover:bg-opacity-80 ${pathname.startsWith('/about') ? 'border-l-4' : ''
                      }`}
                   style={{
                      color: 'var(--foreground)',
-                     backgroundColor: pathname === '/about' ? 'var(--muted)' : 'transparent',
-                     borderColor: pathname === '/about' ? 'var(--foreground)' : 'transparent'
+                     backgroundColor: pathname.startsWith('/about') ? 'var(--muted)' : 'transparent',
+                     borderColor: pathname.startsWith('/about') ? 'var(--foreground)' : 'transparent'
                   }}
                >
                   {translations?.header?.nav?.about || 'About'}
@@ -251,12 +251,12 @@ export default function Header() {
                <Link
                   href={getLocalizedLink('/portfolio')}
                   onClick={closeMenu}
-                  className={`text-lg py-3 px-4 rounded-lg transition-all hover:bg-opacity-80 ${pathname === '/portfolio' ? 'border-l-4' : ''
+                  className={`text-lg py-3 px-4 rounded-lg transition-all hover:bg-opacity-80 ${pathname.startsWith('/portfolio') ? 'border-l-4' : ''
                      }`}
                   style={{
                      color: 'var(--foreground)',
-                     backgroundColor: pathname === '/portfolio' ? 'var(--muted)' : 'transparent',
-                     borderColor: pathname === '/portfolio' ? 'var(--foreground)' : 'transparent'
+                     backgroundColor: pathname.startsWith('/portfolio') ? 'var(--muted)' : 'transparent',
+                     borderColor: pathname.startsWith('/portfolio') ? 'var(--foreground)' : 'transparent'
                   }}
                >
                   {translations?.header?.nav?.portfolio || 'Portfolio'}
@@ -264,12 +264,12 @@ export default function Header() {
                <Link
                   href={getLocalizedLink('/contact')}
                   onClick={closeMenu}
-                  className={`text-lg py-3 px-4 rounded-lg transition-all hover:bg-opacity-80 ${pathname === '/contact' ? 'border-l-4' : ''
+                  className={`text-lg py-3 px-4 rounded-lg transition-all hover:bg-opacity-80 ${pathname.startsWith('/contact') ? 'border-l-4' : ''
                      }`}
                   style={{
                      color: 'var(--foreground)',
-                     backgroundColor: pathname === '/contact' ? 'var(--muted)' : 'transparent',
-                     borderColor: pathname === '/contact' ? 'var(--foreground)' : 'transparent'
+                     backgroundColor: pathname.startsWith('/contact') ? 'var(--muted)' : 'transparent',
+                     borderColor: pathname.startsWith('/contact') ? 'var(--foreground)' : 'transparent'
                   }}
                >
                   {translations?.header?.nav?.contact || 'Contact'}
