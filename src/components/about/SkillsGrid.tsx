@@ -17,6 +17,13 @@ interface SkillsGridProps {
 // แยกหมวดหมู่ skills with multilingual descriptions
 const skillsByCategory = {
    frontend: [
+      { name: 'JavaScript', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript', 
+        descriptions: {
+          en: 'Dynamic programming language for interactive web applications',
+          th: 'ภาษาโปรแกรมมิ่งแบบไดนามิกสำหรับแอปพลิเคชันเว็บแบบอินเทอร์แอคทีฟ',
+          ja: 'インタラクティブなWebアプリケーション用の動的プログラミング言語'
+        }
+      },
       { name: 'TypeScript', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg', url: 'https://www.typescriptlang.org', 
         descriptions: {
           en: 'Strongly typed JavaScript for scalable applications',

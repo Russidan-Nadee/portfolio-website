@@ -26,6 +26,8 @@ export default function PersonalIntro({ translations }: PersonalIntroProps) {
    const [displayedRole, setDisplayedRole] = useState('')
    const [isTyping, setIsTyping] = useState(false)
    const [showContentReveal, setShowContentReveal] = useState(false)
+   const [currentRoleIndex, setCurrentRoleIndex] = useState(0)
+   const [isDeleting, setIsDeleting] = useState(false)
 
    // Helper function to get translations based on locale
    const getTranslations = (locale: string) => {
@@ -94,28 +96,84 @@ export default function PersonalIntro({ translations }: PersonalIntroProps) {
       return () => observer.disconnect()
    }, [isVisible])
 
-   // Typing animation effect
+   // Define roles based on current language
+   const getRoles = (locale: string) => {
+      switch (locale) {
+         case 'th':
+            return [
+               'นักพัฒนา',
+               'วิศวกรซอฟต์แวร์',
+               'นักพัฒนาแอปพลิเคชัน',
+               'นักพัฒนาเว็บไซต์',
+               'นักพัฒนาแอปมือถือ'
+            ]
+         case 'ja':
+            return [
+               '開発者',
+               'ソフトウェアエンジニア',
+               'アプリ開発者',
+               'ウェブ開発者',
+               'モバイル開発者'
+            ]
+         default:
+            return [
+               'Developer',
+               'Full-Stack Engineer',
+               'Mobile Developer',
+               'Web Developer',
+               'Software Engineer'
+            ]
+      }
+   }
+
+   const roles = getRoles(locale)
+
+   // Typing animation effect with continuous loop
    useEffect(() => {
-      if (!isTyping || !currentTranslations?.about?.role) return
+      if (!isTyping) return
 
-      const roleText = currentTranslations.about.role
-      let index = 0
+      let timeoutId: NodeJS.Timeout
 
-      const timer = setInterval(() => {
-         if (index <= roleText.length) {
-            setDisplayedRole(roleText.slice(0, index))
-            index++
+      const typeWriter = () => {
+         const currentRole = roles[currentRoleIndex]
+
+         if (!isDeleting) {
+            // Typing phase
+            if (displayedRole.length < currentRole.length) {
+               setDisplayedRole(currentRole.slice(0, displayedRole.length + 1))
+               timeoutId = setTimeout(typeWriter, 150)
+            } else {
+               // Finished typing, wait then start deleting
+               timeoutId = setTimeout(() => {
+                  setIsDeleting(true)
+                  typeWriter()
+               }, 2000)
+            }
          } else {
-            clearInterval(timer)
-            // Wait 0.5s before starting content reveal animation
-            setTimeout(() => {
-               setShowContentReveal(true)
-            }, 500)
+            // Deleting phase
+            if (displayedRole.length > 0) {
+               setDisplayedRole(displayedRole.slice(0, -1))
+               timeoutId = setTimeout(typeWriter, 50)
+            } else {
+               // Finished deleting, move to next role
+               setIsDeleting(false)
+               setCurrentRoleIndex((prev) => (prev + 1) % roles.length)
+               timeoutId = setTimeout(typeWriter, 500)
+            }
          }
-      }, 100)
+      }
 
-      return () => clearInterval(timer)
-   }, [isTyping, currentTranslations?.about?.role])
+      timeoutId = setTimeout(typeWriter, 100)
+
+      // Show content reveal after first role is typed
+      if (!showContentReveal && displayedRole === roles[0]) {
+         setTimeout(() => {
+            setShowContentReveal(true)
+         }, 500)
+      }
+
+      return () => clearTimeout(timeoutId)
+   }, [isTyping, currentRoleIndex, isDeleting, displayedRole, showContentReveal, roles])
 
    // Mouse tracking for parallax effect
    useEffect(() => {
@@ -141,6 +199,8 @@ export default function PersonalIntro({ translations }: PersonalIntroProps) {
       setDisplayedRole('')
       setIsTyping(false)
       setShowContentReveal(false)
+      setCurrentRoleIndex(0)
+      setIsDeleting(false)
    }, [locale])
 
    return (
@@ -187,7 +247,7 @@ export default function PersonalIntro({ translations }: PersonalIntroProps) {
                   transform: 'translateX(-50px)',
                   opacity: 0,
                   color: 'var(--foreground)',
-                  minHeight: '400px' // Fixed height to prevent layout shifts
+                  minHeight: '500px' // Fixed height to prevent layout shifts
                }}
             >
                <p
@@ -201,14 +261,10 @@ export default function PersonalIntro({ translations }: PersonalIntroProps) {
                </p>
 
                {/* Fixed container for Developer text */}
-               <div className="relative" style={{ height: '200px', transform: 'translateZ(0)' }}>
+               <div className="relative mb-8" style={{ minHeight: '120px', transform: 'translateZ(0)' }}>
                   <h1
                      className="text-5xl md:text-7xl lg:text-8xl font-bold leading-tight"
                      style={{
-                        position: 'absolute',
-                        top: '50px',
-                        left: '0',
-                        width: '100%',
                         transform: showContentReveal ? 'translate3d(0, -10px, 0)' : 'translate3d(0, 0, 0)',
                         transition: 'transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
                         willChange: 'transform',
@@ -227,7 +283,7 @@ export default function PersonalIntro({ translations }: PersonalIntroProps) {
                      >
                         {displayedRole}
                         {/* Typing Cursor */}
-                        {isTyping && displayedRole.length < (currentTranslations?.about?.role?.length || 0) && (
+                        {isTyping && (
                            <span
                               className="inline-block w-1 ml-1 animate-pulse"
                               style={{
@@ -244,9 +300,8 @@ export default function PersonalIntro({ translations }: PersonalIntroProps) {
                <div
                   className="overflow-hidden"
                   style={{
-                     height: showContentReveal ? 'auto' : '0',
-                     transition: 'height 0.6s ease-out 0.2s',
-                     marginTop: '20px' // Add some space after Developer text
+                     maxHeight: showContentReveal ? '200px' : '0',
+                     transition: 'max-height 0.6s ease-out 0.2s'
                   }}
                >
                   <p
@@ -263,11 +318,10 @@ export default function PersonalIntro({ translations }: PersonalIntroProps) {
 
                {/* Subtle Skills Highlight with line-by-line reveal */}
                <div
-                  className="overflow-hidden"
+                  className="overflow-hidden mt-6"
                   style={{
-                     height: showContentReveal ? 'auto' : '0',
-                     transition: 'height 0.6s ease-out 0.4s',
-                     marginTop: '20px'
+                     maxHeight: showContentReveal ? '100px' : '0',
+                     transition: 'max-height 0.6s ease-out 0.4s'
                   }}
                >
                   <div
