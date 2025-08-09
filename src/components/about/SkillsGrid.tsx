@@ -361,7 +361,7 @@ export default function SkillsGrid({ translations }: SkillsGridProps) {
                                        className="flip-card-front"
                                        style={{ backgroundColor: 'var(--card)', borderColor: 'var(--border)' }}
                                     >
-                                       <div className="w-16 h-16 flex items-center justify-center mb-6">
+                                       <div className="w-24 h-24 flex items-center justify-center mb-6">
                                           <img
                                              src={skill.icon}
                                              alt={skill.name}
