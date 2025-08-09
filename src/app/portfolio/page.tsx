@@ -164,7 +164,7 @@ function PortfolioContent() {
          <div className="w-full max-w-6xl mx-auto relative z-10">
 
             {/* Headline + Subtitle with fade-in-up animation */}
-            <AnimatedSection animationType="fadeInUp" delay={0.1} duration={1}>
+            <AnimatedSection animationType="fadeInUp" delay={0} duration={1}>
                <div
                   className="mb-12 animate-fade-in-up"
                   style={{
@@ -189,7 +189,7 @@ function PortfolioContent() {
             </AnimatedSection>
 
             {/* Filter buttons */}
-            <AnimatedSection animationType="fadeInUp" delay={0.3} duration={0.8} stagger={true} staggerDelay={0.1}>
+            <AnimatedSection animationType="fadeInUp" delay={0} duration={0.8} stagger={true} staggerDelay={0}>
                <div className="flex flex-wrap justify-center gap-4 mb-12">
                   {filters.map(filter => (
                      <button

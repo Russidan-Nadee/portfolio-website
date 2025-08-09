@@ -24,12 +24,12 @@ const AnimatedSection: React.FC<AnimatedSectionProps> = ({
   threshold = 0.1,
   triggerOnce = true,
   stagger = false,
-  staggerDelay = 0.1
+  staggerDelay = 0
 }) => {
-  const { ref, isVisible } = useScrollAnimation({ 
-    threshold, 
+  const { ref, isVisible } = useScrollAnimation({
+    threshold,
     triggerOnce,
-    delay 
+    delay
   })
 
   const getAnimationClass = () => {
@@ -42,10 +42,10 @@ const AnimatedSection: React.FC<AnimatedSectionProps> = ({
     if (!stagger || !React.Children.count(children)) return children
 
     return React.Children.map(children, (child, index) => (
-      <div 
+      <div
         className="animated-section-child"
         style={{
-          animationDelay: `${delay + (index * staggerDelay)}s`,
+          animationDelay: `${delay}s`,
           animationDuration: `${duration}s`
         }}
       >
@@ -64,7 +64,7 @@ const AnimatedSection: React.FC<AnimatedSectionProps> = ({
       }}
     >
       {stagger ? staggerChildren() : children}
-      
+
       <style jsx>{`
         .animated-section {
           opacity: 0;

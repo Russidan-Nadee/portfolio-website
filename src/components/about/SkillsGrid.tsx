@@ -317,7 +317,7 @@ export default function SkillsGrid({ translations }: SkillsGridProps) {
             />
          </div>
          <div className="max-w-6xl mx-auto px-8 relative z-10">
-            <AnimatedSection animationType="fadeInUp" delay={0.2} duration={1}>
+            <AnimatedSection animationType="fadeInUp" delay={0} duration={1}>
                <div ref={headerRef} className="text-center mb-16">
                   <h2 ref={titleRef} className="text-4xl md:text-5xl font-bold mb-4" style={{ color: 'var(--foreground)' }}>
                      {currentTranslations?.about?.skills?.title || 'Technical Skills & Expertise'}
@@ -333,7 +333,7 @@ export default function SkillsGrid({ translations }: SkillsGridProps) {
                <AnimatedSection 
                   key={category} 
                   animationType="fadeInUp" 
-                  delay={0.5 + (categoryIndex * 0.2)} 
+                  delay={0} 
                   duration={0.8}
                >
                   <div className="mb-12">
