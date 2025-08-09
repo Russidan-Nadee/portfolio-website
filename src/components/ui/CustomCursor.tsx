@@ -36,6 +36,15 @@ export default function CustomCursor() {
     }
   }
 
+  // Secondary cursor color (no blend mode)
+  const getFollowerColor = () => {
+    if (theme === 'light') {
+      return '#000000' // Black in light theme
+    } else {
+      return 'var(--foreground)' // Same as main in dark theme
+    }
+  }
+
   // Update cursor position
   const updateCursorPosition = useCallback((e: MouseEvent) => {
     setPosition({ x: e.clientX, y: e.clientY })
@@ -235,6 +244,7 @@ export default function CustomCursor() {
           justifyContent: 'center',
           fontSize: '10px',
           opacity: cursorState.isHovering ? 0.9 : 0.6,
+          mixBlendMode: 'difference',
         }}
       >
         {getCursorContent()}
