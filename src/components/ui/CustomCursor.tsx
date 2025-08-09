@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState, useCallback } from 'react'
+import { useTheme } from '../layout/ThemeProvider'
 
 interface CursorPosition {
   x: number
@@ -14,6 +15,7 @@ interface CursorState {
 }
 
 export default function CustomCursor() {
+  const { theme } = useTheme()
   const [mounted, setMounted] = useState(false)
   const [position, setPosition] = useState<CursorPosition>({ x: 0, y: 0 })
   const [cursorState, setCursorState] = useState<CursorState>({
@@ -22,6 +24,17 @@ export default function CustomCursor() {
     scale: 1
   })
   const [isVisible, setIsVisible] = useState(true)
+
+  // Theme-specific cursor colors
+  const getCursorColor = () => {
+    if (theme === 'light') {
+      // White cursor with difference blend mode creates black-to-white effect
+      return '#ffffff'
+    } else {
+      // Dark theme uses CSS variable
+      return 'var(--foreground)'
+    }
+  }
 
   // Update cursor position
   const updateCursorPosition = useCallback((e: MouseEvent) => {
@@ -190,7 +203,7 @@ export default function CustomCursor() {
           top: position.y,
           width: '12px',
           height: '12px',
-          backgroundColor: 'var(--foreground)',
+          backgroundColor: getCursorColor(),
           borderRadius: '50%',
           pointerEvents: 'none',
           zIndex: 9999,
@@ -209,14 +222,14 @@ export default function CustomCursor() {
           top: position.y,
           width: `${20 * cursorState.scale}px`,
           height: `${20 * cursorState.scale}px`,
-          border: `1px solid var(--foreground)`,
+          border: `1px solid ${getCursorColor()}`,
           borderRadius: '50%',
           pointerEvents: 'none',
           zIndex: 9998,
           transform: 'translate(-50%, -50%)',
           transition: 'all 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-          backgroundColor: cursorState.isHovering ? 'var(--foreground)' : 'transparent',
-          color: cursorState.isHovering ? 'var(--background)' : 'var(--foreground)',
+          backgroundColor: cursorState.isHovering ? getCursorColor() : 'transparent',
+          color: cursorState.isHovering ? (theme === 'light' ? '#000000' : 'var(--background)') : getCursorColor(),
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
