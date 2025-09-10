@@ -4,8 +4,8 @@ export const calculatorData = {
    navigation: {
       backLink: "/portfolio",
       backText: "Back to Portfolio",
-      projectNumber: 4,
-      totalProjects: 4,
+      projectNumber: 1,
+      totalProjects: 5,
       prevProjectSlug: "asset-management",
       nextProjectSlug: undefined
    },
