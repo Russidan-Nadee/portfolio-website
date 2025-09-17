@@ -31,6 +31,8 @@ export default function ProjectsShowcase({ translations }: ProjectsShowcaseProps
    const [isTransitioning, setIsTransitioning] = useState(false)
    const [slideDirection, setSlideDirection] = useState<'left' | 'right'>('right')
    const [isMobile, setIsMobile] = useState(false)
+   const [visibleCardsCount, setVisibleCardsCount] = useState(3)
+   const [showSideButtons, setShowSideButtons] = useState(true)
 
    // Touch/swipe states
    const [touchStart, setTouchStart] = useState<number | null>(null)
@@ -97,16 +99,26 @@ export default function ProjectsShowcase({ translations }: ProjectsShowcaseProps
       const gap = 32
 
       if (isMobile) {
-         // ใน mobile: แสดงแค่ 1 card, ไม่มี gap
+         // Mobile: แสดงแค่ 1 card, ไม่มี gap
          return -realIndex * cardWidth
       } else {
-         // Desktop แสดงตามเดิม
+         // Desktop: ensure complete cards only
          const cardWidthWithGap = cardWidth + gap
-         const containerWidth = 1200
-         const offsetForCenteredView = (containerWidth - (visibleCards * cardWidth + (visibleCards - 1) * gap)) / 2
-         return offsetForCenteredView - (realIndex * cardWidthWithGap)
+
+         if (visibleCardsCount === 1) {
+            // 1 card: center in 350px container
+            return 0 - (realIndex * cardWidthWithGap)
+         } else if (visibleCardsCount === 2) {
+            // 2 cards: position so we see exactly 2 complete cards
+            // We want cards at positions 0 and 382, so offset by 0
+            return 0 - (realIndex * cardWidthWithGap)
+         } else {
+            // 3 cards: position so middle card is centered in 1114px container
+            // Middle position should be at (1114-350)/2 = 382px
+            return 382 - (realIndex * cardWidthWithGap)
+         }
       }
-   }, [realIndex, visibleCards, isMobile])
+   }, [realIndex, isMobile, visibleCardsCount])
 
    const goLeft = useCallback((): void => {
       if (isTransitioning) return
@@ -170,15 +182,45 @@ export default function ProjectsShowcase({ translations }: ProjectsShowcaseProps
       }, 600);
    }, [isTransitioning, infiniteProjects.length, totalProjects]);
 
-   // Mobile detection
+   // Responsive layout with 2 clear breakpoints
    useEffect(() => {
-      const checkMobile = () => {
-         setIsMobile(window.innerWidth <= 768)
+      const checkLayout = () => {
+         const screenWidth = window.innerWidth
+         setIsMobile(screenWidth <= 768)
+
+         if (screenWidth > 768) {
+            // 3 fixed container sizes:
+            // Container 1: 350px (1 card)
+            // Container 2: 732px (2 cards: 350*2 + 32*1)
+            // Container 3: 1114px (3 cards: 350*3 + 32*2)
+
+            const container1Width = 350
+            const container2Width = 732
+            const container3Width = 1114
+            const buttonSpace = 160 // Space needed for side buttons (80px each side)
+
+            // Check if side buttons would overlap with container
+            const canShowSideButtons = screenWidth >= container3Width + buttonSpace + 160 // Extra padding
+
+            setShowSideButtons(canShowSideButtons)
+
+            // Only switch to next container when there's enough space
+            if (screenWidth >= container3Width + 160) { // Need space for container + padding
+               setVisibleCardsCount(3)
+            } else if (screenWidth >= container2Width + 160) { // Need space for container + padding
+               setVisibleCardsCount(2)
+            } else {
+               setVisibleCardsCount(1)
+            }
+         } else {
+            setVisibleCardsCount(1)
+            setShowSideButtons(false)
+         }
       }
 
-      checkMobile()
-      window.addEventListener('resize', checkMobile)
-      return () => window.removeEventListener('resize', checkMobile)
+      checkLayout()
+      window.addEventListener('resize', checkLayout)
+      return () => window.removeEventListener('resize', checkLayout)
    }, [])
 
    useEffect(() => {
@@ -358,13 +400,12 @@ export default function ProjectsShowcase({ translations }: ProjectsShowcaseProps
                     animation: ${isVisible ? 'slideInScale 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s both' : 'none'};
                     position: relative;
                     overflow: hidden;
-                    width: 100%;
-                    max-width: 1200px;
+                    width: ${visibleCardsCount === 1 ? '350px' : visibleCardsCount === 2 ? '732px' : '1114px'};
                     margin: 0 auto;
                     height: 500px;
-                    clip-path: inset(0 30px);
                     touch-action: pan-x;
                     user-select: none;
+                    clip-path: inset(0 0 0 0);
                 }
 
                 .cards-container {
@@ -373,6 +414,7 @@ export default function ProjectsShowcase({ translations }: ProjectsShowcaseProps
                     transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
                     height: 100%;
                     align-items: center;
+                    width: max-content;
                 }
 
                 .project-card {
@@ -394,7 +436,8 @@ export default function ProjectsShowcase({ translations }: ProjectsShowcaseProps
 
                 @media (max-width: 768px) {
                     .showcase-cards {
-                        width: 350px;
+                        width: 350px !important;
+                        max-width: 350px !important;
                         margin: 0 auto;
                         overflow: hidden;
                         clip-path: none;
@@ -586,47 +629,51 @@ export default function ProjectsShowcase({ translations }: ProjectsShowcaseProps
                </div>
 
                <div className="relative">
-                  <button
-                     onClick={goLeft}
-                     className="hidden md:flex absolute left-[-80px] top-1/2 transform -translate-y-1/2 w-12 h-12 rounded-full border-2 items-center justify-center transition-all duration-300 hover:scale-110 z-10"
-                     style={{
-                        backgroundColor: 'var(--card)',
-                        borderColor: 'var(--border)',
-                        color: 'var(--foreground)'
-                     }}
-                     type="button"
-                     aria-label="Previous project"
-                  >
-                     <svg
-                        className="w-6 h-6"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                     >
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                     </svg>
-                  </button>
+                  {showSideButtons && (
+                     <>
+                        <button
+                           onClick={goLeft}
+                           className="hidden md:flex absolute left-[-80px] top-1/2 transform -translate-y-1/2 w-12 h-12 rounded-full border-2 items-center justify-center transition-all duration-300 hover:scale-110 z-10"
+                           style={{
+                              backgroundColor: 'var(--card)',
+                              borderColor: 'var(--border)',
+                              color: 'var(--foreground)'
+                           }}
+                           type="button"
+                           aria-label="Previous project"
+                        >
+                           <svg
+                              className="w-6 h-6"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                           >
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                           </svg>
+                        </button>
 
-                  <button
-                     onClick={goRight}
-                     className="hidden md:flex absolute right-[-80px] top-1/2 transform -translate-y-1/2 w-12 h-12 rounded-full border-2 items-center justify-center transition-all duration-300 hover:scale-110 z-10"
-                     style={{
-                        backgroundColor: 'var(--card)',
-                        borderColor: 'var(--border)',
-                        color: 'var(--foreground)'
-                     }}
-                     type="button"
-                     aria-label="Next project"
-                  >
-                     <svg
-                        className="w-6 h-6"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                     >
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                     </svg>
-                  </button>
+                        <button
+                           onClick={goRight}
+                           className="hidden md:flex absolute right-[-80px] top-1/2 transform -translate-y-1/2 w-12 h-12 rounded-full border-2 items-center justify-center transition-all duration-300 hover:scale-110 z-10"
+                           style={{
+                              backgroundColor: 'var(--card)',
+                              borderColor: 'var(--border)',
+                              color: 'var(--foreground)'
+                           }}
+                           type="button"
+                           aria-label="Next project"
+                        >
+                           <svg
+                              className="w-6 h-6"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                           >
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                           </svg>
+                        </button>
+                     </>
+                  )}
 
                   <div
                      className="showcase-cards"
@@ -647,14 +694,26 @@ export default function ProjectsShowcase({ translations }: ProjectsShowcaseProps
                         }}
                      >
                         {infiniteProjects.map((project, index) => {
-                           const centerIndex = isMobile ? realIndex + 1 : realIndex + 1
+                           let coloredCardIndex
+
+                           if (isMobile) {
+                              coloredCardIndex = realIndex
+                           } else if (visibleCardsCount === 1) {
+                              coloredCardIndex = realIndex
+                           } else if (visibleCardsCount === 2) {
+                              // Right card in 2-card layout
+                              coloredCardIndex = realIndex
+                           } else if (visibleCardsCount === 3) {
+                              // Middle card in 3-card layout
+                              coloredCardIndex = realIndex
+                           }
 
                            return (
                               <div
                                  key={`${project.originalIndex}-${index}`}
                                  className="project-card"
                                  style={{
-                                    filter: isMobile ? 'none' : (index === centerIndex ? 'none' : 'grayscale(100%) contrast(1.2)')
+                                    filter: isMobile ? 'none' : (index === coloredCardIndex ? 'none' : 'grayscale(100%) contrast(1.2)')
                                  }}
                                  onClick={() => {
                                     window.location.href = `/portfolio/${project.slug}`
@@ -668,7 +727,7 @@ export default function ProjectsShowcase({ translations }: ProjectsShowcaseProps
                                     }}
                                  />
 
-                                 {!isMobile && index !== centerIndex && <div className="card-overlay" />}
+                                 {!isMobile && index !== coloredCardIndex && <div className="card-overlay" />}
 
                                  <div className="card-content">
                                     <h3
@@ -694,7 +753,7 @@ export default function ProjectsShowcase({ translations }: ProjectsShowcaseProps
                   <div className="flex items-center justify-center gap-4 mt-8 mobile-navigation">
                      <button
                         onClick={goLeft}
-                        className="md:hidden w-10 h-10 rounded-full border-2 flex items-center justify-center transition-all duration-300 hover:scale-110"
+                        className={`${isMobile || !showSideButtons ? 'flex' : 'hidden'} w-10 h-10 rounded-full border-2 items-center justify-center transition-all duration-300 hover:scale-110`}
                         style={{
                            backgroundColor: 'var(--card)',
                            borderColor: 'var(--border)',
@@ -740,7 +799,7 @@ export default function ProjectsShowcase({ translations }: ProjectsShowcaseProps
 
                      <button
                         onClick={goRight}
-                        className="md:hidden w-10 h-10 rounded-full border-2 flex items-center justify-center transition-all duration-300 hover:scale-110"
+                        className={`${isMobile || !showSideButtons ? 'flex' : 'hidden'} w-10 h-10 rounded-full border-2 items-center justify-center transition-all duration-300 hover:scale-110`}
                         style={{
                            backgroundColor: 'var(--card)',
                            borderColor: 'var(--border)',
