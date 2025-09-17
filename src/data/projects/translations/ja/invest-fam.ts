@@ -16,7 +16,8 @@ export const investFamData: ProjectData = {
       description: 'ファミリー投資ウェブサイト - 開発中の新しいプロジェクト',
       tags: ['ウェブサイト', '投資', 'ファミリー'],
       githubUrl: undefined,
-      demoUrl: 'https://invest-fam.com',
+      demoUrl: undefined,
+      liveUrl: 'https://investfam.netlify.app',
    },
    infoBar: {
       duration: '開発中',

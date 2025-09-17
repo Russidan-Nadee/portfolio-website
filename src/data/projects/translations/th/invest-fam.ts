@@ -16,7 +16,8 @@ export const investFamData: ProjectData = {
       description: 'แพลตฟอร์มครบครันสำหรับการวางแผนการเงินและเครื่องมือคำนวณการลงทุนฟรี',
       tags: ['เว็บไซต์', 'การลงทุน', 'เครื่องมือการเงิน', 'Next.js'],
       githubUrl: undefined,
-      demoUrl: 'https://invest-fam.com',
+      demoUrl: undefined,
+      liveUrl: 'https://investfam.netlify.app',
    },
    infoBar: {
       duration: '2024 - ปัจจุบัน',

@@ -7,6 +7,7 @@ interface ProjectHeaderData {
    tags: string[]
    githubUrl?: string
    demoUrl?: string
+   liveUrl?: string
 }
 
 interface ProjectHeaderProps {
@@ -45,7 +46,7 @@ export default function ProjectHeader({ data }: ProjectHeaderProps) {
                ))}
             </div>
 
-            {(data.githubUrl || data.demoUrl) && (
+            {(data.githubUrl || data.demoUrl || data.liveUrl) && (
                <div className="flex flex-wrap gap-3">
                   {data.demoUrl && (
                      <a
@@ -62,6 +63,24 @@ export default function ProjectHeader({ data }: ProjectHeaderProps) {
                            <path d="M20 18H4v2h16v-2z" />
                         </svg>
                         Demo
+                     </a>
+                  )}
+
+                  {data.liveUrl && (
+                     <a
+                        href={data.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 px-5 py-2 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg"
+                        style={{
+                           backgroundColor: 'var(--foreground)',
+                           color: 'var(--background)'
+                        }}
+                     >
+                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                           <path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3m-2 16H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2v7Z"/>
+                        </svg>
+                        View
                      </a>
                   )}
 

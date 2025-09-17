@@ -5,7 +5,10 @@
       "Bash(npm run build:*)",
       "Bash(cp:*)",
       "Bash(npm run dev:*)",
-      "WebFetch(domain:investfam.netlify.app)"
+      "WebFetch(domain:investfam.netlify.app)",
+      "Bash(netstat:*)",
+      "Bash(findstr:*)",
+      "Bash(taskkill:*)"
     ],
     "deny": []
   }

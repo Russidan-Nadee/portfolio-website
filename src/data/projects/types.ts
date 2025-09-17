@@ -19,6 +19,7 @@ export interface ProjectHeaderData {
    tags: string[]
    githubUrl?: string
    demoUrl?: string
+   liveUrl?: string
 }
 
 // ProjectInfoBar Data

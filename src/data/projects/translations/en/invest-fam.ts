@@ -16,7 +16,8 @@ export const investFamData: ProjectData = {
       description: 'Your comprehensive hub for smart financial planning and investment decisions',
       tags: ['Website', 'Investment', 'Financial Tools', 'Next.js'],
       githubUrl: undefined,
-      demoUrl: 'https://invest-fam.com',
+      demoUrl: undefined,
+      liveUrl: 'https://investfam.netlify.app',
    },
    infoBar: {
       duration: '2024 - Present',
