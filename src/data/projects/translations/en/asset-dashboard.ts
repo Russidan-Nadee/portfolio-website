@@ -4,9 +4,9 @@ export const assetDashboardData = {
    navigation: {
       backLink: "/portfolio",
       backText: "Back to Portfolio",
-      projectNumber: 1,
-      totalProjects: 4,
-      prevProjectSlug: undefined,
+      projectNumber: 4,
+      totalProjects: 5,
+      prevProjectSlug: "invest-fam",
       nextProjectSlug: "portfolio-website"
    },
 

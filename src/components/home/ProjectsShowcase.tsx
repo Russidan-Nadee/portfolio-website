@@ -55,13 +55,13 @@ export default function ProjectsShowcase({ translations }: ProjectsShowcaseProps
          slug: 'calculator'
       },
       {
-         id: 'portfolio-website',
-         title: translations?.home?.projectsShowcase?.projects?.portfolio?.title || 'Portfolio Website',
-         tech: translations?.home?.projectsShowcase?.projects?.portfolio?.tech || 'Next.js, TypeScript, Tailwind CSS',
+         id: 'investfam',
+         title: translations?.home?.projectsShowcase?.projects?.investfam?.title || 'InvestFam',
+         tech: translations?.home?.projectsShowcase?.projects?.investfam?.tech || 'Next.js, TypeScript, Tailwind CSS',
          filter: 'grayscale(100%) contrast(1.2)',
          isCenter: false,
-         image: '/images/projects/portfolio-website.jpg',
-         slug: 'portfolio-website'
+         image: '/images/projects/investfam.jpg',
+         slug: 'invest-fam'
       }
    ]
 

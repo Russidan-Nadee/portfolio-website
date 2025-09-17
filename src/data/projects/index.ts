@@ -61,6 +61,19 @@ const loadProjectData = async (slug: ProjectSlug, lang: string = 'th'): Promise<
             }
             break
 
+         case 'invest-fam':
+            if (lang === 'th') {
+               const module = await import('./translations/th/invest-fam')
+               data = module.investFamData
+            } else if (lang === 'en') {
+               const module = await import('./translations/en/invest-fam')
+               data = module.investFamData
+            } else if (lang === 'ja') {
+               const module = await import('./translations/ja/invest-fam')
+               data = module.investFamData
+            }
+            break
+
          default:
             return undefined
       }
@@ -81,6 +94,7 @@ import { assetDashboardData } from './translations/th/asset-dashboard'
 import { assetManagementData } from './translations/th/asset-management'
 import { calculatorData } from './translations/th/calculator'
 import { portfolioWebsiteData } from './translations/th/portfolio-website'
+import { investFamData } from './translations/th/invest-fam'
 
 // ===== PROJECT REGISTRY (THAI ONLY FOR NOW) =====
 const projectsRegistry: Record<string, ProjectData> = {
@@ -88,6 +102,7 @@ const projectsRegistry: Record<string, ProjectData> = {
    'asset-management': assetManagementData,
    'calculator': calculatorData,
    'portfolio-website': portfolioWebsiteData,
+   'invest-fam': investFamData,
 }
 
 // ===== UTILITY FUNCTIONS =====
@@ -216,6 +231,7 @@ export const PROJECT_SLUGS = {
    ASSET_MANAGEMENT: 'asset-management',
    CALCULATOR: 'calculator',
    PORTFOLIO_WEBSITE: 'portfolio-website',
+   INVEST_FAM: 'invest-fam',
 } as const
 
 export const SUPPORTED_LANGUAGES = ['th', 'en', 'ja'] as const
@@ -224,10 +240,11 @@ export const DEFAULT_BACK_LINK = '/portfolio'
 export const DEFAULT_BACK_TEXT = 'กลับไปหน้าผลงาน'
 
 // ===== LEGACY EXPORTS (for backward compatibility) =====
-export { assetDashboardData, assetManagementData, calculatorData, portfolioWebsiteData }
+export { assetDashboardData, assetManagementData, calculatorData, portfolioWebsiteData, investFamData }
 
 // ===== ADDITIONAL EXPORTS FOR OTHER LANGUAGES =====
 export const getAssetDashboardData = (lang: string = 'th') => getProjectData('asset-dashboard', lang)
 export const getAssetManagementData = (lang: string = 'th') => getProjectData('asset-management', lang)
 export const getCalculatorData = (lang: string = 'th') => getProjectData('calculator', lang)
 export const getPortfolioWebsiteData = (lang: string = 'th') => getProjectData('portfolio-website', lang)
+export const getInvestFamData = (lang: string = 'th') => getProjectData('invest-fam', lang)
