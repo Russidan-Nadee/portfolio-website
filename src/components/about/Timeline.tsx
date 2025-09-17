@@ -310,6 +310,38 @@ export default function Timeline({ translations }: TimelineProps) {
                50% { box-shadow: 0 0 40px rgba(59, 130, 246, 0.8) !important; }
             }
 
+            /* Mobile: Smaller cards */
+            @media (max-width: 768px) {
+               .timeline-item {
+                  width: 200px !important;
+               }
+
+               .timeline-item .rounded-xl {
+                  padding: 0.5rem !important;
+               }
+
+               .timeline-icon {
+                  width: 3rem !important;
+                  height: 3rem !important;
+                  font-size: 1rem !important;
+               }
+
+               .timeline-item h3 {
+                  font-size: 0.875rem !important;
+                  margin-bottom: 0.125rem !important;
+               }
+
+               .timeline-item h4 {
+                  font-size: 0.75rem !important;
+                  margin-bottom: 0.125rem !important;
+               }
+
+               .timeline-item p {
+                  font-size: 0.625rem !important;
+                  margin-bottom: 0.5rem !important;
+               }
+            }
+
             .header-title {
                transform: translateY(60px) scale(0.8);
                opacity: 0;
@@ -423,7 +455,7 @@ export default function Timeline({ translations }: TimelineProps) {
                               >
                                  {/* Timeline Item */}
                                  <div
-                                    className={`timeline-item absolute w-80 ${isRight ? 'left-1/2 ml-16' : 'right-1/2 mr-16'} ${isVisible ? 'visible' : ''} ${isRight ? 'right' : 'left'}`}
+                                    className={`timeline-item absolute w-80 ${isRight ? 'left-1/2 ml-8 md:ml-16' : 'right-1/2 mr-8 md:mr-16'} ${isVisible ? 'visible' : ''} ${isRight ? 'right' : 'left'}`}
                                  >
                                     <div
                                        className={`rounded-xl p-6 border transition-all duration-300 hover:scale-105`}
