@@ -112,7 +112,7 @@ export interface ProjectData {
 
 // ===== UTILITY TYPES =====
 export type ProjectSlug = string
-export type ProjectId = 'asset-dashboard' | 'calculator' | 'portfolio-website' | string
+export type ProjectId = 'asset-dashboard' | 'calculator' | 'portfolio-website' | 'invest-fam' | string
 
 // Helper function type for getting project data
 export type GetProjectDataFunction = (slug: ProjectSlug) => ProjectData | undefined

@@ -4,8 +4,8 @@ export const assetManagementData = {
    navigation: {
       backLink: "/portfolio",
       backText: "กลับไปหน้าผลงาน",
-      projectNumber: 3,
-      totalProjects: 4,
+      projectNumber: 2,
+      totalProjects: 5,
       prevProjectSlug: "portfolio-website",
       nextProjectSlug: "calculator"
    },

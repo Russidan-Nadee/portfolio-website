@@ -4,7 +4,8 @@
       "Bash(rm:*)",
       "Bash(npm run build:*)",
       "Bash(cp:*)",
-      "Bash(npm run dev:*)"
+      "Bash(npm run dev:*)",
+      "WebFetch(domain:investfam.netlify.app)"
     ],
     "deny": []
   }

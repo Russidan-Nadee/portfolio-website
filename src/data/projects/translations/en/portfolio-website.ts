@@ -4,8 +4,8 @@ export const portfolioWebsiteData = {
    navigation: {
       backLink: "/portfolio",
       backText: "Back to Portfolio",
-      projectNumber: 2,
-      totalProjects: 4,
+      projectNumber: 3,
+      totalProjects: 5,
       prevProjectSlug: "asset-dashboard",
       nextProjectSlug: "asset-management"
    },

@@ -49,6 +49,15 @@ function PortfolioContent() {
 
    const projects = [
       {
+         id: 'investfam',
+         title: translations?.portfolio?.projects?.investfam?.title || 'InvestFam',
+         image: '/images/projects/investfam.jpg',
+         tech: translations?.portfolio?.projects?.investfam?.tech || 'Next.js, TypeScript, Tailwind CSS',
+         category: 'web',
+         tags: ['web'],
+         slug: 'invest-fam'
+      },
+      {
          id: 'assetDashboard',
          title: translations?.portfolio?.projects?.assetDashboard?.title || 'RFID Asset Dashboard',
          image: '/images/projects/asset-dashboard.jpg',
