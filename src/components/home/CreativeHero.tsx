@@ -286,10 +286,10 @@ export default function CreativeHero({ translations: propTranslations }: Creativ
                         style={{
                            fontFamily: 'var(--font-inter), "IBM Plex Sans Thai", "Noto Sans JP", system-ui, sans-serif',
                            color: 'var(--foreground)',
-                           fontSize: 'clamp(5rem, 12vw, 16rem)',
+                           fontSize: 'clamp(4rem, 12vw, 16rem)',
                            transform: `translate(${mousePosition.x * 0.05}px, ${mousePosition.y * 0.05}px)`,
                            lineHeight: '0.8',
-                           marginTop: '-200px'
+                           marginTop: '-240px'
                         }}
                      >
                         {translations?.home?.title || 'Developer'}
@@ -395,7 +395,7 @@ export default function CreativeHero({ translations: propTranslations }: Creativ
                   </div>
 
                   {/* Behind image - Outline Text smaller to match Developer width */}
-                  <div className="hero-outline absolute left-1/2 transform -translate-x-1/2 top-1/2 -translate-y-1/2 z-10 hero-text-overlay">
+                  <div className="hero-outline absolute left-1/2 transform -translate-x-1/2 top-1/2 -translate-y-1/2 z-10 hero-text-overlay -mt-24 sm:-mt-16 md:-mt-8 lg:mt-0 xl:mt-12">
                      <h2
                         className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black leading-none tracking-tight text-center whitespace-nowrap"
                         style={{
@@ -403,9 +403,9 @@ export default function CreativeHero({ translations: propTranslations }: Creativ
                            WebkitTextStroke: `clamp(1.5px, 0.2vw, 2.5px) var(--foreground)`,
                            WebkitTextFillColor: 'transparent',
                            filter: 'drop-shadow(0 0 12px rgba(0,0,0,0.1))',
-                           fontSize: 'clamp(2.5rem, 6vw, 8rem)',
+                           fontSize: 'clamp(2rem, 6vw, 8rem)',
                            transform: `translate(${mousePosition.x * -0.05}px, ${mousePosition.y * -0.05}px)`,
-                           marginTop: '180px'
+                           marginTop: '0'
                         } as React.CSSProperties}
                      >
                         {translations?.home?.subtitle || 'cross-platform application'}
