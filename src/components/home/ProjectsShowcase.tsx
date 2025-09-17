@@ -32,6 +32,12 @@ export default function ProjectsShowcase({ translations }: ProjectsShowcaseProps
    const [slideDirection, setSlideDirection] = useState<'left' | 'right'>('right')
    const [isMobile, setIsMobile] = useState(false)
 
+   // Touch/swipe states
+   const [touchStart, setTouchStart] = useState<number | null>(null)
+   const [touchEnd, setTouchEnd] = useState<number | null>(null)
+   const [isDragging, setIsDragging] = useState(false)
+   const [dragOffset, setDragOffset] = useState(0)
+
    const transitionTimeoutRef = useRef<NodeJS.Timeout | null>(null);
    const resetTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -234,6 +240,84 @@ export default function ProjectsShowcase({ translations }: ProjectsShowcaseProps
       return () => clearInterval(autoSlide);
    }, [goRight, isTransitioning]);
 
+   // Touch event handlers
+   const handleTouchStart = (e: React.TouchEvent) => {
+      setTouchStart(e.targetTouches[0].clientX)
+      setTouchEnd(null)
+      setIsDragging(true)
+      setDragOffset(0)
+   }
+
+   const handleTouchMove = (e: React.TouchEvent) => {
+      if (!touchStart || !isDragging) return
+
+      const currentTouch = e.targetTouches[0].clientX
+      const diff = currentTouch - touchStart
+
+      setTouchEnd(currentTouch)
+      setDragOffset(diff)
+   }
+
+   const handleTouchEnd = () => {
+      if (!touchStart || !touchEnd || !isDragging) {
+         setIsDragging(false)
+         setDragOffset(0)
+         return
+      }
+
+      const distance = touchStart - touchEnd
+      const isLeftSwipe = distance > 50
+      const isRightSwipe = distance < -50
+
+      setIsDragging(false)
+      setDragOffset(0)
+
+      if (isLeftSwipe && !isTransitioning) {
+         goRight() // swipe left to go to next (right)
+      } else if (isRightSwipe && !isTransitioning) {
+         goLeft() // swipe right to go to previous (left)
+      }
+   }
+
+   // Mouse event handlers for desktop drag
+   const handleMouseDown = (e: React.MouseEvent) => {
+      setTouchStart(e.clientX)
+      setTouchEnd(null)
+      setIsDragging(true)
+      setDragOffset(0)
+   }
+
+   const handleMouseMove = (e: React.MouseEvent) => {
+      if (!touchStart || !isDragging) return
+
+      const currentMouse = e.clientX
+      const diff = currentMouse - touchStart
+
+      setTouchEnd(currentMouse)
+      setDragOffset(diff)
+   }
+
+   const handleMouseUp = () => {
+      if (!touchStart || !touchEnd || !isDragging) {
+         setIsDragging(false)
+         setDragOffset(0)
+         return
+      }
+
+      const distance = touchStart - touchEnd
+      const isLeftSwipe = distance > 50
+      const isRightSwipe = distance < -50
+
+      setIsDragging(false)
+      setDragOffset(0)
+
+      if (isLeftSwipe && !isTransitioning) {
+         goRight()
+      } else if (isRightSwipe && !isTransitioning) {
+         goLeft()
+      }
+   }
+
    if (!mounted) return null
 
    return (
@@ -279,6 +363,8 @@ export default function ProjectsShowcase({ translations }: ProjectsShowcaseProps
                     margin: 0 auto;
                     height: 500px;
                     clip-path: inset(0 30px);
+                    touch-action: pan-x;
+                    user-select: none;
                 }
 
                 .cards-container {
@@ -314,6 +400,26 @@ export default function ProjectsShowcase({ translations }: ProjectsShowcaseProps
                         clip-path: none;
                         padding: 0;
                         height: 437px;
+                        touch-action: pan-x;
+                        cursor: grab;
+                    }
+
+                    .showcase-cards:active {
+                        cursor: grabbing;
+                    }
+
+                    .indicator-dots {
+                        align-items: center;
+                        margin-top: 0;
+                    }
+
+                    .mobile-navigation {
+                        align-items: center !important;
+                    }
+
+                    .mobile-navigation .indicator-dots {
+                        margin-top: 0 !important;
+                        align-items: center !important;
                     }
                     
                     .cards-container {
@@ -466,7 +572,7 @@ export default function ProjectsShowcase({ translations }: ProjectsShowcaseProps
             </div>
 
             <div className="max-w-7xl mx-auto px-8 relative z-10">
-               <div className="flex items-center justify-between mb-16">
+               <div className="text-center mb-16">
                   <h2
                      ref={titleRef}
                      className="showcase-title text-5xl md:text-6xl lg:text-7xl font-black leading-none"
@@ -477,49 +583,6 @@ export default function ProjectsShowcase({ translations }: ProjectsShowcaseProps
                   >
                      {translations?.home?.projectsShowcase?.title || 'Recommended Projects'}
                   </h2>
-
-                  <div className="flex gap-4 md:hidden">
-                     <button
-                        onClick={goLeft}
-                        className="w-12 h-12 rounded-full border-2 flex items-center justify-center transition-all duration-300 hover:scale-110"
-                        style={{
-                           backgroundColor: 'var(--card)',
-                           borderColor: 'var(--border)',
-                           color: 'var(--foreground)'
-                        }}
-                        type="button"
-                        aria-label="Previous project"
-                     >
-                        <svg
-                           className="w-6 h-6"
-                           fill="none"
-                           stroke="currentColor"
-                           viewBox="0 0 24 24"
-                        >
-                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                        </svg>
-                     </button>
-                     <button
-                        onClick={goRight}
-                        className="w-12 h-12 rounded-full border-2 flex items-center justify-center transition-all duration-300 hover:scale-110"
-                        style={{
-                           backgroundColor: 'var(--card)',
-                           borderColor: 'var(--border)',
-                           color: 'var(--foreground)'
-                        }}
-                        type="button"
-                        aria-label="Next project"
-                     >
-                        <svg
-                           className="w-6 h-6"
-                           fill="none"
-                           stroke="currentColor"
-                           viewBox="0 0 24 24"
-                        >
-                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                        </svg>
-                     </button>
-                  </div>
                </div>
 
                <div className="relative">
@@ -565,13 +628,22 @@ export default function ProjectsShowcase({ translations }: ProjectsShowcaseProps
                      </svg>
                   </button>
 
-                  <div className="showcase-cards">
+                  <div
+                     className="showcase-cards"
+                     onTouchStart={handleTouchStart}
+                     onTouchMove={handleTouchMove}
+                     onTouchEnd={handleTouchEnd}
+                     onMouseDown={handleMouseDown}
+                     onMouseMove={handleMouseMove}
+                     onMouseUp={handleMouseUp}
+                     onMouseLeave={handleMouseUp}
+                  >
                      <div
                         ref={cardsRef}
                         className="cards-container"
                         style={{
-                           transform: `translateX(${getTransformX()}px)`,
-                           transition: isTransitioning ? 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)' : 'none'
+                           transform: `translateX(${getTransformX() + dragOffset}px)`,
+                           transition: isDragging ? 'none' : (isTransitioning ? 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)' : 'none')
                         }}
                      >
                         {infiniteProjects.map((project, index) => {
@@ -619,29 +691,73 @@ export default function ProjectsShowcase({ translations }: ProjectsShowcaseProps
                      </div>
                   </div>
 
-                  <div className="indicator-dots">
-                     {projects.map((_, index) => (
-                        <div
-                           key={index}
-                           className={`dot ${index === currentIndex ? 'active' : ''}`}
-                           onClick={() => {
-                              if (!isTransitioning) {
-                                 const currentProjectActualIndex = realIndex % totalProjects;
-                                 const targetOffset = index - currentProjectActualIndex;
+                  <div className="flex items-center justify-center gap-4 mt-8 mobile-navigation">
+                     <button
+                        onClick={goLeft}
+                        className="md:hidden w-10 h-10 rounded-full border-2 flex items-center justify-center transition-all duration-300 hover:scale-110"
+                        style={{
+                           backgroundColor: 'var(--card)',
+                           borderColor: 'var(--border)',
+                           color: 'var(--foreground)'
+                        }}
+                        type="button"
+                        aria-label="Previous project"
+                     >
+                        <svg
+                           className="w-5 h-5"
+                           fill="none"
+                           stroke="currentColor"
+                           viewBox="0 0 24 24"
+                        >
+                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                        </svg>
+                     </button>
 
-                                 if (targetOffset > 0) {
-                                    for (let i = 0; i < targetOffset; i++) {
-                                       goRight();
-                                    }
-                                 } else if (targetOffset < 0) {
-                                    for (let i = 0; i < Math.abs(targetOffset); i++) {
-                                       goLeft();
+                     <div className="indicator-dots">
+                        {projects.map((_, index) => (
+                           <div
+                              key={index}
+                              className={`dot ${index === currentIndex ? 'active' : ''}`}
+                              onClick={() => {
+                                 if (!isTransitioning) {
+                                    const currentProjectActualIndex = realIndex % totalProjects;
+                                    const targetOffset = index - currentProjectActualIndex;
+
+                                    if (targetOffset > 0) {
+                                       for (let i = 0; i < targetOffset; i++) {
+                                          goRight();
+                                       }
+                                    } else if (targetOffset < 0) {
+                                       for (let i = 0; i < Math.abs(targetOffset); i++) {
+                                          goLeft();
+                                       }
                                     }
                                  }
-                              }
-                           }}
-                        />
-                     ))}
+                              }}
+                           />
+                        ))}
+                     </div>
+
+                     <button
+                        onClick={goRight}
+                        className="md:hidden w-10 h-10 rounded-full border-2 flex items-center justify-center transition-all duration-300 hover:scale-110"
+                        style={{
+                           backgroundColor: 'var(--card)',
+                           borderColor: 'var(--border)',
+                           color: 'var(--foreground)'
+                        }}
+                        type="button"
+                        aria-label="Next project"
+                     >
+                        <svg
+                           className="w-5 h-5"
+                           fill="none"
+                           stroke="currentColor"
+                           viewBox="0 0 24 24"
+                        >
+                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                     </button>
                   </div>
                </div>
             </div>

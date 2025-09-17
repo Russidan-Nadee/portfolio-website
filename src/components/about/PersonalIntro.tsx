@@ -300,7 +300,7 @@ export default function PersonalIntro({ translations }: PersonalIntroProps) {
                <div
                   className="overflow-hidden"
                   style={{
-                     maxHeight: showContentReveal ? '200px' : '0',
+                     maxHeight: showContentReveal ? '300px' : '0',
                      transition: 'max-height 0.6s ease-out 0.2s'
                   }}
                >
