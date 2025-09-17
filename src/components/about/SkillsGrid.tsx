@@ -100,15 +100,7 @@ const skillsByCategory = {
          }
       },
       {
-         name: 'C#', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/csharp/csharp-original.svg', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/',
-         descriptions: {
-            en: 'Object-oriented language for .NET applications',
-            th: 'ภาษาเชิงวัตถุสำหรับแอปพลิเคชัน .NET',
-            ja: '.NETアプリケーション用のオブジェクト指向言語'
-         }
-      },
-      {
-         name: 'Nest.js', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nestjs/nestjs-plain.svg', url: 'https://nestjs.com',
+         name: 'Nest.js', icon: 'https://nestjs.com/img/logo-small.svg', url: 'https://nestjs.com',
          descriptions: {
             en: 'Scalable Node.js framework for enterprise applications',
             th: 'เฟรมเวิร์ก Node.js ที่ขยายได้สำหรับแอปพลิเคชันองค์กร',
@@ -207,6 +199,14 @@ const skillsByCategory = {
             en: 'All-in-one platform for modern web projects',
             th: 'แพลตฟอร์มครบเครื่องสำหรับโปรเจกต์เว็บสมัยใหม่',
             ja: '現代的なWebプロジェクトのためのオールインワンプラットフォーム'
+         }
+      },
+      {
+         name: 'Cloudflare', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cloudflare/cloudflare-original.svg', url: 'https://cloudflare.com',
+         descriptions: {
+            en: 'Global network for web performance and security',
+            th: 'เครือข่ายโลกสำหรับประสิทธิภาพและความปลอดภัยของเว็บ',
+            ja: 'Webパフォーマンスとセキュリティのためのグローバルネットワーク'
          }
       }
    ]
