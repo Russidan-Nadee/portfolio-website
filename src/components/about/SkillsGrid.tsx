@@ -14,7 +14,7 @@ interface SkillsGridProps {
    translations: any
 }
 
-// แยกหมวดหมู่ skills with multilingual descriptions (ใช้เก็บข้อมูล แต่จะ render เป็นอาร์เรย์เดียว)
+// แยกหมวดหมู่ skills with multilingual descriptions
 const skillsByCategory = {
    frontend: [
       {
@@ -100,7 +100,15 @@ const skillsByCategory = {
          }
       },
       {
-         name: 'Nest.js', icon: 'https://nestjs.com/img/logo-small.svg', url: 'https://nestjs.com',
+         name: 'C#', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/csharp/csharp-original.svg', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/',
+         descriptions: {
+            en: 'Object-oriented language for .NET applications',
+            th: 'ภาษาเชิงวัตถุสำหรับแอปพลิเคชัน .NET',
+            ja: '.NETアプリケーション用のオブジェクト指向言語'
+         }
+      },
+      {
+         name: 'Nest.js', icon: 'https://commons.wikimedia.org/wiki/Special:FilePath/NestJS.svg', url: 'https://nestjs.com',
          descriptions: {
             en: 'Scalable Node.js framework for enterprise applications',
             th: 'เฟรมเวิร์ก Node.js ที่ขยายได้สำหรับแอปพลิเคชันองค์กร',
@@ -200,14 +208,6 @@ const skillsByCategory = {
             th: 'แพลตฟอร์มครบเครื่องสำหรับโปรเจกต์เว็บสมัยใหม่',
             ja: '現代的なWebプロジェクトのためのオールインワンプラットフォーム'
          }
-      },
-      {
-         name: 'Cloudflare', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cloudflare/cloudflare-original.svg', url: 'https://cloudflare.com',
-         descriptions: {
-            en: 'Global network for web performance and security',
-            th: 'เครือข่ายโลกสำหรับประสิทธิภาพและความปลอดภัยของเว็บ',
-            ja: 'Webパフォーマンスとセキュリティのためのグローバルネットワーク'
-         }
       }
    ]
 }
@@ -224,7 +224,17 @@ export default function SkillsGrid({ translations }: SkillsGridProps) {
    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
 
    // Helper function to get translations based on locale
-   const getTranslations = (l: string) => (l === 'th' ? th : l === 'ja' ? ja : en)
+   const getTranslations = (locale: string) => {
+      switch (locale) {
+         case 'th':
+            return th
+         case 'ja':
+            return ja
+         default:
+            return en
+      }
+   }
+
    const currentTranslations = translations || getTranslations(locale)
 
    // Language change handler
@@ -235,12 +245,17 @@ export default function SkillsGrid({ translations }: SkillsGridProps) {
       return () => window.removeEventListener('languageChange', handleLanguageChange)
    }, [])
 
-   // ✅ รวมทุกสกิลเป็นอาร์เรย์เดียว แล้วแบ่ง row ละ 3 (ไม่มีหมวดหมู่)
-   const allSkills = Object.values(skillsByCategory).flat()
-   const skillRows: typeof allSkills[] = []
-   for (let i = 0; i < allSkills.length; i += 3) {
-      skillRows.push(allSkills.slice(i, i + 3))
-   }
+   // แปลง object เป็น array สำหรับ render พร้อมแบ่ง row ละ 3 ตัวเหมือนเดิม
+   const categoryKeys = Object.keys(skillsByCategory) as (keyof typeof skillsByCategory)[]
+
+   const categorizedSkillRows = categoryKeys.map(category => {
+      const skills = skillsByCategory[category]
+      const rows = []
+      for (let i = 0; i < skills.length; i += 3) {
+         rows.push(skills.slice(i, i + 3))
+      }
+      return { category, rows }
+   })
 
    useEffect(() => {
       if (!skillsRef.current) return
@@ -292,11 +307,14 @@ export default function SkillsGrid({ translations }: SkillsGridProps) {
       }
    }, [])
 
-   const getLearnMoreText = (l: string) => {
-      switch (l) {
-         case 'th': return 'เรียนรู้เพิ่มเติม'
-         case 'ja': return 'もっと学ぶ'
-         default: return 'Learn More'
+   const getLearnMoreText = (locale: string) => {
+      switch (locale) {
+         case 'th':
+            return 'เรียนรู้เพิ่มเติม'
+         case 'ja':
+            return 'もっと学ぶ'
+         default:
+            return 'Learn More'
       }
    }
 
@@ -328,222 +346,245 @@ export default function SkillsGrid({ translations }: SkillsGridProps) {
                }}
             />
          </div>
-
          <div className="max-w-6xl mx-auto px-8 relative z-10">
             <AnimatedSection animationType="fadeInUp" delay={0} duration={1}>
                <div ref={headerRef} className="text-center mb-16">
-                  <div ref={titleRef} className="text-4xl md:text-5xl font-bold mb-4" style={{ color: 'var(--foreground)' }}>
+                  <h2 ref={titleRef} className="text-4xl md:text-5xl font-bold mb-4" style={{ color: 'var(--foreground)' }}>
                      {currentTranslations?.about?.skills?.title || 'Technical Skills & Expertise'}
-                  </div>
+                  </h2>
                   <p ref={subtitleRef} className="text-lg opacity-70" style={{ color: 'var(--muted-foreground)' }}>
                      {currentTranslations?.about?.skills?.subtitle || 'Technologies and tools I work with'}
                   </p>
                </div>
             </AnimatedSection>
 
-            {/* GRID เดียว (ไม่มีหัวข้อหมวดหมู่) */}
-            <AnimatedSection animationType="fadeInUp" delay={0} duration={0.8}>
-               <div className="space-y-8">
-                  {skillRows.map((row, rowIndex) => (
-                     <div
-                        key={rowIndex}
-                        ref={el => { rowRefs.current[rowIndex] = el }}
-                        className="grid grid-cols-1 md:grid-cols-3 gap-6"
+            {/* ...ใน return */}
+            {categorizedSkillRows.map(({ category, rows }, categoryIndex) => (
+               <AnimatedSection
+                  key={category}
+                  animationType="fadeInUp"
+                  delay={0}
+                  duration={0.8}
+               >
+                  <div className="mb-12">
+                     <h3
+                        className="text-2xl font-semibold mb-6 capitalize text-center"
+                        style={{ color: 'var(--foreground)' }}
                      >
-                        {row.map((skill, skillIndex) => (
+                        {category}
+                     </h3>
+                     <div className="space-y-8">
+                        {rows.map((row, rowIndex) => (
                            <div
-                              key={skillIndex}
-                              className="skill-card-container cursor-pointer"
+                              key={rowIndex}
+                              ref={el => { rowRefs.current[rowIndex] = el }}
+                              className="grid grid-cols-1 md:grid-cols-3 gap-6"
                            >
-                              <div className="skill-card flip-card">
-                                 {/* Front of the card */}
+                              {row.map((skill, skillIndex) => (
                                  <div
-                                    className="flip-card-front"
-                                    style={{ backgroundColor: 'var(--card)', borderColor: 'var(--border)' }}
+                                    key={skillIndex}
+                                    className="skill-card-container cursor-pointer"
                                  >
-                                    <div className="w-24 h-24 flex items-center justify-center mb-6">
-                                       <img
-                                          src={skill.icon}
-                                          alt={skill.name}
-                                          className="w-full h-full object-contain transition-all duration-300"
-                                          onError={e => {
-                                             e.currentTarget.style.display = 'none'
-                                             if (e.currentTarget.parentElement) {
-                                                const fallback = document.createElement('div')
-                                                fallback.style.width = '64px'
-                                                fallback.style.height = '64px'
-                                                fallback.style.display = 'flex'
-                                                fallback.style.alignItems = 'center'
-                                                fallback.style.justifyContent = 'center'
-                                                fallback.style.color = 'var(--muted-foreground)'
-                                                fallback.style.fontWeight = 'bold'
-                                                fallback.style.fontSize = '24px'
-                                                fallback.style.background = 'var(--muted)'
-                                                fallback.style.borderRadius = '8px'
-                                                fallback.textContent = skill.name.charAt(0)
-                                                e.currentTarget.parentElement.appendChild(fallback)
-                                             }
-                                          }}
-                                       />
-                                    </div>
-                                    <div
-                                       className="text-xl font-semibold"
-                                       style={{ color: 'var(--foreground)' }}
-                                    >
-                                       {skill.name}
-                                    </div>
-                                 </div>
+                                    <div className="skill-card flip-card">
+                                       {/* Front of the card */}
+                                       <div
+                                          className="flip-card-front"
+                                          style={{ backgroundColor: 'var(--card)', borderColor: 'var(--border)' }}
+                                       >
+                                          <div className="w-24 h-24 flex items-center justify-center mb-6">
+                                             <img
+                                                src={skill.icon}
+                                                alt={skill.name}
+                                                className="w-full h-full object-contain transition-all duration-300"
+                                                onError={e => {
+                                                   e.currentTarget.style.display = 'none'
+                                                   if (e.currentTarget.parentElement) {
+                                                      e.currentTarget.parentElement.innerHTML = `
+                             <div style="width: 64px; height: 64px; display: flex; align-items: center; justify-content: center; color: var(--muted-foreground); font-weight: bold; font-size: 24px; background: var(--muted); border-radius: 8px;">
+                               ${skill.name.charAt(0)}
+                             </div>
+                           `
+                                                   }
+                                                }}
+                                             />
+                                          </div>
+                                          <h3
+                                             className="text-xl font-semibold"
+                                             style={{ color: 'var(--foreground)' }}
+                                          >
+                                             {skill.name}
+                                          </h3>
+                                       </div>
 
-                                 {/* Back of the card */}
-                                 <div
-                                    className="flip-card-back"
-                                    style={{ backgroundColor: 'var(--card)', borderColor: 'var(--border)' }}
-                                 >
-                                    <h3
-                                       className="text-xl font-bold mb-4"
-                                       style={{ color: 'var(--foreground)' }}
-                                    >
-                                       {skill.name}
-                                    </h3>
-                                    <p
-                                       className="text-sm mb-6 opacity-90 leading-relaxed px-2"
-                                       style={{ color: 'var(--muted-foreground)' }}
-                                    >
-                                       {skill.descriptions[locale as keyof typeof skill.descriptions] || skill.descriptions.en}
-                                    </p>
-                                    <button
-                                       onClick={e => {
-                                          e.preventDefault()
-                                          e.stopPropagation()
-                                          const newWindow = window.open(skill.url, '_blank')
-                                          if (newWindow) newWindow.opener = null
-                                       }}
-                                       className="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:scale-105"
-                                       style={{
-                                          backgroundColor: 'var(--foreground)',
-                                          color: 'var(--background)'
-                                       }}
-                                    >
-                                       {getLearnMoreText(locale)}
-                                    </button>
+                                       {/* Back of the card */}
+                                       <div
+                                          className="flip-card-back"
+                                          style={{ backgroundColor: 'var(--card)', borderColor: 'var(--border)' }}
+                                       >
+                                          <h3
+                                             className="text-xl font-bold mb-4"
+                                             style={{ color: 'var(--foreground)' }}
+                                          >
+                                             {skill.name}
+                                          </h3>
+                                          <p
+                                             className="text-sm mb-6 opacity-90 leading-relaxed px-2"
+                                             style={{ color: 'var(--muted-foreground)' }}
+                                          >
+                                             {skill.descriptions[locale as keyof typeof skill.descriptions] || skill.descriptions.en}
+                                          </p>
+                                          <button
+                                             onClick={e => {
+                                                e.preventDefault()
+                                                e.stopPropagation()
+                                                const newWindow = window.open(skill.url, '_blank')
+                                                if (newWindow) newWindow.opener = null
+                                             }}
+                                             className="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:scale-105"
+                                             style={{
+                                                backgroundColor: 'var(--foreground)',
+                                                color: 'var(--background)'
+                                             }}
+                                          >
+                                             {getLearnMoreText(locale)}
+                                          </button>
+                                       </div>
+                                    </div>
                                  </div>
-                              </div>
+                              ))}
                            </div>
                         ))}
                      </div>
-                  ))}
-               </div>
-            </AnimatedSection>
+                  </div>
+               </AnimatedSection>
+            ))}
          </div>
 
          {/* Enhanced Styles */}
          <style jsx>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-8px); }
-        }
+            @keyframes float {
+               0%, 100% { transform: translateY(0px); }
+               50% { transform: translateY(-8px); }
+            }
 
-        .floating-element {
-          animation: float 3s ease-in-out infinite;
-          background: var(--foreground) !important;
-          opacity: 0.05;
-        }
+            .floating-element {
+               animation: float 3s ease-in-out infinite;
+               background: var(--foreground) !important;
+               opacity: 0.05;
+            }
 
-        /* Simple working flip card */
-        .skill-card-container {
-          height: 280px;
-          perspective: 1000px;
-          transition: transform 0.3s ease;
-        }
+            /* Simple working flip card */
+            .skill-card-container {
+               height: 280px;
+               perspective: 1000px;
+               transition: transform 0.3s ease;
+            }
 
-        .skill-card-container:hover {
-          transform: scale(1.1) translateY(-8px);
-          z-index: 10;
-        }
+            .skill-card-container:hover {
+               transform: scale(1.1) translateY(-8px);
+               z-index: 10;
+            }
 
-        .flip-card {
-          position: relative;
-          width: 100%;
-          height: 100%;
-          transition: transform 0.6s;
-          transform-style: preserve-3d;
-        }
+            .flip-card {
+               position: relative;
+               width: 100%;
+               height: 100%;
+               transition: transform 0.6s;
+               transform-style: preserve-3d;
+            }
 
-        .skill-card-container:hover .flip-card {
-          transform: rotateY(180deg);
-        }
+            .skill-card-container:hover .flip-card {
+               transform: rotateY(180deg);
+            }
 
-        .flip-card-front,
-        .flip-card-back {
-          position: absolute;
-          width: 100%;
-          height: 100%;
-          -webkit-backface-visibility: hidden;
-          backface-visibility: hidden;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          padding: 2rem;
-          border-radius: 16px;
-          border: 1px solid var(--border);
-          text-align: center;
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-        }
+            .flip-card-front,
+            .flip-card-back {
+               position: absolute;
+               width: 100%;
+               height: 100%;
+               -webkit-backface-visibility: hidden;
+               backface-visibility: hidden;
+               display: flex;
+               flex-direction: column;
+               align-items: center;
+               justify-content: center;
+               padding: 2rem;
+               border-radius: 16px;
+               border: 1px solid var(--border);
+               text-align: center;
+               box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            }
 
-        .flip-card-front {
-          background-color: var(--card);
-          transform: rotateY(0deg);
-        }
+            .flip-card-front {
+               background-color: var(--card);
+               transform: rotateY(0deg);
+            }
 
-        .flip-card-back {
-          transform: rotateY(180deg);
-          background: linear-gradient(135deg, var(--card) 0%, var(--muted) 100%);
-        }
+            .flip-card-back {
+               transform: rotateY(180deg);
+               background: linear-gradient(135deg, var(--card) 0%, var(--muted) 100%);
+            }
 
-        .skill-card-container:hover .flip-card-front,
-        .skill-card-container:hover .flip-card-back {
-          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-        }
 
-        .flip-card-front > *,
-        .flip-card-back > * {
-          position: relative;
-          z-index: 2;
-        }
+            .skill-card-container:hover .flip-card-front,
+            .skill-card-container:hover .flip-card-back {
+               box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+            }
 
-        [data-theme="dark"] .flip-card-front,
-        [data-theme="dark"] .flip-card-back {
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-        }
+            .flip-card-front > *,
+            .flip-card-back > * {
+               position: relative;
+               z-index: 2;
+            }
 
-        [data-theme="dark"] .skill-card-container:hover .flip-card-front,
-        [data-theme="dark"] .skill-card-container:hover .flip-card-back {
-          box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(59, 130, 246, 0.15);
-        }
+            [data-theme="dark"] .flip-card-front,
+            [data-theme="dark"] .flip-card-back {
+               box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            }
 
-        [data-theme="dark"] .flip-card-back {
-          background: linear-gradient(135deg, var(--card) 0%, rgba(0, 0, 0, 0.2) 100%);
-        }
+            [data-theme="dark"] .skill-card-container:hover .flip-card-front,
+            [data-theme="dark"] .skill-card-container:hover .flip-card-back {
+               box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(59, 130, 246, 0.15);
+            }
 
-        /* Force flip setup */
-        .skill-card-container {
-          perspective: 1000px !important;
-          -webkit-perspective: 1000px !important;
-        }
+            [data-theme="dark"] .flip-card-back {
+               background: linear-gradient(135deg, var(--card) 0%, rgba(0, 0, 0, 0.2) 100%);
+            }
 
-        .flip-card {
-          transform-style: preserve-3d !important;
-          -webkit-transform-style: preserve-3d !important;
-        }
+            /* Force flip for all cards - fix for specific problematic cards */
+            .skill-card-container .flip-card {
+               transform: rotateY(0deg);
+               transition: transform 0.6s ease-in-out;
+            }
+            
+            .skill-card-container:hover .flip-card {
+               transform: rotateY(180deg) !important;
+            }
 
-        /* ลด motion สำหรับผู้ใช้ที่ปิด animation */
-        @media (prefers-reduced-motion: reduce) {
-          .floating-element { animation: none; }
-          .skill-card-container { transition: none; }
-          .flip-card { transition: none; }
-        }
-      `}</style>
+            /* Ensure all front and back cards have proper setup */
+            .flip-card-front {
+               transform: rotateY(0deg) !important;
+               -webkit-backface-visibility: hidden !important;
+               backface-visibility: hidden !important;
+            }
+
+            .flip-card-back {
+               transform: rotateY(180deg) !important;
+               -webkit-backface-visibility: hidden !important;
+               backface-visibility: hidden !important;
+            }
+
+            /* Fix for infrastructure and specific problematic cards */
+            .skill-card-container {
+               perspective: 1000px !important;
+               -webkit-perspective: 1000px !important;
+            }
+
+            .flip-card {
+               transform-style: preserve-3d !important;
+               -webkit-transform-style: preserve-3d !important;
+            }
+         `}</style>
       </section>
    )
 }
