@@ -2,7 +2,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { MdWork, MdSchool, MdCode, MdBusiness, MdTrendingUp } from 'react-icons/md'
+import { MdWork, MdSchool, MdCode, MdBusiness, MdTrendingUp, MdRestaurant, MdFastfood, MdLocalBar } from 'react-icons/md'
 import { HiLightningBolt } from 'react-icons/hi'
 import { FaGraduationCap, FaBriefcase, FaLaptopCode, FaBuilding, FaRocket, FaStar } from 'react-icons/fa'
 import th from '../../../locales/th.json'
@@ -26,6 +26,7 @@ export default function Timeline({ translations }: TimelineProps) {
    const [visibleItems, setVisibleItems] = useState<number[]>([])
    const [animationComplete, setAnimationComplete] = useState(false)
    const [headerAnimated, setHeaderAnimated] = useState(false)
+   const [selectedCard, setSelectedCard] = useState<any>(null)
 
    // Helper function to get translations based on locale
    const getTranslations = (locale: string) => {
@@ -74,39 +75,43 @@ export default function Timeline({ translations }: TimelineProps) {
       }
    }
 
-   // Get professional icon based on type and content
+   // Get professional icon based on data from locale files
    const getTimelineIcon = (item: any, index: number) => {
-      // Check for current item
-      if (item.isCurrent) {
-         return <FaRocket className="text-blue-500" />
+      // Use icon from locale data if available first
+      const iconName = item.icon
+
+      // Map icon names to actual React components
+      const iconMap: { [key: string]: JSX.Element } = {
+         'FaBriefcase': <FaBriefcase className="text-blue-600" />,           // Professional work
+         'FaLaptopCode': <FaLaptopCode className="text-green-600" />,        // Developer/Programming
+         'FaGraduationCap': <FaGraduationCap className="text-purple-600" />, // University/College
+         'MdWork': <MdLocalBar className="text-purple-600" />,               // Beverage Staff/Bartender
+         'MdRestaurant': <MdRestaurant className="text-orange-600" />,       // Restaurant/service work
+         'MdFastfood': <MdFastfood className="text-red-600" />,             // Fast food/kitchen work
+         'MdSchool': <MdSchool className="text-green-600" />                 // High school
       }
-      
-      // Check item type or content to determine appropriate icon
+
+      // Return the mapped icon or fallback
+      if (iconName && iconMap[iconName]) {
+         return iconMap[iconName]
+      }
+
+      // Fallback logic based on title
       const title = item.title?.toLowerCase() || ''
-      const company = item.company?.toLowerCase() || ''
-      
+
       if (activeTab === 'education') {
-         if (title.includes('degree') || title.includes('bachelor') || title.includes('master')) {
-            return <FaGraduationCap className="text-purple-600" />
-         }
          return <MdSchool className="text-blue-600" />
       }
-      
+
       if (activeTab === 'work') {
          if (title.includes('developer') || title.includes('engineer') || title.includes('programmer')) {
             return <FaLaptopCode className="text-green-600" />
          }
-         if (title.includes('manager') || title.includes('lead') || title.includes('senior')) {
-            return <MdBusiness className="text-orange-600" />
-         }
-         if (title.includes('intern') || title.includes('junior')) {
-            return <MdCode className="text-cyan-600" />
-         }
          return <FaBriefcase className="text-gray-600" />
       }
-      
+
       // Default fallback
-      return <FaStar className="text-yellow-500" />
+      return <FaBriefcase className="text-gray-600" />
    }
 
    useEffect(() => {
@@ -296,7 +301,7 @@ export default function Timeline({ translations }: TimelineProps) {
             .timeline-item.visible.right {
                animation: cardSlideRight 0.8s ease-out forwards;
             }
-            
+
             .timeline-item.visible.left {
                animation: cardSlideLeft 0.8s ease-out forwards;
             }
@@ -340,6 +345,31 @@ export default function Timeline({ translations }: TimelineProps) {
                   font-size: 0.625rem !important;
                   margin-bottom: 0.5rem !important;
                }
+            }
+
+            /* Modal animations */
+            @keyframes modalFadeIn {
+               0% { opacity: 0; }
+               100% { opacity: 1; }
+            }
+
+            @keyframes modalSlideIn {
+               0% {
+                  transform: scale(0.8) translateY(30px);
+                  opacity: 0;
+               }
+               100% {
+                  transform: scale(1) translateY(0);
+                  opacity: 1;
+               }
+            }
+
+            .modal-overlay {
+               animation: modalFadeIn 0.3s ease-out forwards;
+            }
+
+            .modal-content {
+               animation: modalSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
             }
 
             .header-title {
@@ -458,7 +488,8 @@ export default function Timeline({ translations }: TimelineProps) {
                                     className={`timeline-item absolute w-80 ${isRight ? 'left-1/2 ml-8 md:ml-16' : 'right-1/2 mr-8 md:mr-16'} ${isVisible ? 'visible' : ''} ${isRight ? 'right' : 'left'}`}
                                  >
                                     <div
-                                       className={`rounded-xl p-6 border transition-all duration-300 hover:scale-105`}
+                                       className={`rounded-xl p-6 border transition-all duration-300 hover:scale-105 cursor-pointer`}
+                                       onClick={() => setSelectedCard(item)}
                                        style={{
                                           backgroundColor: 'var(--card)',
                                           borderColor: item.isCurrent ? 'var(--foreground)' : 'var(--border)',
@@ -552,6 +583,100 @@ export default function Timeline({ translations }: TimelineProps) {
                   </div>
                )}
             </div>
+
+            {/* Modal for enlarged card */}
+            {selectedCard && (
+               <div
+                  className="modal-overlay fixed inset-0 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+                  onClick={() => setSelectedCard(null)}
+               >
+                  <div
+                     className="modal-content relative max-w-sm md:max-w-md w-full"
+                     onClick={(e) => e.stopPropagation()}
+                  >
+                     {/* Close button */}
+                     <button
+                        onClick={() => setSelectedCard(null)}
+                        className="absolute -top-2 -right-2 w-8 h-8 rounded-full flex items-center justify-center text-xl font-bold z-10 hover:scale-110 transition-transform"
+                        style={{
+                           backgroundColor: 'var(--foreground)',
+                           color: 'var(--background)'
+                        }}
+                     >
+                        ×
+                     </button>
+
+                     {/* Enlarged card */}
+                     <div
+                        className="rounded-xl p-8 xl:p-12 border shadow-2xl"
+                        style={{
+                           backgroundColor: 'var(--card)',
+                           borderColor: selectedCard.isCurrent ? 'var(--foreground)' : 'var(--border)',
+                           borderWidth: selectedCard.isCurrent ? '2px' : '1px',
+                           boxShadow: selectedCard.isCurrent ? '0 0 30px rgba(59, 130, 246, 0.4)' : '0 25px 50px -12px rgba(0, 0, 0, 0.25)'
+                        }}
+                     >
+                        <div className="mb-4">
+                           <span
+                              className="inline-flex items-center gap-2 px-3 py-1 text-sm font-medium rounded-full"
+                              style={{
+                                 backgroundColor: selectedCard.isCurrent ? 'var(--foreground)' : 'var(--muted)',
+                                 color: selectedCard.isCurrent ? 'var(--background)' : 'var(--muted-foreground)'
+                              }}
+                           >
+                              {selectedCard.isCurrent && <HiLightningBolt className="text-yellow-400" />}
+                              {selectedCard.isCurrent ? getCurrentText(locale) : selectedCard.period}
+                           </span>
+                        </div>
+
+                        <h3
+                           className="text-3xl xl:text-4xl font-bold mb-4"
+                           style={{ color: 'var(--foreground)' }}
+                        >
+                           {selectedCard.title}
+                        </h3>
+
+                        <h4
+                           className="text-xl xl:text-2xl font-semibold mb-3"
+                           style={{ color: 'var(--muted-foreground)' }}
+                        >
+                           {selectedCard.company}
+                        </h4>
+
+                        {selectedCard.isCurrent && (
+                           <p
+                              className="text-base xl:text-lg font-medium mb-6"
+                              style={{ color: 'var(--muted-foreground)' }}
+                           >
+                              {selectedCard.period}
+                           </p>
+                        )}
+
+                        <p
+                           className="leading-relaxed mb-8 text-lg xl:text-xl"
+                           style={{ color: 'var(--muted-foreground)' }}
+                        >
+                           {selectedCard.description}
+                        </p>
+
+                        <div className="flex flex-wrap gap-2">
+                           {selectedCard.skills?.map((skill: string, skillIndex: number) => (
+                              <span
+                                 key={skillIndex}
+                                 className="text-base px-3 py-2 rounded-md transition-colors hover:opacity-80"
+                                 style={{
+                                    backgroundColor: 'var(--muted)',
+                                    color: 'var(--muted-foreground)'
+                                 }}
+                              >
+                                 {skill}
+                              </span>
+                           )) || []}
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            )}
          </section>
       </>
    )

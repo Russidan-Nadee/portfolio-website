@@ -79,7 +79,7 @@
                   "RFID",
                   "Cross-platform"
                ],
-               "icon": "💼",
+               "icon": "FaLaptopCode",
                "isCurrent": true
             },
             {
@@ -93,7 +93,7 @@
                   "Operations Management",
                   "Team Work"
                ],
-               "icon": "🍹",
+               "icon": "MdWork",
                "isCurrent": false
             },
             {
@@ -107,7 +107,7 @@
                   "Kitchen Operations",
                   "Health Standards"
                ],
-               "icon": "🍽️",
+               "icon": "MdRestaurant",
                "isCurrent": false
             },
             {
@@ -121,7 +121,7 @@
                   "Inventory Management",
                   "Quality Control"
                ],
-               "icon": "🍗",
+               "icon": "MdFastfood",
                "isCurrent": false
             }
          ],
@@ -138,7 +138,7 @@
                   "Software Development",
                   "System Architecture"
                ],
-               "icon": "🎓",
+               "icon": "FaGraduationCap",
                "isCurrent": false
             },
             {
@@ -153,7 +153,7 @@
                   "Chemistry",
                   "Logical Thinking"
                ],
-               "icon": "🏫",
+               "icon": "MdSchool",
                "isCurrent": false
             }
          ]
