@@ -4,7 +4,7 @@ export const assetDashboardData = {
    navigation: {
       backLink: "/portfolio",
       backText: "ポートフォリオに戻る",
-      projectNumber: 4,
+      projectNumber: 2,
       totalProjects: 5,
       prevProjectSlug: "invest-fam",
       nextProjectSlug: "portfolio-website"
@@ -13,15 +13,15 @@ export const assetDashboardData = {
    header: {
       title: "RFID資産管理システム",
       description: "RFIDテクノロジーを使用した包括的な資産管理システムで、コスト削減と効率向上を実現",
-      tags: ["Cross-Platform", "RFID Technology", "2025"],
+      tags: ["2025", "Cross-platform", "Enterprise", "管理", "多言語", "Light/Dark", "RFID"],
       githubUrl: "https://github.com/Russidan-Nadee/intern-project-rfid"
    },
 
    infoBar: {
       duration: "6ヶ月",
-      status: "Developer Intern",
+      status: "開発中",
       company: "Thai Parkerizing",
-      technologies: ["Flutter", "Node.js", "MySQL"],
+      technologies: ["Flutter", "Express", "MySQL"],
       labels: {
          duration: "開発期間",
          status: "ステータス",
@@ -100,13 +100,13 @@ export const assetDashboardData = {
       technical: {
          title: "技術詳細",
          details: {
-            "Frontend (Mobile)": "Flutter, Dart",
-            "Frontend (Web)": "Flutter Web",
-            "Frontend (Desktop)": "Flutter Desktop",
-            "Backend": "Node.js, Express.js",
+            "Framework": "Flutter, Node.js",
+            "Language": "Dart, JavaScript",
             "Database": "MySQL, Prisma ORM",
-            "RFID Integration": "RFID Reader API",
-            "Authentication": "JWT Token-based"
+            "Platform": "Mobile, Web, Desktop, Android, iOS",
+            "Authentication": "JWT",
+            "Integration": "RFID Reader API",
+            "Version Control": "Git, GitHub"
          },
          challenges: {
             title: "課題",

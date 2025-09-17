@@ -6,7 +6,7 @@ export const investFamData: ProjectData = {
    navigation: {
       backLink: '/portfolio',
       backText: 'ポートフォリオに戻る',
-      projectNumber: 5,
+      projectNumber: 1,
       totalProjects: 5,
       prevProjectSlug: undefined,
       nextProjectSlug: 'asset-dashboard',
@@ -14,16 +14,16 @@ export const investFamData: ProjectData = {
    header: {
       title: 'InvestFam',
       description: 'ファミリー投資ウェブサイト - 開発中の新しいプロジェクト',
-      tags: ['ウェブサイト', '投資', 'ファミリー'],
+      tags: ['2025', 'ウェブサイト', '個人', 'ツール', '多言語', 'Light/Dark'],
       githubUrl: undefined,
       demoUrl: undefined,
       liveUrl: 'https://investfam.netlify.app',
    },
    infoBar: {
-      duration: '開発中',
+      duration: '1ヶ月',
       status: '新規プロジェクト',
       company: '個人プロジェクト',
-      technologies: ['Next.js', 'TypeScript', 'Tailwind CSS'],
+      technologies: ['Next.js'],
       labels: {
          duration: '期間',
          status: 'ステータス',
@@ -80,10 +80,13 @@ export const investFamData: ProjectData = {
       technical: {
          title: '技術的詳細',
          details: {
-            'フロントエンド': 'Next.js 14, TypeScript, Tailwind CSS',
-            'バックエンド': '計画中',
-            'データベース': '計画中',
-            'デプロイメント': 'Vercel（予定）',
+            'Framework': 'Next.js 14',
+            'Language': 'TypeScript',
+            'Platform': 'Web',
+            'Styling': 'Tailwind CSS',
+            'Features': 'PWA, i18n',
+            'Deployment': 'Netlify, Cloudflare',
+            'Version Control': 'Git, GitHub',
          },
          challenges: {
             title: '課題',

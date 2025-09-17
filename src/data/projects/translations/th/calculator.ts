@@ -4,7 +4,7 @@ export const calculatorData = {
    navigation: {
       backLink: "/portfolio",
       backText: "กลับไปหน้าผลงาน",
-      projectNumber: 1,
+      projectNumber: 5,
       totalProjects: 5,
       prevProjectSlug: "asset-management",
       nextProjectSlug: undefined
@@ -13,16 +13,16 @@ export const calculatorData = {
    header: {
       title: "แอปเครื่องคิดเลขขั้นสูง",
       description: "เครื่องคิดเลขที่มีฟีเจอร์ครบครัน สร้างด้วย Python และ Tkinter พร้อม UI ที่ใช้งานง่าย",
-      tags: ["Python", "Tkinter", "Desktop App", "GUI"],
+      tags: ["2025", "แอปเดสก์ท็อป", "การศึกษา", "เครื่องมือ", "Scientific", "Memory"],
       demoUrl: "https://github.com/Russidan-Nadee/python-calculator/releases/download/v1.0/Python-Calculator.exe",
       githubUrl: "https://github.com/Russidan-Nadee/calculator_intern_test"
    },
 
    infoBar: {
       duration: "2 สัปดาห์",
-      status: "Intern test Project",
+      status: "เสร็จสมบูรณ์",
       company: "Self-Development",
-      technologies: ["Python", "Tkinter", "Math"],
+      technologies: ["Python"],
       labels: {
          duration: "ระยะเวลาพัฒนา",
          status: "สถานะ",
@@ -92,10 +92,12 @@ export const calculatorData = {
       technical: {
          title: "รายละเอียดเทคนิค",
          details: {
-            "Programming Language": "Python 3.8+",
-            "GUI Framework": "Tkinter (built-in)",
-            "Math Library": "Math, NumPy",
-            "Design Pattern": "MVC (Model-View-Controller)"
+            "Framework": "Tkinter",
+            "Language": "Python 3.8",
+            "Platform": "Desktop",
+            "Architecture": "MVC",
+            "Features": "Scientific, Memory",
+            "Version Control": "Git, GitHub"
          },
          challenges: {
             title: "ความท้าทาย",

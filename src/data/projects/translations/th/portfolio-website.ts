@@ -13,15 +13,15 @@ export const portfolioWebsiteData = {
    header: {
       title: "เว็บไซต์พอร์ตโฟลิโอส่วนตัว",
       description: "เว็บไซต์แสดงผลงานส่วนตัวที่รองรับหลายภาษา สร้างด้วย Next.js และ TypeScript พร้อมระบบ Dark Mode",
-      tags: ["Next.js", "TypeScript", "Tailwind CSS", "Multilingual", "Responsive"],
+      tags: ["2025", "เว็บไซต์", "ส่วนตัว", "พอร์ตโฟลิโอ", "หลายภาษา", "Light/Dark"],
       githubUrl: "https://github.com/Russidan-Nadee/portfolio"
    },
 
    infoBar: {
       duration: "2 เดือน",
-      status: "Personal Project",
+      status: "เสร็จสมบูรณ์",
       company: "Self-Development",
-      technologies: ["Next.js", "TypeScript", "Tailwind"],
+      technologies: ["Next.js"],
       labels: {
          duration: "ระยะเวลาพัฒนา",
          status: "สถานะ",
@@ -100,12 +100,11 @@ export const portfolioWebsiteData = {
       technical: {
          title: "รายละเอียดเทคนิค",
          details: {
-            "Framework": "Next.js 14 (App Router)",
+            "Framework": "Next.js 14",
             "Language": "TypeScript",
+            "Platform": "Web",
             "Styling": "Tailwind CSS",
-            "Animations": "GSAP, CSS Transitions",
-            "Icons": "React Icons, Lucide React",
-            "Fonts": "Google Fonts (Inter, Geist)",
+            "Features": "i18n, Theme switching",
             "Deployment": "Netlify",
             "Version Control": "Git, GitHub"
          },

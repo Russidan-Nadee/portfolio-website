@@ -6,7 +6,7 @@ export const investFamData: ProjectData = {
    navigation: {
       backLink: '/portfolio',
       backText: 'Back to Portfolio',
-      projectNumber: 5,
+      projectNumber: 1,
       totalProjects: 5,
       prevProjectSlug: undefined,
       nextProjectSlug: 'asset-dashboard',
@@ -14,16 +14,16 @@ export const investFamData: ProjectData = {
    header: {
       title: 'InvestFam',
       description: 'Your comprehensive hub for smart financial planning and investment decisions',
-      tags: ['Website', 'Investment', 'Financial Tools', 'Next.js'],
+      tags: ['2025', 'Website', 'Personal', 'Tools', 'Multilingual', 'Light/Dark'],
       githubUrl: undefined,
       demoUrl: undefined,
       liveUrl: 'https://investfam.netlify.app',
    },
    infoBar: {
-      duration: '2024 - Present',
+      duration: '1 month',
       status: 'Completed',
       company: 'Personal Project',
-      technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'PWA'],
+      technologies: ['Next.js'],
       labels: {
          duration: 'Duration',
          status: 'Status',
@@ -92,10 +92,13 @@ export const investFamData: ProjectData = {
       technical: {
          title: 'Technical Details',
          details: {
-            'Frontend': 'Next.js 14, TypeScript, Tailwind CSS',
-            'Features': 'PWA, Responsive Design, Multi-language',
-            'Deployment': 'Netlify',
-            'Version': '1.2.1',
+            'Framework': 'Next.js 14',
+            'Language': 'TypeScript',
+            'Platform': 'Web',
+            'Styling': 'Tailwind CSS',
+            'Features': 'PWA, i18n',
+            'Deployment': 'Netlify, Cloudflare',
+            'Version Control': 'Git, GitHub',
          },
          challenges: {
             title: 'Challenges',

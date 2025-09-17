@@ -13,15 +13,15 @@ export const portfolioWebsiteData = {
    header: {
       title: "Personal Portfolio Website",
       description: "Multilingual personal portfolio website built with Next.js and TypeScript featuring Dark Mode",
-      tags: ["Next.js", "TypeScript", "Tailwind CSS", "Multilingual", "Responsive"],
+      tags: ["2025", "Website", "Personal", "Portfolio", "Multilingual", "Light/Dark"],
       githubUrl: "https://github.com/Russidan-Nadee/portfolio"
    },
 
    infoBar: {
       duration: "2 months",
-      status: "Personal Project",
+      status: "Completed",
       company: "Self-Development",
-      technologies: ["Next.js", "TypeScript", "Tailwind"],
+      technologies: ["Next.js"],
       labels: {
          duration: "Development Duration",
          status: "Status",
@@ -100,12 +100,11 @@ export const portfolioWebsiteData = {
       technical: {
          title: "Technical Details",
          details: {
-            "Framework": "Next.js 14 (App Router)",
+            "Framework": "Next.js 14",
             "Language": "TypeScript",
+            "Platform": "Web",
             "Styling": "Tailwind CSS",
-            "Animations": "GSAP, CSS Transitions",
-            "Icons": "React Icons, Lucide React",
-            "Fonts": "Google Fonts (Inter, Geist)",
+            "Features": "i18n, Theme switching",
             "Deployment": "Netlify",
             "Version Control": "Git, GitHub"
          },

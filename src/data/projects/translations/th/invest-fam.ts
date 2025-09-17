@@ -6,7 +6,7 @@ export const investFamData: ProjectData = {
    navigation: {
       backLink: '/portfolio',
       backText: 'กลับไปหน้าผลงาน',
-      projectNumber: 5,
+      projectNumber: 1,
       totalProjects: 5,
       prevProjectSlug: undefined,
       nextProjectSlug: 'asset-dashboard',
@@ -14,16 +14,16 @@ export const investFamData: ProjectData = {
    header: {
       title: 'InvestFam',
       description: 'แพลตฟอร์มครบครันสำหรับการวางแผนการเงินและเครื่องมือคำนวณการลงทุนฟรี',
-      tags: ['เว็บไซต์', 'การลงทุน', 'เครื่องมือการเงิน', 'Next.js'],
+      tags: ['2025', 'เว็บไซต์', 'ส่วนตัว', 'เครื่องมือ', 'หลายภาษา', 'Light/Dark'],
       githubUrl: undefined,
       demoUrl: undefined,
       liveUrl: 'https://investfam.netlify.app',
    },
    infoBar: {
-      duration: '2024 - ปัจจุบัน',
+      duration: '1 เดือน',
       status: 'เสร็จสมบูรณ์',
       company: 'โครงการส่วนตัว',
-      technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'PWA'],
+      technologies: ['Next.js'],
       labels: {
          duration: 'ระยะเวลา',
          status: 'สถานะ',
@@ -92,10 +92,13 @@ export const investFamData: ProjectData = {
       technical: {
          title: 'รายละเอียดเทคนิค',
          details: {
-            'Frontend': 'Next.js 14, TypeScript, Tailwind CSS',
-            'Features': 'PWA, Responsive Design, Multi-language',
-            'Deployment': 'Netlify',
-            'Version': '1.2.1',
+            'Framework': 'Next.js 14',
+            'Language': 'TypeScript',
+            'Platform': 'Web',
+            'Styling': 'Tailwind CSS',
+            'Features': 'PWA, i18n',
+            'Deployment': 'Netlify, Cloudflare',
+            'Version Control': 'Git, GitHub',
          },
          challenges: {
             title: 'ความท้าทาย',

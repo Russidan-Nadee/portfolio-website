@@ -103,7 +103,7 @@ export default function ProjectTabsContent({ data, imagePath }: ProjectTabsConte
                <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`px-5 py-3 border-b-2 transition-all duration-300 ${activeTab === tab.id ? 'font-semibold' : 'hover:opacity-70'
+                  className={`flex-1 px-2 py-3 border-b-2 transition-all duration-300 text-xs sm:text-sm lg:text-base ${activeTab === tab.id ? 'font-semibold' : 'hover:opacity-70'
                      }`}
                   style={{
                      color: activeTab === tab.id ? 'var(--foreground)' : 'var(--muted-foreground)',

@@ -8,7 +8,8 @@
       "WebFetch(domain:investfam.netlify.app)",
       "Bash(netstat:*)",
       "Bash(findstr:*)",
-      "Bash(taskkill:*)"
+      "Bash(taskkill:*)",
+      "WebFetch(domain:github.com)"
     ],
     "deny": []
   }

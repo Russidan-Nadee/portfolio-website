@@ -4,7 +4,7 @@ export const calculatorData = {
    navigation: {
       backLink: "/portfolio",
       backText: "Back to Portfolio",
-      projectNumber: 1,
+      projectNumber: 5,
       totalProjects: 5,
       prevProjectSlug: "asset-management",
       nextProjectSlug: undefined
@@ -13,16 +13,16 @@ export const calculatorData = {
    header: {
       title: "Advanced Calculator App",
       description: "Feature-rich calculator built with Python and Tkinter with user-friendly UI",
-      tags: ["Python", "Tkinter", "Desktop App", "GUI"],
+      tags: ["2025", "Desktop App", "Education", "Tools", "Scientific", "Memory"],
       demoUrl: "https://github.com/Russidan-Nadee/python-calculator/releases/download/v1.0/Python-Calculator.exe",
       githubUrl: "https://github.com/Russidan-Nadee/calculator_intern_test"
    },
 
    infoBar: {
       duration: "2 weeks",
-      status: "Intern Test Project",
+      status: "Completed",
       company: "Self-Development",
-      technologies: ["Python", "Tkinter", "Math"],
+      technologies: ["Python"],
       labels: {
          duration: "Development Duration",
          status: "Status",
@@ -92,10 +92,12 @@ export const calculatorData = {
       technical: {
          title: "Technical Details",
          details: {
-            "Programming Language": "Python 3.8+",
-            "GUI Framework": "Tkinter (built-in)",
-            "Math Library": "Math, NumPy",
-            "Design Pattern": "MVC (Model-View-Controller)"
+            "Framework": "Tkinter",
+            "Language": "Python 3.8",
+            "Platform": "Desktop",
+            "Architecture": "MVC",
+            "Features": "Scientific, Memory",
+            "Version Control": "Git, GitHub"
          },
          challenges: {
             title: "Challenges",

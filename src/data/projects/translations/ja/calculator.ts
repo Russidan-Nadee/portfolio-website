@@ -4,7 +4,7 @@ export const calculatorData = {
    navigation: {
       backLink: "/portfolio",
       backText: "ポートフォリオに戻る",
-      projectNumber: 1,
+      projectNumber: 5,
       totalProjects: 5,
       prevProjectSlug: "asset-management",
       nextProjectSlug: undefined
@@ -13,16 +13,16 @@ export const calculatorData = {
    header: {
       title: "高度な電卓アプリ",
       description: "PythonとTkinterで構築された機能豊富な電卓で、使いやすいUIを備えています",
-      tags: ["Python", "Tkinter", "Desktop App", "GUI"],
+      tags: ["2025", "デスクトップアプリ", "教育", "ツール", "Scientific", "Memory"],
       githubUrl: "https://github.com/Russidan-Nadee/calculator_intern_test",
       demoUrl: "https://github.com/Russidan-Nadee/python-calculator/releases/download/v1.0/Python-Calculator.exe"
    },
 
    infoBar: {
       duration: "2週間",
-      status: "Intern Test Project",
+      status: "完成",
       company: "Self-Development",
-      technologies: ["Python", "Tkinter", "Math"],
+      technologies: ["Python"],
       labels: {
          duration: "開発期間",
          status: "ステータス",
@@ -92,10 +92,12 @@ export const calculatorData = {
       technical: {
          title: "技術詳細",
          details: {
-            "Programming Language": "Python 3.8+",
-            "GUI Framework": "Tkinter (built-in)",
-            "Math Library": "Math, NumPy",
-            "Design Pattern": "MVC (Model-View-Controller)"
+            "Framework": "Tkinter",
+            "Language": "Python 3.8",
+            "Platform": "Desktop",
+            "Architecture": "MVC",
+            "Features": "Scientific, Memory",
+            "Version Control": "Git, GitHub"
          },
          challenges: {
             title: "課題",

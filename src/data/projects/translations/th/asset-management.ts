@@ -4,7 +4,7 @@ export const assetManagementData = {
    navigation: {
       backLink: "/portfolio",
       backText: "กลับไปหน้าผลงาน",
-      projectNumber: 2,
+      projectNumber: 4,
       totalProjects: 5,
       prevProjectSlug: "portfolio-website",
       nextProjectSlug: "calculator"
@@ -13,15 +13,15 @@ export const assetManagementData = {
    header: {
       title: "แอปจัดการทรัพย์สินมือถือ",
       description: "แอปพลิเคชันมือถือสำหรับจัดการทรัพย์สิน",
-      tags: ["Mobile App", "Flutter", "Node.js", "Express", "MySQL"],
+      tags: ["2025", "แอปมือถือ", "การศึกษา", "การจัดการ"],
       githubUrl: "https://github.com/Russidan-Nadee/learn-flutter-express"
    },
 
    infoBar: {
       duration: "3 เดือน",
-      status: "Training Project",
+      status: "เก็บถาวร",
       company: "Self-Development",
-      technologies: ["Flutter", "Node.js", "Express", "MySQL"],
+      technologies: ["Flutter", "Express", "MySQL"],
       labels: {
          duration: "ระยะเวลาพัฒนา",
          status: "สถานะ",
@@ -95,12 +95,13 @@ export const assetManagementData = {
       technical: {
          title: "รายละเอียดเทคนิค",
          details: {
-            "Mobile Framework": "Flutter 3.x",
-            "Programming Language": "Dart",
-            "Backend API": "Node.js + Express",
-            "Storage": "MySQL",
+            "Framework": "Flutter 3.x, Express.js",
+            "Language": "Dart, JavaScript",
+            "Database": "MySQL, Prisma ORM",
+            "Platform": "Mobile",
+            "Authentication": "JWT",
             "HTTP Client": "dio",
-            "Authentication": "JWT Token"
+            "Version Control": "Git, GitHub"
          },
          challenges: {
             title: "ความท้าทาย",
