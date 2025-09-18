@@ -26,6 +26,18 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Russidan Nadee",
   description: "Personal portfolio website",
+  openGraph: {
+    title: "Russidan Nadee",
+    description: "Personal portfolio website",
+    images: ['/og-image.png'],
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: "Russidan Nadee",
+    description: "Personal portfolio website",
+    images: ['/twitter-image.png'],
+  },
   icons: {
     icon: [
       { url: '/icons/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
