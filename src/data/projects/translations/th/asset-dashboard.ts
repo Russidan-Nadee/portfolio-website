@@ -11,7 +11,7 @@ export const assetDashboardData = {
    },
 
    header: {
-      title: "ระบบจัดการทรัพย์สินด้วย RFID",
+      title: "TP RFID",
       description: "ระบบจัดการทรัพย์สินแบบครบวงจรด้วยเทคโนโลยี RFID สำหรับลดค่าใช้จ่ายและเพิ่มประสิทธิภาพ",
       tags: ["2025", "Cross-platform", "Enterprise", "การจัดการ", "หลายภาษา", "Light/Dark", "RFID"],
       githubUrl: "https://github.com/Russidan-Nadee/intern-project-rfid"

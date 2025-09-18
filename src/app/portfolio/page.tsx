@@ -71,12 +71,12 @@ function PortfolioContent() {
       },
       {
          id: 'assetDashboard',
-         title: translations?.portfolio?.projects?.assetDashboard?.title || 'RFID Asset Dashboard',
+         title: translations?.portfolio?.projects?.assetDashboard?.title || 'TP RFID',
          image: '/images/projects/asset-dashboard.jpg',
          tech: translations?.portfolio?.projects?.assetDashboard?.tech || 'Flutter, Node.js, Express, MySQL',
          category: 'crossplatform',
          tags: ['crossplatform', 'web', 'desktop', 'mobile'],
-         slug: 'asset-dashboard',
+         slug: 'tp-rfid',
          projectNumber: 4
       },
       {

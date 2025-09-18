@@ -22,7 +22,7 @@ const loadProjectData = async (slug: ProjectSlug, lang: string = 'th'): Promise<
             }
             break
 
-         case 'asset-dashboard':
+         case 'tp-rfid':
             if (lang === 'th') {
                const module = await import('./translations/th/asset-dashboard')
                data = module.assetDashboardData
@@ -113,7 +113,7 @@ import { investFamData } from './translations/th/invest-fam'
 // ===== PROJECT REGISTRY WITH CUSTOM NUMBERING =====
 const projectsRegistry: Record<string, ProjectData> = {
    'kinrai-d-project': kinraiDData,
-   'asset-dashboard': assetDashboardData,
+   'tp-rfid': assetDashboardData,
    'asset-management': assetManagementData,
    'calculator': calculatorData,
    'portfolio-website': portfolioWebsiteData,
@@ -124,7 +124,7 @@ const projectsRegistry: Record<string, ProjectData> = {
 const projectNumbers: Record<string, number> = {
    'kinrai-d-project': 6,
    'invest-fam': 5,
-   'asset-dashboard': 4,
+   'tp-rfid': 4,
    'portfolio-website': 3,
    'asset-management': 2,
    'calculator': 1,
@@ -281,7 +281,7 @@ export const getProjectDataWithFallback = async (
 // ===== CONSTANTS =====
 export const PROJECT_SLUGS = {
    KINRAI_D: 'kinrai-d-project',
-   ASSET_DASHBOARD: 'asset-dashboard',
+   TP_RFID: 'tp-rfid',
    ASSET_MANAGEMENT: 'asset-management',
    CALCULATOR: 'calculator',
    PORTFOLIO_WEBSITE: 'portfolio-website',

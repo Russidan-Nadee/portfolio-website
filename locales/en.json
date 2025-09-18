@@ -198,7 +198,7 @@
             "tech": "Next.js, TypeScript, Tailwind CSS"
          },
          "assetDashboard": {
-            "title": "RFID Asset Dashboard",
+            "title": "TP RFID",
             "tech": "Flutter, Node.js, Express, Prisma, MySQL"
          }
       }

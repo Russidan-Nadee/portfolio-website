@@ -9,7 +9,7 @@ export const investFamData: ProjectData = {
       projectNumber: 1,
       totalProjects: 5,
       prevProjectSlug: undefined,
-      nextProjectSlug: 'asset-dashboard',
+      nextProjectSlug: 'tp-rfid',
    },
    header: {
       title: 'InvestFam',

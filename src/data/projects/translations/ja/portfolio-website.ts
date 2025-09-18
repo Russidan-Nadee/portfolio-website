@@ -6,7 +6,7 @@ export const portfolioWebsiteData = {
       backText: "ポートフォリオに戻る",
       projectNumber: 3,
       totalProjects: 5,
-      prevProjectSlug: "asset-dashboard",
+      prevProjectSlug: "tp-rfid",
       nextProjectSlug: "asset-management"
    },
 

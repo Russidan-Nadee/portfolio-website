@@ -194,7 +194,7 @@
             "tech": "Next.js, TypeScript, Tailwind CSS"
          },
          "assetDashboard": {
-            "title": "แดชบอร์ดจัดการทรัพย์สินด้วย RFID",
+            "title": "TP RFID",
             "tech": "Flutter, Node.js, Express, Prisma, MySQL"
          }
       }

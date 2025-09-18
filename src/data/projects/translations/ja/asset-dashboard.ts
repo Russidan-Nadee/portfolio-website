@@ -11,7 +11,7 @@ export const assetDashboardData = {
    },
 
    header: {
-      title: "RFID資産管理システム",
+      title: "TP RFID",
       description: "RFIDテクノロジーを使用した包括的な資産管理システムで、コスト削減と効率向上を実現",
       tags: ["2025", "Cross-platform", "Enterprise", "管理", "多言語", "Light/Dark", "RFID"],
       githubUrl: "https://github.com/Russidan-Nadee/intern-project-rfid"
