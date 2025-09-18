@@ -1,4 +1,4 @@
-// src/data/projects/translations/th/asset-dashboard.ts
+// src/data/projects/translations/th/tp-rfid.ts
 
 export const assetDashboardData = {
    navigation: {

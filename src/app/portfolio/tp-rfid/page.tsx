@@ -1,4 +1,4 @@
-// src/app/portfolio/asset-dashboard/page.tsx
+// src/app/portfolio/tp-rfid/page.tsx
 'use client'
 
 import { useState, useEffect } from 'react'
@@ -8,20 +8,20 @@ import ProjectHeader from '@/components/portfolio/ProjectHeader'
 import ProjectInfoBar from '@/components/portfolio/ProjectInfoBar'
 import ProjectTabsContent from '@/components/portfolio/ProjectTabsContent'
 
-export default function AssetDashboardPage() {
+export default function TpRfidPage() {
    const [scrollProgress, setScrollProgress] = useState(0)
    const [locale, setLocale] = useState('th')
    const [projectData, setProjectData] = useState<any>(null)
    const [loading, setLoading] = useState(true)
 
    // Image path for this project
-   const projectImagePath = '/images/projects/asset-dashboard/dashboard-overview.jpg'
+   const projectImagePath = '/images/projects/tp-rfid/dashboard-overview.png'
 
    // Load project data based on language
    useEffect(() => {
       const loadData = async () => {
          setLoading(true)
-         const data = await getProjectData('asset-dashboard', locale)
+         const data = await getProjectData('tp-rfid', locale)
          setProjectData(data)
          setLoading(false)
       }
@@ -98,7 +98,7 @@ export default function AssetDashboardPage() {
                   Project not found
                </h1>
                <p style={{ color: 'var(--muted-foreground)' }}>
-                  Asset dashboard project data is not available.
+                  TP RFID project data is not available.
                </p>
             </div>
          </div>

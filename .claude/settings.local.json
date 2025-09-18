@@ -11,7 +11,9 @@
       "Bash(taskkill:*)",
       "WebFetch(domain:github.com)",
       "Bash(del:*)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(dir \"C:\\Users\\russidan\\Desktop\\RussidanProject\\portfolio\\src\\data\\projects\\translations\\th\")",
+      "Bash(ren:*)"
     ],
     "deny": []
   }

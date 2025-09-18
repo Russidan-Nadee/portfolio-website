@@ -50,7 +50,7 @@ export default function ProjectsShowcase({ translations }: ProjectsShowcaseProps
          tech: translations?.home?.projectsShowcase?.projects?.assetManagement?.tech || 'Flutter, Node.js, Express, MySQL',
          filter: 'grayscale(100%) contrast(1.2)',
          isCenter: false,
-         image: '/images/projects/asset-dashboard.jpg',
+         image: '/images/projects/asset-management-mobile.jpg',
          slug: 'asset-management'
       },
       {

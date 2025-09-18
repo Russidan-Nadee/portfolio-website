@@ -15,7 +15,7 @@ export default function PortfolioWebsitePage() {
    const [loading, setLoading] = useState(true)
 
    // Image path for this project
-   const projectImagePath = '/images/projects/portfolio-website/portfolio-website-overview.jpg'
+   const projectImagePath = '/images/projects/portfolio-website/portfolio-website-overview.png'
 
 
    // Load project data based on language

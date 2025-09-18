@@ -24,13 +24,13 @@ const loadProjectData = async (slug: ProjectSlug, lang: string = 'th'): Promise<
 
          case 'tp-rfid':
             if (lang === 'th') {
-               const module = await import('./translations/th/asset-dashboard')
+               const module = await import('./translations/th/tp-rfid')
                data = module.assetDashboardData
             } else if (lang === 'en') {
-               const module = await import('./translations/en/asset-dashboard')
+               const module = await import('./translations/en/tp-rfid')
                data = module.assetDashboardData
             } else if (lang === 'ja') {
-               const module = await import('./translations/ja/asset-dashboard')
+               const module = await import('./translations/ja/tp-rfid')
                data = module.assetDashboardData
             }
             break
@@ -104,7 +104,7 @@ const loadProjectData = async (slug: ProjectSlug, lang: string = 'th'): Promise<
 
 // ===== SYNCHRONOUS IMPORTS FOR THAI (DEFAULT) =====
 import { kinraiDData } from './translations/th/kinrai-d-project'
-import { assetDashboardData } from './translations/th/asset-dashboard'
+import { assetDashboardData } from './translations/th/tp-rfid'
 import { assetManagementData } from './translations/th/asset-management'
 import { calculatorData } from './translations/th/calculator'
 import { portfolioWebsiteData } from './translations/th/portfolio-website'
@@ -135,7 +135,7 @@ const projectNumbers: Record<string, number> = {
 /**
  * Get project data by slug and language with custom project numbering
  * Each project has a manually assigned number defined in projectNumbers
- * @param slug - Project slug (e.g., 'calculator', 'asset-dashboard')
+ * @param slug - Project slug (e.g., 'calculator', 'tp-rfid')
  * @param lang - Language code ('th', 'en', 'ja')
  * @returns Project data with updated navigation or undefined if not found
  */
@@ -298,7 +298,7 @@ export { kinraiDData, assetDashboardData, assetManagementData, calculatorData, p
 
 // ===== ADDITIONAL EXPORTS FOR OTHER LANGUAGES =====
 export const getKinraiDData = (lang: string = 'th') => getProjectData('kinrai-d-project', lang)
-export const getAssetDashboardData = (lang: string = 'th') => getProjectData('asset-dashboard', lang)
+export const getAssetDashboardData = (lang: string = 'th') => getProjectData('tp-rfid', lang)
 export const getAssetManagementData = (lang: string = 'th') => getProjectData('asset-management', lang)
 export const getCalculatorData = (lang: string = 'th') => getProjectData('calculator', lang)
 export const getPortfolioWebsiteData = (lang: string = 'th') => getProjectData('portfolio-website', lang)

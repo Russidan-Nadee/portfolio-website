@@ -15,7 +15,7 @@ export default function InvestFamPage() {
    const [loading, setLoading] = useState(true)
 
    // Image path for this project
-   const projectImagePath = '/images/projects/investfam/investfam-overview.png'
+   const projectImagePath = '/images/projects/invest-fam/investfam-overview.png'
 
    // Load project data based on language
    useEffect(() => {
