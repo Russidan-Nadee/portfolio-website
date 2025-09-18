@@ -45,33 +45,6 @@ export default function ProjectsShowcase({ translations }: ProjectsShowcaseProps
 
    const projects: Project[] = [
       {
-         id: 'asset-management',
-         title: translations?.home?.projectsShowcase?.projects?.assetManagement?.title || 'Asset Management',
-         tech: translations?.home?.projectsShowcase?.projects?.assetManagement?.tech || 'Flutter, Node.js, Express, MySQL',
-         filter: 'grayscale(100%) contrast(1.2)',
-         isCenter: false,
-         image: '/images/projects/asset-management-mobile.jpg',
-         slug: 'asset-management'
-      },
-      {
-         id: 'calculator-app',
-         title: translations?.home?.projectsShowcase?.projects?.calculator?.title || 'Calculator App',
-         tech: translations?.home?.projectsShowcase?.projects?.calculator?.tech || 'Python, Tkinter',
-         filter: 'none',
-         isCenter: true,
-         image: '/images/projects/calculator-app.jpg',
-         slug: 'calculator'
-      },
-      {
-         id: 'investfam',
-         title: translations?.home?.projectsShowcase?.projects?.investfam?.title || 'InvestFam',
-         tech: translations?.home?.projectsShowcase?.projects?.investfam?.tech || 'Next.js, TypeScript, Tailwind CSS',
-         filter: 'grayscale(100%) contrast(1.2)',
-         isCenter: false,
-         image: '/images/projects/investfam.jpg',
-         slug: 'invest-fam'
-      },
-      {
          id: 'kinrai-d-project',
          title: translations?.home?.projectsShowcase?.projects?.kinraiD?.title || 'Kinrai-D',
          tech: translations?.home?.projectsShowcase?.projects?.kinraiD?.tech || 'Flutter, Nest.js, PostgreSQL, Supabase',
@@ -79,6 +52,33 @@ export default function ProjectsShowcase({ translations }: ProjectsShowcaseProps
          isCenter: false,
          image: '/images/projects/kinrai-d.png',
          slug: 'kinrai-d-project'
+      },
+      {
+         id: 'investfam',
+         title: translations?.home?.projectsShowcase?.projects?.investfam?.title || 'InvestFam',
+         tech: translations?.home?.projectsShowcase?.projects?.investfam?.tech || 'Next.js, TypeScript, Tailwind CSS',
+         filter: 'none',
+         isCenter: true,
+         image: '/images/projects/investfam.jpg',
+         slug: 'invest-fam'
+      },
+      {
+         id: 'tp-rfid',
+         title: translations?.home?.projectsShowcase?.projects?.tpRfid?.title || 'TP RFID',
+         tech: translations?.home?.projectsShowcase?.projects?.tpRfid?.tech || 'Flutter, Node.js, Express, MySQL',
+         filter: 'grayscale(100%) contrast(1.2)',
+         isCenter: false,
+         image: '/images/projects/tp-rfid.jpg',
+         slug: 'tp-rfid'
+      },
+      {
+         id: 'portfolio-website',
+         title: translations?.home?.projectsShowcase?.projects?.portfolio?.title || 'Portfolio Website',
+         tech: translations?.home?.projectsShowcase?.projects?.portfolio?.tech || 'Next.js, TypeScript, Tailwind CSS',
+         filter: 'grayscale(100%) contrast(1.2)',
+         isCenter: false,
+         image: '/images/projects/portfolio-website.jpg',
+         slug: 'portfolio-website'
       }
    ]
 
