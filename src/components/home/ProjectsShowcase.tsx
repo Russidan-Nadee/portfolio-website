@@ -70,6 +70,15 @@ export default function ProjectsShowcase({ translations }: ProjectsShowcaseProps
          isCenter: false,
          image: '/images/projects/investfam.jpg',
          slug: 'invest-fam'
+      },
+      {
+         id: 'kinrai-d-project',
+         title: translations?.home?.projectsShowcase?.projects?.kinraiD?.title || 'Kinrai-D',
+         tech: translations?.home?.projectsShowcase?.projects?.kinraiD?.tech || 'Flutter, Nest.js, PostgreSQL, Supabase',
+         filter: 'grayscale(100%) contrast(1.2)',
+         isCenter: false,
+         image: '/images/projects/kinrai-d.png',
+         slug: 'kinrai-d-project'
       }
    ]
 

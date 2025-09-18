@@ -177,6 +177,14 @@
       "title": "Portfolio",
       "subtitle": "Explore my latest projects and technical achievements",
       "projects": {
+         "kinraiD": {
+            "title": "Kinrai-D",
+            "tech": "Flutter, Nest.js, PostgreSQL, Supabase"
+         },
+         "investfam": {
+            "title": "InvestFam",
+            "tech": "Next.js, TypeScript, Tailwind CSS"
+         },
          "assetManagement": {
             "title": "Asset Management",
             "tech": "Flutter, Node.js, Express, MySQL"

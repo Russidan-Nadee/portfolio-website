@@ -47,7 +47,18 @@ function PortfolioContent() {
       return path
    }
 
-   const projects = [
+   // Define projects with their assigned numbers for proper ordering
+   const projectsWithNumbers = [
+      {
+         id: 'kinrai-d',
+         title: translations?.portfolio?.projects?.kinraiD?.title || 'Kinrai-D',
+         image: '/images/projects/kinrai-d.png',
+         tech: translations?.portfolio?.projects?.kinraiD?.tech || 'Flutter, Nest.js, PostgreSQL, Supabase',
+         category: 'crossplatform',
+         tags: ['crossplatform', 'web', 'mobile'],
+         slug: 'kinrai-d-project',
+         projectNumber: 6
+      },
       {
          id: 'investfam',
          title: translations?.portfolio?.projects?.investfam?.title || 'InvestFam',
@@ -55,7 +66,8 @@ function PortfolioContent() {
          tech: translations?.portfolio?.projects?.investfam?.tech || 'Next.js, TypeScript, Tailwind CSS',
          category: 'web',
          tags: ['web'],
-         slug: 'invest-fam'
+         slug: 'invest-fam',
+         projectNumber: 5
       },
       {
          id: 'assetDashboard',
@@ -64,7 +76,8 @@ function PortfolioContent() {
          tech: translations?.portfolio?.projects?.assetDashboard?.tech || 'Flutter, Node.js, Express, MySQL',
          category: 'crossplatform',
          tags: ['crossplatform', 'web', 'desktop', 'mobile'],
-         slug: 'asset-dashboard'
+         slug: 'asset-dashboard',
+         projectNumber: 4
       },
       {
          id: 'portfolio',
@@ -73,7 +86,8 @@ function PortfolioContent() {
          tech: translations?.portfolio?.projects?.portfolio?.tech || 'Next.js, TypeScript, Tailwind CSS',
          category: 'web',
          tags: ['web'],
-         slug: 'portfolio-website'
+         slug: 'portfolio-website',
+         projectNumber: 3
       },
       {
          id: 'assetManagement',
@@ -82,7 +96,8 @@ function PortfolioContent() {
          tech: translations?.portfolio?.projects?.assetManagement?.tech || 'Flutter, Node.js, Express, MySQL',
          category: 'mobile',
          tags: ['mobile'],
-         slug: 'asset-management'
+         slug: 'asset-management',
+         projectNumber: 2
       },
       {
          id: 'calculator',
@@ -91,9 +106,13 @@ function PortfolioContent() {
          tech: translations?.portfolio?.projects?.calculator?.tech || 'Python, Tkinter',
          category: 'desktop',
          tags: ['desktop'],
-         slug: 'calculator'
+         slug: 'calculator',
+         projectNumber: 1
       },
    ]
+
+   // Sort projects by projectNumber descending (highest number first)
+   const projects = projectsWithNumbers.sort((a, b) => b.projectNumber - a.projectNumber)
 
    const filters = [
       { key: 'all', label: 'All Projects' },
@@ -106,6 +125,8 @@ function PortfolioContent() {
    const filteredProjects = projects.filter(project =>
       activeFilter === 'all' ? true : project.tags.includes(activeFilter)
    )
+
+   // Projects are already in the desired order (newest first) in the projects array
 
    // Stagger animation for projects
    useEffect(() => {

@@ -9,6 +9,19 @@ const loadProjectData = async (slug: ProjectSlug, lang: string = 'th'): Promise<
       let data
 
       switch (slug) {
+         case 'kinrai-d-project':
+            if (lang === 'th') {
+               const module = await import('./translations/th/kinrai-d-project')
+               data = module.kinraiDData
+            } else if (lang === 'en') {
+               const module = await import('./translations/en/kinrai-d-project')
+               data = module.kinraiDData
+            } else if (lang === 'ja') {
+               const module = await import('./translations/ja/kinrai-d-project')
+               data = module.kinraiDData
+            }
+            break
+
          case 'asset-dashboard':
             if (lang === 'th') {
                const module = await import('./translations/th/asset-dashboard')
@@ -90,14 +103,16 @@ const loadProjectData = async (slug: ProjectSlug, lang: string = 'th'): Promise<
 }
 
 // ===== SYNCHRONOUS IMPORTS FOR THAI (DEFAULT) =====
+import { kinraiDData } from './translations/th/kinrai-d-project'
 import { assetDashboardData } from './translations/th/asset-dashboard'
 import { assetManagementData } from './translations/th/asset-management'
 import { calculatorData } from './translations/th/calculator'
 import { portfolioWebsiteData } from './translations/th/portfolio-website'
 import { investFamData } from './translations/th/invest-fam'
 
-// ===== PROJECT REGISTRY (THAI ONLY FOR NOW) =====
+// ===== PROJECT REGISTRY WITH CUSTOM NUMBERING =====
 const projectsRegistry: Record<string, ProjectData> = {
+   'kinrai-d-project': kinraiDData,
    'asset-dashboard': assetDashboardData,
    'asset-management': assetManagementData,
    'calculator': calculatorData,
@@ -105,16 +120,54 @@ const projectsRegistry: Record<string, ProjectData> = {
    'invest-fam': investFamData,
 }
 
+// Define custom project numbers
+const projectNumbers: Record<string, number> = {
+   'kinrai-d-project': 6,
+   'invest-fam': 5,
+   'asset-dashboard': 4,
+   'portfolio-website': 3,
+   'asset-management': 2,
+   'calculator': 1,
+}
+
 // ===== UTILITY FUNCTIONS =====
 
 /**
- * Get project data by slug and language
+ * Get project data by slug and language with custom project numbering
+ * Each project has a manually assigned number defined in projectNumbers
  * @param slug - Project slug (e.g., 'calculator', 'asset-dashboard')
  * @param lang - Language code ('th', 'en', 'ja')
- * @returns Project data or undefined if not found
+ * @returns Project data with updated navigation or undefined if not found
  */
 export const getProjectData = async (slug: ProjectSlug, lang: string = 'th'): Promise<ProjectData | undefined> => {
-   return await loadProjectData(slug, lang)
+   const data = await loadProjectData(slug, lang)
+   if (!data) return undefined
+
+   // Get custom project number
+   const projectNumber = projectNumbers[slug] || 1
+   const totalProjects = Object.keys(projectsRegistry).length
+
+   // Calculate navigation based on project numbers (not registry order)
+   // Sort projects by their assigned numbers for navigation
+   const projectsByNumber = Object.entries(projectNumbers)
+      .sort(([, a], [, b]) => b - a) // Sort by number descending (highest first)
+      .map(([slug]) => slug)
+
+   const currentPosition = projectsByNumber.indexOf(slug)
+   const prevProjectSlug = currentPosition > 0 ? projectsByNumber[currentPosition - 1] : undefined
+   const nextProjectSlug = currentPosition < projectsByNumber.length - 1 ? projectsByNumber[currentPosition + 1] : undefined
+
+   // Update navigation data
+   return {
+      ...data,
+      navigation: {
+         ...data.navigation,
+         projectNumber,
+         totalProjects,
+         prevProjectSlug,
+         nextProjectSlug,
+      }
+   }
 }
 
 /**
@@ -227,6 +280,7 @@ export const getProjectDataWithFallback = async (
 
 // ===== CONSTANTS =====
 export const PROJECT_SLUGS = {
+   KINRAI_D: 'kinrai-d-project',
    ASSET_DASHBOARD: 'asset-dashboard',
    ASSET_MANAGEMENT: 'asset-management',
    CALCULATOR: 'calculator',
@@ -240,9 +294,10 @@ export const DEFAULT_BACK_LINK = '/portfolio'
 export const DEFAULT_BACK_TEXT = 'กลับไปหน้าผลงาน'
 
 // ===== LEGACY EXPORTS (for backward compatibility) =====
-export { assetDashboardData, assetManagementData, calculatorData, portfolioWebsiteData, investFamData }
+export { kinraiDData, assetDashboardData, assetManagementData, calculatorData, portfolioWebsiteData, investFamData }
 
 // ===== ADDITIONAL EXPORTS FOR OTHER LANGUAGES =====
+export const getKinraiDData = (lang: string = 'th') => getProjectData('kinrai-d-project', lang)
 export const getAssetDashboardData = (lang: string = 'th') => getProjectData('asset-dashboard', lang)
 export const getAssetManagementData = (lang: string = 'th') => getProjectData('asset-management', lang)
 export const getCalculatorData = (lang: string = 'th') => getProjectData('calculator', lang)

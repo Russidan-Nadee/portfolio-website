@@ -15,13 +15,26 @@ interface ProjectNavigationData {
 
 interface ProjectNavigationProps {
    data: ProjectNavigationData
+   locale?: string
 }
 
-export default function ProjectNavigation({ data }: ProjectNavigationProps) {
+export default function ProjectNavigation({ data, locale = 'th' }: ProjectNavigationProps) {
    const router = useRouter()
 
    const handleNavigation = (slug: string) => {
       router.push(`/portfolio/${slug}`)
+   }
+
+   // Dynamic text based on locale
+   const getProjectText = () => {
+      switch (locale) {
+         case 'en':
+            return `Project ${data.projectNumber} of ${data.totalProjects}`
+         case 'ja':
+            return `プロジェクト ${data.projectNumber} / ${data.totalProjects}`
+         default:
+            return `โปรเจคที่ ${data.projectNumber} จาก ${data.totalProjects}`
+      }
    }
 
    return (
@@ -49,7 +62,7 @@ export default function ProjectNavigation({ data }: ProjectNavigationProps) {
                className="px-3 py-1 rounded-full font-medium"
                style={{ backgroundColor: 'var(--muted)' }}
             >
-               โปรเจคที่ {data.projectNumber} จาก {data.totalProjects}
+               {getProjectText()}
             </span>
             <div className="flex gap-2">
                <button

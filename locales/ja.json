@@ -177,6 +177,14 @@
       "title": "ポートフォリオ",
       "subtitle": "最新のプロジェクトと技術的成果をご覧ください",
       "projects": {
+         "kinraiD": {
+            "title": "Kinrai-D",
+            "tech": "Flutter, Nest.js, PostgreSQL, Supabase"
+         },
+         "investfam": {
+            "title": "InvestFam",
+            "tech": "Next.js, TypeScript, Tailwind CSS"
+         },
          "assetManagement": {
             "title": "資産管理システム",
             "tech": "Flutter, Node.js, Express, MySQL"

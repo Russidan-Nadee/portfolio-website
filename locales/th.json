@@ -173,6 +173,14 @@
       "title": "ผลงาน",
       "subtitle": "สำรวจโปรเจคล่าสุดและความสำเร็จทางเทคนิคของผม",
       "projects": {
+         "kinraiD": {
+            "title": "Kinrai-D",
+            "tech": "Flutter, Nest.js, PostgreSQL, Supabase"
+         },
+         "investfam": {
+            "title": "InvestFam",
+            "tech": "Next.js, TypeScript, Tailwind CSS"
+         },
          "assetManagement": {
             "title": "ระบบจัดการทรัพย์สิน",
             "tech": "Flutter, Node.js, Express, MySQL"
