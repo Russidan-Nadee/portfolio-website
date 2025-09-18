@@ -10,7 +10,8 @@
       "Bash(findstr:*)",
       "Bash(taskkill:*)",
       "WebFetch(domain:github.com)",
-      "Bash(del:*)"
+      "Bash(del:*)",
+      "Bash(curl:*)"
     ],
     "deny": []
   }
