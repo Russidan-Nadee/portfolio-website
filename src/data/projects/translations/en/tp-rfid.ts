@@ -14,7 +14,7 @@ export const assetDashboardData = {
       title: "TP RFID",
       description: "Comprehensive asset management system using RFID technology to reduce costs and improve efficiency",
       tags: ["2025", "Cross-platform", "Enterprise", "Management", "Multilingual", "Light/Dark", "RFID"],
-      githubUrl: "https://github.com/Russidan-Nadee/intern-project-rfid"
+      githubUrl: undefined
    },
 
    infoBar: {

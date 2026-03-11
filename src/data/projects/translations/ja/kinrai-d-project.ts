@@ -15,13 +15,13 @@ export const kinraiDData: ProjectData = {
       title: 'Kinrai-D',
       description: 'ユーザーが楽しく新しい料理を発見できるクロスプラットフォーム食品ランダマイザーアプリ',
       tags: ['2025', 'アプリ', 'クロスプラットフォーム', '食品', 'ランダム'],
-      githubUrl: undefined,
+      githubUrl: "https://github.com/Russidan-Nadee/Kinrai-D",
       demoUrl: undefined,
-      liveUrl: undefined,
+      liveUrl: "https://kinrai-d.vercel.app/",
    },
    infoBar: {
       duration: '4ヶ月',
-      status: '開発中',
+      status: '完了',
       company: '個人プロジェクト',
       technologies: ['Flutter', 'Nest.js', 'PostgreSQL', 'Supabase'],
       labels: {
@@ -41,41 +41,45 @@ export const kinraiDData: ProjectData = {
       },
       overview: {
          title: 'プロジェクト概要',
-         imageAlt: '',
+         imageAlt: 'Kinrai-Dアプリの概要スクリーンショット',
          about: {
             title: 'プロジェクトについて',
             paragraphs: [
-               'Kinrai-Dは、ユーザーが楽しく魅力的な方法で料理を発見し選択できるよう設計された食品ランダマイザーアプリケーションです。食事選択時の決断疲れを軽減するスマートなランダム化システムを使用しています。',
-               'このアプリケーションはクロスプラットフォーム対応のためFlutterで構築され、信頼性のあるデータ管理のためSupabaseを通じてPostgreSQLデータベースとNest.jsをバックエンドとして使用しています。',
+               'Kinrai-Dは「今日何食べる？」という日常の悩みを解決するための食品ランダマイザーアプリです。ゲストログインで登録不要ですぐに使い始められます。',
+               'FlutterによるクロスプラットフォームとNest.js・Supabaseによるバックエンドで構築。フィルター機能・Dislikeシステム・Admin Menu・多言語対応を備えています。',
             ],
          },
          objectives: {
             title: '目的',
-            content: 'ユーザーが便利で楽しく新しい食べ物の選択肢を発見できるアプリケーションを作成し、意思決定時間を短縮し、多様な料理を試す体験を向上させる。',
+            content: 'ランダム化・フィルター・Dislikeシステムを通じてユーザーが食事の決断を簡単に行えるアプリを作成し、Admin Panelによるメニュー管理と多言語対応でグローバルな利用を可能にする。',
          },
       },
       features: {
          title: '主な機能',
          items: [
             {
-               title: '食品ランダム化システム',
-               description: 'タイプと好みに基づくフィルターで、多様なデータベースから食品をランダムに選択',
+               title: 'ゲストログイン',
+               description: '登録不要でアプリにすぐアクセス可能、匿名ユーザーセッションをサポート',
             },
             {
-               title: 'お気に入り管理',
-               description: 'お気に入りの食品アイテムを保存・管理し、簡単にアクセスして今後の参考に',
+               title: '食品ランダム化',
+               description: 'ワンタップでデータベースからランダムに食事を選択、毎日の食事の悩みを解消',
             },
             {
-               title: '評価・レビューシステム',
-               description: '試した食品アイテムを評価・レビューして、他のユーザーの情報に基づいた選択をサポート',
+               title: 'Dislikeシステム',
+               description: 'Dislikeをタップして不要な料理をスキップし、すぐに新しいランダム提案を表示',
             },
             {
-               title: '高度な検索',
-               description: 'カテゴリ、材料、価格帯、辛さレベルで食品を検索',
+               title: 'フィルター機能',
+               description: 'ユーザーが選択したカテゴリや好みでフィルタリングし、より関連性の高い提案を表示',
             },
             {
-               title: 'オフラインモード',
-               description: 'インターネット接続なしでアプリを使用し、再接続時にデータ同期',
+               title: 'Admin Menu',
+               description: 'データベースの食品アイテムを追加・削除・編集できるAdmin管理画面',
+            },
+            {
+               title: '多言語対応',
+               description: '組み込みi18nシステムで複数言語をサポート、世界中のユーザーが利用可能',
             },
          ],
       },
@@ -103,16 +107,16 @@ export const kinraiDData: ProjectData = {
             title: '課題',
             items: [
                {
-                  title: 'スマートランダム化アルゴリズム',
-                  description: 'ユーザーの好みと選択履歴を考慮したランダム化システムの開発',
+                  title: 'ゲストログインシステム',
+                  description: '登録ユーザーとゲストの両方をデータ競合なくサポートする認証設計',
                },
                {
-                  title: 'オフラインデータ管理',
-                  description: 'オンラインとオフラインの両方で動作するデータ同期システムの設計',
+                  title: 'フィルター＆Dislike ロジック',
+                  description: 'Dislike除外システムと組み合わせた正確でパフォーマンスの高いフィルタリングの構築',
                },
                {
-                  title: 'クロスプラットフォーム UI/UX',
-                  description: 'すべてのプラットフォームで一貫したユーザー体験の作成',
+                  title: 'クロスプラットフォーム多言語対応',
+                  description: 'iOS・Android・Webプラットフォーム全体で一貫したi18n動作の確保',
                },
             ],
          },
@@ -125,28 +129,32 @@ export const kinraiDData: ProjectData = {
                description: 'iOS、Android、Webプラットフォームでスムーズに動作するアプリケーションを開発',
             },
             {
-               title: '効率的なバックエンドシステム',
-               description: 'Nest.jsとSupabaseを使用した高速で安全なAPIを構築',
+               title: 'ランダム化・Dislike・フィルター',
+               description: 'ランダム化・Dislike・フィルターが連携して、ユーザーが本当に食べたい料理を提示',
             },
             {
-               title: '魅力的なユーザー体験',
-               description: '食品選択を楽しく簡単にするUI/UXを設計',
+               title: 'Admin ダッシュボード',
+               description: '食品データベースを簡単に管理できるAdminパネルを構築',
+            },
+            {
+               title: '多言語サポート',
+               description: '完全なi18nサポートにより、さまざまな国のユーザーが快適に利用可能',
             },
          ],
          futureGoals: {
             title: '将来の目標',
             items: [
                {
-                  description: 'AIと機械学習を活用した食品推奨機能の追加',
+                  description: 'DislikeデータとフィルターをもとにしたAI食品推奨機能の追加',
                },
                {
-                  description: '友達とのレビューや推奨の共有のためのソーシャル機能の開発',
+                  description: 'ランダム化履歴追跡機能を持つフルユーザーアカウントシステムの開発',
                },
                {
-                  description: '多言語サポートと国際料理オプションの追加',
+                  description: '国際料理を含む食品データベースの拡充',
                },
                {
-                  description: 'レストラン予約と食品注文機能の統合',
+                  description: '使用統計とレポートを備えたAdmin Dashboardの強化',
                },
             ],
          },

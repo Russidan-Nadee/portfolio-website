@@ -122,11 +122,11 @@ const projectsRegistry: Record<string, ProjectData> = {
 
 // Define custom project numbers
 const projectNumbers: Record<string, number> = {
-   'kinrai-d-project': 6,
-   'invest-fam': 5,
-   'tp-rfid': 4,
-   'portfolio-website': 3,
-   'asset-management': 2,
+   'tp-rfid': 6,
+   'kinrai-d-project': 5,
+   'invest-fam': 4,
+   'asset-management': 3,
+   'portfolio-website': 2,
    'calculator': 1,
 }
 

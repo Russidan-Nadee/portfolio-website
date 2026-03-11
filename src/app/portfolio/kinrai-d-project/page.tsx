@@ -15,7 +15,7 @@ export default function KinraiDPage() {
    const [loading, setLoading] = useState(true)
 
    // Image path for this project
-   const projectImagePath = ''
+   const projectImagePath = '/images/projects/kinrai-d/kinrai-d-overview.png'
 
    // Load project data based on language
    useEffect(() => {
