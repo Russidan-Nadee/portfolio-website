@@ -62,6 +62,21 @@
          },
          "work": [
             {
+               "id": 5,
+               "period": "พ.ค. 2569 - ปัจจุบัน",
+               "title": "นักพัฒนา Full Stack",
+               "company": "CloudCommerce",
+               "description": "ดูแลและบำรุงรักษาระบบเดิม พร้อม migrate ระบบไปสู่สถาปัตยกรรม Microservice รับผิดชอบการพัฒนาในระดับ service โดยทำงานร่วมกับ senior developer ที่ดูแลสถาปัตยกรรมระบบโดยรวม",
+               "skills": [
+                  "TypeScript",
+                  "Bun",
+                  "Elysia",
+                  "Microservices"
+               ],
+               "icon": "FaLaptopCode",
+               "isCurrent": true
+            },
+            {
                "id": 1,
                "period": "เม.ย. 2568 - ต.ค. 2568",
                "title": "นักพัฒนาฝึกงาน",
@@ -76,7 +91,7 @@
                   "Cross-platform"
                ],
                "icon": "FaLaptopCode",
-               "isCurrent": true
+               "isCurrent": false
             },
             {
                "id": 2,

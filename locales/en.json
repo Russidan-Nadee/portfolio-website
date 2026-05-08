@@ -66,6 +66,21 @@
          },
          "work": [
             {
+               "id": 5,
+               "period": "May 2026 - Present",
+               "title": "Full Stack Developer",
+               "company": "CloudCommerce",
+               "description": "Maintaining legacy systems and migrating existing functionality into individual Microservice services. Focused on service-level development while collaborating with senior developers who oversee the overall system architecture.",
+               "skills": [
+                  "TypeScript",
+                  "Bun",
+                  "Elysia",
+                  "Microservices"
+               ],
+               "icon": "FaLaptopCode",
+               "isCurrent": true
+            },
+            {
                "id": 1,
                "period": "Apr 2025 - Oct 2025",
                "title": "Developer Intern",
@@ -80,7 +95,7 @@
                   "Cross-platform"
                ],
                "icon": "FaLaptopCode",
-               "isCurrent": true
+               "isCurrent": false
             },
             {
                "id": 2,

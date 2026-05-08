@@ -66,6 +66,21 @@
          },
          "work": [
             {
+               "id": 5,
+               "period": "2026年5月 - 現在",
+               "title": "フルスタック開発者",
+               "company": "CloudCommerce",
+               "description": "既存システムの保守を行いながら、機能をMicroserviceアーキテクチャへ移行。サービスレベルの開発を担当し、システム全体のアーキテクチャを管理するシニア開発者と協力して業務を進めています。",
+               "skills": [
+                  "TypeScript",
+                  "Bun",
+                  "Elysia",
+                  "Microservices"
+               ],
+               "icon": "FaLaptopCode",
+               "isCurrent": true
+            },
+            {
                "id": 1,
                "period": "2025年4月 - 2025年10月",
                "title": "開発者インターン",
@@ -80,7 +95,7 @@
                   "Cross-platform"
                ],
                "icon": "FaLaptopCode",
-               "isCurrent": true
+               "isCurrent": false
             },
             {
                "id": 2,
