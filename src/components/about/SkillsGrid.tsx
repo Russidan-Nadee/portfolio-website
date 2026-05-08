@@ -122,6 +122,22 @@ const skillsByCategory = {
             th: 'ORM รุ่นใหม่สำหรับการเข้าถึงฐานข้อมูลแบบ type-safe',
             ja: 'タイプセーフなデータベースアクセスのための次世代ORM'
          }
+      },
+      {
+         name: 'Bun', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bun/bun-original.svg', url: 'https://bun.sh',
+         descriptions: {
+            en: 'Fast all-in-one JavaScript runtime, bundler, and package manager',
+            th: 'JavaScript runtime, bundler และ package manager ที่รวดเร็วในเครื่องมือเดียว',
+            ja: '高速なオールインワンJavaScriptランタイム、バンドラー、パッケージマネージャー'
+         }
+      },
+      {
+         name: 'Elysia', icon: 'https://elysiajs.com/assets/elysia.svg', url: 'https://elysiajs.com',
+         descriptions: {
+            en: 'Ergonomic web framework for Bun with end-to-end type safety',
+            th: 'เว็บเฟรมเวิร์กสำหรับ Bun ที่ใช้งานง่ายพร้อม type safety ครบวงจร',
+            ja: 'エンドツーエンドの型安全性を備えたBun用の使いやすいWebフレームワーク'
+         }
       }
    ],
    database: [
@@ -174,6 +190,56 @@ const skillsByCategory = {
             th: 'โปรแกรมแก้ไขโค้ดที่เบาแต่ทรงพลัง',
             ja: '軽量でありながら強力なソースコードエディタ'
          }
+      },
+      {
+         name: 'Obsidian', icon: 'https://cdn.simpleicons.org/obsidian', url: 'https://obsidian.md',
+         descriptions: {
+            en: 'Knowledge base and note-taking app with powerful linking capabilities',
+            th: 'แอปจดบันทึกและจัดการความรู้ที่มีความสามารถในการเชื่อมโยงที่ทรงพลัง',
+            ja: '強力なリンク機能を持つナレッジベースとノート作成アプリ'
+         }
+      },
+      {
+         name: 'DBeaver', icon: 'https://dbeaver.io/wp-content/uploads/2015/09/beaver-head.png', url: 'https://dbeaver.io',
+         descriptions: {
+            en: 'Universal database management and SQL client tool',
+            th: 'เครื่องมือจัดการฐานข้อมูลและ SQL client แบบ universal',
+            ja: '汎用データベース管理・SQLクライアントツール'
+         }
+      }
+   ],
+   ai: [
+      {
+         name: 'Claude', icon: 'https://upload.wikimedia.org/wikipedia/commons/b/b0/Claude_AI_symbol.svg', url: 'https://claude.ai',
+         descriptions: {
+            en: "Anthropic's AI assistant for analysis, writing, and coding",
+            th: 'AI assistant ของ Anthropic สำหรับวิเคราะห์ เขียน และเขียนโค้ด',
+            ja: '分析、ライティング、コーディングのためのAnthropicのAIアシスタント'
+         }
+      },
+      {
+         name: 'ChatGPT', icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/ChatGPT-Logo.svg/960px-ChatGPT-Logo.svg.png', url: 'https://chatgpt.com',
+         descriptions: {
+            en: "OpenAI's conversational AI for productivity and creativity",
+            th: 'AI สนทนาของ OpenAI สำหรับเพิ่มประสิทธิภาพและความคิดสร้างสรรค์',
+            ja: '生産性と創造性のためのOpenAIの会話型AI'
+         }
+      },
+      {
+         name: 'Openclaw', icon: 'https://assets.zonalogo.com/technology/openclaw.ai/logo-dark-1774244116749.svg', url: 'https://openclaw.ai',
+         descriptions: {
+            en: 'AI-powered platform for legal and document analysis',
+            th: 'แพลตฟอร์ม AI สำหรับวิเคราะห์เอกสารและงานด้านกฎหมาย',
+            ja: 'AIを活用した法律・文書分析プラットフォーム'
+         }
+      },
+      {
+         name: 'NotebookLM', icon: 'https://cdn.simpleicons.org/notebooklm', url: 'https://notebooklm.google.com',
+         descriptions: {
+            en: "Google's AI-powered research and note-taking tool",
+            th: 'เครื่องมือวิจัยและจดบันทึกด้วย AI ของ Google',
+            ja: 'GoogleのAI搭載の調査・ノート作成ツール'
+         }
       }
    ],
    infrastructure: [
@@ -207,6 +273,54 @@ const skillsByCategory = {
             en: 'Global CDN and web security platform',
             th: 'แพลตฟอร์ม CDN และความปลอดภัยเว็บระดับโลก',
             ja: 'グローバルCDNとWebセキュリティプラットフォーム'
+         }
+      },
+      {
+         name: 'AWS', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-plain-wordmark.svg', url: 'https://aws.amazon.com',
+         descriptions: {
+            en: 'Comprehensive cloud computing platform for scalable applications',
+            th: 'แพลตฟอร์ม cloud computing ครบวงจรสำหรับแอปพลิเคชันที่ขยายได้',
+            ja: 'スケーラブルなアプリケーション向けの包括的なクラウドコンピューティングプラットフォーム'
+         }
+      },
+      {
+         name: 'Railway', icon: 'https://cdn.simpleicons.org/railway', url: 'https://railway.app',
+         descriptions: {
+            en: 'Simple cloud platform for deploying and scaling applications',
+            th: 'แพลตฟอร์ม cloud ที่ใช้งานง่ายสำหรับ deploy และ scale แอปพลิเคชัน',
+            ja: 'アプリケーションのデプロイとスケーリングのためのシンプルなクラウドプラットフォーム'
+         }
+      },
+      {
+         name: 'Linux', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg', url: 'https://www.linux.org',
+         descriptions: {
+            en: 'Open-source operating system for server and development environments',
+            th: 'ระบบปฏิบัติการ open-source สำหรับ server และสภาพแวดล้อมการพัฒนา',
+            ja: 'サーバーと開発環境のためのオープンソースOS'
+         }
+      },
+      {
+         name: 'VPS', icon: 'https://cdn-icons-png.freepik.com/512/4731/4731530.png', url: 'https://en.wikipedia.org/wiki/Virtual_private_server',
+         descriptions: {
+            en: 'Virtual Private Server management for hosting and deploying applications',
+            th: 'การจัดการ Virtual Private Server สำหรับ host และ deploy แอปพลิเคชัน',
+            ja: 'アプリケーションのホスティングとデプロイのためのVPS管理'
+         }
+      },
+      {
+         name: 'VM', icon: 'https://az-icons.com/export/icons/309920908febbbaef8beb77510228f10.svg', url: 'https://en.wikipedia.org/wiki/Virtual_machine',
+         descriptions: {
+            en: 'Virtual Machine setup and management for isolated environments',
+            th: 'การตั้งค่าและจัดการ Virtual Machine สำหรับสภาพแวดล้อมแบบ isolated',
+            ja: '分離された環境のための仮想マシンのセットアップと管理'
+         }
+      },
+      {
+         name: 'VirtualBox', icon: 'https://cdn.simpleicons.org/virtualbox', url: 'https://www.virtualbox.org',
+         descriptions: {
+            en: 'Free open-source virtualization software for running multiple OS',
+            th: 'ซอฟต์แวร์ virtualization แบบ open-source สำหรับรันหลาย OS พร้อมกัน',
+            ja: '複数のOSを実行するための無料オープンソース仮想化ソフトウェア'
          }
       }
    ]
