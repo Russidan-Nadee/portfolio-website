@@ -121,12 +121,13 @@ const projectsRegistry: Record<string, ProjectData> = {
 }
 
 // Define custom project numbers
+// NOTE: Add new projects at the TOP with the next highest number (current max = 6)
 const projectNumbers: Record<string, number> = {
-   'tp-rfid': 6,
-   'kinrai-d-project': 5,
-   'invest-fam': 4,
-   'asset-management': 3,
-   'portfolio-website': 2,
+   'kinrai-d-project': 6, // ← latest, add new project above this line
+   'invest-fam': 5,
+   'tp-rfid': 4,
+   'portfolio-website': 3,
+   'asset-management': 2,
    'calculator': 1,
 }
 
