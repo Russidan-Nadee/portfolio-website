@@ -168,6 +168,22 @@ const skillsByCategory = {
          }
       },
       {
+         name: 'Bruno', icon: 'https://cdn.simpleicons.org/bruno', url: 'https://www.usebruno.com',
+         descriptions: {
+            en: 'Open-source API client for exploring and testing APIs',
+            th: 'API client แบบ open-source สำหรับสำรวจและทดสอบ API',
+            ja: 'APIの探索とテストのためのオープンソースAPIクライアント'
+         }
+      },
+      {
+         name: 'Git', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg', url: 'https://git-scm.com',
+         descriptions: {
+            en: 'Distributed version control system for tracking code changes',
+            th: 'ระบบควบคุมเวอร์ชันแบบ distributed สำหรับติดตามการเปลี่ยนแปลงโค้ด',
+            ja: 'コードの変更を追跡するための分散バージョン管理システム'
+         }
+      },
+      {
          name: 'GitHub', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg', url: 'https://github.com',
          descriptions: {
             en: 'Version control and collaboration platform',
@@ -189,6 +205,14 @@ const skillsByCategory = {
             en: 'Lightweight yet powerful source code editor',
             th: 'โปรแกรมแก้ไขโค้ดที่เบาแต่ทรงพลัง',
             ja: '軽量でありながら強力なソースコードエディタ'
+         }
+      },
+      {
+         name: 'SonarQube', icon: 'https://www.svgrepo.com/show/354365/sonarqube.svg', url: 'https://www.sonarsource.com/products/sonarqube',
+         descriptions: {
+            en: 'Code quality and security analysis platform',
+            th: 'แพลตฟอร์มวิเคราะห์คุณภาพโค้ดและความปลอดภัย',
+            ja: 'コード品質とセキュリティ分析プラットフォーム'
          }
       },
       {
@@ -233,14 +257,6 @@ const skillsByCategory = {
             ja: 'AIを活用した法律・文書分析プラットフォーム'
          }
       },
-      {
-         name: 'NotebookLM', icon: 'https://cdn.simpleicons.org/notebooklm', url: 'https://notebooklm.google.com',
-         descriptions: {
-            en: "Google's AI-powered research and note-taking tool",
-            th: 'เครื่องมือวิจัยและจดบันทึกด้วย AI ของ Google',
-            ja: 'GoogleのAI搭載の調査・ノート作成ツール'
-         }
-      }
    ],
    infrastructure: [
       {
@@ -289,6 +305,22 @@ const skillsByCategory = {
             en: 'Simple cloud platform for deploying and scaling applications',
             th: 'แพลตฟอร์ม cloud ที่ใช้งานง่ายสำหรับ deploy และ scale แอปพลิเคชัน',
             ja: 'アプリケーションのデプロイとスケーリングのためのシンプルなクラウドプラットフォーム'
+         }
+      },
+      {
+         name: 'Docker', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg', url: 'https://www.docker.com',
+         descriptions: {
+            en: 'Platform for building and running containerized applications',
+            th: 'แพลตฟอร์มสำหรับสร้างและรันแอปพลิเคชันแบบ container',
+            ja: 'コンテナ化されたアプリケーションの構築と実行のためのプラットフォーム'
+         }
+      },
+      {
+         name: 'ArgoCD', icon: 'https://cdn.simpleicons.org/argo', url: 'https://argoproj.github.io/cd',
+         descriptions: {
+            en: 'GitOps continuous delivery tool for Kubernetes',
+            th: 'เครื่องมือ GitOps continuous delivery สำหรับ Kubernetes',
+            ja: 'Kubernetes向けのGitOps継続的デリバリーツール'
          }
       },
       {
