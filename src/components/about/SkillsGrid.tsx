@@ -541,7 +541,7 @@ export default function SkillsGrid({ translations }: SkillsGridProps) {
                                              />
                                           </div>
                                           <h3
-                                             className="text-xl font-semibold"
+                                             className="text-[10px] md:text-xl font-semibold"
                                              style={{ color: 'var(--foreground)' }}
                                           >
                                              {skill.name}
@@ -554,13 +554,13 @@ export default function SkillsGrid({ translations }: SkillsGridProps) {
                                           style={{ backgroundColor: 'var(--card)', borderColor: 'var(--border)' }}
                                        >
                                           <h3
-                                             className="text-xl font-bold mb-4"
+                                             className="text-[10px] md:text-xs lg:text-xl font-bold mb-1 lg:mb-4"
                                              style={{ color: 'var(--foreground)' }}
                                           >
                                              {skill.name}
                                           </h3>
                                           <p
-                                             className="text-sm mb-6 opacity-90 leading-relaxed px-2"
+                                             className="text-[9px] md:text-xs lg:text-sm mb-1 md:mb-2 lg:mb-6 opacity-90 leading-tight lg:leading-relaxed"
                                              style={{ color: 'var(--muted-foreground)' }}
                                           >
                                              {skill.descriptions[locale as keyof typeof skill.descriptions] || skill.descriptions.en}
@@ -572,7 +572,7 @@ export default function SkillsGrid({ translations }: SkillsGridProps) {
                                                 const newWindow = window.open(skill.url, '_blank')
                                                 if (newWindow) newWindow.opener = null
                                              }}
-                                             className="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:scale-105"
+                                             className="px-1.5 py-0.5 md:px-2 md:py-1 lg:px-4 lg:py-2 rounded-lg text-[9px] md:text-xs lg:text-sm font-medium transition-all duration-300 hover:scale-105"
                                              style={{
                                                 backgroundColor: 'var(--foreground)',
                                                 color: 'var(--background)'
@@ -647,11 +647,26 @@ export default function SkillsGrid({ translations }: SkillsGridProps) {
                flex-direction: column;
                align-items: center;
                justify-content: center;
-               padding: 2rem;
+               padding: 0.6rem;
                border-radius: 16px;
                border: 1px solid var(--border);
                text-align: center;
                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+               overflow: hidden;
+            }
+
+            @media (min-width: 768px) {
+               .flip-card-front,
+               .flip-card-back {
+                  padding: 1.25rem;
+               }
+            }
+
+            @media (min-width: 1024px) {
+               .flip-card-front,
+               .flip-card-back {
+                  padding: 2rem;
+               }
             }
 
             .flip-card-front {
