@@ -424,7 +424,7 @@ export default function Timeline({ translations }: TimelineProps) {
                   >
                      <button
                         onClick={() => setActiveTab('work')}
-                        className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 flex items-center gap-2 ${activeTab === 'work' ? 'shadow-md' : 'hover:opacity-70'
+                        className={`px-3 py-2 md:px-6 md:py-3 rounded-lg text-xs md:text-base font-semibold transition-all duration-300 flex items-center gap-2 ${activeTab === 'work' ? 'shadow-md' : 'hover:opacity-70'
                            }`}
                         style={{
                            backgroundColor: activeTab === 'work' ? 'var(--card)' : 'transparent',
@@ -436,7 +436,7 @@ export default function Timeline({ translations }: TimelineProps) {
                      </button>
                      <button
                         onClick={() => setActiveTab('education')}
-                        className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 flex items-center gap-2 ${activeTab === 'education' ? 'shadow-md' : 'hover:opacity-70'
+                        className={`px-3 py-2 md:px-6 md:py-3 rounded-lg text-xs md:text-base font-semibold transition-all duration-300 flex items-center gap-2 ${activeTab === 'education' ? 'shadow-md' : 'hover:opacity-70'
                            }`}
                         style={{
                            backgroundColor: activeTab === 'education' ? 'var(--card)' : 'transparent',
