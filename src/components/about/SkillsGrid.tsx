@@ -362,7 +362,7 @@ export default function SkillsGrid({ translations }: SkillsGridProps) {
    const [locale, setLocale] = useState('en')
 
    const skillsRef = useRef<HTMLDivElement>(null)
-   const rowRefs = useRef<(HTMLDivElement | null)[]>([])
+   const categoryGridRefs = useRef<(HTMLDivElement | null)[]>([])
    const headerRef = useRef<HTMLDivElement>(null)
    const titleRef = useRef<HTMLHeadingElement>(null)
    const subtitleRef = useRef<HTMLParagraphElement>(null)
@@ -391,17 +391,7 @@ export default function SkillsGrid({ translations }: SkillsGridProps) {
       return () => window.removeEventListener('languageChange', handleLanguageChange)
    }, [])
 
-   // แปลง object เป็น array สำหรับ render พร้อมแบ่ง row ละ 3 ตัวเหมือนเดิม
    const categoryKeys = Object.keys(skillsByCategory) as (keyof typeof skillsByCategory)[]
-
-   const categorizedSkillRows = categoryKeys.map(category => {
-      const skills = skillsByCategory[category]
-      const rows = []
-      for (let i = 0; i < skills.length; i += 3) {
-         rows.push(skills.slice(i, i + 3))
-      }
-      return { category, rows }
-   })
 
    useEffect(() => {
       if (!skillsRef.current) return
@@ -419,11 +409,11 @@ export default function SkillsGrid({ translations }: SkillsGridProps) {
          tl.fromTo(subtitleRef.current, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, '-=0.3')
       }
 
-      rowRefs.current.forEach(row => {
-         if (!row) return
-         const cards = row.querySelectorAll('.skill-card')
-         gsap.fromTo(row, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out', scrollTrigger: { trigger: row, start: 'top 80%', toggleActions: 'play none none none' } })
-         gsap.fromTo(cards, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, stagger: 0.1, ease: 'power2.out', scrollTrigger: { trigger: row, start: 'top 80%', toggleActions: 'play none none none' } })
+      categoryGridRefs.current.forEach(grid => {
+         if (!grid) return
+         const cards = grid.querySelectorAll('.skill-card-container')
+         gsap.fromTo(grid, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out', scrollTrigger: { trigger: grid, start: 'top 80%', toggleActions: 'play none none none' } })
+         gsap.fromTo(cards, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, stagger: 0.1, ease: 'power2.out', scrollTrigger: { trigger: grid, start: 'top 80%', toggleActions: 'play none none none' } })
       })
 
       if (learningRef.current) {
@@ -504,8 +494,7 @@ export default function SkillsGrid({ translations }: SkillsGridProps) {
                </div>
             </AnimatedSection>
 
-            {/* ...ใน return */}
-            {categorizedSkillRows.map(({ category, rows }, categoryIndex) => (
+            {categoryKeys.map((category, categoryIndex) => (
                <AnimatedSection
                   key={category}
                   animationType="fadeInUp"
@@ -519,25 +508,22 @@ export default function SkillsGrid({ translations }: SkillsGridProps) {
                      >
                         {category}
                      </h3>
-                     <div className="space-y-8">
-                        {rows.map((row, rowIndex) => (
+                     <div
+                        ref={el => { categoryGridRefs.current[categoryIndex] = el }}
+                        className="grid grid-cols-2 md:grid-cols-3 gap-6"
+                     >
+                        {skillsByCategory[category].map((skill, skillIndex) => (
                            <div
-                              key={rowIndex}
-                              ref={el => { rowRefs.current[rowIndex] = el }}
-                              className="grid grid-cols-1 md:grid-cols-3 gap-6"
+                              key={skillIndex}
+                              className="skill-card-container cursor-pointer"
                            >
-                              {row.map((skill, skillIndex) => (
-                                 <div
-                                    key={skillIndex}
-                                    className="skill-card-container cursor-pointer"
-                                 >
                                     <div className="skill-card flip-card">
                                        {/* Front of the card */}
                                        <div
                                           className="flip-card-front"
                                           style={{ backgroundColor: 'var(--card)', borderColor: 'var(--border)' }}
                                        >
-                                          <div className="w-24 h-24 flex items-center justify-center mb-6">
+                                          <div className="w-12 h-12 lg:w-24 lg:h-24 flex items-center justify-center mb-2 lg:mb-6">
                                              <img
                                                 src={skill.icon}
                                                 alt={skill.name}
@@ -596,8 +582,6 @@ export default function SkillsGrid({ translations }: SkillsGridProps) {
                                           </button>
                                        </div>
                                     </div>
-                                 </div>
-                              ))}
                            </div>
                         ))}
                      </div>
@@ -621,14 +605,23 @@ export default function SkillsGrid({ translations }: SkillsGridProps) {
 
             /* Simple working flip card */
             .skill-card-container {
-               height: 280px;
+               aspect-ratio: 1 / 1;
                perspective: 1000px;
                transition: transform 0.3s ease;
             }
 
-            .skill-card-container:hover {
-               transform: scale(1.1) translateY(-8px);
-               z-index: 10;
+            @media (min-width: 1024px) {
+               .skill-card-container {
+                  aspect-ratio: auto;
+                  height: 280px;
+               }
+            }
+
+            @media (min-width: 1024px) {
+               .skill-card-container:hover {
+                  transform: scale(1.1) translateY(-8px);
+                  z-index: 10;
+               }
             }
 
             .flip-card {
