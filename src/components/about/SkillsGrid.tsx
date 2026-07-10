@@ -355,6 +355,24 @@ const skillsByCategory = {
             ja: '複数のOSを実行するための無料オープンソース仮想化ソフトウェア'
          }
       }
+   ],
+   business: [
+      {
+         name: 'Zoho Desk', icon: '/icons/skills/zoho-desk.png', url: 'https://www.zoho.com/desk',
+         descriptions: {
+            en: 'Cloud-based helpdesk and CRM platform for customer support',
+            th: 'แพลตฟอร์ม helpdesk และ CRM บนคลาวด์สำหรับงานซัพพอร์ตลูกค้า',
+            ja: 'カスタマーサポート向けのクラウドベースのヘルプデスク・CRMプラットフォーム'
+         }
+      },
+      {
+         name: 'Zoho CRM', icon: 'https://upload.wikimedia.org/wikipedia/en/thumb/d/d7/Zoho_CRM_%28application%29.svg/250px-Zoho_CRM_%28application%29.svg.png', url: 'https://www.zoho.com/crm',
+         descriptions: {
+            en: 'Cloud-based CRM platform for sales, marketing, and customer management',
+            th: 'แพลตฟอร์ม CRM บนคลาวด์สำหรับงานขาย การตลาด และบริหารความสัมพันธ์ลูกค้า',
+            ja: '営業・マーケティング・顧客管理のためのクラウドベースCRMプラットフォーム'
+         }
+      }
    ]
 }
 

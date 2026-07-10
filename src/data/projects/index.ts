@@ -4,94 +4,47 @@ export * from './types'
 import { ProjectData, ProjectSlug } from './types'
 
 // ===== DYNAMIC IMPORTS FOR TRANSLATIONS =====
+type ProjectLoader = () => Promise<ProjectData>
+
+const projectLoaders: Record<string, Record<string, ProjectLoader>> = {
+   'kinrai-d-project': {
+      th: () => import('./translations/th/kinrai-d-project').then(m => m.kinraiDData),
+      en: () => import('./translations/en/kinrai-d-project').then(m => m.kinraiDData),
+      ja: () => import('./translations/ja/kinrai-d-project').then(m => m.kinraiDData),
+   },
+   'tp-rfid': {
+      th: () => import('./translations/th/tp-rfid').then(m => m.assetDashboardData),
+      en: () => import('./translations/en/tp-rfid').then(m => m.assetDashboardData),
+      ja: () => import('./translations/ja/tp-rfid').then(m => m.assetDashboardData),
+   },
+   'asset-management': {
+      th: () => import('./translations/th/asset-management').then(m => m.assetManagementData),
+      en: () => import('./translations/en/asset-management').then(m => m.assetManagementData),
+      ja: () => import('./translations/ja/asset-management').then(m => m.assetManagementData),
+   },
+   'calculator': {
+      th: () => import('./translations/th/calculator').then(m => m.calculatorData),
+      en: () => import('./translations/en/calculator').then(m => m.calculatorData),
+      ja: () => import('./translations/ja/calculator').then(m => m.calculatorData),
+   },
+   'portfolio-website': {
+      th: () => import('./translations/th/portfolio-website').then(m => m.portfolioWebsiteData),
+      en: () => import('./translations/en/portfolio-website').then(m => m.portfolioWebsiteData),
+      ja: () => import('./translations/ja/portfolio-website').then(m => m.portfolioWebsiteData),
+   },
+   'invest-fam': {
+      th: () => import('./translations/th/invest-fam').then(m => m.investFamData),
+      en: () => import('./translations/en/invest-fam').then(m => m.investFamData),
+      ja: () => import('./translations/ja/invest-fam').then(m => m.investFamData),
+   },
+}
+
 const loadProjectData = async (slug: ProjectSlug, lang: string = 'th'): Promise<ProjectData | undefined> => {
+   const loader = projectLoaders[slug]?.[lang]
+   if (!loader) return undefined
+
    try {
-      let data
-
-      switch (slug) {
-         case 'kinrai-d-project':
-            if (lang === 'th') {
-               const module = await import('./translations/th/kinrai-d-project')
-               data = module.kinraiDData
-            } else if (lang === 'en') {
-               const module = await import('./translations/en/kinrai-d-project')
-               data = module.kinraiDData
-            } else if (lang === 'ja') {
-               const module = await import('./translations/ja/kinrai-d-project')
-               data = module.kinraiDData
-            }
-            break
-
-         case 'tp-rfid':
-            if (lang === 'th') {
-               const module = await import('./translations/th/tp-rfid')
-               data = module.assetDashboardData
-            } else if (lang === 'en') {
-               const module = await import('./translations/en/tp-rfid')
-               data = module.assetDashboardData
-            } else if (lang === 'ja') {
-               const module = await import('./translations/ja/tp-rfid')
-               data = module.assetDashboardData
-            }
-            break
-
-         case 'asset-management':
-            if (lang === 'th') {
-               const module = await import('./translations/th/asset-management')
-               data = module.assetManagementData
-            } else if (lang === 'en') {
-               const module = await import('./translations/en/asset-management')
-               data = module.assetManagementData
-            } else if (lang === 'ja') {
-               const module = await import('./translations/ja/asset-management')
-               data = module.assetManagementData
-            }
-            break
-
-         case 'calculator':
-            if (lang === 'th') {
-               const module = await import('./translations/th/calculator')
-               data = module.calculatorData
-            } else if (lang === 'en') {
-               const module = await import('./translations/en/calculator')
-               data = module.calculatorData
-            } else if (lang === 'ja') {
-               const module = await import('./translations/ja/calculator')
-               data = module.calculatorData
-            }
-            break
-
-         case 'portfolio-website':
-            if (lang === 'th') {
-               const module = await import('./translations/th/portfolio-website')
-               data = module.portfolioWebsiteData
-            } else if (lang === 'en') {
-               const module = await import('./translations/en/portfolio-website')
-               data = module.portfolioWebsiteData
-            } else if (lang === 'ja') {
-               const module = await import('./translations/ja/portfolio-website')
-               data = module.portfolioWebsiteData
-            }
-            break
-
-         case 'invest-fam':
-            if (lang === 'th') {
-               const module = await import('./translations/th/invest-fam')
-               data = module.investFamData
-            } else if (lang === 'en') {
-               const module = await import('./translations/en/invest-fam')
-               data = module.investFamData
-            } else if (lang === 'ja') {
-               const module = await import('./translations/ja/invest-fam')
-               data = module.investFamData
-            }
-            break
-
-         default:
-            return undefined
-      }
-
-      return data
+      return await loader()
    } catch (error) {
       console.error(`Failed to load project data for ${slug} in ${lang}:`, error)
       // Fallback to Thai if other language fails

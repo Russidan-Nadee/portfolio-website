@@ -36,6 +36,8 @@ const technologies = [
    { name: 'Linux', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg' },
    { name: 'ArgoCD', icon: 'https://cdn.simpleicons.org/argo' },
    { name: 'Bruno', icon: 'https://cdn.simpleicons.org/bruno' },
+   { name: 'Zoho Desk', icon: '/icons/skills/zoho-desk.png' },
+   { name: 'Zoho CRM', icon: 'https://upload.wikimedia.org/wikipedia/en/thumb/d/d7/Zoho_CRM_%28application%29.svg/250px-Zoho_CRM_%28application%29.svg.png' },
 ];
 
 // Duplicate the array to create a seamless loop
