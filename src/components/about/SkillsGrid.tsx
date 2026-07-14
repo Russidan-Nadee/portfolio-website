@@ -208,11 +208,27 @@ const skillsByCategory = {
          }
       },
       {
-         name: 'SonarQube', icon: 'https://www.svgrepo.com/show/354365/sonarqube.svg', url: 'https://www.sonarsource.com/products/sonarqube',
+         name: 'SonarQube', icon: '/icons/skills/sonarqube.svg', url: 'https://www.sonarsource.com/products/sonarqube',
          descriptions: {
             en: 'Code quality and security analysis platform',
             th: 'แพลตฟอร์มวิเคราะห์คุณภาพโค้ดและความปลอดภัย',
             ja: 'コード品質とセキュリティ分析プラットフォーム'
+         }
+      },
+      {
+         name: 'ESLint', icon: '/icons/skills/eslint.webp', url: 'https://eslint.org',
+         descriptions: {
+            en: 'Pluggable linter for identifying and fixing JavaScript/TypeScript issues',
+            th: 'เครื่องมือ linter สำหรับตรวจจับและแก้ไขปัญหาในโค้ด JavaScript/TypeScript',
+            ja: 'JavaScript/TypeScriptの問題を検出・修正するプラガブルなリンター'
+         }
+      },
+      {
+         name: 'Prettier', icon: '/icons/skills/prettier.svg', url: 'https://prettier.io',
+         descriptions: {
+            en: 'Opinionated code formatter for consistent code style',
+            th: 'เครื่องมือจัดรูปแบบโค้ดอัตโนมัติเพื่อความสม่ำเสมอของสไตล์โค้ด',
+            ja: '一貫したコードスタイルのための意見の強いコードフォーマッター'
          }
       },
       {
@@ -358,7 +374,7 @@ const skillsByCategory = {
    ],
    business: [
       {
-         name: 'Zoho Desk', icon: '/icons/skills/zoho-desk.png', url: 'https://www.zoho.com/desk',
+         name: 'Zoho Desk', icon: '/icons/skills/zoho-desk.svg', url: 'https://www.zoho.com/desk',
          descriptions: {
             en: 'Cloud-based helpdesk and CRM platform for customer support',
             th: 'แพลตฟอร์ม helpdesk และ CRM บนคลาวด์สำหรับงานซัพพอร์ตลูกค้า',
@@ -366,7 +382,7 @@ const skillsByCategory = {
          }
       },
       {
-         name: 'Zoho CRM', icon: 'https://upload.wikimedia.org/wikipedia/en/thumb/d/d7/Zoho_CRM_%28application%29.svg/250px-Zoho_CRM_%28application%29.svg.png', url: 'https://www.zoho.com/crm',
+         name: 'Zoho CRM', icon: '/icons/skills/zoho-crm.svg', url: 'https://www.zoho.com/crm',
          descriptions: {
             en: 'Cloud-based CRM platform for sales, marketing, and customer management',
             th: 'แพลตฟอร์ม CRM บนคลาวด์สำหรับงานขาย การตลาด และบริหารความสัมพันธ์ลูกค้า',
