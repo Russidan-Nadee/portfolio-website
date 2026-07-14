@@ -31,6 +31,10 @@
             "portfolio": {
                "title": "ポートフォリオウェブサイト",
                "tech": "Next.js, TypeScript, Tailwind CSS"
+            },
+            "moneyTracker": {
+               "title": "Money Tracker App",
+               "tech": "Next.js, Prisma, Supabase"
             }
          }
       },
@@ -215,6 +219,10 @@
          "assetDashboard": {
             "title": "TP RFID",
             "tech": "Flutter, Node.js, Express, Prisma, MySQL"
+         },
+         "moneyTracker": {
+            "title": "Money Tracker App",
+            "tech": "Next.js, Prisma, Supabase"
          }
       }
    },

@@ -72,13 +72,13 @@ export default function ProjectsShowcase({ translations }: ProjectsShowcaseProps
          slug: 'tp-rfid'
       },
       {
-         id: 'portfolio-website',
-         title: translations?.home?.projectsShowcase?.projects?.portfolio?.title || 'Portfolio Website',
-         tech: translations?.home?.projectsShowcase?.projects?.portfolio?.tech || 'Next.js, TypeScript, Tailwind CSS',
+         id: 'money-tracker-app',
+         title: translations?.home?.projectsShowcase?.projects?.moneyTracker?.title || 'Money Tracker App',
+         tech: translations?.home?.projectsShowcase?.projects?.moneyTracker?.tech || 'Next.js, Prisma, Supabase',
          filter: 'grayscale(100%) contrast(1.2)',
          isCenter: false,
-         image: '/images/projects/portfolio-website.jpg',
-         slug: 'portfolio-website'
+         image: '/images/projects/money-tracker-app.jpg',
+         slug: 'money-tracker-app'
       }
    ]
 
@@ -733,6 +733,16 @@ export default function ProjectsShowcase({ translations }: ProjectsShowcaseProps
                                     alt={project.title}
                                     style={{
                                        filter: 'inherit'
+                                    }}
+                                    onError={(e) => {
+                                       const target = e.target as HTMLImageElement
+                                       target.style.display = 'none'
+                                       if (target.parentElement) {
+                                          target.parentElement.style.backgroundColor = 'var(--muted)'
+                                          target.parentElement.style.display = 'flex'
+                                          target.parentElement.style.alignItems = 'center'
+                                          target.parentElement.style.justifyContent = 'center'
+                                       }
                                     }}
                                  />
 

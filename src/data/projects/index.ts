@@ -37,6 +37,11 @@ const projectLoaders: Record<string, Record<string, ProjectLoader>> = {
       en: () => import('./translations/en/invest-fam').then(m => m.investFamData),
       ja: () => import('./translations/ja/invest-fam').then(m => m.investFamData),
    },
+   'money-tracker-app': {
+      th: () => import('./translations/th/money-tracker-app').then(m => m.moneyTrackerData),
+      en: () => import('./translations/en/money-tracker-app').then(m => m.moneyTrackerData),
+      ja: () => import('./translations/ja/money-tracker-app').then(m => m.moneyTrackerData),
+   },
 }
 
 const loadProjectData = async (slug: ProjectSlug, lang: string = 'th'): Promise<ProjectData | undefined> => {
@@ -62,6 +67,7 @@ import { assetManagementData } from './translations/th/asset-management'
 import { calculatorData } from './translations/th/calculator'
 import { portfolioWebsiteData } from './translations/th/portfolio-website'
 import { investFamData } from './translations/th/invest-fam'
+import { moneyTrackerData } from './translations/th/money-tracker-app'
 
 // ===== PROJECT REGISTRY WITH CUSTOM NUMBERING =====
 const projectsRegistry: Record<string, ProjectData> = {
@@ -71,12 +77,14 @@ const projectsRegistry: Record<string, ProjectData> = {
    'calculator': calculatorData,
    'portfolio-website': portfolioWebsiteData,
    'invest-fam': investFamData,
+   'money-tracker-app': moneyTrackerData,
 }
 
 // Define custom project numbers
-// NOTE: Add new projects at the TOP with the next highest number (current max = 6)
+// NOTE: Add new projects at the TOP with the next highest number (current max = 7)
 const projectNumbers: Record<string, number> = {
-   'kinrai-d-project': 6, // ← latest, add new project above this line
+   'money-tracker-app': 7, // ← latest, add new project above this line
+   'kinrai-d-project': 6,
    'invest-fam': 5,
    'tp-rfid': 4,
    'portfolio-website': 3,
@@ -240,6 +248,7 @@ export const PROJECT_SLUGS = {
    CALCULATOR: 'calculator',
    PORTFOLIO_WEBSITE: 'portfolio-website',
    INVEST_FAM: 'invest-fam',
+   MONEY_TRACKER_APP: 'money-tracker-app',
 } as const
 
 export const SUPPORTED_LANGUAGES = ['th', 'en', 'ja'] as const
@@ -248,7 +257,7 @@ export const DEFAULT_BACK_LINK = '/portfolio'
 export const DEFAULT_BACK_TEXT = 'กลับไปหน้าผลงาน'
 
 // ===== LEGACY EXPORTS (for backward compatibility) =====
-export { kinraiDData, assetDashboardData, assetManagementData, calculatorData, portfolioWebsiteData, investFamData }
+export { kinraiDData, assetDashboardData, assetManagementData, calculatorData, portfolioWebsiteData, investFamData, moneyTrackerData }
 
 // ===== ADDITIONAL EXPORTS FOR OTHER LANGUAGES =====
 export const getKinraiDData = (lang: string = 'th') => getProjectData('kinrai-d-project', lang)
@@ -257,3 +266,4 @@ export const getAssetManagementData = (lang: string = 'th') => getProjectData('a
 export const getCalculatorData = (lang: string = 'th') => getProjectData('calculator', lang)
 export const getPortfolioWebsiteData = (lang: string = 'th') => getProjectData('portfolio-website', lang)
 export const getInvestFamData = (lang: string = 'th') => getProjectData('invest-fam', lang)
+export const getMoneyTrackerData = (lang: string = 'th') => getProjectData('money-tracker-app', lang)

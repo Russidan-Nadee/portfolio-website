@@ -50,6 +50,16 @@ function PortfolioContent() {
    // Define projects with their assigned numbers for proper ordering
    const projectsWithNumbers = [
       {
+         id: 'moneyTracker',
+         title: translations?.portfolio?.projects?.moneyTracker?.title || 'Money Tracker App',
+         image: '/images/projects/money-tracker-app.jpg',
+         tech: translations?.portfolio?.projects?.moneyTracker?.tech || 'Next.js, Prisma, Supabase',
+         category: 'web',
+         tags: ['web'],
+         slug: 'money-tracker-app',
+         projectNumber: 7
+      },
+      {
          id: 'kinrai-d',
          title: translations?.portfolio?.projects?.kinraiD?.title || 'Kinrai-D',
          image: '/images/projects/kinrai-d.png',
