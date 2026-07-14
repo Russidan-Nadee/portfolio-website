@@ -47,6 +47,11 @@ const projectLoaders: Record<string, Record<string, ProjectLoader>> = {
       en: () => import('./translations/en/master-data-service').then(m => m.masterDataServiceData),
       ja: () => import('./translations/ja/master-data-service').then(m => m.masterDataServiceData),
    },
+   'shipment-portal': {
+      th: () => import('./translations/th/shipment-portal').then(m => m.shipmentPortalData),
+      en: () => import('./translations/en/shipment-portal').then(m => m.shipmentPortalData),
+      ja: () => import('./translations/ja/shipment-portal').then(m => m.shipmentPortalData),
+   },
 }
 
 const loadProjectData = async (slug: ProjectSlug, lang: string = 'th'): Promise<ProjectData | undefined> => {
@@ -74,6 +79,7 @@ import { portfolioWebsiteData } from './translations/th/portfolio-website'
 import { investFamData } from './translations/th/invest-fam'
 import { moneyTrackerData } from './translations/th/money-tracker-app'
 import { masterDataServiceData } from './translations/th/master-data-service'
+import { shipmentPortalData } from './translations/th/shipment-portal'
 
 // ===== PROJECT REGISTRY WITH CUSTOM NUMBERING =====
 const projectsRegistry: Record<string, ProjectData> = {
@@ -85,12 +91,14 @@ const projectsRegistry: Record<string, ProjectData> = {
    'invest-fam': investFamData,
    'money-tracker-app': moneyTrackerData,
    'master-data-service': masterDataServiceData,
+   'shipment-portal': shipmentPortalData,
 }
 
 // Define custom project numbers
-// NOTE: Add new projects at the TOP with the next highest number (current max = 8)
+// NOTE: Add new projects at the TOP with the next highest number (current max = 9)
 const projectNumbers: Record<string, number> = {
-   'master-data-service': 8, // ← latest, add new project above this line
+   'shipment-portal': 9, // ← latest, add new project above this line
+   'master-data-service': 8,
    'money-tracker-app': 7,
    'kinrai-d-project': 6,
    'invest-fam': 5,
@@ -258,6 +266,7 @@ export const PROJECT_SLUGS = {
    INVEST_FAM: 'invest-fam',
    MONEY_TRACKER_APP: 'money-tracker-app',
    MASTER_DATA_SERVICE: 'master-data-service',
+   SHIPMENT_PORTAL: 'shipment-portal',
 } as const
 
 export const SUPPORTED_LANGUAGES = ['th', 'en', 'ja'] as const
@@ -266,7 +275,7 @@ export const DEFAULT_BACK_LINK = '/portfolio'
 export const DEFAULT_BACK_TEXT = 'กลับไปหน้าผลงาน'
 
 // ===== LEGACY EXPORTS (for backward compatibility) =====
-export { kinraiDData, assetDashboardData, assetManagementData, calculatorData, portfolioWebsiteData, investFamData, moneyTrackerData, masterDataServiceData }
+export { kinraiDData, assetDashboardData, assetManagementData, calculatorData, portfolioWebsiteData, investFamData, moneyTrackerData, masterDataServiceData, shipmentPortalData }
 
 // ===== ADDITIONAL EXPORTS FOR OTHER LANGUAGES =====
 export const getKinraiDData = (lang: string = 'th') => getProjectData('kinrai-d-project', lang)
@@ -277,3 +286,4 @@ export const getPortfolioWebsiteData = (lang: string = 'th') => getProjectData('
 export const getInvestFamData = (lang: string = 'th') => getProjectData('invest-fam', lang)
 export const getMoneyTrackerData = (lang: string = 'th') => getProjectData('money-tracker-app', lang)
 export const getMasterDataServiceData = (lang: string = 'th') => getProjectData('master-data-service', lang)
+export const getShipmentPortalData = (lang: string = 'th') => getProjectData('shipment-portal', lang)

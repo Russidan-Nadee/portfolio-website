@@ -223,6 +223,10 @@
          "masterDataService": {
             "title": "Master Data Service",
             "tech": "Bun, ElysiaJS, MySQL"
+         },
+         "shipmentPortal": {
+            "title": "Shipment Portal",
+            "tech": "Next.js, TypeScript, Tailwind CSS"
          }
       }
    },

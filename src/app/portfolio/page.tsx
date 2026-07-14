@@ -50,6 +50,16 @@ function PortfolioContent() {
    // Define projects with their assigned numbers for proper ordering
    const projectsWithNumbers = [
       {
+         id: 'shipmentPortal',
+         title: translations?.portfolio?.projects?.shipmentPortal?.title || 'Shipment Portal',
+         image: '/images/projects/shipment-portal.jpg',
+         tech: translations?.portfolio?.projects?.shipmentPortal?.tech || 'Next.js, TypeScript, Tailwind CSS',
+         category: 'web',
+         tags: ['web'],
+         slug: 'shipment-portal',
+         projectNumber: 9
+      },
+      {
          id: 'masterDataService',
          title: translations?.portfolio?.projects?.masterDataService?.title || 'Master Data Service',
          image: '/images/projects/master-data-service.jpg',
