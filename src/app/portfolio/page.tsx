@@ -50,6 +50,16 @@ function PortfolioContent() {
    // Define projects with their assigned numbers for proper ordering
    const projectsWithNumbers = [
       {
+         id: 'masterDataService',
+         title: translations?.portfolio?.projects?.masterDataService?.title || 'Master Data Service',
+         image: '/images/projects/master-data-service.jpg',
+         tech: translations?.portfolio?.projects?.masterDataService?.tech || 'Bun, ElysiaJS, MySQL',
+         category: 'backend',
+         tags: ['backend'],
+         slug: 'master-data-service',
+         projectNumber: 8
+      },
+      {
          id: 'moneyTracker',
          title: translations?.portfolio?.projects?.moneyTracker?.title || 'Money Tracker App',
          image: '/images/projects/money-tracker-app.jpg',
@@ -128,6 +138,7 @@ function PortfolioContent() {
       { key: 'all', label: 'All Projects' },
       { key: 'crossplatform', label: 'Cross-Platform' },
       { key: 'web', label: 'Web' },
+      { key: 'backend', label: 'Backend' },
       { key: 'desktop', label: 'Desktop' },
       { key: 'mobile', label: 'Mobile' }
    ]

@@ -219,6 +219,10 @@
          "moneyTracker": {
             "title": "Money Tracker App",
             "tech": "Next.js, Prisma, Supabase"
+         },
+         "masterDataService": {
+            "title": "Master Data Service",
+            "tech": "Bun, ElysiaJS, MySQL"
          }
       }
    },
