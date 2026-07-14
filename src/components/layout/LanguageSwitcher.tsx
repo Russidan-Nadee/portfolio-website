@@ -28,9 +28,9 @@ export default function LanguageSwitcher() {
 
    // Language configuration with names and flags
    const locales = [
-      { code: 'en', name: 'English', flag: '🇺🇸', nativeName: 'English' },
-      { code: 'th', name: 'Thai', flag: '🇹🇭', nativeName: 'ไทย' },
-      { code: 'ja', name: 'Japanese', flag: '🇯🇵', nativeName: '日本語' }
+      { code: 'en', name: 'English', flag: 'https://flagcdn.com/us.svg', nativeName: 'English' },
+      { code: 'th', name: 'Thai', flag: 'https://flagcdn.com/th.svg', nativeName: 'ไทย' },
+      { code: 'ja', name: 'Japanese', flag: 'https://flagcdn.com/jp.svg', nativeName: '日本語' }
    ]
 
    // Get current language info
@@ -52,7 +52,7 @@ export default function LanguageSwitcher() {
             }}
             aria-label={`Current language: ${currentLanguage.nativeName}. Click to change language.`}
          >
-            <span className="text-lg">{currentLanguage.flag}</span>
+            <img src={currentLanguage.flag} alt={currentLanguage.name} className="w-5 h-[15px] rounded-sm object-cover" />
             <span className="text-sm font-medium">{currentLanguage.nativeName}</span>
             <svg
                className={`w-4 h-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : 'rotate-0'}`}
@@ -99,7 +99,7 @@ export default function LanguageSwitcher() {
                            }}
                            aria-label={`Switch to ${locale.nativeName}`}
                         >
-                           <span className="text-lg">{locale.flag}</span>
+                           <img src={locale.flag} alt={locale.name} className="w-5 h-[15px] rounded-sm object-cover" />
                            <div className="flex flex-col">
                               <span className="text-sm">{locale.nativeName}</span>
                               <span className="text-xs opacity-60">{locale.name}</span>
