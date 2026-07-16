@@ -232,6 +232,14 @@ const skillsByCategory = {
          }
       },
       {
+         name: 'Sentry', icon: '/icons/skills/sentry.jpeg', url: 'https://sentry.io',
+         descriptions: {
+            en: 'Application monitoring platform for error tracking and performance',
+            th: 'แพลตฟอร์มติดตามข้อผิดพลาดและประสิทธิภาพของแอปพลิเคชัน',
+            ja: 'エラートラッキングとパフォーマンス監視のためのアプリケーション監視プラットフォーム'
+         }
+      },
+      {
          name: 'Obsidian', icon: 'https://cdn.simpleicons.org/obsidian', url: 'https://obsidian.md',
          descriptions: {
             en: 'Knowledge base and note-taking app with powerful linking capabilities',
