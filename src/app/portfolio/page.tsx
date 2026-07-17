@@ -72,7 +72,7 @@ function PortfolioContent() {
       {
          id: 'moneyTracker',
          title: translations?.portfolio?.projects?.moneyTracker?.title || 'Money Tracker App',
-         image: '/images/projects/money-tracker-app.jpg',
+         image: '/images/projects/money-tracker-app.png',
          tech: translations?.portfolio?.projects?.moneyTracker?.tech || 'Next.js, Prisma, Supabase',
          category: 'web',
          tags: ['web'],

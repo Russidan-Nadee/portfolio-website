@@ -77,7 +77,7 @@ export default function ProjectsShowcase({ translations }: ProjectsShowcaseProps
          tech: translations?.home?.projectsShowcase?.projects?.moneyTracker?.tech || 'Next.js, Prisma, Supabase',
          filter: 'grayscale(100%) contrast(1.2)',
          isCenter: false,
-         image: '/images/projects/money-tracker-app.jpg',
+         image: '/images/projects/money-tracker-app.png',
          slug: 'money-tracker-app'
       }
    ]
