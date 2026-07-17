@@ -42,16 +42,6 @@ const projectLoaders: Record<string, Record<string, ProjectLoader>> = {
       en: () => import('./translations/en/money-tracker-app').then(m => m.moneyTrackerData),
       ja: () => import('./translations/ja/money-tracker-app').then(m => m.moneyTrackerData),
    },
-   'master-data-service': {
-      th: () => import('./translations/th/master-data-service').then(m => m.masterDataServiceData),
-      en: () => import('./translations/en/master-data-service').then(m => m.masterDataServiceData),
-      ja: () => import('./translations/ja/master-data-service').then(m => m.masterDataServiceData),
-   },
-   'shipment-portal': {
-      th: () => import('./translations/th/shipment-portal').then(m => m.shipmentPortalData),
-      en: () => import('./translations/en/shipment-portal').then(m => m.shipmentPortalData),
-      ja: () => import('./translations/ja/shipment-portal').then(m => m.shipmentPortalData),
-   },
 }
 
 const loadProjectData = async (slug: ProjectSlug, lang: string = 'th'): Promise<ProjectData | undefined> => {
@@ -78,8 +68,6 @@ import { calculatorData } from './translations/th/calculator'
 import { portfolioWebsiteData } from './translations/th/portfolio-website'
 import { investFamData } from './translations/th/invest-fam'
 import { moneyTrackerData } from './translations/th/money-tracker-app'
-import { masterDataServiceData } from './translations/th/master-data-service'
-import { shipmentPortalData } from './translations/th/shipment-portal'
 
 // ===== PROJECT REGISTRY WITH CUSTOM NUMBERING =====
 const projectsRegistry: Record<string, ProjectData> = {
@@ -90,16 +78,12 @@ const projectsRegistry: Record<string, ProjectData> = {
    'portfolio-website': portfolioWebsiteData,
    'invest-fam': investFamData,
    'money-tracker-app': moneyTrackerData,
-   'master-data-service': masterDataServiceData,
-   'shipment-portal': shipmentPortalData,
 }
 
 // Define custom project numbers
-// NOTE: Add new projects at the TOP with the next highest number (current max = 9)
+// NOTE: Add new projects at the TOP with the next highest number (current max = 7)
 const projectNumbers: Record<string, number> = {
-   'shipment-portal': 9, // ← latest, add new project above this line
-   'master-data-service': 8,
-   'money-tracker-app': 7,
+   'money-tracker-app': 7, // ← latest, add new project above this line
    'kinrai-d-project': 6,
    'invest-fam': 5,
    'tp-rfid': 4,
@@ -265,8 +249,6 @@ export const PROJECT_SLUGS = {
    PORTFOLIO_WEBSITE: 'portfolio-website',
    INVEST_FAM: 'invest-fam',
    MONEY_TRACKER_APP: 'money-tracker-app',
-   MASTER_DATA_SERVICE: 'master-data-service',
-   SHIPMENT_PORTAL: 'shipment-portal',
 } as const
 
 export const SUPPORTED_LANGUAGES = ['th', 'en', 'ja'] as const
@@ -275,7 +257,7 @@ export const DEFAULT_BACK_LINK = '/portfolio'
 export const DEFAULT_BACK_TEXT = 'กลับไปหน้าผลงาน'
 
 // ===== LEGACY EXPORTS (for backward compatibility) =====
-export { kinraiDData, assetDashboardData, assetManagementData, calculatorData, portfolioWebsiteData, investFamData, moneyTrackerData, masterDataServiceData, shipmentPortalData }
+export { kinraiDData, assetDashboardData, assetManagementData, calculatorData, portfolioWebsiteData, investFamData, moneyTrackerData }
 
 // ===== ADDITIONAL EXPORTS FOR OTHER LANGUAGES =====
 export const getKinraiDData = (lang: string = 'th') => getProjectData('kinrai-d-project', lang)
@@ -285,5 +267,3 @@ export const getCalculatorData = (lang: string = 'th') => getProjectData('calcul
 export const getPortfolioWebsiteData = (lang: string = 'th') => getProjectData('portfolio-website', lang)
 export const getInvestFamData = (lang: string = 'th') => getProjectData('invest-fam', lang)
 export const getMoneyTrackerData = (lang: string = 'th') => getProjectData('money-tracker-app', lang)
-export const getMasterDataServiceData = (lang: string = 'th') => getProjectData('master-data-service', lang)
-export const getShipmentPortalData = (lang: string = 'th') => getProjectData('shipment-portal', lang)
