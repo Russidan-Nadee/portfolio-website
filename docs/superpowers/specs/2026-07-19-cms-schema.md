@@ -29,6 +29,10 @@ Project ซับซ้อนกว่าที่ร่างไว้ตอน
 
 ## Prisma Schema
 
+**ทุก model ต้องมี `createdAt`/`updatedAt` เสมอ** (กฎตายตัว ไม่ใช่แค่ Project)
+
+**ทุก model ต้องมี `@@map` เป็นชื่อ table แบบ lowercase/snake_case พหูพจน์เสมอ** (เช่น `Category` → `@@map("categories")`) — ชื่อ model ใน schema ยังเป็น PascalCase ตามปกติของ Prisma (`prisma.category.findMany()` เหมือนเดิม) แต่ table จริงใน Postgres เป็น lowercase ตามธรรมเนียม SQL ทั่วไป ไม่ต้อง quote ตอนเขียน raw SQL ใน Supabase SQL Editor
+
 ```prisma
 model Project {
   id           String   @id @default(cuid())
@@ -51,13 +55,19 @@ model Project {
   featured     Boolean  @default(false) // ติ๊กแล้วโชว์ใน "Recommended Projects" หน้า home
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+
+  @@map("projects")
 }
 
 model Category {
-  id    String @id @default(cuid())
-  name  Json   // { th, en, ja } — เช่น "Frontend"
-  order Int    // ลำดับ section ในหน้า About
-  skills Skill[]
+  id        String   @id @default(cuid())
+  name      Json     // { th, en, ja } — เช่น "Frontend"
+  order     Int      // ลำดับ section ในหน้า About
+  skills    Skill[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("categories")
 }
 
 model Skill {
@@ -70,6 +80,10 @@ model Skill {
   category    Category @relation(fields: [categoryId], references: [id])
   order       Int      // ลำดับภายใน section
   featured    Boolean  @default(false) // ติ๊กแล้วโชว์ใน "Technologies I Work With" marquee หน้า home
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("skills")
 }
 
 model Experience {
@@ -83,5 +97,9 @@ model Experience {
   skills      String[]
   icon        String   // icon identifier (เช่น "FaBriefcase")
   order       Int      // ลำดับแสดงผลใน timeline
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("experiences")
 }
 ```

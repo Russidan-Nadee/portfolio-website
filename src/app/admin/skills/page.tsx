@@ -3,6 +3,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { MdEdit, MdDeleteOutline, MdDriveFileRenameOutline, MdClose, MdUpload } from 'react-icons/md'
+import { uploadSkillIcon } from './actions'
 
 const mockCategories = [
    {
@@ -34,6 +35,7 @@ export default function AdminSkillsPage() {
    const [iconValue, setIconValue] = useState('')
    const fileInputRef = useRef<HTMLInputElement>(null)
    const [editingCategory, setEditingCategory] = useState<CategoryDraft | null>(null)
+   const [uploading, setUploading] = useState(false)
 
    const openEdit = (skill: Skill) => {
       setEditingSkill(skill)
@@ -60,9 +62,21 @@ export default function AdminSkillsPage() {
       return () => window.removeEventListener('keydown', handleKeyDown)
    }, [editingSkill, editingCategory])
 
-   const handleIconFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+   const handleIconFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files?.[0]
-      if (file) setIconValue(URL.createObjectURL(file))
+      if (!file) return
+
+      setUploading(true)
+      try {
+         const formData = new FormData()
+         formData.set('file', file)
+         const publicUrl = await uploadSkillIcon(formData)
+         setIconValue(publicUrl)
+      } catch (err) {
+         alert(err instanceof Error ? err.message : 'Upload failed')
+      } finally {
+         setUploading(false)
+      }
    }
 
    return (
@@ -207,9 +221,10 @@ export default function AdminSkillsPage() {
                               />
                               <button
                                  type="button"
+                                 disabled={uploading}
                                  onClick={() => fileInputRef.current?.click()}
                                  title="Upload icon file"
-                                 className="shrink-0 rounded-lg border px-3 flex items-center"
+                                 className="shrink-0 rounded-lg border px-3 flex items-center disabled:opacity-50"
                                  style={{ borderColor: 'var(--border)', color: 'var(--foreground)' }}
                               >
                                  <MdUpload size={18} />
@@ -222,7 +237,10 @@ export default function AdminSkillsPage() {
                                  onChange={handleIconFileChange}
                               />
                            </div>
-                           {iconValue && (
+                           {uploading && (
+                              <div className="text-xs mt-2" style={{ color: 'var(--muted-foreground)' }}>Uploading...</div>
+                           )}
+                           {!uploading && iconValue && (
                               <img src={iconValue} alt="" className="w-8 h-8 object-contain mt-2" />
                            )}
                         </div>

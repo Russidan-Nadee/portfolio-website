@@ -42,3 +42,5 @@ next-env.d.ts
 
 # ai agents
 .claude
+
+/src/generated/prisma
