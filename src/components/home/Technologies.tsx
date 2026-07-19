@@ -3,45 +3,10 @@
 
 import React from 'react';
 
-const technologies = [
-   { name: 'JavaScript', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg' },
-   { name: 'TypeScript', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg' },
-   { name: 'Node.js', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg' },
-   { name: 'Dart', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dart/dart-original.svg' },
-   { name: 'CSS', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg' },
-   { name: 'HTML', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg' },
-   { name: 'Python', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg' },
-   { name: 'Next.js', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg' },
-   { name: 'Tailwind CSS', icon: 'https://www.vectorlogo.zone/logos/tailwindcss/tailwindcss-icon.svg' },
-   { name: 'prisma', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/prisma/prisma-original.svg' },
-   { name: 'nest.js', icon: 'https://commons.wikimedia.org/wiki/Special:FilePath/NestJS.svg' },
-   { name: 'Flutter', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flutter/flutter-original.svg' },
-   { name: 'Express', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg' },
-   { name: 'PostgreSQL', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg' },
-   { name: 'MySQL', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg' },
-   { name: 'Postman', icon: 'https://www.vectorlogo.zone/logos/getpostman/getpostman-icon.svg' },
-   { name: 'GitHub', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg' },
-   { name: 'Virsal studio', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/visualstudio/visualstudio-plain.svg' },
-   { name: 'VS Code', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg' },
-   { name: 'supabase', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/supabase/supabase-original.svg' },
-   { name: 'vercel', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vercel/vercel-original.svg' },
-   { name: 'netlify', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/netlify/netlify-original.svg' },
-   { name: 'Cloudflare', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cloudflare/cloudflare-original.svg' },
-   { name: 'Bun', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bun/bun-original.svg' },
-   { name: 'Elysia', icon: 'https://elysiajs.com/assets/elysia.svg' },
-   { name: 'Docker', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg' },
-   { name: 'AWS', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-plain-wordmark.svg' },
-   { name: 'Railway', icon: 'https://cdn.simpleicons.org/railway' },
-   { name: 'Git', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg' },
-   { name: 'Linux', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg' },
-   { name: 'ArgoCD', icon: 'https://cdn.simpleicons.org/argo' },
-   { name: 'Bruno', icon: 'https://cdn.simpleicons.org/bruno' },
-   { name: 'Zoho Desk', icon: '/icons/skills/zoho-desk.svg' },
-   { name: 'Zoho CRM', icon: '/icons/skills/zoho-crm.svg' },
-];
-
-// Duplicate the array to create a seamless loop
-const doubledTechnologies = [...technologies, ...technologies];
+export interface TechnologyItem {
+   name: string
+   icon: string
+}
 
 interface Translations {
    header?: {
@@ -82,13 +47,17 @@ interface Translations {
 
 interface TechnologiesProps {
    translations: Translations;
+   technologies: TechnologyItem[];
 }
 
-export default function Technologies({ translations }: TechnologiesProps) {
+export default function Technologies({ translations, technologies }: TechnologiesProps) {
    const t = translations.home?.technologies || {
       title: 'Technologies I Work With',
       subtitle: 'Modern tools for modern solutions',
    };
+
+   // Duplicate the array to create a seamless loop
+   const doubledTechnologies = [...technologies, ...technologies];
 
    return (
       <section className="py-12" style={{ backgroundColor: 'var(--background)', color: 'var(--foreground)' }}>
