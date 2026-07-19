@@ -9,6 +9,7 @@ export type SkillData = {
    description: LocalizedText
    categoryId: string
    featured: boolean
+   active: boolean
 }
 
 export type CategoryData = {

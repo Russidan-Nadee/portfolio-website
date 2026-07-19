@@ -87,9 +87,11 @@ export async function createSkill(formData: FormData) {
          categoryId,
          order,
          featured: formData.get('featured') === 'on',
+         active: formData.get('active') === 'on',
       },
    })
    revalidatePath('/admin/skills')
+   revalidatePath('/about')
 }
 
 export async function updateSkill(id: string, formData: FormData) {
@@ -102,12 +104,26 @@ export async function updateSkill(id: string, formData: FormData) {
          description: readLocaleField(formData, 'description'),
          categoryId: getString(formData, 'categoryId'),
          featured: formData.get('featured') === 'on',
+         active: formData.get('active') === 'on',
       },
    })
    revalidatePath('/admin/skills')
+   revalidatePath('/about')
 }
 
 export async function deleteSkill(id: string) {
    await prisma.skill.delete({ where: { id } })
    revalidatePath('/admin/skills')
+   revalidatePath('/about')
+}
+
+export async function toggleSkillFeatured(id: string, featured: boolean) {
+   await prisma.skill.update({ where: { id }, data: { featured } })
+   revalidatePath('/admin/skills')
+}
+
+export async function toggleSkillActive(id: string, active: boolean) {
+   await prisma.skill.update({ where: { id }, data: { active } })
+   revalidatePath('/admin/skills')
+   revalidatePath('/about')
 }

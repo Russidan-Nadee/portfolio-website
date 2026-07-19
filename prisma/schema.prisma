@@ -33,6 +33,7 @@ model Skill {
   category    Category @relation(fields: [categoryId], references: [id])
   order       Int
   featured    Boolean  @default(false)
+  active      Boolean  @default(true) // false = แสดงในหน้า admin เท่านั้น ยังไม่โชว์หน้า public (ระหว่างศึกษา/ยังไม่มั่นใจ)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 

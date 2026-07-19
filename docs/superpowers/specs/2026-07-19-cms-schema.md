@@ -80,6 +80,7 @@ model Skill {
   category    Category @relation(fields: [categoryId], references: [id])
   order       Int      // ลำดับภายใน section
   featured    Boolean  @default(false) // ติ๊กแล้วโชว์ใน "Technologies I Work With" marquee หน้า home
+  active      Boolean  @default(true) // false = แสดงในหน้า admin เท่านั้น ยังไม่โชว์หน้า public (ระหว่างศึกษา/ยังไม่มั่นใจ)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 

@@ -17,6 +17,7 @@
 - **description**: 3 คอลัมน์ภาษา
 - **category**: dropdown เลือกจาก Category ที่มีอยู่ (แก้ผ่านหน้า Skill ก็ได้ หรือผ่าน checklist ในหน้า Category ก็ได้ — คนละ UI แต่แก้ field เดียวกัน คือ `categoryId`)
 - **featured**: checkbox ในหน้า list (toggle เข้า/ออกจาก "Technologies I Work With" marquee หน้า home)
+- **active**: checkbox ในหน้า list (toggle เข้า/ออกจากหน้า public About) — ใช้ตอนเพิ่ม skill ที่กำลังศึกษาอยู่ ยังไม่มั่นใจจะเผยแพร่ (draft) การ์ดที่ `active=false` จะจางลงและมี badge "Draft" ในหน้า admin ส่วนหน้า public จะไม่โชว์เลย (Category ที่ skill ข้างในเป็น draft หมดก็จะไม่โชว์หัวข้อ section ว่างๆ ด้วย)
 
 ## การเรียงลำดับ
 
