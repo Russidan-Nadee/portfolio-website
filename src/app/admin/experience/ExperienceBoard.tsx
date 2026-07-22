@@ -1,9 +1,20 @@
 "use client";
 
-import { useState } from "react";
-import { MdClose, MdEdit, MdDeleteOutline } from "react-icons/md";
+import { useEffect, useState } from "react";
+import {
+  MdClose,
+  MdWork,
+  MdRestaurant,
+  MdFastfood,
+  MdSchool,
+} from "react-icons/md";
 import { FaBriefcase, FaLaptopCode, FaGraduationCap } from "react-icons/fa";
-import { MdWork, MdRestaurant, MdFastfood, MdSchool } from "react-icons/md";
+import {
+  createExperience,
+  updateExperience,
+  deleteExperience,
+} from "./actions";
+import ExperienceSection from "./ExperienceSection";
 import type { ExperienceData, ExperienceType, LocalizedText } from "./types";
 import { ICON_OPTIONS } from "./types";
 
@@ -18,8 +29,7 @@ const iconPreviewMap: Record<string, React.ReactNode> = {
 };
 
 // "yyyy-MM" <-> Date helpers (month/year picker only cares about these two parts)
-function yearMonthToDate(value: string | null): Date | null {
-  if (!value) return null;
+function yearMonthToDate(value: string): Date {
   const [year, month] = value.split("-").map(Number);
   return new Date(year, month - 1, 1);
 }
@@ -29,65 +39,22 @@ function dateToYearMonth(date: Date): string {
 }
 
 function formatYearMonth(value: string): string {
-  const date = yearMonthToDate(value);
-  if (!date) return "";
-  return date.toLocaleDateString("en-US", { month: "short", year: "numeric" });
+  return yearMonthToDate(value).toLocaleDateString("en-US", {
+    month: "short",
+    year: "numeric",
+  });
 }
 
 function formatPeriod(item: ExperienceData): string {
   const start = formatYearMonth(item.startDate);
-  const end = item.isCurrent
-    ? "Present"
-    : item.endDate
-      ? formatYearMonth(item.endDate)
-      : "";
+  let end = "";
+  if (item.isCurrent) {
+    end = "Present";
+  } else if (item.endDate) {
+    end = formatYearMonth(item.endDate);
+  }
   return end ? `${start} - ${end}` : start;
 }
-
-const mockData: ExperienceData[] = [
-  {
-    id: "1",
-    type: "work",
-    title: {
-      th: "นักพัฒนาซอฟต์แวร์",
-      en: "Software Developer",
-      ja: "ソフトウェア開発者",
-    },
-    company: "Fastship",
-    startDate: "2026-05",
-    endDate: null,
-    isCurrent: true,
-    description: {
-      th: "พัฒนาและดูแลระบบหลังบ้าน",
-      en: "Develop and maintain backend systems",
-      ja: "バックエンドシステムの開発と保守",
-    },
-    skills: ["Laravel", "PostgreSQL", "Docker"],
-    icon: "FaLaptopCode",
-    order: 0,
-  },
-  {
-    id: "2",
-    type: "education",
-    title: {
-      th: "ปริญญาตรี วิทยาการคอมพิวเตอร์",
-      en: "B.Sc. Computer Science",
-      ja: "コンピュータサイエンス学士",
-    },
-    company: "Some University",
-    startDate: "2021-08",
-    endDate: "2025-05",
-    isCurrent: false,
-    description: {
-      th: "",
-      en: "",
-      ja: "",
-    },
-    skills: [],
-    icon: "FaGraduationCap",
-    order: 0,
-  },
-];
 
 const blankExperience = (type: ExperienceType): ExperienceData => ({
   id: "",
@@ -100,19 +67,27 @@ const blankExperience = (type: ExperienceType): ExperienceData => ({
   description: { th: "", en: "", ja: "" },
   skills: [],
   icon: "FaBriefcase",
-  order: 0,
 });
 
-export default function ExperienceBoard() {
-  const [items, setItems] = useState<ExperienceData[]>(mockData);
-  const [activeTab, setActiveTab] = useState<ExperienceType>("work");
+export default function ExperienceBoard({
+  initialItems,
+}: Readonly<{
+  initialItems: ExperienceData[];
+}>) {
+  const [items, setItems] = useState<ExperienceData[]>(initialItems);
   const [editing, setEditing] = useState<ExperienceData | null>(null);
   const [skillDraft, setSkillDraft] = useState("");
+  const [saving, setSaving] = useState(false);
 
-  const visibleItems = items.filter((item) => item.type === activeTab);
+  useEffect(() => {
+    setItems(initialItems);
+  }, [initialItems]);
 
-  const openCreate = () => {
-    setEditing(blankExperience(activeTab));
+  const workItems = items.filter((item) => item.type === "work");
+  const educationItems = items.filter((item) => item.type === "education");
+
+  const openCreate = (type: ExperienceType) => {
+    setEditing(blankExperience(type));
     setSkillDraft("");
   };
 
@@ -121,9 +96,15 @@ export default function ExperienceBoard() {
     setSkillDraft("");
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
     if (!confirm("ลบรายการนี้ใช่ไหม?")) return;
     setItems((prev) => prev.filter((item) => item.id !== id));
+    try {
+      await deleteExperience(id);
+    } catch (err) {
+      alert(err instanceof Error ? err.message : "Delete failed");
+      setItems(initialItems);
+    }
   };
 
   const updateLocalizedField = (
@@ -153,156 +134,52 @@ export default function ExperienceBoard() {
     );
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!editing) return;
-    if (editing.id) {
-      setItems((prev) =>
-        prev.map((item) => (item.id === editing.id ? editing : item))
-      );
-    } else {
-      setItems((prev) => [...prev, { ...editing, id: crypto.randomUUID() }]);
+    setSaving(true);
+    try {
+      const { id, ...data } = editing;
+      if (id) {
+        await updateExperience(id, data);
+      } else {
+        await createExperience(data);
+      }
+      setEditing(null);
+    } catch (err) {
+      alert(err instanceof Error ? err.message : "Save failed");
+    } finally {
+      setSaving(false);
     }
-    setEditing(null);
   };
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <h1
-          className="text-2xl font-bold"
-          style={{ color: "var(--foreground)" }}
-        >
-          Experience
-        </h1>
-        <button
-          onClick={openCreate}
-          className="rounded-lg px-4 py-2 text-sm font-medium"
-          style={{
-            backgroundColor: "var(--foreground)",
-            color: "var(--background)",
-          }}
-        >
-          + New {activeTab === "work" ? "Work" : "Education"}
-        </button>
-      </div>
-
-      <div
-        className="flex gap-1 mb-6 rounded-lg p-1 w-fit border"
-        style={{ borderColor: "var(--border)" }}
+      <h1
+        className="text-2xl font-bold mb-6"
+        style={{ color: "var(--foreground)" }}
       >
-        {(["work", "education"] as const).map((tab) => (
-          <button
-            key={tab}
-            onClick={() => setActiveTab(tab)}
-            className="rounded-md px-4 py-1.5 text-sm font-medium"
-            style={{
-              backgroundColor:
-                activeTab === tab ? "var(--card)" : "transparent",
-              color:
-                activeTab === tab
-                  ? "var(--foreground)"
-                  : "var(--muted-foreground)",
-            }}
-          >
-            {tab === "work" ? "Work" : "Education"}
-          </button>
-        ))}
-      </div>
+        Experience
+      </h1>
 
-      {visibleItems.length === 0 && (
-        <div className="text-sm" style={{ color: "var(--muted-foreground)" }}>
-          ยังไม่มีรายการ
-        </div>
-      )}
-      <div
-        className="grid gap-4"
-        style={{ gridTemplateColumns: "repeat(3, minmax(0, 1fr))" }}
-      >
-        {visibleItems.map((item) => (
-          <div
-            key={item.id}
-            className="relative rounded-xl border p-4 flex flex-col gap-2"
-            style={{
-              backgroundColor: "var(--card)",
-              borderColor: "var(--border)",
-            }}
-          >
-            <span
-              className="absolute top-2 left-2 cursor-grab select-none text-sm"
-              style={{ color: "var(--muted-foreground)" }}
-            >
-              ⠿
-            </span>
-            <div className="absolute top-2 right-2 flex gap-3">
-              <button
-                className="hover:opacity-70"
-                style={{ color: "var(--foreground)" }}
-                title="Edit"
-                onClick={() => openEdit(item)}
-              >
-                <MdEdit size={16} />
-              </button>
-              <button
-                className="hover:opacity-70"
-                style={{ color: "#dc2626" }}
-                title="Delete"
-                onClick={() => handleDelete(item.id)}
-              >
-                <MdDeleteOutline size={16} />
-              </button>
-            </div>
+      <ExperienceSection
+        label="Work"
+        items={workItems}
+        iconPreviewMap={iconPreviewMap}
+        formatPeriod={formatPeriod}
+        onCreate={() => openCreate("work")}
+        onEdit={openEdit}
+        onDelete={handleDelete}
+      />
 
-            <div
-              className="w-9 h-9 rounded-lg flex items-center justify-center text-lg mt-6"
-              style={{ backgroundColor: "var(--background)" }}
-            >
-              {iconPreviewMap[item.icon]}
-            </div>
-
-            <div className="flex items-center gap-2 flex-wrap">
-              <span
-                className="font-medium text-sm"
-                style={{ color: "var(--foreground)" }}
-              >
-                {item.title.en || item.title.th}
-              </span>
-              {item.isCurrent && (
-                <span
-                  className="text-[10px] font-medium px-2 py-0.5 rounded-full"
-                  style={{
-                    backgroundColor: "var(--foreground)",
-                    color: "var(--background)",
-                  }}
-                >
-                  Current
-                </span>
-              )}
-            </div>
-            <div
-              className="text-xs"
-              style={{ color: "var(--muted-foreground)" }}
-            >
-              {item.company} · {formatPeriod(item)}
-            </div>
-            {item.skills.length > 0 && (
-              <div className="flex flex-wrap gap-1">
-                {item.skills.map((skill) => (
-                  <span
-                    key={skill}
-                    className="text-xs px-2 py-0.5 rounded-full border"
-                    style={{
-                      borderColor: "var(--border)",
-                      color: "var(--muted-foreground)",
-                    }}
-                  >
-                    {skill}
-                  </span>
-                ))}
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
+      <ExperienceSection
+        label="Education"
+        items={educationItems}
+        iconPreviewMap={iconPreviewMap}
+        formatPeriod={formatPeriod}
+        onCreate={() => openCreate("education")}
+        onEdit={openEdit}
+        onDelete={handleDelete}
+      />
 
       {editing && (
         <div
@@ -631,14 +508,15 @@ export default function ExperienceBoard() {
                 </button>
                 <button
                   type="button"
+                  disabled={saving}
                   onClick={handleSubmit}
-                  className="rounded-lg px-4 py-2 text-sm font-medium"
+                  className="rounded-lg px-4 py-2 text-sm font-medium disabled:opacity-50"
                   style={{
                     backgroundColor: "var(--foreground)",
                     color: "var(--background)",
                   }}
                 >
-                  Save
+                  {saving ? "Saving..." : "Save"}
                 </button>
               </div>
             </div>

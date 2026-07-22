@@ -1,16 +1,29 @@
 // src/app/about/page.tsx
-import { prisma } from '@/lib/prisma'
-import AboutContent from './AboutContent'
-import type { CategoryItem } from '../../components/about/SkillsGrid'
+import { prisma } from "@/lib/prisma";
+import AboutContent from "./AboutContent";
+import type { CategoryItem } from "../../components/about/SkillsGrid";
+import type { ExperienceItem } from "../../components/about/Timeline";
 
 export default async function About() {
-   const categories = await prisma.category.findMany({
-      orderBy: { order: 'asc' },
-      include: { skills: { where: { active: true }, orderBy: { order: 'asc' } } },
-   })
+  const [categories, experiences] = await Promise.all([
+    prisma.category.findMany({
+      orderBy: { order: "asc" },
+      include: {
+        skills: { where: { active: true }, orderBy: { order: "asc" } },
+      },
+    }),
+    prisma.experience.findMany({ orderBy: { startDate: "desc" } }),
+  ]);
 
-   // ซ่อน category ที่ skill ทั้งหมดข้างในเป็น draft (active: false) หมด ไม่ให้เห็นหัวข้อว่างๆ
-   const visibleCategories = categories.filter(category => category.skills.length > 0)
+  // ซ่อน category ที่ skill ทั้งหมดข้างในเป็น draft (active: false) หมด ไม่ให้เห็นหัวข้อว่างๆ
+  const visibleCategories = categories.filter(
+    (category) => category.skills.length > 0
+  );
 
-   return <AboutContent skillCategories={visibleCategories as unknown as CategoryItem[]} />
+  return (
+    <AboutContent
+      skillCategories={visibleCategories as unknown as CategoryItem[]}
+      experiences={experiences as unknown as ExperienceItem[]}
+    />
+  );
 }

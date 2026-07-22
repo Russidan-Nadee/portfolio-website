@@ -44,11 +44,23 @@ const blankSkill: SkillData = {
 };
 const blankCategoryName: LocalizedText = { th: "", en: "", ja: "" };
 
+function applyReorderedSkills(
+  category: CategoryData,
+  categoryId: string,
+  orderedIds: string[]
+): CategoryData {
+  if (category.id !== categoryId) return category;
+  return {
+    ...category,
+    skills: orderedIds.map((id) => category.skills.find((s) => s.id === id)!),
+  };
+}
+
 export default function SkillsBoard({
   categories,
-}: {
+}: Readonly<{
   categories: CategoryData[];
-}) {
+}>) {
   const [editingSkill, setEditingSkill] = useState<SkillData | null>(null);
   const [iconValue, setIconValue] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -87,16 +99,7 @@ export default function SkillsBoard({
     orderedIds: string[]
   ) => {
     setLocalCategories((prev) =>
-      prev.map((c) =>
-        c.id === categoryId
-          ? {
-              ...c,
-              skills: orderedIds.map((id) =>
-                c.skills.find((s) => s.id === id)!
-              ),
-            }
-          : c
-      )
+      prev.map((c) => applyReorderedSkills(c, categoryId, orderedIds))
     );
     try {
       await reorderSkills(orderedIds);
@@ -230,6 +233,7 @@ export default function SkillsBoard({
       </div>
 
       <DndContext
+        id="skills-categories"
         sensors={categorySensors}
         collisionDetection={closestCenter}
         onDragEnd={handleReorderCategories}

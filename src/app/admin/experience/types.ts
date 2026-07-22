@@ -29,5 +29,4 @@ export interface ExperienceData {
   description: LocalizedText;
   skills: string[];
   icon: IconOption;
-  order: number;
 }

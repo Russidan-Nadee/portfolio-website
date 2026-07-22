@@ -30,7 +30,7 @@ export default function SortableCategory({
   onToggleFeatured,
   onToggleActive,
   onReorderSkills,
-}: {
+}: Readonly<{
   category: CategoryData;
   onRename: (category: CategoryData) => void;
   onDeleteCategory: (id: string) => void;
@@ -40,7 +40,7 @@ export default function SortableCategory({
   onToggleFeatured: (id: string, featured: boolean) => void;
   onToggleActive: (id: string, active: boolean) => void;
   onReorderSkills: (categoryId: string, orderedIds: string[]) => void;
-}) {
+}>) {
   const {
     attributes,
     listeners,
@@ -113,6 +113,7 @@ export default function SortableCategory({
       </div>
 
       <DndContext
+        id={`skills-category-${category.id}`}
         sensors={sensors}
         collisionDetection={closestCenter}
         onDragEnd={handleDragEnd}

@@ -23,6 +23,23 @@ model Category {
   @@map("categories")
 }
 
+model Experience {
+  id          String   @id @default(cuid())
+  type        String // "work" | "education"
+  title       Json // { th, en, ja }
+  company     String
+  startDate   String // "yyyy-MM"
+  endDate     String? // "yyyy-MM", null = Present
+  isCurrent   Boolean  @default(false)
+  description Json // { th, en, ja }
+  skills      String[]
+  icon        String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("experiences")
+}
+
 model Skill {
   id          String   @id @default(cuid())
   name        String
