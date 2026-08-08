@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit",
     "build:static": "next build",
     "build:zip": "npm run build:static && zip -r portfolio-website.zip out/",
+    "postinstall": "prisma generate",
     "prepare": "husky"
   },
   "lint-staged": {
