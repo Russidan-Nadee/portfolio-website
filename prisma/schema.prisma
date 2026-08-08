@@ -40,6 +40,33 @@ model Experience {
   @@map("experiences")
 }
 
+model Project {
+  id               String   @id @default(cuid())
+  slug             String   @unique
+  order            Int
+  title            Json // { th, en, ja }
+  description      Json // { th, en, ja }
+  tags             Json // { th: string[], en: string[], ja: string[] } — badge บนหน้า detail header, คำแปลต่างกันจริง เช่น "Management"/"การจัดการ"/"管理"
+  filterTags       String[] // controlled vocabulary: web | crossplatform | mobile | desktop | backend — ใช้ filter หน้า /portfolio list (ไม่ต้องแปล)
+  techSummary      String // one-liner บนการ์ด list/showcase เช่น "Flutter, Node.js, Express, Prisma, MySQL" (ไม่แปล เป็นชื่อเทคโนโลยี)
+  thumbnailUrl     String // การ์ดหน้า /portfolio list
+  overviewImageUrl String // hero image ใน tab Overview
+  overviewImageAlt Json // { th, en, ja }
+  repoUrl          String?
+  demoUrl          String?
+  liveUrl          String?
+  duration         Json // { th, en, ja } — เช่น "6 months"/"6 เดือน"/"6ヶ月"
+  status           Json // { th, en, ja } — เช่น "In Development"/"กำลังพัฒนา"/"開発中"
+  company          String // ชื่อบริษัท ไม่แปล
+  technologies     String[] // infoBar เต็ม (คนละชุดกับ techSummary จริง ๆ ในข้อมูลเดิม)
+  content          Json // { overview, features, gallery, technical, results, futureGoals } — ดู cms-schema.md
+  featured         Boolean  @default(false)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@map("projects")
+}
+
 model Skill {
   id          String   @id @default(cuid())
   name        String

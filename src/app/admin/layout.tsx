@@ -4,6 +4,7 @@ import Link from "next/link";
 const navItems = [
   { label: "Skills", href: "/admin/skills" },
   { label: "Experience", href: "/admin/experience" },
+  { label: "Projects", href: "/admin/projects" },
 ];
 
 export default function AdminLayout({
