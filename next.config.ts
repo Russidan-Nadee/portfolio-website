@@ -1,18 +1,15 @@
-import type { NextConfig } from 'next'
+import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   trailingSlash: true,
   images: {
-    unoptimized: true
+    unoptimized: true,
   },
-  basePath: '',
-  assetPrefix: '',
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
+  basePath: "",
+  assetPrefix: "",
   typescript: {
     ignoreBuildErrors: true,
-  }
-}
+  },
+};
 
-export default nextConfig
+export default nextConfig;
