@@ -39,13 +39,13 @@ function LocalizedInput({
   value,
   onChange,
   textarea,
-}: {
+}: Readonly<{
   id: string;
   label: string;
   value: LocalizedText;
   onChange: (next: LocalizedText) => void;
   textarea?: boolean;
-}) {
+}>) {
   return (
     <div>
       <div
@@ -89,12 +89,12 @@ function CommaListField({
   value,
   onChange,
   placeholder,
-}: {
+}: Readonly<{
   id: string;
   value: string[];
   onChange: (next: string[]) => void;
   placeholder?: string;
-}) {
+}>) {
   const [text, setText] = useState(() => value.join(", "));
   const focused = useRef(false);
 
@@ -134,12 +134,12 @@ function LocalizedListInput({
   label,
   value,
   onChange,
-}: {
+}: Readonly<{
   id: string;
   label: string;
   value: LocalizedList;
   onChange: (next: LocalizedList) => void;
-}) {
+}>) {
   return (
     <div>
       <div
@@ -177,13 +177,13 @@ function ImageUploadField({
   url,
   onUrlChange,
   onUpload,
-}: {
+}: Readonly<{
   id: string;
   label: string;
   url: string;
   onUrlChange: (url: string) => void;
   onUpload?: (file: File) => Promise<string>;
-}) {
+}>) {
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -275,12 +275,12 @@ export default function ProjectHeaderFields({
   onChange,
   onUploadThumbnail,
   onUploadOverviewImage,
-}: {
+}: Readonly<{
   value: ProjectHeaderValue;
   onChange: (next: ProjectHeaderValue) => void;
   onUploadThumbnail?: (file: File) => Promise<string>;
   onUploadOverviewImage?: (file: File) => Promise<string>;
-}) {
+}>) {
   return (
     <div className="flex flex-col gap-4">
       <div>
