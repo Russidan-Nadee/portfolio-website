@@ -4,6 +4,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { FaFacebook, FaInstagram, FaLinkedin, FaGithub } from "react-icons/fa";
+import { GB, TH, JP } from "country-flag-icons/react/3x2";
 import th from "../../../locales/th.json";
 import ja from "../../../locales/ja.json";
 import en from "../../../locales/en.json";
@@ -63,19 +64,19 @@ export default function Footer() {
     {
       code: "en",
       name: "English",
-      flag: "https://flagcdn.com/us.svg",
+      Flag: GB,
       nativeName: "English",
     },
     {
       code: "th",
       name: "Thai",
-      flag: "https://flagcdn.com/th.svg",
+      Flag: TH,
       nativeName: "ไทย",
     },
     {
       code: "ja",
       name: "Japanese",
-      flag: "https://flagcdn.com/jp.svg",
+      Flag: JP,
       nativeName: "日本語",
     },
   ];
@@ -267,9 +268,8 @@ export default function Footer() {
                         : "var(--muted-foreground)",
                   }}
                 >
-                  <img
-                    src={lang.flag}
-                    alt={lang.name}
+                  <lang.Flag
+                    title={lang.name}
                     className="w-5 h-[15px] rounded-sm object-cover"
                   />
                   {lang.nativeName}
