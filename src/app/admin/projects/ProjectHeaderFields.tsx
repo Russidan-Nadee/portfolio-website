@@ -1,8 +1,8 @@
 // src/app/admin/projects/ProjectHeaderFields.tsx
 "use client";
 
-import { useRef, useState } from "react";
-import { MdUpload } from "react-icons/md";
+import { useEffect, useRef, useState } from "react";
+import { MdDeleteOutline, MdUpload } from "react-icons/md";
 import { FILTER_TAG_OPTIONS } from "./types";
 import type { FilterTag, LocalizedList, LocalizedText } from "./types";
 
@@ -84,6 +84,51 @@ function LocalizedInput({
   );
 }
 
+function CommaListField({
+  id,
+  value,
+  onChange,
+  placeholder,
+}: {
+  id: string;
+  value: string[];
+  onChange: (next: string[]) => void;
+  placeholder?: string;
+}) {
+  const [text, setText] = useState(() => value.join(", "));
+  const focused = useRef(false);
+
+  useEffect(() => {
+    if (!focused.current) setText(value.join(", "));
+  }, [value]);
+
+  return (
+    <input
+      id={id}
+      value={text}
+      placeholder={placeholder}
+      onFocus={() => {
+        focused.current = true;
+      }}
+      onChange={(e) => {
+        setText(e.target.value);
+        onChange(
+          e.target.value
+            .split(",")
+            .map((s) => s.trim())
+            .filter(Boolean)
+        );
+      }}
+      onBlur={() => {
+        focused.current = false;
+        setText(value.join(", "));
+      }}
+      className="w-full rounded-lg border px-3 py-2 text-sm"
+      style={inputStyle}
+    />
+  );
+}
+
 function LocalizedListInput({
   id,
   label,
@@ -114,20 +159,10 @@ function LocalizedListInput({
             >
               {locale}
             </label>
-            <input
+            <CommaListField
               id={`${id}-${locale}`}
-              value={value[locale].join(", ")}
-              onChange={(e) =>
-                onChange({
-                  ...value,
-                  [locale]: e.target.value
-                    .split(",")
-                    .map((s) => s.trim())
-                    .filter(Boolean),
-                })
-              }
-              className="w-full rounded-lg border px-3 py-2 text-sm"
-              style={inputStyle}
+              value={value[locale]}
+              onChange={(next) => onChange({ ...value, [locale]: next })}
             />
           </div>
         ))}
@@ -206,6 +241,17 @@ function ImageUploadField({
               onChange={handleFileChange}
             />
           </>
+        )}
+        {url && (
+          <button
+            type="button"
+            onClick={() => onUrlChange("")}
+            title="Remove image"
+            className="shrink-0 rounded-lg border px-3 flex items-center"
+            style={{ borderColor: "#dc2626", color: "#dc2626" }}
+          >
+            <MdDeleteOutline size={18} />
+          </button>
         )}
       </div>
       {uploading && (
@@ -335,20 +381,10 @@ export default function ProjectHeaderFields({
           >
             Technologies (infoBar, คั่นด้วย comma)
           </label>
-          <input
+          <CommaListField
             id="project-technologies"
-            value={value.technologies.join(", ")}
-            onChange={(e) =>
-              onChange({
-                ...value,
-                technologies: e.target.value
-                  .split(",")
-                  .map((s) => s.trim())
-                  .filter(Boolean),
-              })
-            }
-            className="w-full rounded-lg border px-3 py-2"
-            style={inputStyle}
+            value={value.technologies}
+            onChange={(technologies) => onChange({ ...value, technologies })}
           />
         </div>
       </div>
