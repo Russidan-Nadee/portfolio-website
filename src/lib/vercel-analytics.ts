@@ -226,6 +226,7 @@ export async function loadVercelAnalytics(
       },
     };
   } catch (error) {
+    controller.abort();
     logFailure(error);
     return { status: "unavailable" };
   } finally {

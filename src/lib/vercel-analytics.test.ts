@@ -361,3 +361,50 @@ test("returns unavailable when a request times out and honors its abort signal",
     vi.useRealTimers();
   }
 });
+
+test("aborts pending requests after an immediate request failure", async () => {
+  let pendingRequests = 0;
+  let abortedRequests = 0;
+
+  const fetcher = async (
+    input: RequestInfo | URL,
+    init?: RequestInit
+  ): Promise<Response> => {
+    const url = new URL(String(input));
+    if (url.pathname.endsWith("/count")) {
+      return new Response(JSON.stringify({ error: "forbidden" }), {
+        status: 403,
+      });
+    }
+
+    pendingRequests += 1;
+    return new Promise((_, reject) => {
+      const signal = init?.signal;
+      if (!signal) {
+        reject(new Error("missing abort signal"));
+        return;
+      }
+      signal.addEventListener(
+        "abort",
+        () => {
+          abortedRequests += 1;
+          reject(new DOMException("The request was aborted", "AbortError"));
+        },
+        { once: true }
+      );
+    });
+  };
+
+  const result = await loadVercelAnalytics({
+    env: {
+      VERCEL_ACCESS_TOKEN: "secret",
+      VERCEL_PROJECT_ID: "prj_123",
+    },
+    fetcher,
+    now,
+  });
+
+  assert.deepEqual(result, { status: "unavailable" });
+  assert.equal(pendingRequests, 5);
+  assert.equal(abortedRequests, 5);
+});
