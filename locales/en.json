@@ -276,16 +276,16 @@
   "legal": {
     "privacyPolicy": {
       "title": "Privacy Policy",
-      "lastUpdated": "Last updated: July 2025",
+      "lastUpdated": "Last updated: September 2026",
       "sections": {
         "dataCollection": {
           "title": "Information We Collect",
-          "content": "This website does not collect any personal information from visitors:",
+          "content": "This website uses Vercel Web Analytics to collect anonymous aggregated page-view data, including page path, referrer, approximate country, browser, operating system, and device type. It does not use third-party cookies:",
           "items": [
-            "No cookies or local storage used",
-            "No tracking or analytics",
+            "Anonymous aggregated page-view data only",
+            "No third-party cookies",
             "No forms or data submission",
-            "No usage data collection"
+            "No personal information is collected"
           ]
         },
         "thirdPartyServices": {
@@ -303,13 +303,17 @@
             {
               "name": "Cloudflare CDN",
               "description": "For loading JavaScript libraries"
+            },
+            {
+              "name": "Vercel Web Analytics",
+              "description": "For anonymous aggregated page-view analytics without third-party cookies"
             }
           ],
           "note": "These services may have their own privacy policies"
         },
         "userRights": {
           "title": "Your Rights",
-          "content": "Since we don't collect any personal data, there is no information for you to access, modify, or delete."
+          "content": "Vercel Web Analytics collects anonymous aggregated usage data that is not linked to your identity. Because the data is anonymous, we may not be able to identify, access, modify, or delete data associated with you. If you have questions about this policy, please contact us."
         },
         "contact": {
           "title": "Contact",

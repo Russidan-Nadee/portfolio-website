@@ -19,6 +19,7 @@ A personal portfolio website designed to showcase development skills, work exper
 ## 🛠 Technologies Used
 
 ### Frontend
+
 - **Framework**: Next.js 15.3.5 (App Router)
 - **Language**: TypeScript 5
 - **Styling**: Tailwind CSS 4
@@ -26,24 +27,28 @@ A personal portfolio website designed to showcase development skills, work exper
 - **Icons**: React Icons 5.5.0, Lucide React 0.525.0
 
 ### Development Tools
+
 - **Linting**: ESLint 9
 - **Fonts**: Geist, Inter (Google Fonts), IBM Plex Sans Thai, Noto Sans JP
 
 ## 🚀 Installation and Running
 
 ### System Requirements
-- Node.js 20+ 
+
+- Node.js 20+
 - npm, yarn, pnpm or bun
 
 ### Installation Steps
 
 1. **Clone repository**
+
 ```bash
 git clone https://github.com/Russidan-Nadee/portfolio.git
 cd portfolio-website
 ```
 
 2. **Install dependencies**
+
 ```bash
 npm install
 # or
@@ -53,6 +58,7 @@ pnpm install
 ```
 
 3. **Run in development mode**
+
 ```bash
 npm run dev
 # or
@@ -62,7 +68,7 @@ pnpm dev
 ```
 
 4. **Open browser**
-Go to [http://localhost:3000](http://localhost:3000)
+   Go to [http://localhost:3000](http://localhost:3000)
 
 ## 📁 Project Structure
 
@@ -70,7 +76,7 @@ Go to [http://localhost:3000](http://localhost:3000)
 src/
 ├── app/                    # Next.js App Router
 │   ├── about/             # About page
-│   ├── contact/           # Contact page  
+│   ├── contact/           # Contact page
 │   ├── portfolio/         # Portfolio page and subpages
 │   ├── legal/             # Privacy Policy, Terms pages
 │   └── globals.css        # Global styles
@@ -92,8 +98,9 @@ src/
 ## 🌍 Multilingual System
 
 The website supports 3 languages:
+
 - 🇹🇭 **Thai** - Main language
-- 🇺🇸 **English** - International language  
+- 🇺🇸 **English** - International language
 - 🇯🇵 **Japanese** - Japanese language
 
 The system will remember the selected language in localStorage and can be changed in real-time
@@ -107,22 +114,25 @@ The system will remember the selected language in localStorage and can be change
 ## 📱 Responsive Design
 
 - **Mobile**: 320px - 768px
-- **Tablet**: 768px - 1024px  
+- **Tablet**: 768px - 1024px
 - **Desktop**: 1024px+
 
 ## 🏗 Build and Deploy
 
 ### Build for Production
+
 ```bash
 npm run build
 ```
 
 ### Build with Static Export
+
 ```bash
 npm run build:static
 ```
 
 ### Create ZIP file
+
 ```bash
 npm run build:zip
 ```
@@ -139,7 +149,7 @@ npm run build:zip
 ## 🎯 Projects Displayed in Portfolio
 
 1. **RFID Asset Management System** - Flutter, Node.js, MySQL
-2. **Portfolio Website** - Next.js, TypeScript, Tailwind CSS  
+2. **Portfolio Website** - Next.js, TypeScript, Tailwind CSS
 3. **Asset Management Mobile App** - Flutter, Node.js, Express, MySQL
 4. **Advanced Calculator App** - Python, Tkinter
 
@@ -157,10 +167,20 @@ npm run build:zip
 
 ## 🔧 Configuration
 
-### Environment Variables
-No environment variables are used in this project
+### Vercel Web Analytics and Environment Variables
+
+The `/admin` traffic dashboard uses Vercel Web Analytics. Enable Web Analytics in your Vercel project before using the dashboard.
+
+In the Vercel project settings, add these server-only environment variables:
+
+- `VERCEL_ACCESS_TOKEN`: a Vercel access token that can read Web Analytics data. Keep this token server-only and never expose it to client-side code.
+- `VERCEL_PROJECT_ID`: the Vercel project ID. You can set this explicitly or enable Vercel's automatic **System Environment Variables** so the project ID is available automatically.
+- `VERCEL_TEAM_ID` (optional): add this for team-owned projects. Personal projects do not need it.
+
+Redeploy after enabling Web Analytics or changing these environment variables so the dashboard can load the latest configuration.
 
 ### Browser Support
+
 - Chrome 90+
 - Firefox 88+
 - Safari 14+
