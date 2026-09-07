@@ -1,0 +1,363 @@
+import assert from "node:assert/strict";
+import test from "node:test";
+import { loadVercelAnalytics } from "./vercel-analytics";
+
+const now = new Date("2026-09-07T12:00:00.000Z");
+
+function responseFor(input: RequestInfo | URL): Response {
+  const url = new URL(String(input));
+  const data = url.pathname.endsWith("/count")
+    ? { pageviews: 0, visitors: 0 }
+    : [];
+
+  return new Response(JSON.stringify({ version: 1, data }), {
+    status: 200,
+    headers: { "content-type": "application/json" },
+  });
+}
+
+function createFetcher(requests: Request[]) {
+  return async (input: RequestInfo | URL, init?: RequestInit) => {
+    requests.push(new Request(input, init));
+    return responseFor(input);
+  };
+}
+
+function jsonResponse(value: unknown, status = 200): Response {
+  return new Response(JSON.stringify(value), {
+    status,
+    headers: { "content-type": "application/json" },
+  });
+}
+
+function documentedCountResponse(
+  pageviews: number,
+  visitors: number
+): Response {
+  return jsonResponse({
+    version: 1,
+    query: {},
+    data: { pageviews, visitors },
+  });
+}
+
+function documentedAggregateResponse(
+  groupBy: string,
+  data: unknown[],
+  limit?: number
+): Response {
+  return jsonResponse({
+    version: 1,
+    query: {
+      since: "2026-08-09",
+      until: "2026-09-07",
+      groupBy: [groupBy],
+      ...(limit ? { limit } : {}),
+    },
+    data,
+  });
+}
+
+function createResponseSequenceFetcher(
+  responses: Response[],
+  requests: Request[] = []
+) {
+  let index = 0;
+  const fetcher = async (input: RequestInfo | URL, init?: RequestInit) => {
+    requests.push(new Request(input, init));
+    const response = responses[index];
+    index += 1;
+    if (!response) throw new Error("fixture exhausted");
+    return response;
+  };
+  return { fetcher, requests };
+}
+
+function validResponses(): Response[] {
+  return [
+    documentedCountResponse(1250, 980),
+    documentedAggregateResponse("day", [
+      {
+        timestamp: "2026-09-01T00:00:00.000Z",
+        pageviews: 220,
+        visitors: 180,
+      },
+      {
+        timestamp: "2026-09-02T00:00:00.000Z",
+        pageviews: 245,
+        visitors: 201,
+      },
+    ]),
+    documentedAggregateResponse(
+      "requestPath",
+      [{ requestPath: "/portfolio", pageviews: 640, visitors: 510 }],
+      5
+    ),
+    documentedAggregateResponse(
+      "country",
+      [{ country: "US", pageviews: 180, visitors: 150 }],
+      5
+    ),
+    documentedAggregateResponse(
+      "referrerHostname",
+      [
+        {
+          referrerHostname: "news.ycombinator.com",
+          pageviews: 90,
+          visitors: 75,
+        },
+      ],
+      5
+    ),
+    documentedAggregateResponse(
+      "deviceType",
+      [{ deviceType: "desktop", pageviews: 80, visitors: 70 }],
+      5
+    ),
+  ];
+}
+
+test("returns setup for missing configuration without fetching", async () => {
+  const requests: Request[] = [];
+
+  const result = await loadVercelAnalytics({
+    env: {},
+    fetcher: createFetcher(requests),
+    now,
+  });
+
+  assert.deepEqual(result, {
+    status: "setup",
+    missing: ["VERCEL_ACCESS_TOKEN", "VERCEL_PROJECT_ID"],
+  });
+  assert.equal(requests.length, 0);
+});
+
+test("builds personal-project requests without a team id", async () => {
+  const requests: Request[] = [];
+
+  const result = await loadVercelAnalytics({
+    env: {
+      VERCEL_ACCESS_TOKEN: "secret",
+      VERCEL_PROJECT_ID: "prj_123",
+    },
+    fetcher: createFetcher(requests),
+    now,
+  });
+
+  assert.equal(result.status, "ready");
+  assert.equal(requests.length, 6);
+  assert.deepEqual(
+    requests.map((request) => new URL(request.url).pathname),
+    [
+      "/v1/query/web-analytics/visits/count",
+      "/v1/query/web-analytics/visits/aggregate",
+      "/v1/query/web-analytics/visits/aggregate",
+      "/v1/query/web-analytics/visits/aggregate",
+      "/v1/query/web-analytics/visits/aggregate",
+      "/v1/query/web-analytics/visits/aggregate",
+    ]
+  );
+  assert.deepEqual(
+    requests.map((request) => {
+      const url = new URL(request.url);
+      return [url.searchParams.get("by"), url.searchParams.get("limit")];
+    }),
+    [
+      [null, null],
+      ["day", null],
+      ["requestPath", "5"],
+      ["country", "5"],
+      ["referrerHostname", "5"],
+      ["deviceType", "5"],
+    ]
+  );
+
+  for (const request of requests) {
+    const url = new URL(request.url);
+    assert.equal(url.searchParams.get("since"), "2026-08-09");
+    assert.equal(url.searchParams.get("until"), "2026-09-07");
+    assert.equal(url.searchParams.get("projectId"), "prj_123");
+    assert.equal(url.searchParams.has("teamId"), false);
+    assert.equal(request.headers.get("authorization"), "Bearer secret");
+    assert.equal(request.cache, "no-store");
+  }
+});
+
+test("builds team-project requests with the configured team id", async () => {
+  const requests: Request[] = [];
+
+  const result = await loadVercelAnalytics({
+    env: {
+      VERCEL_ACCESS_TOKEN: "secret",
+      VERCEL_PROJECT_ID: "prj_123",
+      VERCEL_TEAM_ID: "team_456",
+    },
+    fetcher: createFetcher(requests),
+    now,
+  });
+
+  assert.equal(result.status, "ready");
+  assert.equal(requests.length, 6);
+
+  for (const request of requests) {
+    const url = new URL(request.url);
+    assert.equal(url.searchParams.get("teamId"), "team_456");
+  }
+});
+
+test("maps documented responses into dashboard data", async () => {
+  const { fetcher } = createResponseSequenceFetcher(validResponses());
+
+  const result = await loadVercelAnalytics({
+    env: {
+      VERCEL_ACCESS_TOKEN: "secret",
+      VERCEL_PROJECT_ID: "prj_123",
+    },
+    fetcher,
+    now,
+  });
+
+  assert.deepEqual(result, {
+    status: "ready",
+    data: {
+      totals: { pageviews: 1250, visitors: 980 },
+      trend: [
+        {
+          timestamp: "2026-09-01T00:00:00.000Z",
+          pageviews: 220,
+          visitors: 180,
+        },
+        {
+          timestamp: "2026-09-02T00:00:00.000Z",
+          pageviews: 245,
+          visitors: 201,
+        },
+      ],
+      topPages: [{ label: "/portfolio", pageviews: 640, visitors: 510 }],
+      countries: [{ label: "US", pageviews: 180, visitors: 150 }],
+      referrers: [
+        {
+          label: "news.ycombinator.com",
+          pageviews: 90,
+          visitors: 75,
+        },
+      ],
+      devices: [{ label: "desktop", pageviews: 80, visitors: 70 }],
+      since: "2026-08-09",
+      until: "2026-09-07",
+      updatedAt: "2026-09-07T12:00:00.000Z",
+    },
+  });
+});
+
+test("maps an empty response set to zero totals and empty collections", async () => {
+  const { fetcher } = createResponseSequenceFetcher([
+    documentedCountResponse(0, 0),
+    documentedAggregateResponse("day", []),
+    documentedAggregateResponse("requestPath", [], 5),
+    documentedAggregateResponse("country", [], 5),
+    documentedAggregateResponse("referrerHostname", [], 5),
+    documentedAggregateResponse("deviceType", [], 5),
+  ]);
+
+  const result = await loadVercelAnalytics({
+    env: {
+      VERCEL_ACCESS_TOKEN: "secret",
+      VERCEL_PROJECT_ID: "prj_123",
+    },
+    fetcher,
+    now,
+  });
+
+  assert.deepEqual(result, {
+    status: "ready",
+    data: {
+      totals: { pageviews: 0, visitors: 0 },
+      trend: [],
+      topPages: [],
+      countries: [],
+      referrers: [],
+      devices: [],
+      since: "2026-08-09",
+      until: "2026-09-07",
+      updatedAt: "2026-09-07T12:00:00.000Z",
+    },
+  });
+});
+
+test("returns unavailable for a non-2xx response", async () => {
+  const responses = validResponses();
+  responses[3] = jsonResponse({ error: { code: "forbidden" } }, 403);
+  const { fetcher } = createResponseSequenceFetcher(responses);
+
+  const result = await loadVercelAnalytics({
+    env: {
+      VERCEL_ACCESS_TOKEN: "secret",
+      VERCEL_PROJECT_ID: "prj_123",
+    },
+    fetcher,
+    now,
+  });
+
+  assert.deepEqual(result, { status: "unavailable" });
+});
+
+test("returns unavailable for an invalid JSON response shape", async () => {
+  const responses = validResponses();
+  responses[2] = jsonResponse({ version: 1, query: {}, data: { nope: true } });
+  const { fetcher } = createResponseSequenceFetcher(responses);
+
+  const result = await loadVercelAnalytics({
+    env: {
+      VERCEL_ACCESS_TOKEN: "secret",
+      VERCEL_PROJECT_ID: "prj_123",
+    },
+    fetcher,
+    now,
+  });
+
+  assert.deepEqual(result, { status: "unavailable" });
+});
+
+test("returns unavailable when a request times out and honors its abort signal", async (t) => {
+  t.mock.timers.enable();
+  let abortedRequests = 0;
+
+  const fetcher = async (
+    _input: RequestInfo | URL,
+    init?: RequestInit
+  ): Promise<Response> =>
+    new Promise((_, reject) => {
+      const signal = init?.signal;
+      if (!signal) {
+        reject(new Error("missing abort signal"));
+        return;
+      }
+      signal.addEventListener(
+        "abort",
+        () => {
+          abortedRequests += 1;
+          reject(new DOMException("The request was aborted", "AbortError"));
+        },
+        { once: true }
+      );
+    });
+
+  try {
+    const resultPromise = loadVercelAnalytics({
+      env: {
+        VERCEL_ACCESS_TOKEN: "secret",
+        VERCEL_PROJECT_ID: "prj_123",
+      },
+      fetcher,
+      now,
+    });
+    t.mock.timers.tick(8_000);
+
+    assert.deepEqual(await resultPromise, { status: "unavailable" });
+    assert.equal(abortedRequests, 6);
+  } finally {
+    t.mock.timers.reset();
+  }
+});
