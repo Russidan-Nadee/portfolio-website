@@ -128,3 +128,15 @@ export function getLocalizedCertificateTitle(
     title.ja.trim()
   );
 }
+
+export function buildCertificateAssetPath(
+  slug: string,
+  kind: CertificateAssetKind
+): string {
+  if (!SAFE_SLUG_PATTERN.test(slug)) {
+    throw new Error(
+      "Slug must contain lowercase letters, numbers, and hyphens only"
+    );
+  }
+  return `certificates/${slug}/${kind === "pdf" ? "certificate.pdf" : "preview"}`;
+}

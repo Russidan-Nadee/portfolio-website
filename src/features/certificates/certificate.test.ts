@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
+  buildCertificateAssetPath,
   getLocalizedCertificateTitle,
   parseCertificateFormData,
   validateCertificateAsset,
@@ -137,5 +138,23 @@ test("uses English then Thai then Japanese as title fallback", () => {
   assert.equal(
     getLocalizedCertificateTitle({ th: "", en: "", ja: "日本語" }, "en"),
     "日本語"
+  );
+});
+
+test("builds fixed certificate asset paths from a safe slug", () => {
+  assert.equal(
+    buildCertificateAssetPath("growth-mindset", "pdf"),
+    "certificates/growth-mindset/certificate.pdf"
+  );
+  assert.equal(
+    buildCertificateAssetPath("growth-mindset", "preview"),
+    "certificates/growth-mindset/preview"
+  );
+});
+
+test("rejects unsafe slugs before building an asset path", () => {
+  assert.throws(
+    () => buildCertificateAssetPath("../secret", "pdf"),
+    /lowercase letters, numbers, and hyphens/
   );
 });
