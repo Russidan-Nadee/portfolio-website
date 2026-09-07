@@ -30,30 +30,54 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Russidan Nadee",
     description: "Personal portfolio website",
-    images: ['/og-image.png'],
-    type: 'website',
+    images: ["/og-image.png"],
+    type: "website",
   },
   twitter: {
-    card: 'summary_large_image',
+    card: "summary_large_image",
     title: "Russidan Nadee",
     description: "Personal portfolio website",
-    images: ['/twitter-image.png'],
+    images: ["/twitter-image.png"],
   },
   icons: {
     icon: [
-      { url: '/icons/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
-      { url: '/icons/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
-      { url: '/icons/favicon-48x48.png', sizes: '48x48', type: 'image/png' },
+      { url: "/icons/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/icons/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/icons/favicon-48x48.png", sizes: "48x48", type: "image/png" },
     ],
     apple: [
-      { url: '/icons/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
-      { url: '/icons/apple-touch-icon-152x152.png', sizes: '152x152', type: 'image/png' },
-      { url: '/icons/apple-touch-icon-144x144.png', sizes: '144x144', type: 'image/png' },
-      { url: '/icons/apple-touch-icon-120x120.png', sizes: '120x120', type: 'image/png' },
+      {
+        url: "/icons/apple-touch-icon.png",
+        sizes: "180x180",
+        type: "image/png",
+      },
+      {
+        url: "/icons/apple-touch-icon-152x152.png",
+        sizes: "152x152",
+        type: "image/png",
+      },
+      {
+        url: "/icons/apple-touch-icon-144x144.png",
+        sizes: "144x144",
+        type: "image/png",
+      },
+      {
+        url: "/icons/apple-touch-icon-120x120.png",
+        sizes: "120x120",
+        type: "image/png",
+      },
     ],
     other: [
-      { url: '/icons/android-chrome-192x192.png', sizes: '192x192', type: 'image/png' },
-      { url: '/icons/android-chrome-512x512.png', sizes: '512x512', type: 'image/png' },
+      {
+        url: "/icons/android-chrome-192x192.png",
+        sizes: "192x192",
+        type: "image/png",
+      },
+      {
+        url: "/icons/android-chrome-512x512.png",
+        sizes: "512x512",
+        type: "image/png",
+      },
     ],
   },
 };
@@ -78,9 +102,7 @@ export default function RootLayout({
         <ThemeProvider>
           <div className="min-h-screen flex flex-col overflow-x-hidden">
             <Header />
-            <main className="flex-1">
-              {children}
-            </main>
+            <main className="flex-1">{children}</main>
             <Footer />
             <CustomCursor />
           </div>
