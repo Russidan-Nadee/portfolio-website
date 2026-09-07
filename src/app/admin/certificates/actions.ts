@@ -71,18 +71,19 @@ export async function createCertificate(formData: FormData) {
   });
 
   try {
-    await prisma.certificate.create({
+    const certificate = await prisma.certificate.create({
       data: {
         ...input,
         title: input.title as unknown as Prisma.InputJsonValue,
         order: (last?.order ?? -1) + 1,
       },
     });
+    revalidateCertificatePaths();
+    return certificate.id;
   } catch (error) {
     await removeCertificateAssets(input.slug);
     throw error;
   }
-  revalidateCertificatePaths();
 }
 
 export async function updateCertificate(id: string, formData: FormData) {
