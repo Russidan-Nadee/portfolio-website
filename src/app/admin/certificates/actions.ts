@@ -5,6 +5,7 @@ import type { Prisma } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
 import {
+  assertCertificateSlugAvailable,
   buildCertificateAssetPath,
   parseCertificateFormData,
   validateCertificateAsset,
@@ -12,10 +13,34 @@ import {
 import type { CertificateAssetKind } from "@/features/certificates/types";
 
 const CERTIFICATE_BUCKET = "certificate-assets";
+const PDF_SIZE_LIMIT = 15 * 1024 * 1024;
 
 function revalidateCertificatePaths() {
   revalidatePath("/certificate");
   revalidatePath("/admin/certificates");
+}
+
+async function ensureCertificateBucket() {
+  const supabase = createSupabaseServerClient();
+  const { data: buckets, error: listError } =
+    await supabase.storage.listBuckets();
+  if (listError)
+    throw new Error(`Unable to list buckets: ${listError.message}`);
+
+  const existing = buckets.find((bucket) => bucket.name === CERTIFICATE_BUCKET);
+  if (!existing) {
+    const { error } = await supabase.storage.createBucket(CERTIFICATE_BUCKET, {
+      public: true,
+      fileSizeLimit: PDF_SIZE_LIMIT,
+      allowedMimeTypes: [
+        "application/pdf",
+        "image/png",
+        "image/jpeg",
+        "image/webp",
+      ],
+    });
+    if (error) throw new Error(`Unable to create bucket: ${error.message}`);
+  }
 }
 
 async function uploadCertificateAsset(
@@ -24,12 +49,23 @@ async function uploadCertificateAsset(
 ) {
   const file = formData.get("file");
   const slugValue = formData.get("slug");
+  const certificateIdValue = formData.get("certificateId");
   if (!(file instanceof File)) throw new Error("No file provided");
   if (typeof slugValue !== "string") throw new Error("Slug is required");
 
   const slug = slugValue.trim();
+  const certificateId =
+    typeof certificateIdValue === "string" && certificateIdValue
+      ? certificateIdValue
+      : null;
+  const existing = await prisma.certificate.findUnique({
+    where: { slug },
+    select: { id: true },
+  });
+  assertCertificateSlugAvailable(existing?.id ?? null, certificateId);
   validateCertificateAsset(file, kind);
   const path = buildCertificateAssetPath(slug, kind);
+  await ensureCertificateBucket();
   const supabase = createSupabaseServerClient();
   const { error } = await supabase.storage
     .from(CERTIFICATE_BUCKET)
@@ -66,24 +102,24 @@ export async function uploadCertificatePreview(formData: FormData) {
 
 export async function createCertificate(formData: FormData) {
   const input = parseCertificateFormData(formData);
+  const existing = await prisma.certificate.findUnique({
+    where: { slug: input.slug },
+    select: { id: true },
+  });
+  assertCertificateSlugAvailable(existing?.id ?? null, null);
   const last = await prisma.certificate.findFirst({
     orderBy: { order: "desc" },
   });
 
-  try {
-    const certificate = await prisma.certificate.create({
-      data: {
-        ...input,
-        title: input.title as unknown as Prisma.InputJsonValue,
-        order: (last?.order ?? -1) + 1,
-      },
-    });
-    revalidateCertificatePaths();
-    return certificate.id;
-  } catch (error) {
-    await removeCertificateAssets(input.slug);
-    throw error;
-  }
+  const certificate = await prisma.certificate.create({
+    data: {
+      ...input,
+      title: input.title as unknown as Prisma.InputJsonValue,
+      order: (last?.order ?? -1) + 1,
+    },
+  });
+  revalidateCertificatePaths();
+  return certificate.id;
 }
 
 export async function updateCertificate(id: string, formData: FormData) {
@@ -92,6 +128,11 @@ export async function updateCertificate(id: string, formData: FormData) {
     where: { id },
     select: { slug: true },
   });
+  const slugOwner = await prisma.certificate.findUnique({
+    where: { slug: input.slug },
+    select: { id: true },
+  });
+  assertCertificateSlugAvailable(slugOwner?.id ?? null, id);
 
   await prisma.certificate.update({
     where: { id },

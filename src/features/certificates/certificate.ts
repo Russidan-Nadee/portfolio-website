@@ -155,3 +155,12 @@ export function formatCertificateDate(
     timeZone: "UTC",
   }).format(date);
 }
+
+export function assertCertificateSlugAvailable(
+  existingRecordId: string | null,
+  currentRecordId: string | null
+): void {
+  if (existingRecordId && existingRecordId !== currentRecordId) {
+    throw new Error("Slug is already in use by another certificate");
+  }
+}

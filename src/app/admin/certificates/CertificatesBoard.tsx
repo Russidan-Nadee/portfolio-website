@@ -121,6 +121,7 @@ export default function CertificatesBoard({
     try {
       const formData = new FormData();
       formData.set("slug", editing.slug);
+      formData.set("certificateId", editing.id);
       formData.set("file", file);
       const url =
         kind === "pdf"

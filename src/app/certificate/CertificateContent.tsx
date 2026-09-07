@@ -59,7 +59,7 @@ export default function CertificateContent({
               <MdWorkspacePremium size={34} aria-hidden="true" />
             </div>
             <p className="mb-3 text-xs font-bold uppercase tracking-[0.3em] text-violet-600">
-              Verified learning
+              {translations.eyebrow}
             </p>
             <h1 className="text-4xl font-black tracking-tight md:text-6xl">
               {translations.title}

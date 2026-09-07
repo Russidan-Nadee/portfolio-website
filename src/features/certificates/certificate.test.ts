@@ -1,7 +1,8 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import { test } from "vitest";
 import {
   buildCertificateAssetPath,
+  assertCertificateSlugAvailable,
   formatCertificateDate,
   getLocalizedCertificateTitle,
   parseCertificateFormData,
@@ -169,4 +170,22 @@ test("formats the same UTC issue date for each supported locale", () => {
 
 test("returns an empty label when no issue date exists", () => {
   assert.equal(formatCertificateDate(null, "en"), "");
+});
+
+test("rejects a slug owned by a different certificate before upload", () => {
+  assert.throws(
+    () => assertCertificateSlugAvailable("existing-id", null),
+    /Slug is already in use/
+  );
+  assert.throws(
+    () => assertCertificateSlugAvailable("existing-id", "editing-id"),
+    /Slug is already in use/
+  );
+});
+
+test("allows an existing certificate to replace its own assets", () => {
+  assert.doesNotThrow(() =>
+    assertCertificateSlugAvailable("existing-id", "existing-id")
+  );
+  assert.doesNotThrow(() => assertCertificateSlugAvailable(null, null));
 });

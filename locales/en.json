@@ -211,6 +211,7 @@
   },
   "certificate": {
     "title": "Certificates",
+    "eyebrow": "Verified learning",
     "subtitle": "A collection of verified learning milestones, technical training, and professional growth.",
     "empty": "Certificates are being prepared. Please check back soon.",
     "unavailable": "Certificates are temporarily unavailable.",
