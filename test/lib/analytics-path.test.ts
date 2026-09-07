@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "vitest";
-import { shouldTrackAnalyticsUrl } from "./analytics-path";
+import { shouldTrackAnalyticsUrl } from "../../src/lib/analytics-path";
 
 test("tracks public routes", () => {
   for (const url of ["/", "/portfolio/project", "https://example.com/about"]) {

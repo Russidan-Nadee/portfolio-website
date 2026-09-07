@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test, vi } from "vitest";
-import { loadVercelAnalytics } from "./vercel-analytics";
+import { loadVercelAnalytics } from "../../src/lib/vercel-analytics";
 
 const now = new Date("2026-09-07T12:00:00.000Z");
 

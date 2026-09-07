@@ -7,7 +7,7 @@ import {
   getLocalizedCertificateTitle,
   parseCertificateFormData,
   validateCertificateAsset,
-} from "./certificate";
+} from "../../../src/features/certificates/certificate";
 
 const validFields: Record<string, string> = {
   slug: "growth-mindset",
