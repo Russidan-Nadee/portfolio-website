@@ -183,6 +183,7 @@ function TrendCard({ data }: Readonly<{ data: AnalyticsDashboardData }>) {
           viewBox={`0 0 ${CHART_WIDTH} 220`}
           role="img"
           aria-label="Daily traffic trend chart"
+          aria-describedby="traffic-trend-data"
         >
           <title>Daily traffic trend</title>
           <desc>
@@ -219,6 +220,28 @@ function TrendCard({ data }: Readonly<{ data: AnalyticsDashboardData }>) {
           />
         </svg>
       </div>
+
+      <table id="traffic-trend-data" className="sr-only">
+        <caption>Daily traffic trend data</caption>
+        <thead>
+          <tr>
+            <th scope="col">Date</th>
+            <th scope="col">Visitors</th>
+            <th scope="col">Page views</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.trend.map((point, index) => (
+            <tr key={`${point.timestamp}-${index}`}>
+              <th scope="row">
+                <time dateTime={point.timestamp}>{point.timestamp}</time>
+              </th>
+              <td>{formatMetric(point.visitors)}</td>
+              <td>{formatMetric(point.pageviews)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
 
       {data.trend.length === 0 && (
         <p

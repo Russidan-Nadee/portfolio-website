@@ -1,3 +1,5 @@
+import "server-only";
+
 const VERCEL_ANALYTICS_API = "https://api.vercel.com/v1/query/web-analytics";
 const REQUEST_TIMEOUT_MS = 8_000;
 const DAY_MS = 24 * 60 * 60 * 1000;

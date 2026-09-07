@@ -87,4 +87,48 @@ describe("AnalyticsDashboard server rendering", () => {
     expect(html).toMatch(/Desktop/);
     expect(html).toMatch(/2026-09-07T12:00:00\.000Z/);
   });
+
+  it("exposes every trend point to screen readers while keeping chart points finite", () => {
+    const data: AnalyticsDashboardData = {
+      ...emptyData,
+      trend: [
+        {
+          timestamp: "2026-09-06T00:00:00.000Z",
+          pageviews: 101,
+          visitors: 81,
+        },
+        {
+          timestamp: "2026-09-07T00:00:00.000Z",
+          pageviews: 203,
+          visitors: 152,
+        },
+      ],
+    };
+
+    const html = renderResult({ status: "ready", data });
+    const table = html.match(
+      /<table[^>]*id="traffic-trend-data"[\s\S]*?<\/table>/
+    )?.[0];
+
+    expect(html).toMatch(/aria-describedby="traffic-trend-data"/);
+    expect(table).toBeDefined();
+    expect(table).toMatch(/2026-09-06T00:00:00\.000Z/);
+    expect(table).toMatch(/2026-09-07T00:00:00\.000Z/);
+    expect(table).toMatch(/>81</);
+    expect(table).toMatch(/>152</);
+    expect(table).toMatch(/>101</);
+    expect(table).toMatch(/>203</);
+
+    const points = [...html.matchAll(/<polyline[^>]*points="([^"]*)"/g)].map(
+      (match) => match[1]
+    );
+    expect(points).toHaveLength(2);
+    for (const series of points) {
+      for (const coordinate of series.split(" ")) {
+        const [x, y] = coordinate.split(",").map(Number);
+        expect(Number.isFinite(x)).toBe(true);
+        expect(Number.isFinite(y)).toBe(true);
+      }
+    }
+  });
 });

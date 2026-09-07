@@ -1,8 +1,19 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { test, vi } from "vitest";
 import { loadVercelAnalytics } from "../../src/lib/vercel-analytics";
 
 const now = new Date("2026-09-07T12:00:00.000Z");
+
+test("keeps the analytics credential boundary in the server-only module", () => {
+  const source = readFileSync(
+    resolve(process.cwd(), "src/lib/vercel-analytics.ts"),
+    "utf8"
+  );
+
+  assert.match(source, /^import "server-only";/);
+});
 
 function responseFor(input: RequestInfo | URL): Response {
   const url = new URL(String(input));
