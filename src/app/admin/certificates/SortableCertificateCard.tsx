@@ -47,12 +47,21 @@ export default function SortableCertificateCard({
         className="relative aspect-[4/3]"
         style={{ backgroundColor: "var(--muted)" }}
       >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={certificate.imageUrl}
-          alt={certificate.title.en}
-          className="h-full w-full object-cover"
-        />
+        {certificate.imageUrl ? (
+          /* eslint-disable-next-line @next/next/no-img-element */
+          <img
+            src={certificate.imageUrl}
+            alt={certificate.title.en}
+            className="h-full w-full object-cover"
+          />
+        ) : (
+          <div
+            className="flex h-full items-center justify-center px-6 text-center text-sm"
+            style={{ color: "var(--muted-foreground)" }}
+          >
+            Upload a card preview to publish
+          </div>
+        )}
         <button
           type="button"
           {...attributes}
@@ -99,6 +108,7 @@ export default function SortableCertificateCard({
           <input
             type="checkbox"
             checked={certificate.active}
+            disabled={!certificate.imageUrl || !certificate.pdfUrl}
             onChange={(event) =>
               onToggleActive(certificate.id, event.target.checked)
             }
@@ -117,14 +127,16 @@ export default function SortableCertificateCard({
           >
             <MdEdit size={18} />
           </button>
-          <a
-            href={certificate.pdfUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={`Open ${certificate.title.en} PDF`}
-          >
-            <MdOpenInNew size={18} />
-          </a>
+          {certificate.pdfUrl && (
+            <a
+              href={certificate.pdfUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`Open ${certificate.title.en} PDF`}
+            >
+              <MdOpenInNew size={18} />
+            </a>
+          )}
           <button
             type="button"
             onClick={() => onDelete(certificate)}

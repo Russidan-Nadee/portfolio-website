@@ -1,0 +1,3 @@
+ALTER TABLE "certificates"
+  ALTER COLUMN "imageUrl" DROP NOT NULL,
+  ALTER COLUMN "pdfUrl" DROP NOT NULL;

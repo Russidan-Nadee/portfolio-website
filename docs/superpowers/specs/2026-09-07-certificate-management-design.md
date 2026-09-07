@@ -66,8 +66,8 @@ Add a `Certificate` model mapped to `certificates`:
 | `issuer`        | `String`                      | Official issuer name as printed                |
 | `issuedAt`      | `DateTime?`                   | Exact issue date when printed; otherwise null  |
 | `category`      | `String`                      | Controlled key used for the card badge         |
-| `imageUrl`      | `String`                      | Public preview image URL                       |
-| `pdfUrl`        | `String`                      | Public original PDF URL                        |
+| `imageUrl`      | `String?`                     | Public preview image URL; null while drafting  |
+| `pdfUrl`        | `String?`                     | Public original PDF URL; null while drafting   |
 | `credentialUrl` | `String?`                     | Optional external verification page            |
 | `active`        | `Boolean @default(true)`      | Public visibility flag                         |
 | `createdAt`     | `DateTime @default(now())`    | Audit timestamp                                |
@@ -141,7 +141,7 @@ The board provides:
 - delete confirmation;
 - card preview that resembles the public result.
 
-A new record cannot be saved without slug, three title values, issuer, category, PDF URL, and image URL. Issue date and credential URL are optional. Slugs are normalized and checked for uniqueness.
+A draft can be saved with slug, three title values, issuer, and category before its assets are uploaded. Issue date and credential URL are optional. Publishing remains unavailable until both the PDF URL and image URL exist. Slugs are normalized and checked for uniqueness.
 
 ## Server Actions and Consistency
 

@@ -5,6 +5,7 @@ import type { Prisma } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
 import {
+  assertCertificateCanActivate,
   assertCertificateSlugAvailable,
   buildCertificateAssetPath,
   parseCertificateFormData,
@@ -148,6 +149,13 @@ export async function updateCertificate(id: string, formData: FormData) {
 }
 
 export async function toggleCertificateActive(id: string, active: boolean) {
+  if (active) {
+    const certificate = await prisma.certificate.findUniqueOrThrow({
+      where: { id },
+      select: { imageUrl: true, pdfUrl: true },
+    });
+    assertCertificateCanActivate(certificate.imageUrl, certificate.pdfUrl);
+  }
   await prisma.certificate.update({ where: { id }, data: { active } });
   revalidateCertificatePaths();
 }

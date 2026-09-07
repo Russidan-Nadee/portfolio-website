@@ -45,7 +45,7 @@ const blankCertificate = (): CertificateData => ({
   imageUrl: "",
   pdfUrl: "",
   credentialUrl: null,
-  active: true,
+  active: false,
 });
 
 export default function CertificatesBoard({
@@ -151,8 +151,8 @@ export default function CertificatesBoard({
     formData.set("issuer", editing.issuer);
     formData.set("issuedAt", editing.issuedAt ?? "");
     formData.set("category", editing.category);
-    formData.set("imageUrl", editing.imageUrl);
-    formData.set("pdfUrl", editing.pdfUrl);
+    formData.set("imageUrl", editing.imageUrl ?? "");
+    formData.set("pdfUrl", editing.pdfUrl ?? "");
     formData.set("credentialUrl", editing.credentialUrl ?? "");
     if (editing.active) formData.set("active", "on");
 
@@ -196,8 +196,7 @@ export default function CertificatesBoard({
     editing.title.en &&
     editing.title.ja &&
     editing.issuer &&
-    editing.imageUrl &&
-    editing.pdfUrl &&
+    (!editing.active || (editing.imageUrl && editing.pdfUrl)) &&
     !uploading
   );
 
@@ -454,6 +453,7 @@ export default function CertificatesBoard({
                 <input
                   type="checkbox"
                   checked={editing.active}
+                  disabled={!editing.imageUrl || !editing.pdfUrl}
                   onChange={(e) =>
                     setEditing({ ...editing, active: e.target.checked })
                   }
@@ -528,7 +528,7 @@ function AssetField({
   children,
 }: Readonly<{
   label: string;
-  value: string;
+  value: string | null;
   uploading: boolean;
   icon: React.ReactNode;
   onChoose: () => void;
@@ -542,7 +542,7 @@ function AssetField({
       <p className="text-sm font-medium">{label}</p>
       <p
         className="mt-1 truncate text-xs"
-        title={value}
+        title={value ?? undefined}
         style={{ color: "var(--muted-foreground)" }}
       >
         {value || "No file uploaded"}

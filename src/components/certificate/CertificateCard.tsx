@@ -5,7 +5,11 @@ import {
   formatCertificateDate,
   getLocalizedCertificateTitle,
 } from "@/features/certificates/certificate";
-import type { CertificateData, Locale } from "@/features/certificates/types";
+import type {
+  CertificateData,
+  Locale,
+  PublishedCertificateData,
+} from "@/features/certificates/types";
 
 const accents: Record<CertificateData["category"], string> = {
   development: "#6366f1",
@@ -27,7 +31,7 @@ export default function CertificateCard({
   locale,
   translations,
 }: Readonly<{
-  certificate: CertificateData;
+  certificate: PublishedCertificateData;
   locale: Locale;
   translations: CertificateCardTranslations;
 }>) {

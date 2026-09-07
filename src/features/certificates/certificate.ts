@@ -28,6 +28,10 @@ function requirePublicUrl(value: string, fieldName: string): string {
   }
 }
 
+function optionalPublicUrl(value: string, fieldName: string): string | null {
+  return value ? requirePublicUrl(value, fieldName) : null;
+}
+
 function parseIssuedAt(value: string): Date | null {
   if (!value) return null;
   if (!DATE_PATTERN.test(value)) {
@@ -73,12 +77,14 @@ export function parseCertificateFormData(formData: FormData): CertificateInput {
     throw new Error("Select a valid certificate category");
   }
 
-  const imageUrl = requirePublicUrl(
+  const imageUrl = optionalPublicUrl(
     getString(formData, "imageUrl"),
     "Preview URL"
   );
-  const pdfUrl = requirePublicUrl(getString(formData, "pdfUrl"), "PDF URL");
+  const pdfUrl = optionalPublicUrl(getString(formData, "pdfUrl"), "PDF URL");
   const credentialValue = getString(formData, "credentialUrl");
+  const active = formData.get("active") === "on";
+  if (active) assertCertificateCanActivate(imageUrl, pdfUrl);
 
   return {
     slug,
@@ -91,8 +97,17 @@ export function parseCertificateFormData(formData: FormData): CertificateInput {
     credentialUrl: credentialValue
       ? requirePublicUrl(credentialValue, "Credential URL")
       : null,
-    active: formData.get("active") === "on",
+    active,
   };
+}
+
+export function assertCertificateCanActivate(
+  imageUrl: string | null,
+  pdfUrl: string | null
+): void {
+  if (!imageUrl || !pdfUrl) {
+    throw new Error("PDF and preview image are required before publishing");
+  }
 }
 
 export function validateCertificateAsset(

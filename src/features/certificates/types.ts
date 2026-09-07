@@ -21,10 +21,16 @@ export interface CertificateInput {
   issuer: string;
   issuedAt: Date | null;
   category: CertificateCategory;
-  imageUrl: string;
-  pdfUrl: string;
+  imageUrl: string | null;
+  pdfUrl: string | null;
   credentialUrl: string | null;
   active: boolean;
+}
+
+export interface PublishedCertificateData extends CertificateData {
+  imageUrl: string;
+  pdfUrl: string;
+  active: true;
 }
 
 export interface CertificateData extends Omit<CertificateInput, "issuedAt"> {

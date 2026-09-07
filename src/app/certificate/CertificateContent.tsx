@@ -4,7 +4,10 @@ import { useEffect, useState } from "react";
 import { MdWorkspacePremium } from "react-icons/md";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 import CertificateCard from "@/components/certificate/CertificateCard";
-import type { CertificateData, Locale } from "@/features/certificates/types";
+import type {
+  Locale,
+  PublishedCertificateData,
+} from "@/features/certificates/types";
 import en from "../../../locales/en.json";
 import th from "../../../locales/th.json";
 import ja from "../../../locales/ja.json";
@@ -15,7 +18,7 @@ export default function CertificateContent({
   certificates,
   unavailable = false,
 }: Readonly<{
-  certificates: CertificateData[];
+  certificates: PublishedCertificateData[];
   unavailable?: boolean;
 }>) {
   const [locale, setLocale] = useState<Locale>("en");

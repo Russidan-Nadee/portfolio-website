@@ -85,19 +85,19 @@ model Skill {
 }
 
 model Certificate {
-  id            String   @id @default(cuid())
-  slug          String   @unique
+  id            String    @id @default(cuid())
+  slug          String    @unique
   order         Int
   title         Json // { th, en, ja }
   issuer        String
   issuedAt      DateTime?
   category      String
-  imageUrl      String
-  pdfUrl        String
+  imageUrl      String?
+  pdfUrl        String?
   credentialUrl String?
-  active        Boolean  @default(true)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  active        Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 
   @@index([active, order])
   @@map("certificates")

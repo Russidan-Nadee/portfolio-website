@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { test } from "vitest";
 import {
   buildCertificateAssetPath,
+  assertCertificateCanActivate,
   assertCertificateSlugAvailable,
   formatCertificateDate,
   getLocalizedCertificateTitle,
@@ -56,6 +57,40 @@ test("parses and trims a complete certificate form", () => {
     credentialUrl: "https://example.com/verify",
     active: true,
   });
+});
+
+test("accepts an inactive draft without uploaded assets", () => {
+  const parsed = parseCertificateFormData(
+    certificateForm({ imageUrl: "", pdfUrl: "", active: "" })
+  );
+
+  assert.equal(parsed.imageUrl, null);
+  assert.equal(parsed.pdfUrl, null);
+  assert.equal(parsed.active, false);
+});
+
+test("rejects publishing a certificate until both assets exist", () => {
+  assert.throws(
+    () =>
+      parseCertificateFormData(
+        certificateForm({ imageUrl: "", pdfUrl: "", active: "on" })
+      ),
+    /PDF and preview image are required/
+  );
+  assert.throws(
+    () =>
+      assertCertificateCanActivate("https://example.com/preview.webp", null),
+    /PDF and preview image are required/
+  );
+});
+
+test("allows publishing when both asset URLs exist", () => {
+  assert.doesNotThrow(() =>
+    assertCertificateCanActivate(
+      "https://example.com/preview.webp",
+      "https://example.com/certificate.pdf"
+    )
+  );
 });
 
 test("rejects a missing localized title", () => {
