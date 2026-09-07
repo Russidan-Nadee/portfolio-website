@@ -1,1 +1,4 @@
+set -e
+
 npm run typecheck
+npm test

@@ -4,13 +4,15 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "test": "tsx --test \"src/**/*.test.ts\" \"src/**/*.test.tsx\"",
+    "test": "vitest run",
     "build": "next build",
     "start": "next start",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "eslint . --max-warnings=0",
     "lint:fix": "eslint . --fix --max-warnings=0",
+    "test:coverage": "vitest run --coverage",
+    "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
     "build:static": "next build",
     "build:zip": "npm run build:static && zip -r portfolio-website.zip out/",
@@ -52,6 +54,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@vitest/coverage-v8": "^4.1.11",
     "eslint": "^9",
     "eslint-config-next": "^16.1.6",
     "husky": "^9.1.7",
@@ -59,6 +62,7 @@
     "prettier": "^3.9.6",
     "tailwindcss": "^4",
     "tsx": "^4.23.1",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^4.1.11"
   }
 }

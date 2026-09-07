@@ -1,5 +1,6 @@
 .next
 out
+coverage
 node_modules
 public
 package-lock.json

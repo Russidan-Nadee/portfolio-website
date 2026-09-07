@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import { test, vi } from "vitest";
 import { loadVercelAnalytics } from "./vercel-analytics";
 
 const now = new Date("2026-09-07T12:00:00.000Z");
@@ -320,8 +320,8 @@ test("returns unavailable for an invalid JSON response shape", async () => {
   assert.deepEqual(result, { status: "unavailable" });
 });
 
-test("returns unavailable when a request times out and honors its abort signal", async (t) => {
-  t.mock.timers.enable();
+test("returns unavailable when a request times out and honors its abort signal", async () => {
+  vi.useFakeTimers();
   let abortedRequests = 0;
 
   const fetcher = async (
@@ -353,11 +353,11 @@ test("returns unavailable when a request times out and honors its abort signal",
       fetcher,
       now,
     });
-    t.mock.timers.tick(8_000);
+    await vi.advanceTimersByTimeAsync(8_000);
 
     assert.deepEqual(await resultPromise, { status: "unavailable" });
     assert.equal(abortedRequests, 6);
   } finally {
-    t.mock.timers.reset();
+    vi.useRealTimers();
   }
 });
