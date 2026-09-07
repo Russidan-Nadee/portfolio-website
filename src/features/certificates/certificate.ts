@@ -140,3 +140,18 @@ export function buildCertificateAssetPath(
   }
   return `certificates/${slug}/${kind === "pdf" ? "certificate.pdf" : "preview"}`;
 }
+
+export function formatCertificateDate(
+  issuedAt: Date | string | null,
+  locale: Locale
+): string {
+  if (!issuedAt) return "";
+  const date = issuedAt instanceof Date ? issuedAt : new Date(issuedAt);
+  const localeName = { en: "en-US", th: "th-TH", ja: "ja-JP" }[locale];
+  return new Intl.DateTimeFormat(localeName, {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    timeZone: "UTC",
+  }).format(date);
+}

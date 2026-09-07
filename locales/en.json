@@ -1,368 +1,367 @@
 {
-   "header": {
-      "logo": "Russidan",
-      "nav": {
-         "home": "Home",
-         "about": "About",
-         "portfolio": "Projects",
-         "contact": "Contact"
-      }
-   },
-   "home": {
-      "intro": "My name is Russidan and I am a Developer",
-      "title": "Developer",
-      "subtitle": "cross-platform application",
-      "location": "based in Bangkok, Thailand.",
-      "buttons": {
-         "portfolio": "View Portfolio",
-         "contact": "Contact Me"
-      },
-      "projectsShowcase": {
-         "title": "Recommended Projects",
-         "projects": {
-            "assetManagement": {
-               "title": "Asset Management",
-               "tech": "Flutter, Node.js, Express, Prisma, MySQL"
-            },
-            "calculator": {
-               "title": "Calculator App",
-               "tech": "Python, Tkinter"
-            },
-            "portfolio": {
-               "title": "Portfolio Website",
-               "tech": "Next.js, TypeScript, Tailwind CSS"
-            },
-            "moneyTracker": {
-               "title": "Money Tracker App",
-               "tech": "Next.js, Prisma, Supabase"
-            }
-         }
-      },
-      "technologies": {
-         "title": "Technologies I Work With",
-         "subtitle": "Modern tools for modern solutions"
-      },
-      "cta": {
-         "title": "Let’s build something great together.",
-         "subtitle": "Looking for a passionate developer? I'm ready to collaborate on your next idea.",
-         "button": "Contact Me"
-      }
-   },
-   "about": {
-      "title": "About Me",
-      "paragraph1": "I'm a passionate developer with a focus on creating innovative solutions that bridge technology and user experience.",
-      "paragraph2": "My expertise includes cross-platform development, full-stack web applications, and mobile technologies.",
-      "paragraph3": "I'm always eager to learn new technologies and collaborate on projects that make a meaningful impact.",
-      "name": "Russidan Nadee",
-      "intro": "I'm a",
-      "role": "Developer",
-      "description": "A passionate fresh graduate from Silpakorn University with expertise in cross-platform development. I specialize in creating efficient, user-friendly applications using modern technologies like Flutter, TypeScript, and Node.js. Always eager to learn and grow, I'm ready to contribute to innovative projects and bring creative solutions to life.",
-      "skills": {
-         "title": "Technical Skills & Expertise",
-         "subtitle": "Technologies and tools I work with",
-         "learning": "Currently expanding my knowledge in Docker and C# .NET for advanced system development"
-      },
-      "timeline": {
-         "title": "Experience & Background",
-         "tabs": {
-            "work": "Work Experience",
-            "education": "Education"
-         },
-         "work": [
-            {
-               "id": 5,
-               "period": "May 2026 - Present",
-               "title": "Full Stack Developer",
-               "company": "CloudCommerce",
-               "description": "Maintaining legacy systems and migrating existing functionality into individual Microservice services. Focused on service-level development while collaborating with senior developers who oversee the overall system architecture.",
-               "skills": [
-                  "TypeScript",
-                  "Bun",
-                  "Elysia",
-                  "Microservices"
-               ],
-               "icon": "FaLaptopCode",
-               "isCurrent": true
-            },
-            {
-               "id": 1,
-               "period": "Apr 2025 - Oct 2025",
-               "title": "Developer Intern",
-               "company": "Thai Parkerizing",
-               "description": "Developed Cross-platform Asset Management System with RFID integration using Flutter, Node.js, Express, and MySQL. Created full-stack solution including mobile app, web application, and Windows desktop app.",
-               "skills": [
-                  "Flutter",
-                  "Node.js",
-                  "Express",
-                  "MySQL",
-                  "RFID",
-                  "Cross-platform"
-               ],
-               "icon": "FaLaptopCode",
-               "isCurrent": false
-            },
-            {
-               "id": 2,
-               "period": "Jul 2024 - Mar 2025",
-               "title": "Beverage Staff",
-               "company": "Fly Club",
-               "description": "Delivered food and beverages, ensuring exceptional customer satisfaction. Managed daily operations and maintained a clean, efficient service area.",
-               "skills": [
-                  "Customer Service",
-                  "Operations Management",
-                  "Team Work"
-               ],
-               "icon": "MdWork",
-               "isCurrent": false
-            },
-            {
-               "id": 3,
-               "period": "Apr 2024 - Jun 2024",
-               "title": "Food and Beverage Staff",
-               "company": "Tonson Ar-Ee Restaurant",
-               "description": "Provided friendly service and assisted in food preparation. Ensured cleanliness in the kitchen and dining areas, meeting health standards.",
-               "skills": [
-                  "Food Service",
-                  "Kitchen Operations",
-                  "Health Standards"
-               ],
-               "icon": "MdRestaurant",
-               "isCurrent": false
-            },
-            {
-               "id": 4,
-               "period": "Apr 2022 - Jun 2022",
-               "title": "Cook",
-               "company": "KFC",
-               "description": "Prepared food according to company standards. Monitored inventory to ensure sufficient stock levels.",
-               "skills": [
-                  "Food Preparation",
-                  "Inventory Management",
-                  "Quality Control"
-               ],
-               "icon": "MdFastfood",
-               "isCurrent": false
-            }
-         ],
-         "education": [
-            {
-               "id": 1,
-               "period": "2022 - 2025",
-               "title": "Bachelor's Degree",
-               "company": "Silpakorn University",
-               "description": "Electronic and Computer Systems - Comprehensive study of computer systems, electronics, software development, and system architecture. Expected graduation: March 2025.",
-               "skills": [
-                  "Electronics",
-                  "Computer Systems",
-                  "Software Development",
-                  "System Architecture"
-               ],
-               "icon": "FaGraduationCap",
-               "isCurrent": false
-            },
-            {
-               "id": 2,
-               "period": "2019 - 2021",
-               "title": "High School - Science-Math Program",
-               "company": "Khlong Yang Pracha Nusan School",
-               "description": "Completed high school education with focus on Science and Mathematics program, building strong foundation in mathematical thinking and scientific principles essential for computer science studies.",
-               "skills": [
-                  "Mathematics",
-                  "Physics",
-                  "Chemistry",
-                  "Logical Thinking"
-               ],
-               "icon": "MdSchool",
-               "isCurrent": false
-            }
-         ]
-      },
-      "cta": {
-         "title": "Let's Connect & Collaborate",
-         "description": "Interested in working together or learning more about my projects? I'd love to hear from you!",
-         "contact": "Get In Touch",
-         "projects": "View Projects"
-      },
-      "experience": {
-         "title": "Experience & Education Journey"
-      },
-      "contact": {
-         "title": "Ready to Work Together?",
-         "description": "I'm actively seeking opportunities to apply my skills and grow as a developer. Let's discuss how I can contribute to your next project!",
-         "button": "Contact Me"
-      }
-   },
-   "portfolio": {
-      "title": "Portfolio",
-      "subtitle": "Explore my latest projects and technical achievements",
+  "header": {
+    "logo": "Russidan",
+    "nav": {
+      "home": "Home",
+      "about": "About",
+      "portfolio": "Projects",
+      "certificate": "Certificates",
+      "contact": "Contact"
+    }
+  },
+  "home": {
+    "intro": "My name is Russidan and I am a Developer",
+    "title": "Developer",
+    "subtitle": "cross-platform application",
+    "location": "based in Bangkok, Thailand.",
+    "buttons": {
+      "portfolio": "View Portfolio",
+      "contact": "Contact Me"
+    },
+    "projectsShowcase": {
+      "title": "Recommended Projects",
       "projects": {
-         "kinraiD": {
-            "title": "Kinrai-D",
-            "tech": "Flutter, Nest.js, PostgreSQL, Supabase"
-         },
-         "investfam": {
-            "title": "InvestFam",
-            "tech": "Next.js, TypeScript, Tailwind CSS"
-         },
-         "assetManagement": {
-            "title": "Asset Management",
-            "tech": "Flutter, Node.js, Express, MySQL"
-         },
-         "calculator": {
-            "title": "Calculator App",
-            "tech": "Python, Tkinter"
-         },
-         "portfolio": {
-            "title": "Portfolio Website",
-            "tech": "Next.js, TypeScript, Tailwind CSS"
-         },
-         "assetDashboard": {
-            "title": "TP RFID",
-            "tech": "Flutter, Node.js, Express, Prisma, MySQL"
-         },
-         "moneyTracker": {
-            "title": "Money Tracker App",
-            "tech": "Next.js, Prisma, Supabase"
-         }
+        "assetManagement": {
+          "title": "Asset Management",
+          "tech": "Flutter, Node.js, Express, Prisma, MySQL"
+        },
+        "calculator": {
+          "title": "Calculator App",
+          "tech": "Python, Tkinter"
+        },
+        "portfolio": {
+          "title": "Portfolio Website",
+          "tech": "Next.js, TypeScript, Tailwind CSS"
+        },
+        "moneyTracker": {
+          "title": "Money Tracker App",
+          "tech": "Next.js, Prisma, Supabase"
+        }
       }
-   },
-   "contact": {
-      "title": "Get in Touch",
-      "subtitle": "Let's connect and discuss opportunities",
-      "channels": {
-         "email": {
-            "title": "Email",
-            "action": "Send Message"
-         },
-         "phone": {
-            "title": "Phone",
-            "action": "Call Now"
-         },
-         "facebook": {
-            "title": "Facebook",
-            "action": "Visit Profile"
-         },
-         "instagram": {
-            "title": "Instagram",
-            "action": "Follow Me"
-         },
-         "linkedin": {
-            "title": "LinkedIn",
-            "action": "Connect"
-         },
-         "github": {
-            "title": "GitHub",
-            "action": "View Code"
-         }
+    },
+    "technologies": {
+      "title": "Technologies I Work With",
+      "subtitle": "Modern tools for modern solutions"
+    },
+    "cta": {
+      "title": "Let’s build something great together.",
+      "subtitle": "Looking for a passionate developer? I'm ready to collaborate on your next idea.",
+      "button": "Contact Me"
+    }
+  },
+  "about": {
+    "title": "About Me",
+    "paragraph1": "I'm a passionate developer with a focus on creating innovative solutions that bridge technology and user experience.",
+    "paragraph2": "My expertise includes cross-platform development, full-stack web applications, and mobile technologies.",
+    "paragraph3": "I'm always eager to learn new technologies and collaborate on projects that make a meaningful impact.",
+    "name": "Russidan Nadee",
+    "intro": "I'm a",
+    "role": "Developer",
+    "description": "A passionate fresh graduate from Silpakorn University with expertise in cross-platform development. I specialize in creating efficient, user-friendly applications using modern technologies like Flutter, TypeScript, and Node.js. Always eager to learn and grow, I'm ready to contribute to innovative projects and bring creative solutions to life.",
+    "skills": {
+      "title": "Technical Skills & Expertise",
+      "subtitle": "Technologies and tools I work with",
+      "learning": "Currently expanding my knowledge in Docker and C# .NET for advanced system development"
+    },
+    "timeline": {
+      "title": "Experience & Background",
+      "tabs": {
+        "work": "Work Experience",
+        "education": "Education"
+      },
+      "work": [
+        {
+          "id": 5,
+          "period": "May 2026 - Present",
+          "title": "Full Stack Developer",
+          "company": "CloudCommerce",
+          "description": "Maintaining legacy systems and migrating existing functionality into individual Microservice services. Focused on service-level development while collaborating with senior developers who oversee the overall system architecture.",
+          "skills": ["TypeScript", "Bun", "Elysia", "Microservices"],
+          "icon": "FaLaptopCode",
+          "isCurrent": true
+        },
+        {
+          "id": 1,
+          "period": "Apr 2025 - Oct 2025",
+          "title": "Developer Intern",
+          "company": "Thai Parkerizing",
+          "description": "Developed Cross-platform Asset Management System with RFID integration using Flutter, Node.js, Express, and MySQL. Created full-stack solution including mobile app, web application, and Windows desktop app.",
+          "skills": [
+            "Flutter",
+            "Node.js",
+            "Express",
+            "MySQL",
+            "RFID",
+            "Cross-platform"
+          ],
+          "icon": "FaLaptopCode",
+          "isCurrent": false
+        },
+        {
+          "id": 2,
+          "period": "Jul 2024 - Mar 2025",
+          "title": "Beverage Staff",
+          "company": "Fly Club",
+          "description": "Delivered food and beverages, ensuring exceptional customer satisfaction. Managed daily operations and maintained a clean, efficient service area.",
+          "skills": ["Customer Service", "Operations Management", "Team Work"],
+          "icon": "MdWork",
+          "isCurrent": false
+        },
+        {
+          "id": 3,
+          "period": "Apr 2024 - Jun 2024",
+          "title": "Food and Beverage Staff",
+          "company": "Tonson Ar-Ee Restaurant",
+          "description": "Provided friendly service and assisted in food preparation. Ensured cleanliness in the kitchen and dining areas, meeting health standards.",
+          "skills": ["Food Service", "Kitchen Operations", "Health Standards"],
+          "icon": "MdRestaurant",
+          "isCurrent": false
+        },
+        {
+          "id": 4,
+          "period": "Apr 2022 - Jun 2022",
+          "title": "Cook",
+          "company": "KFC",
+          "description": "Prepared food according to company standards. Monitored inventory to ensure sufficient stock levels.",
+          "skills": [
+            "Food Preparation",
+            "Inventory Management",
+            "Quality Control"
+          ],
+          "icon": "MdFastfood",
+          "isCurrent": false
+        }
+      ],
+      "education": [
+        {
+          "id": 1,
+          "period": "2022 - 2025",
+          "title": "Bachelor's Degree",
+          "company": "Silpakorn University",
+          "description": "Electronic and Computer Systems - Comprehensive study of computer systems, electronics, software development, and system architecture. Expected graduation: March 2025.",
+          "skills": [
+            "Electronics",
+            "Computer Systems",
+            "Software Development",
+            "System Architecture"
+          ],
+          "icon": "FaGraduationCap",
+          "isCurrent": false
+        },
+        {
+          "id": 2,
+          "period": "2019 - 2021",
+          "title": "High School - Science-Math Program",
+          "company": "Khlong Yang Pracha Nusan School",
+          "description": "Completed high school education with focus on Science and Mathematics program, building strong foundation in mathematical thinking and scientific principles essential for computer science studies.",
+          "skills": ["Mathematics", "Physics", "Chemistry", "Logical Thinking"],
+          "icon": "MdSchool",
+          "isCurrent": false
+        }
+      ]
+    },
+    "cta": {
+      "title": "Let's Connect & Collaborate",
+      "description": "Interested in working together or learning more about my projects? I'd love to hear from you!",
+      "contact": "Get In Touch",
+      "projects": "View Projects"
+    },
+    "experience": {
+      "title": "Experience & Education Journey"
+    },
+    "contact": {
+      "title": "Ready to Work Together?",
+      "description": "I'm actively seeking opportunities to apply my skills and grow as a developer. Let's discuss how I can contribute to your next project!",
+      "button": "Contact Me"
+    }
+  },
+  "portfolio": {
+    "title": "Portfolio",
+    "subtitle": "Explore my latest projects and technical achievements",
+    "projects": {
+      "kinraiD": {
+        "title": "Kinrai-D",
+        "tech": "Flutter, Nest.js, PostgreSQL, Supabase"
+      },
+      "investfam": {
+        "title": "InvestFam",
+        "tech": "Next.js, TypeScript, Tailwind CSS"
+      },
+      "assetManagement": {
+        "title": "Asset Management",
+        "tech": "Flutter, Node.js, Express, MySQL"
+      },
+      "calculator": {
+        "title": "Calculator App",
+        "tech": "Python, Tkinter"
+      },
+      "portfolio": {
+        "title": "Portfolio Website",
+        "tech": "Next.js, TypeScript, Tailwind CSS"
+      },
+      "assetDashboard": {
+        "title": "TP RFID",
+        "tech": "Flutter, Node.js, Express, Prisma, MySQL"
+      },
+      "moneyTracker": {
+        "title": "Money Tracker App",
+        "tech": "Next.js, Prisma, Supabase"
       }
-   },
-   "footer": {
-      "copyright": "© 2025 Russidan Nadee. All rights reserved.",
+    }
+  },
+  "certificate": {
+    "title": "Certificates",
+    "subtitle": "A collection of verified learning milestones, technical training, and professional growth.",
+    "empty": "Certificates are being prepared. Please check back soon.",
+    "unavailable": "Certificates are temporarily unavailable.",
+    "issued": "Issued",
+    "openPdf": "Open PDF",
+    "download": "Download",
+    "verify": "Verify",
+    "categories": {
+      "development": "Development",
+      "technology": "Technology",
+      "finance": "Finance",
+      "professional": "Professional"
+    }
+  },
+  "contact": {
+    "title": "Get in Touch",
+    "subtitle": "Let's connect and discuss opportunities",
+    "channels": {
+      "email": {
+        "title": "Email",
+        "action": "Send Message"
+      },
+      "phone": {
+        "title": "Phone",
+        "action": "Call Now"
+      },
+      "facebook": {
+        "title": "Facebook",
+        "action": "Visit Profile"
+      },
+      "instagram": {
+        "title": "Instagram",
+        "action": "Follow Me"
+      },
+      "linkedin": {
+        "title": "LinkedIn",
+        "action": "Connect"
+      },
+      "github": {
+        "title": "GitHub",
+        "action": "View Code"
+      }
+    }
+  },
+  "footer": {
+    "copyright": "© 2025 Russidan Nadee. All rights reserved.",
+    "sections": {
+      "quickLinks": "Quick Links",
+      "contact": "Contact",
+      "followMe": "Follow Me",
+      "skills": "Core Skills",
+      "legal": "Legal",
+      "language": "Language"
+    },
+    "location": "Bangkok, Thailand",
+    "builtWith": "Built with Next.js & TypeScript",
+    "legal": {
+      "privacyPolicy": "Privacy Policy",
+      "termsOfService": "Terms of Service"
+    }
+  },
+  "legal": {
+    "privacyPolicy": {
+      "title": "Privacy Policy",
+      "lastUpdated": "Last updated: July 2025",
       "sections": {
-         "quickLinks": "Quick Links",
-         "contact": "Contact",
-         "followMe": "Follow Me",
-         "skills": "Core Skills",
-         "legal": "Legal",
-         "language": "Language"
-      },
-      "location": "Bangkok, Thailand",
-      "builtWith": "Built with Next.js & TypeScript",
-      "legal": {
-         "privacyPolicy": "Privacy Policy",
-         "termsOfService": "Terms of Service"
-      }
-   },
-   "legal": {
-      "privacyPolicy": {
-         "title": "Privacy Policy",
-         "lastUpdated": "Last updated: July 2025",
-         "sections": {
-            "dataCollection": {
-               "title": "Information We Collect",
-               "content": "This website does not collect any personal information from visitors:",
-               "items": [
-                  "No cookies or local storage used",
-                  "No tracking or analytics",
-                  "No forms or data submission",
-                  "No usage data collection"
-               ]
+        "dataCollection": {
+          "title": "Information We Collect",
+          "content": "This website does not collect any personal information from visitors:",
+          "items": [
+            "No cookies or local storage used",
+            "No tracking or analytics",
+            "No forms or data submission",
+            "No usage data collection"
+          ]
+        },
+        "thirdPartyServices": {
+          "title": "Third-Party Services",
+          "content": "This website uses the following external services:",
+          "items": [
+            {
+              "name": "Google Fonts",
+              "description": "For web fonts (no personal data collected)"
             },
-            "thirdPartyServices": {
-               "title": "Third-Party Services",
-               "content": "This website uses the following external services:",
-               "items": [
-                  {
-                     "name": "Google Fonts",
-                     "description": "For web fonts (no personal data collected)"
-                  },
-                  {
-                     "name": "DevIcons CDN",
-                     "description": "For technology icons"
-                  },
-                  {
-                     "name": "Cloudflare CDN",
-                     "description": "For loading JavaScript libraries"
-                  }
-               ],
-               "note": "These services may have their own privacy policies"
+            {
+              "name": "DevIcons CDN",
+              "description": "For technology icons"
             },
-            "userRights": {
-               "title": "Your Rights",
-               "content": "Since we don't collect any personal data, there is no information for you to access, modify, or delete."
-            },
-            "contact": {
-               "title": "Contact",
-               "content": "If you have any questions about this policy, please contact:",
-               "email": "russidan.nadee@gmail.com"
+            {
+              "name": "Cloudflare CDN",
+              "description": "For loading JavaScript libraries"
             }
-         }
-      },
-      "termsOfService": {
-         "title": "Terms of Service",
-         "lastUpdated": "Last updated: July 2025",
-         "sections": {
-            "agreement": {
-               "title": "Agreement to Terms",
-               "content": "By accessing this website, you agree to be bound by these Terms of Service. This website is a personal portfolio for showcasing work and contact information only."
-            },
-            "permittedUse": {
-               "title": "Permitted Use",
-               "content": "You may:",
-               "items": [
-                  "View and browse the website content",
-                  "Contact through provided channels",
-                  "Share the website link"
-               ]
-            },
-            "prohibitedUse": {
-               "title": "Prohibited Use",
-               "content": "You may not:",
-               "items": [
-                  "Copy content, images, or code without permission",
-                  "Use the website for illegal purposes",
-                  "Attempt to hack or damage the website",
-                  "Send spam or inappropriate content"
-               ]
-            },
-            "intellectualProperty": {
-               "title": "Intellectual Property",
-               "content": "All content, images, design, and code on this website are copyrighted by Russidan Nadee. Please request permission before using any materials."
-            },
-            "liability": {
-               "title": "Limitation of Liability",
-               "content": "This website is provided \"as is\". The website owner is not responsible for any damages that may arise from using this website. Information may change without notice."
-            },
-            "changes": {
-               "title": "Changes to Terms",
-               "content": "We reserve the right to modify these terms at any time. Changes will be effective immediately upon posting on the website."
-            },
-            "governingLaw": {
-               "title": "Governing Law",
-               "content": "These terms are governed by Thai law. Any disputes will be resolved under Thai jurisdiction.",
-               "contact": "Contact: russidan.nadee@gmail.com"
-            }
-         }
+          ],
+          "note": "These services may have their own privacy policies"
+        },
+        "userRights": {
+          "title": "Your Rights",
+          "content": "Since we don't collect any personal data, there is no information for you to access, modify, or delete."
+        },
+        "contact": {
+          "title": "Contact",
+          "content": "If you have any questions about this policy, please contact:",
+          "email": "russidan.nadee@gmail.com"
+        }
       }
-   }
+    },
+    "termsOfService": {
+      "title": "Terms of Service",
+      "lastUpdated": "Last updated: July 2025",
+      "sections": {
+        "agreement": {
+          "title": "Agreement to Terms",
+          "content": "By accessing this website, you agree to be bound by these Terms of Service. This website is a personal portfolio for showcasing work and contact information only."
+        },
+        "permittedUse": {
+          "title": "Permitted Use",
+          "content": "You may:",
+          "items": [
+            "View and browse the website content",
+            "Contact through provided channels",
+            "Share the website link"
+          ]
+        },
+        "prohibitedUse": {
+          "title": "Prohibited Use",
+          "content": "You may not:",
+          "items": [
+            "Copy content, images, or code without permission",
+            "Use the website for illegal purposes",
+            "Attempt to hack or damage the website",
+            "Send spam or inappropriate content"
+          ]
+        },
+        "intellectualProperty": {
+          "title": "Intellectual Property",
+          "content": "All content, images, design, and code on this website are copyrighted by Russidan Nadee. Please request permission before using any materials."
+        },
+        "liability": {
+          "title": "Limitation of Liability",
+          "content": "This website is provided \"as is\". The website owner is not responsible for any damages that may arise from using this website. Information may change without notice."
+        },
+        "changes": {
+          "title": "Changes to Terms",
+          "content": "We reserve the right to modify these terms at any time. Changes will be effective immediately upon posting on the website."
+        },
+        "governingLaw": {
+          "title": "Governing Law",
+          "content": "These terms are governed by Thai law. Any disputes will be resolved under Thai jurisdiction.",
+          "contact": "Contact: russidan.nadee@gmail.com"
+        }
+      }
+    }
+  }
 }

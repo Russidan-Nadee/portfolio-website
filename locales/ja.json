@@ -1,368 +1,363 @@
 {
-   "header": {
-      "logo": "Russidan",
-      "nav": {
-         "home": "ホーム",
-         "about": "概要",
-         "portfolio": "ポートフォリオ",
-         "contact": "お問い合わせ"
-      }
-   },
-   "home": {
-      "intro": "私の名前はルシダンで、開発者です",
-      "title": "開発者",
-      "subtitle": "クロスプラットフォーム",
-      "location": "タイ、バンコクを拠点としています。",
-      "buttons": {
-         "portfolio": "ポートフォリオ",
-         "contact": "お問い合わせ"
-      },
-      "projectsShowcase": {
-         "title": "おすすめプロジェクト",
-         "projects": {
-            "assetManagement": {
-               "title": "資産管理システム",
-               "tech": "Flutter, Node.js, Express, MySQL"
-            },
-            "calculator": {
-               "title": "電卓アプリ",
-               "tech": "Python, Tkinter"
-            },
-            "portfolio": {
-               "title": "ポートフォリオウェブサイト",
-               "tech": "Next.js, TypeScript, Tailwind CSS"
-            },
-            "moneyTracker": {
-               "title": "Money Tracker App",
-               "tech": "Next.js, Prisma, Supabase"
-            }
-         }
-      },
-      "technologies": {
-         "title": "使用している技術",
-         "subtitle": "モダンなソリューションのためのモダンなツール"
-      },
-      "cta": {
-         "title": "一緒に素晴らしいものを作りましょう",
-         "subtitle": "情熱的な開発者をお探しですか？あなたの次のアイデアに参加する準備ができています。",
-         "button": "お問い合わせ"
-      }
-   },
-   "about": {
-      "title": "私について",
-      "paragraph1": "テクノロジーとユーザーエクスペリエンスを橋渡しする革新的なソリューションの作成に焦点を当てた情熱的な開発者です。",
-      "paragraph2": "私の専門分野には、クロスプラットフォーム開発、フルスタックWebアプリケーション、モバイル技術が含まれます。",
-      "paragraph3": "新しい技術を学び、意味のある影響を与えるプロジェクトでコラボレーションすることを常に熱望しています。",
-      "name": "ルシダン・ナディー",
-      "intro": "私は",
-      "role": "開発者",
-      "description": "クロスプラットフォーム開発の専門知識を持つシラパコーン大学の情熱的な新卒者です。Flutter、TypeScript、Node.jsなどの最新技術を使用して、効率的でユーザーフレンドリーなアプリケーションの作成を専門としています。常に学び、成長することを熱望し、革新的なプロジェクトに貢献し、創造的なソリューションを実現する準備ができています。",
-      "skills": {
-         "title": "技術スキルと専門知識",
-         "subtitle": "私が使用する技術とツール",
-         "learning": "現在、高度なシステム開発のためにDockerとC# .NETの知識を拡張中"
-      },
-      "timeline": {
-         "title": "経験と経歴",
-         "tabs": {
-            "work": "職歴",
-            "education": "学歴"
-         },
-         "work": [
-            {
-               "id": 5,
-               "period": "2026年5月 - 現在",
-               "title": "フルスタック開発者",
-               "company": "CloudCommerce",
-               "description": "既存システムの保守を行いながら、機能をMicroserviceアーキテクチャへ移行。サービスレベルの開発を担当し、システム全体のアーキテクチャを管理するシニア開発者と協力して業務を進めています。",
-               "skills": [
-                  "TypeScript",
-                  "Bun",
-                  "Elysia",
-                  "Microservices"
-               ],
-               "icon": "FaLaptopCode",
-               "isCurrent": true
-            },
-            {
-               "id": 1,
-               "period": "2025年4月 - 2025年10月",
-               "title": "開発者インターン",
-               "company": "タイ・パーカライジング",
-               "description": "Flutter、Node.js、Express、MySQLを使用して、RFID統合を備えたクロスプラットフォーム資産管理システムを開発。モバイルアプリ、Webアプリケーション、Windowsデスクトップアプリを含むフルスタックソリューションを作成。",
-               "skills": [
-                  "Flutter",
-                  "Node.js",
-                  "Express",
-                  "MySQL",
-                  "RFID",
-                  "Cross-platform"
-               ],
-               "icon": "FaLaptopCode",
-               "isCurrent": false
-            },
-            {
-               "id": 2,
-               "period": "2024年7月 - 2025年3月",
-               "title": "飲料スタッフ",
-               "company": "フライクラブ",
-               "description": "食べ物と飲み物を提供し、優れた顧客満足を保証。日常業務を管理し、清潔で効率的なサービスエリアを維持。",
-               "skills": [
-                  "カスタマーサービス",
-                  "運営管理",
-                  "チームワーク"
-               ],
-               "icon": "MdWork",
-               "isCurrent": false
-            },
-            {
-               "id": 3,
-               "period": "2024年4月 - 2024年6月",
-               "title": "食品・飲料スタッフ",
-               "company": "トンソン・アリー・レストラン",
-               "description": "フレンドリーなサービスを提供し、食品の準備を支援。キッチンとダイニングエリアの清潔さを確保し、健康基準を満たす。",
-               "skills": [
-                  "食品サービス",
-                  "キッチン運営",
-                  "健康基準"
-               ],
-               "icon": "MdRestaurant",
-               "isCurrent": false
-            },
-            {
-               "id": 4,
-               "period": "2022年4月 - 2022年6月",
-               "title": "調理師",
-               "company": "KFC",
-               "description": "会社の基準に従って食品を準備。十分な在庫レベルを確保するため在庫を監視。",
-               "skills": [
-                  "食品調理",
-                  "在庫管理",
-                  "品質管理"
-               ],
-               "icon": "MdFastfood",
-               "isCurrent": false
-            }
-         ],
-         "education": [
-            {
-               "id": 1,
-               "period": "2022年 - 2025年",
-               "title": "学士号",
-               "company": "シラパコーン大学",
-               "description": "電子・コンピュータシステム - コンピュータシステム、電子工学、ソフトウェア開発、システム設計の包括的な研究。卒業予定：2025年3月。",
-               "skills": [
-                  "電子工学",
-                  "コンピュータシステム",
-                  "ソフトウェア開発",
-                  "システム設計"
-               ],
-               "icon": "FaGraduationCap",
-               "isCurrent": false
-            },
-            {
-               "id": 2,
-               "period": "2019年 - 2021年",
-               "title": "高等学校 - 理数科",
-               "company": "クロンヤン・プラチャヌサン学校",
-               "description": "理数科で高等学校教育を修了し、コンピュータサイエンスの学習に不可欠な数学的思考と科学的原理の強固な基礎を築きました。",
-               "skills": [
-                  "数学",
-                  "物理学",
-                  "化学",
-                  "論理的思考"
-               ],
-               "icon": "MdSchool",
-               "isCurrent": false
-            }
-         ]
-      },
-      "cta": {
-         "title": "つながって協力しましょう",
-         "description": "一緒に仕事をしたり、私のプロジェクトについて詳しく知りたいですか？ぜひご連絡ください！",
-         "contact": "お問い合わせ",
-         "projects": "プロジェクトを見る"
-      },
-      "experience": {
-         "title": "経験と教育の旅"
-      },
-      "contact": {
-         "title": "一緒に働く準備はできていますか？",
-         "description": "スキルを活用し、開発者として成長する機会を積極的に求めています。次のプロジェクトにどのように貢献できるかを話し合いましょう！",
-         "button": "お問い合わせ"
-      }
-   },
-   "portfolio": {
-      "title": "ポートフォリオ",
-      "subtitle": "最新のプロジェクトと技術的成果をご覧ください",
+  "header": {
+    "logo": "Russidan",
+    "nav": {
+      "home": "ホーム",
+      "about": "概要",
+      "portfolio": "ポートフォリオ",
+      "certificate": "認定資格",
+      "contact": "お問い合わせ"
+    }
+  },
+  "home": {
+    "intro": "私の名前はルシダンで、開発者です",
+    "title": "開発者",
+    "subtitle": "クロスプラットフォーム",
+    "location": "タイ、バンコクを拠点としています。",
+    "buttons": {
+      "portfolio": "ポートフォリオ",
+      "contact": "お問い合わせ"
+    },
+    "projectsShowcase": {
+      "title": "おすすめプロジェクト",
       "projects": {
-         "kinraiD": {
-            "title": "Kinrai-D",
-            "tech": "Flutter, Nest.js, PostgreSQL, Supabase"
-         },
-         "investfam": {
-            "title": "InvestFam",
-            "tech": "Next.js, TypeScript, Tailwind CSS"
-         },
-         "assetManagement": {
-            "title": "資産管理システム",
-            "tech": "Flutter, Node.js, Express, MySQL"
-         },
-         "calculator": {
-            "title": "電卓アプリ",
-            "tech": "Python, Tkinter"
-         },
-         "portfolio": {
-            "title": "ポートフォリオウェブサイト",
-            "tech": "Next.js, TypeScript, Tailwind CSS"
-         },
-         "assetDashboard": {
-            "title": "TP RFID",
-            "tech": "Flutter, Node.js, Express, Prisma, MySQL"
-         },
-         "moneyTracker": {
-            "title": "Money Tracker App",
-            "tech": "Next.js, Prisma, Supabase"
-         }
+        "assetManagement": {
+          "title": "資産管理システム",
+          "tech": "Flutter, Node.js, Express, MySQL"
+        },
+        "calculator": {
+          "title": "電卓アプリ",
+          "tech": "Python, Tkinter"
+        },
+        "portfolio": {
+          "title": "ポートフォリオウェブサイト",
+          "tech": "Next.js, TypeScript, Tailwind CSS"
+        },
+        "moneyTracker": {
+          "title": "Money Tracker App",
+          "tech": "Next.js, Prisma, Supabase"
+        }
       }
-   },
-   "contact": {
-      "title": "お問い合わせ",
-      "subtitle": "つながって機会について話し合いましょう",
-      "channels": {
-         "email": {
-            "title": "メール",
-            "action": "メッセージを送信"
-         },
-         "phone": {
-            "title": "電話",
-            "action": "今すぐ電話"
-         },
-         "facebook": {
-            "title": "Facebook",
-            "action": "プロフィールを見る"
-         },
-         "instagram": {
-            "title": "Instagram",
-            "action": "フォローする"
-         },
-         "linkedin": {
-            "title": "LinkedIn",
-            "action": "つながる"
-         },
-         "github": {
-            "title": "GitHub",
-            "action": "コードを見る"
-         }
+    },
+    "technologies": {
+      "title": "使用している技術",
+      "subtitle": "モダンなソリューションのためのモダンなツール"
+    },
+    "cta": {
+      "title": "一緒に素晴らしいものを作りましょう",
+      "subtitle": "情熱的な開発者をお探しですか？あなたの次のアイデアに参加する準備ができています。",
+      "button": "お問い合わせ"
+    }
+  },
+  "about": {
+    "title": "私について",
+    "paragraph1": "テクノロジーとユーザーエクスペリエンスを橋渡しする革新的なソリューションの作成に焦点を当てた情熱的な開発者です。",
+    "paragraph2": "私の専門分野には、クロスプラットフォーム開発、フルスタックWebアプリケーション、モバイル技術が含まれます。",
+    "paragraph3": "新しい技術を学び、意味のある影響を与えるプロジェクトでコラボレーションすることを常に熱望しています。",
+    "name": "ルシダン・ナディー",
+    "intro": "私は",
+    "role": "開発者",
+    "description": "クロスプラットフォーム開発の専門知識を持つシラパコーン大学の情熱的な新卒者です。Flutter、TypeScript、Node.jsなどの最新技術を使用して、効率的でユーザーフレンドリーなアプリケーションの作成を専門としています。常に学び、成長することを熱望し、革新的なプロジェクトに貢献し、創造的なソリューションを実現する準備ができています。",
+    "skills": {
+      "title": "技術スキルと専門知識",
+      "subtitle": "私が使用する技術とツール",
+      "learning": "現在、高度なシステム開発のためにDockerとC# .NETの知識を拡張中"
+    },
+    "timeline": {
+      "title": "経験と経歴",
+      "tabs": {
+        "work": "職歴",
+        "education": "学歴"
+      },
+      "work": [
+        {
+          "id": 5,
+          "period": "2026年5月 - 現在",
+          "title": "フルスタック開発者",
+          "company": "CloudCommerce",
+          "description": "既存システムの保守を行いながら、機能をMicroserviceアーキテクチャへ移行。サービスレベルの開発を担当し、システム全体のアーキテクチャを管理するシニア開発者と協力して業務を進めています。",
+          "skills": ["TypeScript", "Bun", "Elysia", "Microservices"],
+          "icon": "FaLaptopCode",
+          "isCurrent": true
+        },
+        {
+          "id": 1,
+          "period": "2025年4月 - 2025年10月",
+          "title": "開発者インターン",
+          "company": "タイ・パーカライジング",
+          "description": "Flutter、Node.js、Express、MySQLを使用して、RFID統合を備えたクロスプラットフォーム資産管理システムを開発。モバイルアプリ、Webアプリケーション、Windowsデスクトップアプリを含むフルスタックソリューションを作成。",
+          "skills": [
+            "Flutter",
+            "Node.js",
+            "Express",
+            "MySQL",
+            "RFID",
+            "Cross-platform"
+          ],
+          "icon": "FaLaptopCode",
+          "isCurrent": false
+        },
+        {
+          "id": 2,
+          "period": "2024年7月 - 2025年3月",
+          "title": "飲料スタッフ",
+          "company": "フライクラブ",
+          "description": "食べ物と飲み物を提供し、優れた顧客満足を保証。日常業務を管理し、清潔で効率的なサービスエリアを維持。",
+          "skills": ["カスタマーサービス", "運営管理", "チームワーク"],
+          "icon": "MdWork",
+          "isCurrent": false
+        },
+        {
+          "id": 3,
+          "period": "2024年4月 - 2024年6月",
+          "title": "食品・飲料スタッフ",
+          "company": "トンソン・アリー・レストラン",
+          "description": "フレンドリーなサービスを提供し、食品の準備を支援。キッチンとダイニングエリアの清潔さを確保し、健康基準を満たす。",
+          "skills": ["食品サービス", "キッチン運営", "健康基準"],
+          "icon": "MdRestaurant",
+          "isCurrent": false
+        },
+        {
+          "id": 4,
+          "period": "2022年4月 - 2022年6月",
+          "title": "調理師",
+          "company": "KFC",
+          "description": "会社の基準に従って食品を準備。十分な在庫レベルを確保するため在庫を監視。",
+          "skills": ["食品調理", "在庫管理", "品質管理"],
+          "icon": "MdFastfood",
+          "isCurrent": false
+        }
+      ],
+      "education": [
+        {
+          "id": 1,
+          "period": "2022年 - 2025年",
+          "title": "学士号",
+          "company": "シラパコーン大学",
+          "description": "電子・コンピュータシステム - コンピュータシステム、電子工学、ソフトウェア開発、システム設計の包括的な研究。卒業予定：2025年3月。",
+          "skills": [
+            "電子工学",
+            "コンピュータシステム",
+            "ソフトウェア開発",
+            "システム設計"
+          ],
+          "icon": "FaGraduationCap",
+          "isCurrent": false
+        },
+        {
+          "id": 2,
+          "period": "2019年 - 2021年",
+          "title": "高等学校 - 理数科",
+          "company": "クロンヤン・プラチャヌサン学校",
+          "description": "理数科で高等学校教育を修了し、コンピュータサイエンスの学習に不可欠な数学的思考と科学的原理の強固な基礎を築きました。",
+          "skills": ["数学", "物理学", "化学", "論理的思考"],
+          "icon": "MdSchool",
+          "isCurrent": false
+        }
+      ]
+    },
+    "cta": {
+      "title": "つながって協力しましょう",
+      "description": "一緒に仕事をしたり、私のプロジェクトについて詳しく知りたいですか？ぜひご連絡ください！",
+      "contact": "お問い合わせ",
+      "projects": "プロジェクトを見る"
+    },
+    "experience": {
+      "title": "経験と教育の旅"
+    },
+    "contact": {
+      "title": "一緒に働く準備はできていますか？",
+      "description": "スキルを活用し、開発者として成長する機会を積極的に求めています。次のプロジェクトにどのように貢献できるかを話し合いましょう！",
+      "button": "お問い合わせ"
+    }
+  },
+  "portfolio": {
+    "title": "ポートフォリオ",
+    "subtitle": "最新のプロジェクトと技術的成果をご覧ください",
+    "projects": {
+      "kinraiD": {
+        "title": "Kinrai-D",
+        "tech": "Flutter, Nest.js, PostgreSQL, Supabase"
+      },
+      "investfam": {
+        "title": "InvestFam",
+        "tech": "Next.js, TypeScript, Tailwind CSS"
+      },
+      "assetManagement": {
+        "title": "資産管理システム",
+        "tech": "Flutter, Node.js, Express, MySQL"
+      },
+      "calculator": {
+        "title": "電卓アプリ",
+        "tech": "Python, Tkinter"
+      },
+      "portfolio": {
+        "title": "ポートフォリオウェブサイト",
+        "tech": "Next.js, TypeScript, Tailwind CSS"
+      },
+      "assetDashboard": {
+        "title": "TP RFID",
+        "tech": "Flutter, Node.js, Express, Prisma, MySQL"
+      },
+      "moneyTracker": {
+        "title": "Money Tracker App",
+        "tech": "Next.js, Prisma, Supabase"
       }
-   },
-   "footer": {
-      "copyright": "© 2025 ルシダン・ナディー。全著作権所有。",
+    }
+  },
+  "certificate": {
+    "title": "認定資格",
+    "subtitle": "学習成果、技術研修、専門的な成長を証明する認定資格のコレクションです。",
+    "empty": "認定資格を準備中です。しばらくしてからもう一度ご覧ください。",
+    "unavailable": "認定資格を一時的に表示できません。",
+    "issued": "発行日",
+    "openPdf": "PDFを開く",
+    "download": "ダウンロード",
+    "verify": "確認する",
+    "categories": {
+      "development": "開発",
+      "technology": "テクノロジー",
+      "finance": "金融",
+      "professional": "プロフェッショナル"
+    }
+  },
+  "contact": {
+    "title": "お問い合わせ",
+    "subtitle": "つながって機会について話し合いましょう",
+    "channels": {
+      "email": {
+        "title": "メール",
+        "action": "メッセージを送信"
+      },
+      "phone": {
+        "title": "電話",
+        "action": "今すぐ電話"
+      },
+      "facebook": {
+        "title": "Facebook",
+        "action": "プロフィールを見る"
+      },
+      "instagram": {
+        "title": "Instagram",
+        "action": "フォローする"
+      },
+      "linkedin": {
+        "title": "LinkedIn",
+        "action": "つながる"
+      },
+      "github": {
+        "title": "GitHub",
+        "action": "コードを見る"
+      }
+    }
+  },
+  "footer": {
+    "copyright": "© 2025 ルシダン・ナディー。全著作権所有。",
+    "sections": {
+      "quickLinks": "クイックリンク",
+      "contact": "お問い合わせ",
+      "followMe": "フォローする",
+      "skills": "主なスキル",
+      "legal": "法的情報",
+      "language": "言語"
+    },
+    "location": "バンコク, タイ",
+    "builtWith": "Next.js & TypeScript で構築",
+    "legal": {
+      "privacyPolicy": "プライバシーポリシー",
+      "termsOfService": "利用規約"
+    }
+  },
+  "legal": {
+    "privacyPolicy": {
+      "title": "プライバシーポリシー",
+      "lastUpdated": "最終更新日: 2025年7月",
       "sections": {
-         "quickLinks": "クイックリンク",
-         "contact": "お問い合わせ",
-         "followMe": "フォローする",
-         "skills": "主なスキル",
-         "legal": "法的情報",
-         "language": "言語"
-      },
-      "location": "バンコク, タイ",
-      "builtWith": "Next.js & TypeScript で構築",
-      "legal": {
-         "privacyPolicy": "プライバシーポリシー",
-         "termsOfService": "利用規約"
-      }
-   },
-   "legal": {
-      "privacyPolicy": {
-         "title": "プライバシーポリシー",
-         "lastUpdated": "最終更新日: 2025年7月",
-         "sections": {
-            "dataCollection": {
-               "title": "収集する情報",
-               "content": "このウェブサイトは訪問者の個人情報を一切収集しません:",
-               "items": [
-                  "クッキーやローカルストレージは使用していません",
-                  "トラッキングや分析は行いません",
-                  "フォームやデータ送信機能はありません",
-                  "使用データは収集していません"
-               ]
+        "dataCollection": {
+          "title": "収集する情報",
+          "content": "このウェブサイトは訪問者の個人情報を一切収集しません:",
+          "items": [
+            "クッキーやローカルストレージは使用していません",
+            "トラッキングや分析は行いません",
+            "フォームやデータ送信機能はありません",
+            "使用データは収集していません"
+          ]
+        },
+        "thirdPartyServices": {
+          "title": "第三者サービス",
+          "content": "このウェブサイトは以下の外部サービスを使用しています:",
+          "items": [
+            {
+              "name": "Google Fonts",
+              "description": "ウェブフォント用（個人データは収集されません）"
             },
-            "thirdPartyServices": {
-               "title": "第三者サービス",
-               "content": "このウェブサイトは以下の外部サービスを使用しています:",
-               "items": [
-                  {
-                     "name": "Google Fonts",
-                     "description": "ウェブフォント用（個人データは収集されません）"
-                  },
-                  {
-                     "name": "DevIcons CDN",
-                     "description": "技術アイコン用"
-                  },
-                  {
-                     "name": "Cloudflare CDN",
-                     "description": "JavaScriptライブラリの読み込み用"
-                  }
-               ],
-               "note": "これらのサービスには独自のプライバシーポリシーがある場合があります"
+            {
+              "name": "DevIcons CDN",
+              "description": "技術アイコン用"
             },
-            "userRights": {
-               "title": "あなたの権利",
-               "content": "個人データを収集していないため、アクセス、修正、削除していただく情報はありません。"
-            },
-            "contact": {
-               "title": "お問い合わせ",
-               "content": "このポリシーについてご質問がある場合は、以下にご連絡ください:",
-               "email": "russidan.nadee@gmail.com"
+            {
+              "name": "Cloudflare CDN",
+              "description": "JavaScriptライブラリの読み込み用"
             }
-         }
-      },
-      "termsOfService": {
-         "title": "利用規約",
-         "lastUpdated": "最終更新日: 2025年7月",
-         "sections": {
-            "agreement": {
-               "title": "規約への同意",
-               "content": "このウェブサイトにアクセスすることで、これらの利用規約に拘束されることに同意したものとみなされます。このウェブサイトは、作品と連絡先情報を紹介する個人ポートフォリオサイトです。"
-            },
-            "permittedUse": {
-               "title": "許可された使用",
-               "content": "以下のことができます:",
-               "items": [
-                  "ウェブサイトのコンテンツを閲覧する",
-                  "提供されたチャンネルを通じて連絡する",
-                  "ウェブサイトのリンクを共有する"
-               ]
-            },
-            "prohibitedUse": {
-               "title": "禁止された使用",
-               "content": "以下のことは禁止されています:",
-               "items": [
-                  "許可なくコンテンツ、画像、コードをコピーする",
-                  "違法な目的でウェブサイトを使用する",
-                  "ウェブサイトをハッキングまたは損傷しようとする",
-                  "スパムや不適切なコンテンツを送信する"
-               ]
-            },
-            "intellectualProperty": {
-               "title": "知的財産",
-               "content": "このウェブサイトのすべてのコンテンツ、画像、デザイン、コードはRussidan Nadeeの著作権です。素材を使用する前に許可を求めてください。"
-            },
-            "liability": {
-               "title": "責任の制限",
-               "content": "このウェブサイトは「現状のまま」提供されています。ウェブサイトの所有者は、このウェブサイトの使用により生じる可能性のある損害について責任を負いません。情報は予告なく変更される場合があります。"
-            },
-            "changes": {
-               "title": "規約の変更",
-               "content": "これらの規約はいつでも修正する権利を留保します。変更はウェブサイトに投稿された時点で直ちに有効になります。"
-            },
-            "governingLaw": {
-               "title": "準拠法",
-               "content": "これらの規約はタイの法律に準拠します。紛争はタイの管轄下で解決されます。",
-               "contact": "連絡先: russidan.nadee@gmail.com"
-            }
-         }
+          ],
+          "note": "これらのサービスには独自のプライバシーポリシーがある場合があります"
+        },
+        "userRights": {
+          "title": "あなたの権利",
+          "content": "個人データを収集していないため、アクセス、修正、削除していただく情報はありません。"
+        },
+        "contact": {
+          "title": "お問い合わせ",
+          "content": "このポリシーについてご質問がある場合は、以下にご連絡ください:",
+          "email": "russidan.nadee@gmail.com"
+        }
       }
-   }
+    },
+    "termsOfService": {
+      "title": "利用規約",
+      "lastUpdated": "最終更新日: 2025年7月",
+      "sections": {
+        "agreement": {
+          "title": "規約への同意",
+          "content": "このウェブサイトにアクセスすることで、これらの利用規約に拘束されることに同意したものとみなされます。このウェブサイトは、作品と連絡先情報を紹介する個人ポートフォリオサイトです。"
+        },
+        "permittedUse": {
+          "title": "許可された使用",
+          "content": "以下のことができます:",
+          "items": [
+            "ウェブサイトのコンテンツを閲覧する",
+            "提供されたチャンネルを通じて連絡する",
+            "ウェブサイトのリンクを共有する"
+          ]
+        },
+        "prohibitedUse": {
+          "title": "禁止された使用",
+          "content": "以下のことは禁止されています:",
+          "items": [
+            "許可なくコンテンツ、画像、コードをコピーする",
+            "違法な目的でウェブサイトを使用する",
+            "ウェブサイトをハッキングまたは損傷しようとする",
+            "スパムや不適切なコンテンツを送信する"
+          ]
+        },
+        "intellectualProperty": {
+          "title": "知的財産",
+          "content": "このウェブサイトのすべてのコンテンツ、画像、デザイン、コードはRussidan Nadeeの著作権です。素材を使用する前に許可を求めてください。"
+        },
+        "liability": {
+          "title": "責任の制限",
+          "content": "このウェブサイトは「現状のまま」提供されています。ウェブサイトの所有者は、このウェブサイトの使用により生じる可能性のある損害について責任を負いません。情報は予告なく変更される場合があります。"
+        },
+        "changes": {
+          "title": "規約の変更",
+          "content": "これらの規約はいつでも修正する権利を留保します。変更はウェブサイトに投稿された時点で直ちに有効になります。"
+        },
+        "governingLaw": {
+          "title": "準拠法",
+          "content": "これらの規約はタイの法律に準拠します。紛争はタイの管轄下で解決されます。",
+          "contact": "連絡先: russidan.nadee@gmail.com"
+        }
+      }
+    }
+  }
 }

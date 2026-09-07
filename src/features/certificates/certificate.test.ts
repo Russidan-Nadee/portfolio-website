@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import {
   buildCertificateAssetPath,
+  formatCertificateDate,
   getLocalizedCertificateTitle,
   parseCertificateFormData,
   validateCertificateAsset,
@@ -157,4 +158,15 @@ test("rejects unsafe slugs before building an asset path", () => {
     () => buildCertificateAssetPath("../secret", "pdf"),
     /lowercase letters, numbers, and hyphens/
   );
+});
+
+test("formats the same UTC issue date for each supported locale", () => {
+  const date = new Date("2025-08-13T00:00:00.000Z");
+  assert.equal(formatCertificateDate(date, "en"), "August 13, 2025");
+  assert.equal(formatCertificateDate(date, "th"), "13 สิงหาคม 2568");
+  assert.equal(formatCertificateDate(date, "ja"), "2025年8月13日");
+});
+
+test("returns an empty label when no issue date exists", () => {
+  assert.equal(formatCertificateDate(null, "en"), "");
 });
