@@ -1,0 +1,214 @@
+.scene {
+  position: relative;
+  isolation: isolate;
+  min-height: max(560px, calc(100svh - 4rem));
+  overflow: hidden;
+  background: var(--background);
+  color: var(--foreground);
+}
+
+.scene::before {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(
+    ellipse 70% 54% at 50% 50%,
+    color-mix(in srgb, var(--muted) 64%, transparent),
+    transparent 80%
+  );
+  content: "";
+  pointer-events: none;
+}
+
+.logoField {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow: hidden;
+  perspective: 1000px;
+  pointer-events: none;
+}
+
+.logo {
+  --edge-scale: 1.6;
+  --quarter-scale: 1.05;
+  --center-scale: 0.65;
+
+  position: absolute;
+  top: var(--rest-y);
+  left: var(--rest-x);
+  display: grid;
+  width: clamp(80px, 8vw, 142px);
+  aspect-ratio: 1;
+  place-items: center;
+  transform: translate(-50%, -50%) scale(var(--rest-scale));
+  transform-style: preserve-3d;
+  animation: arcTravel 34s linear var(--orbit-delay) infinite;
+}
+
+.upperLogo {
+  --edge-y: 12%;
+  --quarter-y: 30%;
+  --center-y: 37%;
+}
+
+.lowerLogo {
+  --edge-y: 88%;
+  --quarter-y: 70%;
+  --center-y: 63%;
+
+  animation-direction: reverse;
+}
+
+.icon {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 12px 15px rgb(0 0 0 / 15%));
+  animation: logoFloat 6.5s ease-in-out var(--float-delay) infinite;
+}
+
+:global([data-theme="dark"]) .monochromeIcon {
+  filter: invert(1) drop-shadow(0 12px 15px rgb(0 0 0 / 22%));
+}
+
+.copy {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  width: min(88%, 860px);
+  padding: 4rem 1.75rem;
+  text-align: center;
+  transform: translate(-50%, -50%);
+}
+
+.copy::before {
+  position: absolute;
+  inset: -1.75rem -4.5rem;
+  z-index: -1;
+  background: radial-gradient(
+    ellipse at center,
+    color-mix(in srgb, var(--background) 90%, transparent) 12%,
+    color-mix(in srgb, var(--background) 75%, transparent) 53%,
+    transparent 83%
+  );
+  backdrop-filter: blur(17px);
+  mask-image: radial-gradient(ellipse at center, #000 29%, transparent 83%);
+  content: "";
+  pointer-events: none;
+}
+
+.title {
+  margin: 0;
+  font-family:
+    var(--font-inter), "IBM Plex Sans Thai", "Noto Sans JP", system-ui,
+    sans-serif;
+  font-size: clamp(2.25rem, 4.4vw, 4.75rem);
+  font-weight: 900;
+  letter-spacing: -0.045em;
+  line-height: 1.14;
+  text-wrap: balance;
+}
+
+.subtitle {
+  margin: 1.25rem 0 0;
+  color: color-mix(in srgb, var(--foreground) 82%, var(--muted-foreground));
+  font-size: clamp(1rem, 1.35vw, 1.375rem);
+  font-weight: 500;
+  line-height: 1.45;
+  text-wrap: balance;
+}
+
+@keyframes logoFloat {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+
+  50% {
+    translate: 0 -10px;
+  }
+}
+
+@keyframes arcTravel {
+  0% {
+    top: var(--edge-y);
+    left: -12%;
+    transform: translate(-50%, -50%) rotateY(28deg) rotateZ(-6deg)
+      scale(var(--edge-scale));
+  }
+
+  25% {
+    top: var(--quarter-y);
+    left: 19%;
+    transform: translate(-50%, -50%) rotateY(14deg) rotateZ(-3deg)
+      scale(var(--quarter-scale));
+  }
+
+  50% {
+    top: var(--center-y);
+    left: 50%;
+    transform: translate(-50%, -50%) rotateY(0deg) rotateZ(0deg)
+      scale(var(--center-scale));
+  }
+
+  75% {
+    top: var(--quarter-y);
+    left: 81%;
+    transform: translate(-50%, -50%) rotateY(-14deg) rotateZ(3deg)
+      scale(var(--quarter-scale));
+  }
+
+  100% {
+    top: var(--edge-y);
+    left: 112%;
+    transform: translate(-50%, -50%) rotateY(-28deg) rotateZ(6deg)
+      scale(var(--edge-scale));
+  }
+}
+
+@media (max-width: 800px) {
+  .scene {
+    min-height: max(540px, calc(100svh - 4rem));
+  }
+
+  .logo {
+    --edge-scale: 1.2;
+    --quarter-scale: 0.78;
+    --center-scale: 0.52;
+
+    width: clamp(52px, 15vw, 76px);
+    transform: translate(-50%, -50%) scale(var(--rest-mobile-scale));
+    animation-duration: 22s;
+    animation-delay: var(--orbit-mobile-delay);
+  }
+
+  .copy {
+    width: min(92%, 640px);
+    padding: 3rem 0.75rem;
+  }
+
+  .copy::before {
+    inset: -1.5rem -2.25rem;
+  }
+
+  .title {
+    font-size: clamp(2rem, 7vw, 3.5rem);
+  }
+
+  .subtitle {
+    margin-top: 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo,
+  .icon {
+    animation: none;
+  }
+}

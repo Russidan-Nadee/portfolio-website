@@ -1,118 +1,110 @@
-// src/components/Technologies.tsx
-'use client'
+"use client";
 
-import React from 'react';
+import Image from "next/image";
+import type { CSSProperties } from "react";
+import styles from "./Technologies.module.css";
 
 export interface TechnologyItem {
-   name: string
-   icon: string
-}
-
-interface Translations {
-   header?: {
-      logo?: string;
-      nav?: {
-         home?: string;
-         about?: string;
-         portfolio?: string;
-         contact?: string;
-      };
-   };
-   home?: {
-      intro?: string;
-      title?: string;
-      subtitle?: string;
-      location?: string;
-      buttons?: {
-         portfolio?: string;
-         contact?: string;
-      };
-      projectsShowcase?: {
-         title?: string;
-         projects?: {
-            assetManagement?: { title?: string; tech?: string };
-            calculator?: { title?: string; tech?: string };
-            portfolio?: { title?: string; tech?: string };
-         };
-      };
-      technologies?: {
-         title?: string;
-         subtitle?: string;
-      };
-   };
-   about?: any;
-   portfolio?: any;
-   contact?: any;
+  name: string;
+  icon: string;
 }
 
 interface TechnologiesProps {
-   translations: Translations;
-   technologies: TechnologyItem[];
+  translations: {
+    home?: {
+      technologies?: {
+        title?: string;
+        subtitle?: string;
+      };
+    };
+  };
+  technologies: TechnologyItem[];
 }
 
-export default function Technologies({ translations, technologies }: TechnologiesProps) {
-   const t = translations.home?.technologies || {
-      title: 'Technologies I Work With',
-      subtitle: 'Modern tools for modern solutions',
-   };
+type LogoMotion = CSSProperties & {
+  "--orbit-delay": string;
+  "--orbit-mobile-delay": string;
+  "--float-delay": string;
+  "--rest-x": string;
+  "--rest-y": string;
+  "--rest-scale": string;
+  "--rest-mobile-scale": string;
+};
 
-   // Duplicate the array to create a seamless loop
-   const doubledTechnologies = [...technologies, ...technologies];
+const darkLogos = new Set([
+  "Express",
+  "GitHub",
+  "Next.js",
+  "Prisma",
+  "Railway",
+  "Vercel",
+]);
 
-   return (
-      <section className="py-12" style={{ backgroundColor: 'var(--background)', color: 'var(--foreground)' }}>
-         <div className="max-w-6xl mx-auto px-4">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black mb-4 md:mb-6 leading-none tracking-tight text-center whitespace-nowrap md:whitespace-normal"
-               style={{
-                  color: 'var(--foreground)',
-                  fontFamily: 'var(--font-inter), "IBM Plex Sans Thai", "Noto Sans JP", system-ui, sans-serif',
-                  fontSize: 'clamp(2rem, 4vw, 5rem)'
-               }}>
-               {t.title}
-            </h2>
-            <p className="text-base md:text-lg lg:text-xl xl:text-2xl mb-8 md:mb-12 text-center opacity-80 tracking-wide"
-               style={{
-                  color: 'var(--muted-foreground)',
-                  fontFamily: 'var(--font-inter), "IBM Plex Sans Thai", "Noto Sans JP", system-ui, sans-serif'
-               }}>
-               {t.subtitle}
-            </p>
-            <div className="relative w-full overflow-hidden">
-               <div className="flex animate-scroll whitespace-nowrap">
-                  {doubledTechnologies.map((tech, index) => (
-                     <div key={index} className="flex flex-col items-center mx-6 flex-shrink-0">
-                        <div className="w-24 h-24 flex items-center justify-center bg-transparent mb-4">
-                           <img
-                              src={tech.icon}
-                              alt={`${tech.name} logo`}
-                              className="w-20 h-20 object-contain"
-                              style={{
-                                 filter: 'brightness(0.9)',
-                                 backgroundColor: 'transparent'
-                              }}
-                           />
-                        </div>
-                        <span className="text-lg font-medium" style={{ color: 'var(--muted-foreground)' }}>
-                           {tech.name}
-                        </span>
-                     </div>
-                  ))}
-               </div>
-            </div>
-         </div>
-         <style jsx>{`
-        @keyframes scroll {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-        .animate-scroll {
-          display: inline-flex;
-          animation: scroll 30s linear infinite;
-        }
-        .animate-scroll:hover {
-          animation-play-state: paused;
-        }
-      `}</style>
-      </section>
-   );
+function getLogoMotion(
+  index: number,
+  count: number,
+  lowerArc: boolean
+): LogoMotion {
+  const progress = (index + 0.5) / count;
+  const depth = Math.sin(Math.PI * progress);
+
+  return {
+    "--orbit-delay": `${(-34 * progress).toFixed(3)}s`,
+    "--orbit-mobile-delay": `${(-22 * progress).toFixed(3)}s`,
+    "--float-delay": `${(-(index % 7) * 0.48).toFixed(2)}s`,
+    "--rest-x": `${(progress * 100).toFixed(3)}%`,
+    "--rest-y": `${(lowerArc ? 88 - depth * 25 : 12 + depth * 25).toFixed(3)}%`,
+    "--rest-scale": (1.6 - depth * 0.95).toFixed(3),
+    "--rest-mobile-scale": (1.2 - depth * 0.68).toFixed(3),
+  };
+}
+
+export default function Technologies({
+  translations,
+  technologies,
+}: TechnologiesProps) {
+  const title =
+    translations.home?.technologies?.title ?? "Technologies I Work With";
+  const subtitle =
+    translations.home?.technologies?.subtitle ??
+    "Modern tools for modern solutions";
+  const topCount = Math.ceil(technologies.length / 2);
+
+  return (
+    <section className={styles.scene} aria-labelledby="technologies-heading">
+      <div className={styles.copy}>
+        <h2 id="technologies-heading" className={styles.title}>
+          {title}
+        </h2>
+        <p className={styles.subtitle}>{subtitle}</p>
+      </div>
+
+      <ul className={styles.logoField} aria-label={title}>
+        {technologies.map((technology, index) => {
+          const lowerArc = index >= topCount;
+          const arcIndex = lowerArc ? index - topCount : index;
+          const arcCount = lowerArc ? technologies.length - topCount : topCount;
+
+          return (
+            <li
+              key={`${technology.name}-${index}`}
+              className={`${styles.logo} ${lowerArc ? styles.lowerLogo : styles.upperLogo}`}
+              style={getLogoMotion(arcIndex, arcCount, lowerArc)}
+              title={technology.name}
+            >
+              <Image
+                src={technology.icon}
+                alt={technology.name}
+                width={160}
+                height={160}
+                unoptimized
+                loading="eager"
+                className={`${styles.icon} ${darkLogos.has(technology.name) ? styles.monochromeIcon : ""}`}
+              />
+            </li>
+          );
+        })}
+      </ul>
+    </section>
+  );
 }

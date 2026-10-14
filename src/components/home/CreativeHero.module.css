@@ -40,8 +40,26 @@
 }
 
 @media (min-width: 1200px) {
+  .hero {
+    z-index: 1;
+  }
+
+  .orbit,
+  .content {
+    filter: blur(0px);
+  }
+
   .card {
-    translate: -50% -50%;
+    --exit-x: 0px;
+    --exit-card-y: 0px;
+    --exit-scale: 1;
+
+    translate: calc(-50% + var(--exit-x)) calc(-50% + var(--exit-card-y));
+    scale: var(--exit-scale);
+  }
+
+  .content {
+    translate: 0 var(--exit-y, 0px);
   }
 }
 
@@ -226,6 +244,16 @@ a.card:focus-visible {
   --final-x: calc(50vw - 220px);
   --final-y: 24vh;
   --final-tilt: 9deg;
+}
+
+@media (min-width: 1200px) and (max-width: 1399px) {
+  .cardSlot9 {
+    --final-x: calc(-50vw + 160px);
+  }
+
+  .cardSlot10 {
+    --final-x: calc(50vw - 160px);
+  }
 }
 
 .content {

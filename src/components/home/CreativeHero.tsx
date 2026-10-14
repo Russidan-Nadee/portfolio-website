@@ -1,9 +1,14 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import gsap from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
 import type { ProjectData } from "@/app/admin/projects/types";
 import styles from "./CreativeHero.module.css";
+
+gsap.registerPlugin(ScrollTrigger);
 
 type HeroLocale = "th" | "en" | "ja";
 
@@ -92,6 +97,7 @@ export default function CreativeHero({
   certificates = [],
   locale = "en",
 }: CreativeHeroProps) {
+  const heroRef = useRef<HTMLElement>(null);
   const activeLocale: HeroLocale =
     locale === "th" || locale === "ja" ? locale : "en";
   const projectQueue: HeroCard[] = projects.slice(0, 6).map((project) => ({
@@ -117,9 +123,92 @@ export default function CreativeHero({
       kind === "project" ? projectQueue.shift() : certificateQueue.shift();
     return card ? [card] : [];
   });
+  const cardIdentity = cards.map((card) => `${card.kind}:${card.id}`).join("|");
+
+  useEffect(() => {
+    const hero = heroRef.current;
+    if (!hero) return;
+
+    const media = gsap.matchMedia();
+    media.add(
+      "(min-width: 1200px) and (prefers-reduced-motion: no-preference)",
+      () => {
+        const content = hero.querySelector<HTMLElement>(`.${styles.content}`);
+        const orbit = hero.querySelector<HTMLElement>(`.${styles.orbit}`);
+        if (!content || !orbit) return;
+
+        const cards = hero.querySelectorAll<HTMLElement>("[data-exit-side]");
+        const exitDistance = () => Math.max(window.innerWidth * 0.75, 700);
+
+        const timeline = gsap.timeline({
+          scrollTrigger: {
+            trigger: hero,
+            start: "top top+=64",
+            end: () => `+=${hero.offsetHeight}`,
+            scrub: true,
+            pin: true,
+            pinSpacing: false,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
+            onUpdate: ({ progress }) => {
+              hero.inert = progress >= 0.7;
+            },
+          },
+        });
+
+        cards.forEach((card) => {
+          const horizontalDirection = card.dataset.exitSide === "left" ? -1 : 1;
+          const finalY = Number.parseFloat(
+            getComputedStyle(card).getPropertyValue("--final-y")
+          );
+
+          timeline.to(
+            card,
+            {
+              "--exit-x": () => `${horizontalDirection * exitDistance()}px`,
+              "--exit-card-y": () =>
+                `${Math.round((finalY / 100) * window.innerHeight * 1.4)}px`,
+              "--exit-scale": 1.14,
+              duration: 0.8,
+              ease: "none",
+            },
+            0
+          );
+        });
+
+        timeline
+          .to(
+            content,
+            {
+              "--exit-y": () =>
+                `${-Math.min(window.innerHeight * 0.28, 260)}px`,
+              filter: "blur(10px)",
+              duration: 0.78,
+              ease: "none",
+            },
+            0.04
+          )
+          .to(orbit, { filter: "blur(8px)", duration: 0.7, ease: "none" }, 0.12)
+          .to(hero, { autoAlpha: 0, duration: 0.65, ease: "none" }, 0.35);
+
+        return () => {
+          hero.inert = false;
+        };
+      }
+    );
+
+    return () => {
+      hero.inert = false;
+      media.revert();
+    };
+  }, [cardIdentity]);
 
   return (
-    <section className={styles.hero} aria-labelledby="home-hero-title">
+    <section
+      ref={heroRef}
+      className={styles.hero}
+      aria-labelledby="home-hero-title"
+    >
       <div
         className={`${styles.content} ${cards.length > 0 ? styles.contentAnimated : ""}`}
       >
@@ -148,10 +237,13 @@ export default function CreativeHero({
       {cards.length > 0 && (
         <div className={styles.orbit}>
           {cards.map((card, index) => {
-            const slot =
-              cardSlots[Math.round((index * cardSlots.length) / cards.length)];
+            const slotIndex = Math.round(
+              (index * cardSlots.length) / cards.length
+            );
+            const slot = cardSlots[slotIndex];
             const className = `${styles.card} ${slot} ${card.kind === "project" ? styles.projectCard : styles.certificateCard}`;
             const label = cardLabels[activeLocale][card.kind];
+            const exitSide = slotIndex % 2 === 0 ? "left" : "right";
             const cardContents = (
               <>
                 <span className={styles.cardImage}>
@@ -185,6 +277,7 @@ export default function CreativeHero({
                 target="_blank"
                 rel="noopener noreferrer"
                 className={className}
+                data-exit-side={exitSide}
                 aria-label={`${label}: ${card.title} (PDF)`}
               >
                 {cardContents}
@@ -194,6 +287,7 @@ export default function CreativeHero({
                 key={`${card.kind}-${card.id}`}
                 href={card.href}
                 className={className}
+                data-exit-side={exitSide}
                 aria-label={`${label}: ${card.title}`}
               >
                 {cardContents}
