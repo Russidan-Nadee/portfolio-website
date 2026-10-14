@@ -1,0 +1,341 @@
+.showcase {
+  --showcase-ink: #181b22;
+  --showcase-halo: rgb(50 77 120 / 8%);
+  --showcase-control-border: rgb(24 27 34 / 26%);
+  --showcase-control-bg: rgb(24 27 34 / 5%);
+  --showcase-control-hover: rgb(24 27 34 / 12%);
+  --showcase-card-border: rgb(24 27 34 / 16%);
+  --showcase-card-active-border: rgb(24 27 34 / 30%);
+
+  position: relative;
+  overflow: visible;
+  padding: 104px 0 96px;
+  color: var(--showcase-ink);
+  background: radial-gradient(
+    ellipse at 50% 48%,
+    #fff 0%,
+    #f5f7fb 48%,
+    #e9eef5 100%
+  );
+}
+
+:global([data-theme="dark"]) .showcase {
+  --showcase-ink: #f6f6f7;
+  --showcase-halo: rgb(255 255 255 / 7.5%);
+  --showcase-control-border: rgb(255 255 255 / 30%);
+  --showcase-control-bg: rgb(255 255 255 / 6%);
+  --showcase-control-hover: rgb(255 255 255 / 16%);
+  --showcase-card-border: rgb(255 255 255 / 13%);
+  --showcase-card-active-border: rgb(255 255 255 / 28%);
+
+  background: radial-gradient(
+    ellipse at 50% 48%,
+    #24262a 0%,
+    #141518 48%,
+    #090a0c 100%
+  );
+}
+
+.showcase::before {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  content: "";
+  background: radial-gradient(
+    ellipse 36% 42% at 50% 54%,
+    var(--showcase-halo),
+    transparent 78%
+  );
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.heading {
+  margin: 0 24px 38px;
+  color: var(--showcase-ink);
+  font-family:
+    var(--font-inter), "IBM Plex Sans Thai", "Noto Sans JP", system-ui,
+    sans-serif;
+  font-size: clamp(2.5rem, 5.3vw, 4.7rem);
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -0.055em;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(30px);
+  transition:
+    opacity 0.75s ease,
+    transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.isVisible .heading {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.stage {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  overflow: hidden;
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+  opacity: 0;
+  transform: translateY(44px);
+  transition:
+    opacity 0.85s ease 0.12s,
+    transform 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.12s;
+}
+
+.stage:active {
+  cursor: grabbing;
+}
+
+.isVisible .stage {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  overflow: hidden;
+  border: 1px solid var(--showcase-card-border);
+  border-radius: 20px;
+  background: #2a2c30;
+  box-shadow: 0 22px 44px rgba(0, 0, 0, 0.32);
+  transform-origin: center;
+  transition:
+    transform 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.75s ease,
+    filter 0.75s ease,
+    box-shadow 0.75s ease;
+  will-change: transform;
+}
+
+.card[data-active="true"] {
+  border-color: var(--showcase-card-active-border);
+  box-shadow:
+    0 28px 74px rgba(0, 0, 0, 0.58),
+    0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.poster {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  opacity: 0;
+}
+
+.isVisible .poster {
+  animation: revealCard 0.85s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition:
+    transform 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.2s ease;
+}
+
+.card:hover .image {
+  transform: scale(1.045);
+}
+
+.imageShade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.04) 17%,
+    rgba(0, 0, 0, 0.1) 42%,
+    rgba(0, 0, 0, 0.82) 100%
+  );
+}
+
+.cardText {
+  position: absolute;
+  right: 22px;
+  bottom: 24px;
+  left: 22px;
+  color: #fff;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+}
+
+.cardTitle {
+  margin: 0 0 10px;
+  font-size: clamp(1.45rem, 2vw, 1.85rem);
+  font-weight: 750;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+.cardTech {
+  display: -webkit-box;
+  overflow: hidden;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 0.78rem;
+  font-weight: 500;
+  line-height: 1.45;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.cardAction {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
+  cursor: pointer;
+}
+
+.cardAction:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: -6px;
+}
+
+.navigation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 25px;
+  min-height: 44px;
+  margin: 10px 16px 0;
+}
+
+.arrow {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  flex: none;
+  place-items: center;
+  padding: 0;
+  border: 1px solid var(--showcase-control-border);
+  border-radius: 50%;
+  background: var(--showcase-control-bg);
+  color: var(--showcase-ink);
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.arrow:hover {
+  background: var(--showcase-control-hover);
+  transform: translateY(-2px);
+}
+
+.arrow:focus-visible,
+.dot:focus-visible {
+  outline: 2px solid var(--showcase-ink);
+  outline-offset: 4px;
+}
+
+.arrow svg {
+  width: 20px;
+  height: 20px;
+}
+
+.dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: var(--showcase-ink);
+  opacity: 0.35;
+  cursor: pointer;
+  transition:
+    width 0.3s ease,
+    opacity 0.3s ease;
+}
+
+.activeDot {
+  width: 26px;
+  opacity: 1;
+}
+
+@keyframes revealCard {
+  from {
+    opacity: 0;
+    transform: translateY(32px) scale(0.94);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 640px) {
+  .showcase {
+    padding: 80px 0 76px;
+  }
+
+  .heading {
+    margin-bottom: 22px;
+    font-size: clamp(2.25rem, 9vw, 3.2rem);
+  }
+
+  .cardText {
+    right: 18px;
+    bottom: 20px;
+    left: 18px;
+  }
+
+  .cardTitle {
+    font-size: 1.5rem;
+  }
+
+  .navigation {
+    margin-top: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heading,
+  .stage {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .poster,
+  .isVisible .poster {
+    opacity: 1;
+    animation: none;
+  }
+
+  .card,
+  .image,
+  .arrow,
+  .dot {
+    transition: none;
+  }
+}

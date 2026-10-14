@@ -1,6 +1,7 @@
 .scene {
   position: relative;
   isolation: isolate;
+  z-index: 1;
   min-height: max(560px, calc(100svh - 4rem));
   overflow: hidden;
   background: var(--background);
@@ -45,6 +46,7 @@
   aspect-ratio: 1;
   place-items: center;
   transform: translate(-50%, -50%) scale(var(--rest-scale));
+  translate: var(--exit-x, 0px) var(--exit-y, 0px);
   transform-style: preserve-3d;
   animation: arcTravel 34s linear var(--orbit-delay) infinite;
 }
@@ -85,6 +87,7 @@
   padding: 4rem 1.75rem;
   text-align: center;
   transform: translate(-50%, -50%);
+  translate: 0 var(--exit-copy-y, 0px);
 }
 
 .copy::before {

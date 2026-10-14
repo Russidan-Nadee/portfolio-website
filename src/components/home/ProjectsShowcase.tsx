@@ -1,863 +1,376 @@
-// src/components/ProjectsShowcase.tsx
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import type { ProjectData } from "@/app/admin/projects/types";
+import styles from "./ProjectsShowcase.module.css";
 
 interface ProjectsShowcaseProps {
-  // Only translations.home.projectsShowcase.title is read below; th/en/ja locale
-  // JSON files don't share an identical shape, so no precise type covers this.
+  // The three locale files do not currently share one translation type.
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   translations?: any;
   projects: ProjectData[];
   locale?: "th" | "en" | "ja";
 }
 
-interface Project {
-  id: string;
-  title: string;
-  tech: string;
-  filter: string;
-  isCenter: boolean;
-  image: string;
-  slug: string;
-}
+const labels = {
+  en: {
+    previous: "Previous project",
+    next: "Next project",
+    show: "Show project",
+    view: "View project",
+    jump: "Go to project",
+  },
+  th: {
+    previous: "โปรเจคก่อนหน้า",
+    next: "โปรเจคถัดไป",
+    show: "แสดงโปรเจค",
+    view: "ดูโปรเจค",
+    jump: "ไปที่โปรเจค",
+  },
+  ja: {
+    previous: "前のプロジェクト",
+    next: "次のプロジェクト",
+    show: "プロジェクトを表示",
+    view: "プロジェクトを見る",
+    jump: "プロジェクトに移動",
+  },
+} as const;
+
+const wrapIndex = (index: number, length: number) =>
+  ((index % length) + length) % length;
 
 export default function ProjectsShowcase({
   translations,
-  projects: dbProjects,
+  projects,
   locale = "en",
 }: ProjectsShowcaseProps) {
-  const showcaseRef = useRef<HTMLDivElement>(null);
-  const titleRef = useRef<HTMLHeadingElement>(null);
-  const cardsRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
+  const pointerStartRef = useRef<{ x: number; y: number; id: number } | null>(
+    null
+  );
+  const suppressClickRef = useRef(false);
 
-  const [mounted, setMounted] = useState(false);
+  const [activeSequence, setActiveSequence] = useState(0);
+  const [cardWidth, setCardWidth] = useState(320);
   const [isVisible, setIsVisible] = useState(false);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isTransitioning, setIsTransitioning] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  const [visibleCardsCount, setVisibleCardsCount] = useState(3);
-  const [showSideButtons, setShowSideButtons] = useState(true);
-
-  // Touch/swipe states
-  const [touchStart, setTouchStart] = useState<number | null>(null);
-  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const [entranceFinished, setEntranceFinished] = useState(false);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
-  const [dragOffset, setDragOffset] = useState(0);
 
-  const transitionTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const resetTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-  const centerIndex = Math.floor(dbProjects.length / 2);
-  const projects: Project[] = dbProjects.map((p, index) => ({
-    id: p.slug,
-    title: p.title[locale] || p.title.en,
-    tech: p.techSummary,
-    filter: index === centerIndex ? "none" : "grayscale(100%) contrast(1.2)",
-    isCenter: index === centerIndex,
-    image: p.thumbnailUrl,
-    slug: p.slug,
-  }));
-
-  const totalProjects = projects.length;
-
-  const createInfiniteArray = useCallback(() => {
-    const repeats = 4;
-    const result = [];
-    for (let r = 0; r < repeats; r++) {
-      for (let i = 0; i < totalProjects; i++) {
-        result.push({
-          ...projects[i],
-          originalIndex: i,
-          arrayIndex: r * totalProjects + i,
-        });
-      }
-    }
-    return result;
-  }, [projects, totalProjects]);
-
-  const infiniteProjects = createInfiniteArray();
-  const [realIndex, setRealIndex] = useState(totalProjects);
-
-  const getTransformX = useCallback((): number => {
-    const cardWidth = 350;
-    const gap = 32;
-
-    if (isMobile) {
-      // Mobile: แสดงแค่ 1 card, ไม่มี gap
-      return -realIndex * cardWidth;
-    } else {
-      // Desktop: ensure complete cards only
-      const cardWidthWithGap = cardWidth + gap;
-
-      if (visibleCardsCount === 1) {
-        // 1 card: center in 350px container
-        return 0 - realIndex * cardWidthWithGap;
-      } else if (visibleCardsCount === 2) {
-        // 2 cards: position so we see exactly 2 complete cards
-        // We want cards at positions 0 and 382, so offset by 0
-        return 0 - realIndex * cardWidthWithGap;
-      } else {
-        // 3 cards: position so middle card is centered in 1114px container
-        // Middle position should be at (1114-350)/2 = 382px
-        return 382 - realIndex * cardWidthWithGap;
-      }
-    }
-  }, [realIndex, isMobile, visibleCardsCount]);
-
-  const goLeft = useCallback((): void => {
-    if (isTransitioning) return;
-    setIsTransitioning(true);
-
-    setRealIndex((prev) => {
-      const next = prev - 1;
-      if (resetTimeoutRef.current) {
-        clearTimeout(resetTimeoutRef.current);
-      }
-
-      if (next < totalProjects) {
-        resetTimeoutRef.current = setTimeout(() => {
-          setRealIndex(next + totalProjects * 2);
-          resetTimeoutRef.current = null;
-        }, 600);
-      }
-      return next;
-    });
-
-    setCurrentIndex((prev) => (prev - 1 + totalProjects) % totalProjects);
-
-    if (transitionTimeoutRef.current) {
-      clearTimeout(transitionTimeoutRef.current);
-    }
-    transitionTimeoutRef.current = setTimeout(() => {
-      setIsTransitioning(false);
-      transitionTimeoutRef.current = null;
-    }, 600);
-  }, [isTransitioning, totalProjects]);
-
-  const goRight = useCallback((): void => {
-    if (isTransitioning) return;
-    setIsTransitioning(true);
-
-    setRealIndex((prev) => {
-      const next = prev + 1;
-      if (resetTimeoutRef.current) {
-        clearTimeout(resetTimeoutRef.current);
-      }
-
-      if (next >= infiniteProjects.length - totalProjects) {
-        resetTimeoutRef.current = setTimeout(() => {
-          setRealIndex(totalProjects);
-          resetTimeoutRef.current = null;
-        }, 600);
-      }
-      return next;
-    });
-
-    setCurrentIndex((prev) => (prev + 1) % totalProjects);
-
-    if (transitionTimeoutRef.current) {
-      clearTimeout(transitionTimeoutRef.current);
-    }
-    transitionTimeoutRef.current = setTimeout(() => {
-      setIsTransitioning(false);
-      transitionTimeoutRef.current = null;
-    }, 600);
-  }, [isTransitioning, infiniteProjects.length, totalProjects]);
-
-  // Responsive layout with 2 clear breakpoints
-  useEffect(() => {
-    const checkLayout = () => {
-      const screenWidth = window.innerWidth;
-      setIsMobile(screenWidth <= 768);
-
-      if (screenWidth > 768) {
-        // 3 fixed container sizes:
-        // Container 1: 350px (1 card)
-        // Container 2: 732px (2 cards: 350*2 + 32*1)
-        // Container 3: 1114px (3 cards: 350*3 + 32*2)
-
-        const container2Width = 732;
-        const container3Width = 1114;
-        const buttonSpace = 160; // Space needed for side buttons (80px each side)
-
-        // Check if side buttons would overlap with container
-        const canShowSideButtons =
-          screenWidth >= container3Width + buttonSpace + 160; // Extra padding
-
-        setShowSideButtons(canShowSideButtons);
-
-        // Only switch to next container when there's enough space
-        if (screenWidth >= container3Width + 160) {
-          // Need space for container + padding
-          setVisibleCardsCount(3);
-        } else if (screenWidth >= container2Width + 160) {
-          // Need space for container + padding
-          setVisibleCardsCount(2);
-        } else {
-          setVisibleCardsCount(1);
-        }
-      } else {
-        setVisibleCardsCount(1);
-        setShowSideButtons(false);
-      }
-    };
-
-    checkLayout();
-    window.addEventListener("resize", checkLayout);
-    return () => window.removeEventListener("resize", checkLayout);
-  }, []);
+  const projectCount = projects.length;
+  const activeIndex = projectCount
+    ? wrapIndex(activeSequence, projectCount)
+    : 0;
+  const copy = labels[locale];
+  const step = Math.round(cardWidth * 0.88);
+  const cardHeight = Math.round(cardWidth * 1.25);
 
   useEffect(() => {
-    setMounted(true);
+    const section = sectionRef.current;
+    if (!section) return;
 
     const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && !isVisible) {
-            setIsVisible(true);
-          }
-        });
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
       },
-      { threshold: 0.1 }
+      { threshold: 0.2 }
     );
 
-    if (showcaseRef.current) {
-      observer.observe(showcaseRef.current);
-    }
-
+    observer.observe(section);
     return () => observer.disconnect();
-  }, [isVisible]);
+  }, [projectCount]);
 
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent): void => {
-      if (showcaseRef.current) {
-        const rect = showcaseRef.current.getBoundingClientRect();
-        const x = (e.clientX - rect.left - rect.width / 2) / rect.width;
-        const y = (e.clientY - rect.top - rect.height / 2) / rect.height;
-        setMousePosition({ x: x * 10, y: y * 10 });
-      }
-    };
+    const stage = stageRef.current;
+    if (!stage) return;
 
-    const section = showcaseRef.current;
-    if (section) {
-      section.addEventListener("mousemove", handleMouseMove);
-      return () => section.removeEventListener("mousemove", handleMouseMove);
+    const observer = new ResizeObserver(([entry]) => {
+      setCardWidth(Math.min(320, Math.max(230, entry.contentRect.width - 80)));
+    });
+
+    observer.observe(stage);
+    return () => observer.disconnect();
+  }, [projectCount]);
+
+  useEffect(() => {
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const updatePreference = () => setPrefersReducedMotion(media.matches);
+    updatePreference();
+    media.addEventListener("change", updatePreference);
+    return () => media.removeEventListener("change", updatePreference);
+  }, []);
+
+  useEffect(() => {
+    if (!isVisible) return;
+    const timeout = window.setTimeout(
+      () => setEntranceFinished(true),
+      prefersReducedMotion ? 0 : 1250
+    );
+    return () => window.clearTimeout(timeout);
+  }, [isVisible, prefersReducedMotion]);
+
+  useEffect(() => {
+    if (
+      !entranceFinished ||
+      prefersReducedMotion ||
+      isDragging ||
+      projectCount < 2
+    ) {
+      return;
     }
-  }, []);
 
-  useEffect(() => {
-    return () => {
-      if (transitionTimeoutRef.current) {
-        clearTimeout(transitionTimeoutRef.current);
-      }
-      if (resetTimeoutRef.current) {
-        clearTimeout(resetTimeoutRef.current);
-      }
-    };
-  }, []);
-
-  // Auto-slide ทุก 3 วินาที
-  useEffect(() => {
-    const autoSlide = setInterval(() => {
-      if (!isTransitioning) {
-        goRight();
+    const interval = window.setInterval(() => {
+      if (!sectionRef.current?.contains(document.activeElement)) {
+        setActiveSequence((previous) => previous + 1);
       }
     }, 3000);
-    return () => clearInterval(autoSlide);
-  }, [goRight, isTransitioning]);
+    return () => window.clearInterval(interval);
+  }, [
+    activeSequence,
+    entranceFinished,
+    prefersReducedMotion,
+    isDragging,
+    projectCount,
+  ]);
 
-  // Touch event handlers
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setTouchStart(e.targetTouches[0].clientX);
-    setTouchEnd(null);
+  const move = useCallback((direction: number) => {
+    setActiveSequence((previous) => previous + direction);
+  }, []);
+
+  const moveTo = useCallback(
+    (target: number) => {
+      if (projectCount < 2) return;
+      setActiveSequence((previous) => {
+        const current = wrapIndex(previous, projectCount);
+        let distance = target - current;
+        if (distance > projectCount / 2) distance -= projectCount;
+        if (distance < -projectCount / 2) distance += projectCount;
+        return previous + distance;
+      });
+    },
+    [projectCount]
+  );
+
+  const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (event.pointerType === "mouse" && event.button !== 0) return;
+    suppressClickRef.current = false;
+    pointerStartRef.current = {
+      x: event.clientX,
+      y: event.clientY,
+      id: event.pointerId,
+    };
     setIsDragging(true);
-    setDragOffset(0);
   };
 
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (!touchStart || !isDragging) return;
-
-    const currentTouch = e.targetTouches[0].clientX;
-    const diff = currentTouch - touchStart;
-
-    setTouchEnd(currentTouch);
-    setDragOffset(diff);
-  };
-
-  const handleTouchEnd = () => {
-    if (!touchStart || !touchEnd || !isDragging) {
+  const finishPointer = useCallback(
+    (clientX: number, clientY: number, pointerId: number) => {
+      const start = pointerStartRef.current;
+      pointerStartRef.current = null;
       setIsDragging(false);
-      setDragOffset(0);
-      return;
-    }
+      if (!start || start.id !== pointerId || projectCount < 2) return;
 
-    const distance = touchStart - touchEnd;
-    const isLeftSwipe = distance > 50;
-    const isRightSwipe = distance < -50;
+      const distanceX = clientX - start.x;
+      const distanceY = clientY - start.y;
+      if (
+        Math.abs(distanceX) > 48 &&
+        Math.abs(distanceX) > Math.abs(distanceY)
+      ) {
+        suppressClickRef.current = true;
+        move(distanceX < 0 ? 1 : -1);
+      }
+    },
+    [move, projectCount]
+  );
 
-    setIsDragging(false);
-    setDragOffset(0);
-
-    if (isLeftSwipe && !isTransitioning) {
-      goRight(); // swipe left to go to next (right)
-    } else if (isRightSwipe && !isTransitioning) {
-      goLeft(); // swipe right to go to previous (left)
-    }
-  };
-
-  // Mouse event handlers for desktop drag
-  const handleMouseDown = (e: React.MouseEvent) => {
-    setTouchStart(e.clientX);
-    setTouchEnd(null);
-    setIsDragging(true);
-    setDragOffset(0);
-  };
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!touchStart || !isDragging) return;
-
-    const currentMouse = e.clientX;
-    const diff = currentMouse - touchStart;
-
-    setTouchEnd(currentMouse);
-    setDragOffset(diff);
-  };
-
-  const handleMouseUp = () => {
-    if (!touchStart || !touchEnd || !isDragging) {
+  useEffect(() => {
+    const handlePointerUp = (event: PointerEvent) => {
+      finishPointer(event.clientX, event.clientY, event.pointerId);
+    };
+    const handlePointerCancel = () => {
+      pointerStartRef.current = null;
       setIsDragging(false);
-      setDragOffset(0);
-      return;
-    }
+    };
 
-    const distance = touchStart - touchEnd;
-    const isLeftSwipe = distance > 50;
-    const isRightSwipe = distance < -50;
+    window.addEventListener("pointerup", handlePointerUp);
+    window.addEventListener("pointercancel", handlePointerCancel);
+    return () => {
+      window.removeEventListener("pointerup", handlePointerUp);
+      window.removeEventListener("pointercancel", handlePointerCancel);
+    };
+  }, [finishPointer]);
 
-    setIsDragging(false);
-    setDragOffset(0);
+  if (projectCount === 0) return null;
 
-    if (isLeftSwipe && !isTransitioning) {
-      goRight();
-    } else if (isRightSwipe && !isTransitioning) {
-      goLeft();
-    }
-  };
-
-  if (!mounted) return null;
+  const visibleOffsets = projectCount === 1 ? [0] : [-3, -2, -1, 0, 1, 2, 3];
 
   return (
-    <>
-      <style jsx>{`
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(60px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
+    <section
+      ref={sectionRef}
+      className={`${styles.showcase} ${isVisible ? styles.isVisible : ""}`}
+      aria-label={
+        translations?.home?.projectsShowcase?.title || "Recommended Projects"
+      }
+    >
+      <div className={styles.content}>
+        <h2 className={styles.heading}>
+          {translations?.home?.projectsShowcase?.title ||
+            "Recommended Projects"}
+        </h2>
 
-        @keyframes slideInScale {
-          from {
-            opacity: 0;
-            transform: scale(0.8) translateY(40px);
-          }
-          to {
-            opacity: 1;
-            transform: scale(1) translateY(0);
-          }
-        }
+        <div
+          ref={stageRef}
+          className={styles.stage}
+          style={{ height: cardHeight + 90 }}
+          onPointerDown={handlePointerDown}
+          onClickCapture={(event) => {
+            if (suppressClickRef.current) {
+              event.preventDefault();
+              event.stopPropagation();
+              suppressClickRef.current = false;
+            }
+          }}
+        >
+          {visibleOffsets.map((offset) => {
+            const sequence = activeSequence + offset;
+            const projectIndex = wrapIndex(sequence, projectCount);
+            const project = projects[projectIndex];
+            const distance = Math.abs(offset);
+            const isActive = offset === 0;
+            const isAdjacent = distance === 1;
+            const scale = distance === 0 ? 1 : distance === 1 ? 0.79 : 0.55;
+            const opacity =
+              distance === 0
+                ? 1
+                : distance === 1
+                  ? 0.58
+                  : distance === 2
+                    ? 0.24
+                    : 0;
 
-        @keyframes float {
-          0%,
-          100% {
-            transform: translateY(0px);
-          }
-          50% {
-            transform: translateY(-8px);
-          }
-        }
+            return (
+              <article
+                key={sequence}
+                className={styles.card}
+                data-active={isActive}
+                aria-hidden={distance > 1}
+                style={{
+                  width: cardWidth,
+                  height: cardHeight,
+                  zIndex: 10 - distance,
+                  opacity,
+                  filter:
+                    distance === 0
+                      ? "none"
+                      : distance === 1
+                        ? "brightness(0.7) saturate(0.75)"
+                        : "brightness(0.55) saturate(0.6)",
+                  transform: `translate(-50%, -50%) translateX(${offset * step}px) scale(${scale})`,
+                  pointerEvents: distance > 1 ? "none" : "auto",
+                }}
+              >
+                <div
+                  className={styles.poster}
+                  style={{ animationDelay: `${180 + distance * 90}ms` }}
+                >
+                  {project.thumbnailUrl && (
+                    // CMS thumbnails may be local or remote and are already sized for cards.
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      className={styles.image}
+                      src={project.thumbnailUrl}
+                      alt=""
+                      draggable={false}
+                      loading={distance > 1 ? "lazy" : "eager"}
+                      onError={(event) => {
+                        event.currentTarget.style.opacity = "0";
+                      }}
+                    />
+                  )}
+                  <div className={styles.imageShade} />
+                  <div className={styles.cardText}>
+                    <h3 className={styles.cardTitle}>
+                      {project.title[locale] || project.title.en}
+                    </h3>
+                    <p className={styles.cardTech}>{project.techSummary}</p>
+                  </div>
+                </div>
 
-        .showcase-title {
-          animation: ${isVisible ? "fadeInUp 1s cubic-bezier(0.25, 0.46, 0.45, 0.94)" : "none"};
-        }
-
-        .showcase-cards {
-          animation: ${isVisible ? "slideInScale 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s both" : "none"};
-          position: relative;
-          overflow: hidden;
-          width: ${visibleCardsCount === 1 ? "350px" : visibleCardsCount === 2 ? "732px" : "1114px"};
-          margin: 0 auto;
-          height: 500px;
-          touch-action: pan-x;
-          user-select: none;
-          clip-path: inset(0 0 0 0);
-        }
-
-        .cards-container {
-          display: flex;
-          gap: 2rem;
-          transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-          height: 100%;
-          align-items: center;
-          width: max-content;
-        }
-
-        .project-card {
-          position: relative;
-          overflow: hidden;
-          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-          cursor: pointer;
-          border-radius: 16px;
-          aspect-ratio: 4/5;
-          background: var(--card);
-          width: 350px;
-          height: 437px;
-          flex-shrink: 0;
-        }
-
-        .project-card:hover {
-          transform: translateY(-8px);
-        }
-
-        @media (max-width: 768px) {
-          .showcase-cards {
-            width: 350px !important;
-            max-width: 350px !important;
-            margin: 0 auto;
-            overflow: hidden;
-            clip-path: none;
-            padding: 0;
-            height: 437px;
-            touch-action: pan-x;
-            cursor: grab;
-          }
-
-          .showcase-cards:active {
-            cursor: grabbing;
-          }
-
-          .indicator-dots {
-            align-items: center;
-            margin-top: 0;
-          }
-
-          .mobile-navigation {
-            align-items: center !important;
-          }
-
-          .mobile-navigation .indicator-dots {
-            margin-top: 0 !important;
-            align-items: center !important;
-          }
-
-          .cards-container {
-            gap: 0;
-          }
-
-          .project-card {
-            width: 350px;
-            margin: 0;
-            flex-shrink: 0;
-          }
-
-          .project-card.center-card {
-            transform: scale(1);
-          }
-
-          .project-card.side-card {
-            transform: scale(1);
-            opacity: 1;
-          }
-        }
-
-        .project-card::before {
-          content: "";
-          position: absolute;
-          top: 0;
-          left: -100%;
-          width: 100%;
-          height: 100%;
-          background: linear-gradient(
-            90deg,
-            transparent,
-            rgba(255, 255, 255, 0.1),
-            transparent
-          );
-          transition: left 0.6s ease;
-          z-index: 2;
-        }
-
-        .project-card:hover::before {
-          left: 100%;
-        }
-
-        .project-card img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          display: block;
-          transition: all 0.4s ease;
-          filter: inherit;
-        }
-
-        .card-overlay {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background: linear-gradient(
-            135deg,
-            rgba(0, 0, 0, 0.6) 0%,
-            rgba(0, 0, 0, 0.3) 50%,
-            rgba(0, 0, 0, 0.7) 100%
-          );
-          z-index: 1;
-        }
-
-        [data-theme="dark"] .card-overlay {
-          background: linear-gradient(
-            135deg,
-            rgba(0, 0, 0, 0.7) 0%,
-            rgba(0, 0, 0, 0.4) 50%,
-            rgba(0, 0, 0, 0.8) 100%
-          );
-        }
-
-        .card-content {
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          right: 0;
-          z-index: 3;
-          padding: 2rem;
-        }
-
-        .floating-element {
-          animation: float 3s ease-in-out infinite;
-          background: var(--foreground) !important;
-          opacity: 0.05;
-        }
-
-        .indicator-dots {
-          display: flex;
-          justify-content: center;
-          gap: 0.5rem;
-          margin-top: 2rem;
-        }
-
-        .dot {
-          width: 8px;
-          height: 8px;
-          border-radius: 50%;
-          background: var(--muted-foreground);
-          opacity: 0.3;
-          cursor: pointer;
-          transition: all 0.3s ease;
-        }
-
-        .dot.active {
-          background: var(--foreground);
-          opacity: 0.8;
-          transform: scale(1.2);
-        }
-
-        .dot:hover {
-          background: var(--foreground);
-          opacity: 0.6;
-        }
-      `}</style>
-
-      <section
-        ref={showcaseRef}
-        className="py-20 relative overflow-hidden"
-        style={{ backgroundColor: "var(--muted)" }}
-      >
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div
-            className="absolute top-20 left-10 w-20 h-20 rounded-full floating-element"
-            style={{
-              transform: `translate(${mousePosition.x * 0.3}px, ${mousePosition.y * 0.3}px)`,
-              animationDelay: "0s",
-            }}
-          />
-          <div
-            className="absolute bottom-32 right-20 w-16 h-16 floating-element"
-            style={{
-              clipPath: "polygon(50% 0%, 0% 100%, 100% 100%)",
-              transform: `translate(${mousePosition.x * -0.2}px, ${mousePosition.y * -0.2}px)`,
-              animationDelay: "1s",
-            }}
-          />
-          <div
-            className="absolute top-1/2 right-1/4 w-12 h-12 floating-element"
-            style={{
-              clipPath: "polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%)",
-              transform: `translate(${mousePosition.x * 0.5}px, ${mousePosition.y * 0.5}px)`,
-              animationDelay: "2s",
-            }}
-          />
+                {isActive ? (
+                  <Link
+                    className={styles.cardAction}
+                    href={`/portfolio/${project.slug}`}
+                    draggable={false}
+                    aria-label={`${copy.view} ${project.title[locale] || project.title.en}`}
+                  />
+                ) : isAdjacent ? (
+                  <button
+                    className={styles.cardAction}
+                    type="button"
+                    onClick={() => move(offset)}
+                    aria-label={`${copy.show} ${project.title[locale] || project.title.en}`}
+                  />
+                ) : null}
+              </article>
+            );
+          })}
         </div>
 
-        <div className="max-w-7xl mx-auto px-8 relative z-10">
-          <div className="text-center mb-16">
-            <h2
-              ref={titleRef}
-              className="showcase-title text-5xl md:text-6xl lg:text-7xl font-black leading-none"
-              style={{
-                color: "var(--foreground)",
-                fontFamily:
-                  'var(--font-inter), "IBM Plex Sans Thai", "Noto Sans JP", system-ui, sans-serif',
-              }}
+        {projectCount > 1 && (
+          <div className={styles.navigation}>
+            <button
+              className={styles.arrow}
+              type="button"
+              onClick={() => move(-1)}
+              aria-label={copy.previous}
             >
-              {translations?.home?.projectsShowcase?.title ||
-                "Recommended Projects"}
-            </h2>
-          </div>
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path
+                  d="m14.5 5-7 7 7 7"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
 
-          <div className="relative">
-            {showSideButtons && (
-              <>
+            <div className={styles.dots}>
+              {projects.map((project, index) => (
                 <button
-                  onClick={goLeft}
-                  className="hidden md:flex absolute left-[-80px] top-1/2 transform -translate-y-1/2 w-12 h-12 rounded-full border-2 items-center justify-center transition-all duration-300 hover:scale-110 z-10"
-                  style={{
-                    backgroundColor: "var(--card)",
-                    borderColor: "var(--border)",
-                    color: "var(--foreground)",
-                  }}
+                  key={project.slug}
+                  className={`${styles.dot} ${index === activeIndex ? styles.activeDot : ""}`}
                   type="button"
-                  aria-label="Previous project"
-                >
-                  <svg
-                    className="w-6 h-6"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M15 19l-7-7 7-7"
-                    />
-                  </svg>
-                </button>
-
-                <button
-                  onClick={goRight}
-                  className="hidden md:flex absolute right-[-80px] top-1/2 transform -translate-y-1/2 w-12 h-12 rounded-full border-2 items-center justify-center transition-all duration-300 hover:scale-110 z-10"
-                  style={{
-                    backgroundColor: "var(--card)",
-                    borderColor: "var(--border)",
-                    color: "var(--foreground)",
-                  }}
-                  type="button"
-                  aria-label="Next project"
-                >
-                  <svg
-                    className="w-6 h-6"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
-                </button>
-              </>
-            )}
-
-            <div
-              className="showcase-cards"
-              onTouchStart={handleTouchStart}
-              onTouchMove={handleTouchMove}
-              onTouchEnd={handleTouchEnd}
-              onMouseDown={handleMouseDown}
-              onMouseMove={handleMouseMove}
-              onMouseUp={handleMouseUp}
-              onMouseLeave={handleMouseUp}
-            >
-              <div
-                ref={cardsRef}
-                className="cards-container"
-                style={{
-                  transform: `translateX(${getTransformX() + dragOffset}px)`,
-                  transition: isDragging
-                    ? "none"
-                    : isTransitioning
-                      ? "transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)"
-                      : "none",
-                }}
-              >
-                {infiniteProjects.map((project, index) => {
-                  let coloredCardIndex;
-
-                  if (isMobile) {
-                    coloredCardIndex = realIndex;
-                  } else if (visibleCardsCount === 1) {
-                    coloredCardIndex = realIndex;
-                  } else if (visibleCardsCount === 2) {
-                    // Right card in 2-card layout
-                    coloredCardIndex = realIndex;
-                  } else if (visibleCardsCount === 3) {
-                    // Middle card in 3-card layout
-                    coloredCardIndex = realIndex;
-                  }
-
-                  return (
-                    <div
-                      key={`${project.originalIndex}-${index}`}
-                      className="project-card"
-                      style={{
-                        filter: isMobile
-                          ? "none"
-                          : index === coloredCardIndex
-                            ? "none"
-                            : "grayscale(100%) contrast(1.2)",
-                      }}
-                      onClick={() => {
-                        window.location.href = `/portfolio/${project.slug}`;
-                      }}
-                    >
-                      <img
-                        src={project.image}
-                        alt={project.title}
-                        style={{
-                          filter: "inherit",
-                        }}
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          target.style.display = "none";
-                          if (target.parentElement) {
-                            target.parentElement.style.backgroundColor =
-                              "var(--muted)";
-                            target.parentElement.style.display = "flex";
-                            target.parentElement.style.alignItems = "center";
-                            target.parentElement.style.justifyContent =
-                              "center";
-                          }
-                        }}
-                      />
-
-                      {!isMobile && index !== coloredCardIndex && (
-                        <div className="card-overlay" />
-                      )}
-
-                      <div className="card-content">
-                        <h3
-                          className="text-2xl md:text-3xl font-bold mb-4"
-                          style={{ color: "#ffffff" }}
-                        >
-                          {project.title}
-                        </h3>
-
-                        <p
-                          className="text-xs md:text-sm font-medium opacity-70"
-                          style={{ color: "#ffffff" }}
-                        >
-                          {project.tech}
-                        </p>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
+                  onClick={() => moveTo(index)}
+                  aria-label={`${copy.jump} ${project.title[locale] || project.title.en}`}
+                  aria-current={index === activeIndex ? "true" : undefined}
+                />
+              ))}
             </div>
 
-            <div className="flex items-center justify-center gap-4 mt-8 mobile-navigation">
-              <button
-                onClick={goLeft}
-                className={`${isMobile || !showSideButtons ? "flex" : "hidden"} w-10 h-10 rounded-full border-2 items-center justify-center transition-all duration-300 hover:scale-110`}
-                style={{
-                  backgroundColor: "var(--card)",
-                  borderColor: "var(--border)",
-                  color: "var(--foreground)",
-                }}
-                type="button"
-                aria-label="Previous project"
-              >
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
+            <button
+              className={styles.arrow}
+              type="button"
+              onClick={() => move(1)}
+              aria-label={copy.next}
+            >
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path
+                  d="m9.5 5 7 7-7 7"
                   stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15 19l-7-7 7-7"
-                  />
-                </svg>
-              </button>
-
-              <div className="indicator-dots">
-                {projects.map((_, index) => (
-                  <div
-                    key={index}
-                    className={`dot ${index === currentIndex ? "active" : ""}`}
-                    onClick={() => {
-                      if (!isTransitioning) {
-                        const currentProjectActualIndex =
-                          realIndex % totalProjects;
-                        const targetOffset = index - currentProjectActualIndex;
-
-                        if (targetOffset > 0) {
-                          for (let i = 0; i < targetOffset; i++) {
-                            goRight();
-                          }
-                        } else if (targetOffset < 0) {
-                          for (let i = 0; i < Math.abs(targetOffset); i++) {
-                            goLeft();
-                          }
-                        }
-                      }
-                    }}
-                  />
-                ))}
-              </div>
-
-              <button
-                onClick={goRight}
-                className={`${isMobile || !showSideButtons ? "flex" : "hidden"} w-10 h-10 rounded-full border-2 items-center justify-center transition-all duration-300 hover:scale-110`}
-                style={{
-                  backgroundColor: "var(--card)",
-                  borderColor: "var(--border)",
-                  color: "var(--foreground)",
-                }}
-                type="button"
-                aria-label="Next project"
-              >
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
-              </button>
-            </div>
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
           </div>
-        </div>
-      </section>
-    </>
+        )}
+      </div>
+    </section>
   );
 }
