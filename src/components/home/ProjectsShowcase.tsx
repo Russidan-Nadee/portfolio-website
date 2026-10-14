@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import type { ProjectData } from "@/app/admin/projects/types";
+import AiStoryPanel from "./AiStoryPanel";
 import styles from "./ProjectsShowcase.module.css";
 
 interface ProjectsShowcaseProps {
@@ -68,8 +69,8 @@ export default function ProjectsShowcase({
   const cardHeight = Math.round(cardWidth * 1.25);
 
   useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
+    const stage = stageRef.current;
+    if (!stage) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -81,7 +82,7 @@ export default function ProjectsShowcase({
       { threshold: 0.2 }
     );
 
-    observer.observe(section);
+    observer.observe(stage);
     return () => observer.disconnect();
   }, [projectCount]);
 
@@ -204,7 +205,7 @@ export default function ProjectsShowcase({
     };
   }, [finishPointer]);
 
-  if (projectCount === 0) return null;
+  if (projectCount === 0) return <AiStoryPanel locale={locale} />;
 
   const visibleOffsets = projectCount === 1 ? [0] : [-3, -2, -1, 0, 1, 2, 3];
 
@@ -371,6 +372,7 @@ export default function ProjectsShowcase({
           </div>
         )}
       </div>
+      <AiStoryPanel locale={locale} />
     </section>
   );
 }
