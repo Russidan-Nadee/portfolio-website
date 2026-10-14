@@ -2,7 +2,7 @@
 
 ## Summary
 
-Add a public, card-first certificate showcase at `/certificate` and a protected certificate management area at `/admin/certificates`. Certificate metadata lives in PostgreSQL through Prisma. Original PDF files and card preview images live in a dedicated public Supabase Storage bucket. Four PDFs from the user's Downloads folder form the initial data set.
+Add a public, card-first certificate showcase at `/certificate` and a protected certificate management area at `/admin/certificates`. Certificate metadata lives in PostgreSQL through Prisma. Original PDF files and card preview images can live in a dedicated public Supabase Storage bucket after the admin uploads them. Four PDFs from the user's Downloads folder provide the initial metadata, seeded as drafts without uploading their binary files.
 
 The feature follows the portfolio's existing multilingual, theme, responsive, animation, Prisma, Supabase, and admin interaction patterns. It does not introduce a certificate detail page; the original PDF is the detailed artifact.
 
@@ -32,7 +32,7 @@ The implementation imports these files from the user's Downloads folder:
 3. `certificates_พระนครเหนือ-มจพ_การเขียนภาษาไพธอน-ระดับเบื้องต้น.pdf`
 4. `certificates_พระนครเหนือ-มจพ_การเขียนโปรแกรมควบคุมแขนกลอุตสาหกรรมด้วยเทคโนโลยีคู่เสมือนดิจิทัลทางไกล-แขนกลระดับสูง.pdf`
 
-During implementation, each PDF's first page will be rendered and inspected. The visible certificate title, issuer, and issue date will be transcribed exactly when present. Missing fields remain absent rather than being guessed. Storage object names use stable ASCII slugs; the original filenames do not become public URL paths.
+During implementation, each PDF's first page is rendered and inspected locally. The visible certificate title, issuer, and issue date are transcribed exactly when present. Missing fields remain absent rather than being guessed. The initial records are inactive drafts with null asset URLs; the admin can upload the PDF and preview later. Storage object names use stable ASCII slugs; the original filenames do not become public URL paths.
 
 ## Architecture and Data Flow
 
@@ -86,7 +86,7 @@ Supported category keys initially are `development`, `technology`, `finance`, an
 - File names and MIME types are validated on the server, not only in the browser.
 - Maximum sizes are 15 MB for PDF and 5 MB for preview image.
 - Re-uploading a fixed slot uses upsert so the public URL remains stable.
-- The initial preview for each supplied PDF is rendered from page one during implementation and uploaded through the same storage rules.
+- The initial preview for each supplied PDF is rendered from page one and inspected locally, but it is not uploaded automatically. The admin attaches the approved preview later.
 
 PDF-to-image conversion is an initial-import tool, not a runtime dependency. Future admin entries require a manually selected preview image, which keeps the deployed application lightweight and gives the admin control over the crop.
 
@@ -195,7 +195,7 @@ Before completion:
 - verify desktop and mobile navigation active states;
 - inspect light and dark themes at small, medium, and large viewport widths;
 - verify locale switching updates navigation, hero, categories, actions, and titles;
-- verify all four previews render and all four PDFs open and download;
+- verify all four local previews render; after the admin uploads the assets, verify all four PDFs open and download;
 - verify drafts are excluded and active records follow admin order;
 - verify admin create, edit, reorder, visibility, asset replacement, and deletion flows;
 - verify invalid types, oversize files, duplicate slugs, and failed uploads produce actionable errors.
@@ -207,8 +207,9 @@ Before any new unit-test files are written, present the user with a proposed tes
 1. Add the Prisma model and migration without modifying existing tables.
 2. Create and configure the public `certificate-assets` bucket.
 3. Deploy the application code and migration together.
-4. Render and inspect previews for the four supplied PDFs.
-5. Import the four PDFs, previews, and verified metadata through the certificate service layer.
-6. Confirm all four records in Admin before considering the feature live.
+4. Render and inspect previews for the four supplied PDFs locally.
+5. Seed the four verified metadata records as inactive drafts without uploading assets.
+6. Confirm all four records in Admin.
+7. Let the admin upload each PDF and preview, then publish only records whose two assets are present.
 
 The rollout is additive. Existing projects, skills, experience, and public routes continue unchanged.
