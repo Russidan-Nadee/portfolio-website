@@ -2,24 +2,83 @@
 import { prisma } from "@/lib/prisma";
 import HomeContent from "./HomeContent";
 import type { ProjectData } from "./admin/projects/types";
+import type {
+  HeroCertificateData,
+  HeroProjectData,
+} from "@/components/home/CreativeHero";
+
+export const dynamic = "force-dynamic";
+
+const certificateCategoryPriority: Record<string, number> = {
+  development: 0,
+  technology: 1,
+  professional: 2,
+  finance: 3,
+};
 
 export default async function Home() {
-  const [skills, featuredProjects] = await Promise.all([
-    prisma.skill.findMany({
-      where: { featured: true, active: true },
-      orderBy: { order: "asc" },
-      select: { name: true, icon: true },
-    }),
-    prisma.project.findMany({
-      where: { featured: true },
-      orderBy: { order: "asc" },
-    }),
-  ]);
+  const [skills, featuredProjects, heroProjects, certificateRecords] =
+    await Promise.all([
+      prisma.skill.findMany({
+        where: { featured: true, active: true },
+        orderBy: { order: "asc" },
+        select: { name: true, icon: true },
+      }),
+      prisma.project.findMany({
+        where: { featured: true },
+        orderBy: { order: "asc" },
+      }),
+      prisma.project.findMany({
+        orderBy: { order: "asc" },
+        take: 6,
+        select: {
+          id: true,
+          slug: true,
+          title: true,
+          thumbnailUrl: true,
+          techSummary: true,
+        },
+      }),
+      prisma.certificate.findMany({
+        where: {
+          active: true,
+          imageUrl: { not: null },
+          pdfUrl: { not: null },
+        },
+        orderBy: { order: "asc" },
+        select: {
+          id: true,
+          order: true,
+          title: true,
+          issuer: true,
+          category: true,
+          imageUrl: true,
+          pdfUrl: true,
+        },
+      }),
+    ]);
+
+  const heroCertificates: HeroCertificateData[] = certificateRecords
+    .sort(
+      (a, b) =>
+        (certificateCategoryPriority[a.category] ?? 4) -
+          (certificateCategoryPriority[b.category] ?? 4) || a.order - b.order
+    )
+    .slice(0, 4)
+    .map((certificate) => ({
+      id: certificate.id,
+      title: certificate.title as HeroCertificateData["title"],
+      issuer: certificate.issuer,
+      imageUrl: certificate.imageUrl!,
+      pdfUrl: certificate.pdfUrl!,
+    }));
 
   return (
     <HomeContent
       technologies={skills}
       featuredProjects={featuredProjects as unknown as ProjectData[]}
+      heroProjects={heroProjects as unknown as HeroProjectData[]}
+      heroCertificates={heroCertificates}
     />
   );
 }

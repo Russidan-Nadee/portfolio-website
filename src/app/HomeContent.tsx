@@ -4,6 +4,10 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import CreativeHero from "../components/home/CreativeHero";
+import type {
+  HeroCertificateData,
+  HeroProjectData,
+} from "../components/home/CreativeHero";
 import ProjectsShowcase from "../components/home/ProjectsShowcase";
 import Technologies, { TechnologyItem } from "../components/home/Technologies";
 import th from "../../locales/th.json";
@@ -14,9 +18,13 @@ import type { ProjectData } from "./admin/projects/types";
 export default function HomeContent({
   technologies,
   featuredProjects,
+  heroProjects,
+  heroCertificates,
 }: Readonly<{
   technologies: TechnologyItem[];
   featuredProjects: ProjectData[];
+  heroProjects: HeroProjectData[];
+  heroCertificates: HeroCertificateData[];
 }>) {
   const [locale, setLocale] = useState("en");
 
@@ -38,7 +46,9 @@ export default function HomeContent({
   // Language change handler
   useEffect(() => {
     // Get initial language from localStorage
-    setLocale(localStorage.getItem("lang") || "en");
+    const frame = window.requestAnimationFrame(() => {
+      setLocale(localStorage.getItem("lang") || "en");
+    });
 
     // Listen for language changes
     const handleLanguageChange = (e: Event) => {
@@ -46,8 +56,10 @@ export default function HomeContent({
     };
 
     window.addEventListener("languageChange", handleLanguageChange);
-    return () =>
+    return () => {
+      window.cancelAnimationFrame(frame);
       window.removeEventListener("languageChange", handleLanguageChange);
+    };
   }, []);
 
   // Helper function to generate localized links
@@ -61,7 +73,12 @@ export default function HomeContent({
       className="min-h-screen"
       style={{ backgroundColor: "var(--background)" }}
     >
-      <CreativeHero translations={translations} />
+      <CreativeHero
+        translations={translations}
+        projects={heroProjects}
+        certificates={heroCertificates}
+        locale={locale as "th" | "en" | "ja"}
+      />
       <Technologies translations={translations} technologies={technologies} />
       <ProjectsShowcase
         translations={translations}
