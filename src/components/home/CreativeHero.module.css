@@ -15,7 +15,7 @@
   inset: 0;
   pointer-events: none;
   transform-origin: center;
-  animation: orbitAccelerate 2.05s linear both;
+  animation: orbitAccelerate 1.2s cubic-bezier(0.55, 0, 0.9, 1) both;
 }
 
 .card {
@@ -34,7 +34,8 @@
   text-decoration: none;
   transform: translate3d(var(--final-x), var(--final-y), 0)
     rotate(var(--final-tilt));
-  animation: cardScatter 2.05s linear both;
+  animation: cardScatter 0.4s cubic-bezier(0.16, 0.82, 0.2, 1) both;
+  animation-delay: var(--scatter-delay);
   will-change: transform;
 }
 
@@ -120,6 +121,7 @@ a.card:focus-visible {
 }
 
 .cardSlot1 {
+  --scatter-delay: 1.29s;
   --ring-x: 0px;
   --ring-y: -180px;
   --ring-angle: 0deg;
@@ -129,6 +131,7 @@ a.card:focus-visible {
 }
 
 .cardSlot2 {
+  --scatter-delay: 1.29s;
   --ring-x: 106px;
   --ring-y: -146px;
   --ring-angle: 36deg;
@@ -138,6 +141,7 @@ a.card:focus-visible {
 }
 
 .cardSlot3 {
+  --scatter-delay: 1.2s;
   --ring-x: 171px;
   --ring-y: -56px;
   --ring-angle: 72deg;
@@ -149,6 +153,7 @@ a.card:focus-visible {
 }
 
 .cardSlot4 {
+  --scatter-delay: 1.2s;
   --ring-x: 171px;
   --ring-y: 56px;
   --ring-angle: 108deg;
@@ -160,6 +165,7 @@ a.card:focus-visible {
 }
 
 .cardSlot5 {
+  --scatter-delay: 1.38s;
   --ring-x: 106px;
   --ring-y: 146px;
   --ring-angle: 144deg;
@@ -169,6 +175,7 @@ a.card:focus-visible {
 }
 
 .cardSlot6 {
+  --scatter-delay: 1.38s;
   --ring-x: 0px;
   --ring-y: 180px;
   --ring-angle: 180deg;
@@ -178,6 +185,7 @@ a.card:focus-visible {
 }
 
 .cardSlot7 {
+  --scatter-delay: 1.56s;
   --ring-x: -106px;
   --ring-y: 146px;
   --ring-angle: 216deg;
@@ -189,6 +197,7 @@ a.card:focus-visible {
 }
 
 .cardSlot8 {
+  --scatter-delay: 1.56s;
   --ring-x: -171px;
   --ring-y: 56px;
   --ring-angle: 252deg;
@@ -200,6 +209,7 @@ a.card:focus-visible {
 }
 
 .cardSlot9 {
+  --scatter-delay: 1.47s;
   --ring-x: -171px;
   --ring-y: -56px;
   --ring-angle: 288deg;
@@ -209,6 +219,7 @@ a.card:focus-visible {
 }
 
 .cardSlot10 {
+  --scatter-delay: 1.47s;
   --ring-x: -106px;
   --ring-y: -146px;
   --ring-angle: 324deg;
@@ -229,7 +240,7 @@ a.card:focus-visible {
 }
 
 .contentAnimated {
-  animation: contentReveal 2.05s both;
+  animation: contentReveal 0.78s ease-out 1.46s both;
 }
 
 .eyebrow {
@@ -308,36 +319,21 @@ a.card:focus-visible {
 }
 
 @keyframes orbitAccelerate {
-  /* Each interval covers more degrees in less time: readable, faster, launch. */
   0% {
     transform: rotate(0deg);
   }
 
-  31% {
-    transform: rotate(42deg);
-  }
-
-  52% {
-    transform: rotate(208deg);
-  }
-
-  85%,
   100% {
-    transform: rotate(720deg);
+    transform: rotate(360deg);
   }
 }
 
 @keyframes cardScatter {
-  0%,
-  85% {
+  0% {
     filter: blur(0.8px);
     height: 140px;
     transform: translate3d(var(--ring-x), var(--ring-y), 0)
       rotate(var(--ring-angle)) scale(0.42);
-  }
-
-  85% {
-    animation-timing-function: cubic-bezier(0.16, 0.82, 0.2, 1);
   }
 
   100% {
@@ -349,8 +345,7 @@ a.card:focus-visible {
 }
 
 @keyframes contentReveal {
-  0%,
-  85% {
+  0% {
     opacity: 0;
     transform: translateY(20px);
   }
