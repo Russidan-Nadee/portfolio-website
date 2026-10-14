@@ -1,4 +1,5 @@
 // src/app/layout.tsx
+/* eslint-disable @next/next/no-page-custom-font -- Fonts are loaded in the App Router root layout for every page. */
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
@@ -96,11 +97,11 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} antialiased overflow-x-hidden`}
+        className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} antialiased overflow-x-clip`}
         suppressHydrationWarning
       >
         <ThemeProvider>
-          <div className="min-h-screen flex flex-col overflow-x-hidden">
+          <div className="min-h-screen flex flex-col overflow-x-clip">
             <Header />
             <main className="flex-1">{children}</main>
             <Footer />

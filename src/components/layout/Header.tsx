@@ -4,16 +4,15 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
+import { CodeXml } from "lucide-react";
 import LanguageSwitcher from "./LanguageSwitcher";
 import ThemeToggle from "./ThemeToggle";
-import { useTheme } from "./ThemeProvider";
 import th from "../../../locales/th.json";
 import ja from "../../../locales/ja.json";
 import en from "../../../locales/en.json";
 
 export default function Header() {
   const pathname = usePathname();
-  const { theme } = useTheme();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [locale, setLocale] = useState("en");
@@ -86,7 +85,7 @@ export default function Header() {
   return (
     <>
       <header
-        className="h-16 flex items-center px-4 border-b-2 transition-colors relative z-50"
+        className="sticky top-0 z-50 flex h-16 items-center border-b-2 px-4 transition-colors"
         style={{
           backgroundColor: "var(--background)",
           borderColor: "var(--border)",
@@ -98,19 +97,21 @@ export default function Header() {
           <div className="flex items-center">
             <Link
               href={getLocalizedLink("/")}
-              className="flex items-center"
+              className="inline-flex items-center gap-2 whitespace-nowrap transition-opacity hover:opacity-70"
               onClick={closeMenu}
+              aria-label="Russidan Nadee, home"
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={theme === "dark" ? "/logo-dark.png" : "/logo-light.png"}
-                alt="Russidan Nadee"
-                className="w-auto transition-all duration-300 hover:scale-105"
-                style={{
-                  height: "120px",
-                  clipPath: "inset(28px 0)",
-                }}
+              <CodeXml
+                aria-hidden="true"
+                className="size-8 shrink-0 lg:size-10"
+                strokeWidth={2.25}
               />
+              <span
+                className="text-[21px] font-bold leading-none lg:text-[30px]"
+                style={{ fontFamily: "var(--font-geist-sans), sans-serif" }}
+              >
+                RUSSIDAN
+              </span>
             </Link>
           </div>
 
@@ -220,7 +221,7 @@ export default function Header() {
       {/* Mobile Menu Overlay */}
       {isMenuOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
+          className="fixed inset-0 z-[10000] bg-black bg-opacity-50 md:hidden"
           onClick={closeMenu}
         />
       )}
@@ -228,7 +229,7 @@ export default function Header() {
       {/* Mobile Menu Slide Panel */}
       <div
         className={`
-            fixed top-0 right-0 h-full w-80 max-w-[90vw] z-50 md:hidden
+            fixed top-0 right-0 z-[10001] h-full w-80 max-w-[90vw] md:hidden
             transform transition-transform duration-300 ease-in-out
             ${isMenuOpen ? "translate-x-0" : "translate-x-full"}
          `}
