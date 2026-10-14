@@ -17,7 +17,7 @@ export interface CertificateManifestItem {
 export const CERTIFICATE_MANIFEST: CertificateManifestItem[] = [
   {
     sourceFilename: "certificates_futureskill_growth-mindset.pdf",
-    previewPath: "tmp/pdfs/growth-mindset.png",
+    previewPath: "previews/growth-mindset.png",
     slug: "growth-mindset",
     order: 0,
     title: {
@@ -31,7 +31,7 @@ export const CERTIFICATE_MANIFEST: CertificateManifestItem[] = [
   },
   {
     sourceFilename: "certificates_set_เงินทองต้องวางแผน.pdf",
-    previewPath: "tmp/pdfs/money-planning.png",
+    previewPath: "previews/money-planning.png",
     slug: "money-planning",
     order: 1,
     title: {
@@ -46,7 +46,7 @@ export const CERTIFICATE_MANIFEST: CertificateManifestItem[] = [
   {
     sourceFilename:
       "certificates_พระนครเหนือ-มจพ_การเขียนภาษาไพธอน-ระดับเบื้องต้น.pdf",
-    previewPath: "tmp/pdfs/python-fundamentals.png",
+    previewPath: "previews/python-fundamentals.png",
     slug: "python-fundamentals",
     order: 2,
     title: {
@@ -61,7 +61,7 @@ export const CERTIFICATE_MANIFEST: CertificateManifestItem[] = [
   {
     sourceFilename:
       "certificates_พระนครเหนือ-มจพ_การเขียนโปรแกรมควบคุมแขนกลอุตสาหกรรมด้วยเทคโนโลยีคู่เสมือนดิจิทัลทางไกล-แขนกลระดับสูง.pdf",
-    previewPath: "tmp/pdfs/industrial-robot-digital-twin.png",
+    previewPath: "previews/industrial-robot-digital-twin.png",
     slug: "industrial-robot-digital-twin",
     order: 3,
     title: {
@@ -72,5 +72,19 @@ export const CERTIFICATE_MANIFEST: CertificateManifestItem[] = [
     issuer: "มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ",
     issuedAt: null,
     category: "technology",
+  },
+  {
+    sourceFilename: "certificates_futureskill_microservices.pdf",
+    previewPath: "previews/microservices.png",
+    slug: "microservices",
+    order: 4,
+    title: {
+      th: "พัฒนาซอฟต์แวร์ระบบ Microservices อย่างเข้าใจและทำงานได้จริง ให้พร้อมประยุกต์ใช้งาน",
+      en: "Understand and Build Practical Microservices Software for Real-World Use",
+      ja: "マイクロサービスを理解し、実践・応用するソフトウェア開発",
+    },
+    issuer: "FutureSkill",
+    issuedAt: "2026-09-09",
+    category: "development",
   },
 ];

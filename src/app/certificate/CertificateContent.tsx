@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { MdWorkspacePremium } from "react-icons/md";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 import CertificateCard from "@/components/certificate/CertificateCard";
 import type {
@@ -43,7 +42,7 @@ export default function CertificateContent({
   }, []);
 
   return (
-    <main className="relative min-h-screen overflow-hidden px-6 py-16 md:px-8">
+    <main className="relative min-h-screen overflow-hidden p-8">
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
         <div className="absolute -right-24 top-10 h-72 w-72 rounded-full bg-violet-500/10 blur-3xl" />
         <div className="absolute -left-24 top-1/3 h-64 w-64 rounded-full bg-cyan-500/10 blur-3xl" />
@@ -51,24 +50,12 @@ export default function CertificateContent({
 
       <div className="relative mx-auto max-w-6xl">
         <AnimatedSection animationType="fadeInUp" duration={0.8}>
-          <section className="mx-auto mb-14 max-w-3xl text-center">
-            <div
-              className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl border shadow-lg"
-              style={{
-                backgroundColor: "var(--card)",
-                borderColor: "var(--border)",
-              }}
-            >
-              <MdWorkspacePremium size={34} aria-hidden="true" />
-            </div>
-            <p className="mb-3 text-xs font-bold uppercase tracking-[0.3em] text-violet-600">
-              {translations.eyebrow}
-            </p>
+          <section className="mx-auto mb-12 flex min-h-[40vh] max-w-3xl flex-col items-center justify-center text-center">
             <h1 className="text-4xl font-black tracking-tight md:text-6xl">
               {translations.title}
             </h1>
             <p
-              className="mx-auto mt-4 max-w-2xl text-base leading-relaxed md:text-lg"
+              className="mx-auto mt-2 max-w-2xl text-base leading-relaxed md:text-lg"
               style={{ color: "var(--muted-foreground)" }}
             >
               {translations.subtitle}
@@ -96,7 +83,7 @@ export default function CertificateContent({
           >
             <section
               aria-label={translations.title}
-              className="grid grid-cols-1 gap-7 md:grid-cols-2 lg:grid-cols-3"
+              className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
             >
               {certificates.map((certificate) => (
                 <CertificateCard

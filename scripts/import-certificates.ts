@@ -1,7 +1,6 @@
 import "dotenv/config";
 import { access, readFile } from "node:fs/promises";
 import { constants } from "node:fs";
-import { homedir } from "node:os";
 import { resolve } from "node:path";
 import type { Prisma } from "../src/generated/prisma/client";
 import { prisma } from "../src/lib/prisma";
@@ -15,7 +14,7 @@ const PDF_SIZE_LIMIT = 15 * 1024 * 1024;
 async function ensureSourceFiles(sourceDirectory: string) {
   const allPaths = CERTIFICATE_MANIFEST.flatMap((item) => [
     resolve(sourceDirectory, item.sourceFilename),
-    resolve(item.previewPath),
+    resolve(sourceDirectory, item.previewPath),
   ]);
   await Promise.all(allPaths.map((path) => access(path, constants.R_OK)));
 }
@@ -76,7 +75,8 @@ async function uploadFile(
 
 async function main() {
   const sourceDirectory =
-    process.env.CERTIFICATE_SOURCE_DIR ?? resolve(homedir(), "Downloads");
+    process.env.CERTIFICATE_SOURCE_DIR ??
+    resolve(process.cwd(), "certificates");
   await ensureSourceFiles(sourceDirectory);
   await ensurePublicBucket();
 
@@ -87,7 +87,7 @@ async function main() {
       "application/pdf"
     );
     const imageUrl = await uploadFile(
-      resolve(item.previewPath),
+      resolve(sourceDirectory, item.previewPath),
       buildCertificateAssetPath(item.slug, "preview"),
       "image/png"
     );

@@ -74,29 +74,28 @@ export default function CertificateCard({
 
       <div className="flex flex-1 flex-col p-6">
         <p
-          className="mb-2 text-xs font-semibold uppercase tracking-[0.18em]"
+          className="mb-2 min-h-10 text-xs font-semibold uppercase tracking-[0.18em]"
           style={{ color: accent }}
         >
           {certificate.issuer}
         </p>
         <h2
-          className="text-xl font-bold leading-snug"
+          className="flex-1 text-xl font-bold leading-snug"
           style={{ color: "var(--foreground)" }}
         >
           {title}
         </h2>
-        {date && (
-          <p
-            className="mt-3 text-sm"
-            style={{ color: "var(--muted-foreground)" }}
-          >
-            {translations.issued} {date}
-          </p>
-        )}
+        <p
+          aria-hidden={!date}
+          className="mt-3 min-h-5 text-sm"
+          style={{ color: "var(--muted-foreground)" }}
+        >
+          {date && `${translations.issued} ${date}`}
+        </p>
 
         <div
-          className="mt-auto flex flex-wrap items-center gap-2 border-t pt-5"
-          style={{ borderColor: "var(--border)", marginTop: "1.5rem" }}
+          className="mt-6 flex flex-wrap items-center gap-2 border-t pt-5"
+          style={{ borderColor: "var(--border)" }}
         >
           <a
             href={certificate.pdfUrl}

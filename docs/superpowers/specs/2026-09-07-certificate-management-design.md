@@ -2,7 +2,7 @@
 
 ## Summary
 
-Add a public, card-first certificate showcase at `/certificate` and a protected certificate management area at `/admin/certificates`. Certificate metadata lives in PostgreSQL through Prisma. Original PDF files and card preview images can live in a dedicated public Supabase Storage bucket after the admin uploads them. Four PDFs from the user's Downloads folder provide the initial metadata, seeded as drafts without uploading their binary files.
+Add a public, card-first certificate showcase at `/certificate` and a protected certificate management area at `/admin/certificates`. Certificate metadata lives in PostgreSQL through Prisma. Original PDF files and card preview images can live in a dedicated public Supabase Storage bucket after the admin uploads them. Four local PDFs stored outside the repository provide the initial metadata, seeded as drafts without uploading their binary files.
 
 The feature follows the portfolio's existing multilingual, theme, responsive, animation, Prisma, Supabase, and admin interaction patterns. It does not introduce a certificate detail page; the original PDF is the detailed artifact.
 
@@ -25,7 +25,7 @@ The feature follows the portfolio's existing multilingual, theme, responsive, an
 
 ## Initial Certificates
 
-The implementation imports these files from the user's Downloads folder:
+The implementation reads these files from the local folder configured by `CERTIFICATE_SOURCE_DIR`:
 
 1. `certificates_futureskill_growth-mindset.pdf`
 2. `certificates_set_เงินทองต้องวางแผน.pdf`

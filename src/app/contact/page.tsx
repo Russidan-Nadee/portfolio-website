@@ -211,9 +211,9 @@ function ContactContent() {
          <AnimatedBackground />
 
          {/* Header with enhanced animations */}
-         <div className="text-center mb-12 relative">
+         <div className="text-center mb-12 relative flex min-h-[40vh] flex-col items-center justify-center">
             <h1
-               className="text-5xl font-bold mb-4 animate-fade-in-up"
+               className="text-5xl font-bold mb-2 animate-fade-in-up"
                style={{
                   color: 'var(--foreground)',
                   animationDelay: '0.1s',

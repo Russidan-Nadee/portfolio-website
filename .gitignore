@@ -45,3 +45,4 @@ next-env.d.ts
 .codex-tmp
 /tmp/
 /src/generated/prisma
+/certificates/
