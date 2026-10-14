@@ -150,6 +150,13 @@ export default function Footer() {
                 {translations?.header?.nav?.portfolio || "Portfolio"}
               </Link>
               <Link
+                href={getLocalizedLink("/certificate")}
+                className="block hover:opacity-70 transition-opacity"
+                style={{ color: "var(--muted-foreground)" }}
+              >
+                {translations?.header?.nav?.certificate || "Certificates"}
+              </Link>
+              <Link
                 href={getLocalizedLink("/contact")}
                 className="block hover:opacity-70 transition-opacity"
                 style={{ color: "var(--muted-foreground)" }}
