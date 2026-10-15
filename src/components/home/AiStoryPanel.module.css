@@ -136,6 +136,17 @@
   background: linear-gradient(145deg, #222936, #11151c 72%);
 }
 
+.macbookSite {
+  display: block;
+  width: 900px;
+  height: 575px;
+  border: 0;
+  background: #fff;
+  pointer-events: none;
+  transform: scale(var(--site-scale, 0));
+  transform-origin: top left;
+}
+
 .macbookScreen::after {
   position: absolute;
   top: 0;
@@ -154,6 +165,19 @@
   display: block;
   width: 100%;
   height: auto;
+}
+
+.macbookLink {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.macbookLink:focus-visible {
+  outline: 3px solid #ff7653;
+  outline-offset: 5px;
 }
 
 .staticCard .windowSceneTitle {

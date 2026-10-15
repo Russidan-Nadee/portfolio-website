@@ -156,6 +156,46 @@ const railLabels: Record<Locale, [string, string, string]> = {
   ja: ["AI の使い方", "AI と考える", "実用的な AI"],
 };
 
+const fastshipUrl = "https://fastship.ai/";
+const fastshipLinkLabel: Record<Locale, string> = {
+  th: "เปิด FastShip AI ในแท็บใหม่",
+  en: "Open FastShip AI in a new tab",
+  ja: "FastShip AI を新しいタブで開く",
+};
+
+function FastshipPreview() {
+  const screenRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const screen = screenRef.current;
+    if (!screen) return;
+
+    const fitWebsite = () => {
+      screen.style.setProperty(
+        "--site-scale",
+        String(screen.clientWidth / 900)
+      );
+    };
+    fitWebsite();
+
+    const observer = new ResizeObserver(fitWebsite);
+    observer.observe(screen);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div ref={screenRef} className={styles.macbookScreen} aria-hidden="true">
+      <iframe
+        className={styles.macbookSite}
+        src={fastshipUrl}
+        title="FastShip AI website preview"
+        loading="lazy"
+        tabIndex={-1}
+      />
+    </div>
+  );
+}
+
 function StoryBody({
   scene,
   index,
@@ -196,8 +236,8 @@ function StoryBody({
       <h3 className={`${styles.visuallyHidden} ${styles.windowSceneTitle}`}>
         {railLabels[locale][2]}
       </h3>
-      <div className={styles.macbook} aria-hidden="true">
-        <div className={styles.macbookScreen} />
+      <div className={styles.macbook}>
+        <FastshipPreview />
         <Image
           className={styles.macbookFrame}
           src="/images/ai/macbook-pro-16-silver.webp"
@@ -205,6 +245,13 @@ function StoryBody({
           width={1800}
           height={862}
           sizes="(min-width: 1200px) 65vw, 100vw"
+        />
+        <a
+          className={styles.macbookLink}
+          href={fastshipUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={fastshipLinkLabel[locale]}
         />
       </div>
     </div>
