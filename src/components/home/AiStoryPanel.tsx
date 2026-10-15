@@ -36,10 +36,10 @@ const copyByLocale: Record<Locale, StoryCopy> = {
     sectionTitle: "การใช้ AI",
     scenes: [
       {
-        tag: "01 / LEARN",
-        title: "ผมใช้ AI ยังไง",
+        tag: "01 / CODE",
+        title: "AI เขียนโค้ด",
         description:
-          "ใช้ AI ช่วยจับประเด็นจากสิ่งที่เจอระหว่างทำงาน แล้วจัดเป็นบันทึกที่กลับมาใช้ได้",
+          "ผมให้ Codex และ Claude Code ช่วยทำงานเขียนโค้ดที่ชัดเจน แล้วตรวจการเปลี่ยนแปลงและผลลัพธ์ด้วยตัวเอง",
         products: [],
       },
       {
@@ -75,10 +75,10 @@ const copyByLocale: Record<Locale, StoryCopy> = {
     sectionTitle: "Using AI",
     scenes: [
       {
-        tag: "01 / LEARN",
-        title: "How I use AI",
+        tag: "01 / CODE",
+        title: "Agentic coding",
         description:
-          "I use AI to capture what I learn while building and turn it into notes I can return to.",
+          "I give Codex and Claude Code a concrete coding task, review their changes, and verify the result.",
         products: [],
       },
       {
@@ -114,10 +114,10 @@ const copyByLocale: Record<Locale, StoryCopy> = {
     sectionTitle: "AI の活用",
     scenes: [
       {
-        tag: "01 / LEARN",
-        title: "私の AI 活用法",
+        tag: "01 / CODE",
+        title: "AI エージェントと開発",
         description:
-          "開発中に得た気づきを AI で整理し、後から活用できるメモに残します。",
+          "Codex と Claude Code に具体的な開発タスクを任せ、変更内容と結果を自分で確認します。",
         products: [],
       },
       {
@@ -151,10 +151,34 @@ const copyByLocale: Record<Locale, StoryCopy> = {
 };
 
 const railLabels: Record<Locale, [string, string, string]> = {
-  th: ["ผมใช้ AI ยังไง", "คิดร่วมกับ AI", "AI ที่ใช้งานจริง"],
-  en: ["How I use AI", "Thinking with AI", "AI in practice"],
-  ja: ["AI の使い方", "AI と考える", "実用的な AI"],
+  th: ["AI เขียนโค้ด", "AI ช่วยคิด", "AI โปรดัก"],
+  en: ["AI for Coding", "AI for Thinking", "AI in Practice"],
+  ja: ["AI エージェントと開発", "AI と考える", "実用的な AI"],
 };
+
+const introCopy: Record<Locale, { lead: string; question: string }> = {
+  th: {
+    lead: "เมื่อ AI เป็นส่วนหนึ่งของงาน",
+    question: "ผมใช้มันสร้างผลงานอย่างไร",
+  },
+  en: {
+    lead: "When AI becomes part of my work,",
+    question: "how do I use it to create?",
+  },
+  ja: {
+    lead: "AI が仕事の一部となった今",
+    question: "どう考え、調べ、つくるのか",
+  },
+};
+
+const aiIcons = [
+  "/images/ai/ai-chip-solid.svg",
+  "/images/ai/ai-spark-frame.svg",
+  "/images/ai/ai-code.svg",
+  "/images/ai/ai-chip-outline.svg",
+  "/images/ai/ai-spark-letters.svg",
+  "/images/ai/ai-chip-square.svg",
+];
 
 const fastshipUrl = "https://fastship.ai/";
 const fastshipLinkLabel: Record<Locale, string> = {
@@ -265,6 +289,7 @@ export default function AiStoryPanel({ locale = "en" }: { locale?: Locale }) {
   const triggerRef = useRef<ScrollTrigger | null>(null);
   const [activeScene, setActiveScene] = useState(0);
   const copy = copyByLocale[locale];
+  const [leadBeforeAi, leadAfterAi] = introCopy[locale].lead.split("AI");
 
   const goToScene = (index: number) => {
     const trigger = triggerRef.current;
@@ -285,7 +310,7 @@ export default function AiStoryPanel({ locale = "en" }: { locale?: Locale }) {
 
     const media = gsap.matchMedia();
     media.add(
-      "(min-width: 1200px) and (min-height: 620px) and (prefers-reduced-motion: no-preference)",
+      "(min-width: 1024px) and (min-height: 620px) and (prefers-reduced-motion: no-preference)",
       () => {
         const clamp01 = (value: number) => Math.max(0, Math.min(1, value));
         const mix = (from: number, to: number, progress: number) =>
@@ -368,71 +393,110 @@ export default function AiStoryPanel({ locale = "en" }: { locale?: Locale }) {
   }, []);
 
   return (
-    <section
-      id="ai-story"
-      ref={sectionRef}
-      className={styles.root}
-      lang={locale}
-      aria-labelledby="ai-story-title"
-    >
-      <h2 id="ai-story-title" className={styles.visuallyHidden}>
-        {copy.sectionTitle}
-      </h2>
+    <>
+      <section
+        className={styles.intro}
+        lang={locale}
+        aria-labelledby="ai-intro-title"
+      >
+        <h2 id="ai-intro-title" className={styles.introTitle}>
+          <span>
+            {leadBeforeAi}
+            <span className={styles.aiMark}>
+              <span className={styles.visuallyHidden}>AI</span>
+              {aiIcons.map((src, index) => (
+                <span
+                  key={src}
+                  className={styles.aiIcon}
+                  aria-hidden="true"
+                  style={{ animationDelay: `${index * 2}s` }}
+                >
+                  <Image
+                    src={src}
+                    alt=""
+                    width={64}
+                    height={64}
+                    className={styles.aiIconImage}
+                  />
+                </span>
+              ))}
+            </span>
+            {leadAfterAi}
+          </span>
+          <strong className={styles.introQuestion}>
+            {introCopy[locale].question}
+          </strong>
+        </h2>
+      </section>
+      <section
+        id="ai-story"
+        ref={sectionRef}
+        className={styles.root}
+        lang={locale}
+        aria-labelledby="ai-story-title"
+      >
+        <h2 id="ai-story-title" className={styles.visuallyHidden}>
+          {copy.sectionTitle}
+        </h2>
 
-      <div className={styles.stickyViewport}>
-        <nav
-          ref={railRef}
-          className={styles.topicRail}
-          aria-label={copy.sectionTitle}
-        >
-          {railLabels[locale].map((label, index) => (
-            <button
-              key={label}
-              type="button"
-              className={`${styles.topicButton} ${index === activeScene ? styles.topicActive : ""}`}
-              onClick={() => goToScene(index)}
-              aria-current={index === activeScene ? "step" : undefined}
-              aria-controls="ai-story-panel"
-            >
-              <span>{label}</span>
-            </button>
-          ))}
-        </nav>
-
-        <div ref={frameRef} className={`${styles.frame} ${styles.windowFrame}`}>
-          <div
-            id="ai-story-panel"
-            key={`${locale}-${activeScene}`}
-            className={styles.sceneEnter}
+        <div className={styles.stickyViewport}>
+          <nav
+            ref={railRef}
+            className={styles.topicRail}
+            aria-label={copy.sectionTitle}
           >
-            <StoryBody
-              scene={copy.scenes[activeScene]}
-              index={activeScene}
-              locale={locale}
-            />
-          </div>
-
-          <div className={styles.progress} aria-hidden="true">
-            {copy.scenes.map((scene, index) => (
-              <span
-                key={scene.tag}
-                className={index === activeScene ? styles.progressActive : ""}
-              />
+            {railLabels[locale].map((label, index) => (
+              <button
+                key={label}
+                type="button"
+                className={`${styles.topicButton} ${index === activeScene ? styles.topicActive : ""}`}
+                onClick={() => goToScene(index)}
+                aria-current={index === activeScene ? "step" : undefined}
+                aria-controls="ai-story-panel"
+              >
+                <span>{label}</span>
+              </button>
             ))}
+          </nav>
+
+          <div
+            ref={frameRef}
+            className={`${styles.frame} ${styles.windowFrame}`}
+          >
+            <div
+              id="ai-story-panel"
+              key={`${locale}-${activeScene}`}
+              className={styles.sceneEnter}
+            >
+              <StoryBody
+                scene={copy.scenes[activeScene]}
+                index={activeScene}
+                locale={locale}
+              />
+            </div>
+
+            <div className={styles.progress} aria-hidden="true">
+              {copy.scenes.map((scene, index) => (
+                <span
+                  key={scene.tag}
+                  className={index === activeScene ? styles.progressActive : ""}
+                />
+              ))}
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className={styles.staticList}>
-        {copy.scenes.map((scene, index) => (
-          <article
-            className={`${styles.staticCard} ${styles.windowStaticCard}`}
-            key={scene.tag}
-          >
-            <StoryBody scene={scene} index={index} locale={locale} />
-          </article>
-        ))}
-      </div>
-    </section>
+        <div className={styles.staticList}>
+          {copy.scenes.map((scene, index) => (
+            <article
+              className={`${styles.staticCard} ${styles.windowStaticCard}`}
+              key={scene.tag}
+            >
+              <StoryBody scene={scene} index={index} locale={locale} />
+            </article>
+          ))}
+        </div>
+      </section>
+    </>
   );
 }

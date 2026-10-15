@@ -6,6 +6,12 @@
   container-type: inline-size;
 }
 
+@media (min-width: 1024px) and (max-width: 1199px) {
+  .stage {
+    aspect-ratio: 1.45 / 1;
+  }
+}
+
 .window {
   position: absolute;
   inset: 0;

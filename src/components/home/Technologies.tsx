@@ -71,11 +71,10 @@ export default function Technologies({
   const logoIdentity = technologies
     .map((technology) => technology.name)
     .join("|");
-  const title =
-    translations.home?.technologies?.title ?? "Technologies I Work With";
+  const title = translations.home?.technologies?.title ?? "Tech Stack";
   const subtitle =
     translations.home?.technologies?.subtitle ??
-    "Modern tools for modern solutions";
+    "The tools I use to build websites and apps.";
   const topCount = Math.ceil(technologies.length / 2);
 
   useEffect(() => {

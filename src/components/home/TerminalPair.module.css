@@ -234,7 +234,7 @@
   }
 }
 
-@media (max-width: 1199px),
+@media (max-width: 1023px),
   (max-height: 619px),
   (prefers-reduced-motion: reduce) {
   .stage {

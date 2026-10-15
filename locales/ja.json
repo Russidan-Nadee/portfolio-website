@@ -10,16 +10,16 @@
     }
   },
   "home": {
-    "intro": "ルシダン • Web・モバイルアプリ開発者",
-    "title": "あなたのアイデアを\n使えるWeb・モバイルアプリへ",
-    "subtitle": "つくりたいことに合わせて、使いやすいWebサイトとモバイルアプリを開発します。",
+    "intro": "ルシダン • フルスタック開発者",
+    "title": "あなたのアイデアを\n使えるプロダクトへ",
+    "subtitle": "AI時代のWebサイトやアプリを、ユーザーが使う画面からバックエンドまで一貫して開発します。",
     "location": "タイ、バンコクを拠点としています。",
     "buttons": {
       "portfolio": "ポートフォリオ",
       "contact": "お問い合わせ"
     },
     "projectsShowcase": {
-      "title": "おすすめプロジェクト",
+      "title": "注目のプロジェクト",
       "projects": {
         "assetManagement": {
           "title": "資産管理システム",
@@ -40,8 +40,8 @@
       }
     },
     "technologies": {
-      "title": "使用している技術",
-      "subtitle": "モダンなソリューションのためのモダンなツール"
+      "title": "Tech Stack",
+      "subtitle": "Webサイトやアプリの開発に使っているツールです。"
     },
     "cta": {
       "title": "一緒に素晴らしいものを作りましょう",

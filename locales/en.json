@@ -10,16 +10,16 @@
     }
   },
   "home": {
-    "intro": "Russidan • Web & Mobile Developer",
-    "title": "From your idea\nto a web or mobile app that works",
-    "subtitle": "I build clear, practical websites and mobile apps around what you want to create.",
+    "intro": "Russidan • Full Stack Developer",
+    "title": "From your idea\nto a real product.",
+    "subtitle": "Building web apps in the AI era, from the interface to the back end.",
     "location": "based in Bangkok, Thailand.",
     "buttons": {
       "portfolio": "View Portfolio",
       "contact": "Contact Me"
     },
     "projectsShowcase": {
-      "title": "Recommended Projects",
+      "title": "Featured Projects",
       "projects": {
         "assetManagement": {
           "title": "Asset Management",
@@ -40,8 +40,8 @@
       }
     },
     "technologies": {
-      "title": "Technologies I Work With",
-      "subtitle": "Modern tools for modern solutions"
+      "title": "Tech Stack",
+      "subtitle": "The tools I use to build websites and apps."
     },
     "cta": {
       "title": "Let’s build something great together.",

@@ -214,13 +214,12 @@ export default function ProjectsShowcase({
       ref={sectionRef}
       className={`${styles.showcase} ${isVisible ? styles.isVisible : ""}`}
       aria-label={
-        translations?.home?.projectsShowcase?.title || "Recommended Projects"
+        translations?.home?.projectsShowcase?.title || "Featured Projects"
       }
     >
       <div className={styles.content}>
         <h2 className={styles.heading}>
-          {translations?.home?.projectsShowcase?.title ||
-            "Recommended Projects"}
+          {translations?.home?.projectsShowcase?.title || "Featured Projects"}
         </h2>
 
         <div

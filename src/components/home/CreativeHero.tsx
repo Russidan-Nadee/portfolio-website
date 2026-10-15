@@ -137,6 +137,54 @@ export default function CreativeHero({
     }
   }, [cardIdentity, cards.length]);
 
+  useEffect(() => {
+    const hero = heroRef.current;
+    const orbit = hero?.querySelector<HTMLElement>(`.${styles.orbit}`);
+    if (!hero || !orbit) return;
+
+    const images = Array.from(orbit.querySelectorAll("img"));
+    const pendingImages = new Set(images);
+
+    const finishIntro = () => {
+      if (pendingImages.size > 0 || hero.dataset.introFinishing === "true") {
+        return;
+      }
+
+      const transform = getComputedStyle(orbit).transform;
+      const matrix = new DOMMatrixReadOnly(
+        transform === "none" ? undefined : transform
+      );
+      const angle = (Math.atan2(matrix.b, matrix.a) * 180) / Math.PI;
+      const startAngle = (angle + 360) % 360;
+      const reverseAngle = startAngle - 45;
+      const finishDuration = 0.3 + (1080 - reverseAngle) / 1275;
+
+      hero.style.setProperty("--orbit-start-angle", `${startAngle}deg`);
+      hero.style.setProperty("--orbit-reverse-angle", `${reverseAngle}deg`);
+      hero.style.setProperty("--finish-duration", `${finishDuration}s`);
+      hero.dataset.introFinishing = "true";
+    };
+
+    const markImageReady = (event: Event) => {
+      pendingImages.delete(event.currentTarget as HTMLImageElement);
+      finishIntro();
+    };
+
+    images.forEach((image) => {
+      image.addEventListener("load", markImageReady);
+      image.addEventListener("error", markImageReady);
+      if (image.complete) pendingImages.delete(image);
+    });
+    finishIntro();
+
+    return () => {
+      images.forEach((image) => {
+        image.removeEventListener("load", markImageReady);
+        image.removeEventListener("error", markImageReady);
+      });
+    };
+  }, [cardIdentity]);
+
   const handleCardAnimationEnd = (
     event: React.AnimationEvent<HTMLDivElement>
   ) => {
@@ -242,16 +290,14 @@ export default function CreativeHero({
         className={`${styles.content} ${cards.length > 0 ? styles.contentAnimated : ""}`}
       >
         <p className={styles.eyebrow}>
-          {translations?.home?.intro ||
-            "Russidan Nadee | Web & Mobile Developer"}
+          {translations?.home?.intro || "Russidan Nadee | Full Stack Developer"}
         </p>
         <h1 className={styles.title} id="home-hero-title">
-          {translations?.home?.title ||
-            "Websites and apps, built around your idea"}
+          {translations?.home?.title || "From your idea\nto a real product."}
         </h1>
         <p className={styles.subtitle}>
           {translations?.home?.subtitle ||
-            "I build useful websites and mobile apps that bring your ideas to life."}
+            "Building web apps in the AI era, from the interface to the back end."}
         </p>
         <div className={styles.actions}>
           <Link href="/portfolio" className={styles.primaryAction}>

@@ -1,6 +1,7 @@
 .hero {
-  --scatter-start: 6.82s;
-  --orbit-duration: 6.82s;
+  --finish-duration: 0.9s;
+  --orbit-start-angle: 0deg;
+  --orbit-reverse-angle: -45deg;
 
   position: relative;
   isolation: isolate;
@@ -18,7 +19,11 @@
   inset: 0;
   pointer-events: none;
   transform-origin: center;
-  animation: orbitSequence var(--orbit-duration) linear both;
+  animation: slowOrbit 5.72s linear infinite;
+}
+
+:where(.hero[data-intro-finishing="true"]) .orbit {
+  animation: orbitFinish var(--finish-duration) linear both;
 }
 
 .orbitTrack {
@@ -32,7 +37,8 @@
   height: 0;
   pointer-events: none;
   transform-origin: 0 0;
-  animation: releaseOrbit var(--scatter-offset) linear var(--scatter-start) both;
+  animation: releaseOrbit var(--scatter-offset) linear var(--finish-duration)
+    both paused;
 }
 
 .card {
@@ -62,8 +68,15 @@
   transform: translate3d(var(--final-x), var(--final-y), 0)
     rotate(var(--final-tilt));
   animation: cardScatter 0.4s cubic-bezier(0.16, 0.82, 0.2, 1) both;
-  animation-delay: calc(var(--scatter-start) + var(--scatter-offset));
+  animation-delay: calc(var(--finish-duration) + var(--scatter-offset));
+  animation-play-state: paused;
   will-change: transform;
+}
+
+.hero[data-intro-finishing="true"] .orbitTrack,
+.hero[data-intro-finishing="true"] .card,
+.hero[data-intro-finishing="true"] .contentAnimated {
+  animation-play-state: running;
 }
 
 @media (min-width: 1200px) {
@@ -320,8 +333,8 @@ a.card:focus-visible {
 }
 
 .contentAnimated {
-  animation: contentReveal 0.78s ease-out calc(var(--scatter-start) + 0.26s)
-    both;
+  animation: contentReveal 0.78s ease-out calc(var(--finish-duration) + 0.26s)
+    both paused;
 }
 
 .eyebrow {
@@ -399,26 +412,24 @@ a.card:focus-visible {
   outline-offset: 4px;
 }
 
-@keyframes orbitSequence {
-  0% {
-    transform: rotate(0deg);
-  }
-
-  83.9% {
+@keyframes slowOrbit {
+  to {
     transform: rotate(360deg);
   }
+}
 
-  86.8% {
-    transform: rotate(360deg);
+@keyframes orbitFinish {
+  from {
+    transform: rotate(var(--orbit-start-angle));
     animation-timing-function: ease-in-out;
   }
 
-  91.2% {
-    transform: rotate(315deg);
+  33.333% {
+    transform: rotate(var(--orbit-reverse-angle));
     animation-timing-function: ease-in;
   }
 
-  100% {
+  to {
     transform: rotate(1080deg);
   }
 }
