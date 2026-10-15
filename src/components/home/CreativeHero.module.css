@@ -1,4 +1,7 @@
 .hero {
+  --scatter-start: 6.82s;
+  --orbit-duration: 6.82s;
+
   position: relative;
   isolation: isolate;
   display: grid;
@@ -15,10 +18,34 @@
   inset: 0;
   pointer-events: none;
   transform-origin: center;
-  animation: orbitAccelerate 1.2s cubic-bezier(0.55, 0, 0.9, 1) both;
+  animation: orbitSequence var(--orbit-duration) linear both;
+}
+
+.orbitTrack {
+  --scatter-spin: 1080deg;
+
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  transform-origin: 0 0;
+  animation: releaseOrbit var(--scatter-offset) linear var(--scatter-start) both;
 }
 
 .card {
+  /* Undo the frozen track angle so each card lands at its original coordinates. */
+  --final-local-x: calc(
+    var(--final-x) * cos(var(--release-angle)) + var(--final-y) *
+      sin(var(--release-angle))
+  );
+  --final-local-y: calc(
+    var(--final-y) * cos(var(--release-angle)) - var(--final-x) *
+      sin(var(--release-angle))
+  );
+
   position: absolute;
   top: 50%;
   left: 50%;
@@ -35,7 +62,7 @@
   transform: translate3d(var(--final-x), var(--final-y), 0)
     rotate(var(--final-tilt));
   animation: cardScatter 0.4s cubic-bezier(0.16, 0.82, 0.2, 1) both;
-  animation-delay: var(--scatter-delay);
+  animation-delay: calc(var(--scatter-start) + var(--scatter-offset));
   will-change: transform;
 }
 
@@ -53,8 +80,16 @@
     --exit-x: 0px;
     --exit-card-y: 0px;
     --exit-scale: 1;
+    --exit-local-x: calc(
+      var(--exit-x) * cos(var(--release-angle)) + var(--exit-card-y) *
+        sin(var(--release-angle))
+    );
+    --exit-local-y: calc(
+      var(--exit-card-y) * cos(var(--release-angle)) - var(--exit-x) *
+        sin(var(--release-angle))
+    );
 
-    translate: calc(-50% + var(--exit-x)) calc(-50% + var(--exit-card-y));
+    translate: calc(-50% + var(--exit-local-x)) calc(-50% + var(--exit-local-y));
     scale: var(--exit-scale);
   }
 
@@ -138,8 +173,10 @@ a.card:focus-visible {
   font-weight: 700;
 }
 
+/* Release angles keep waiting cards spinning together at 2160deg/s. */
 .cardSlot1 {
-  --scatter-delay: 1.29s;
+  --scatter-offset: 0.09s;
+  --release-angle: 194.4deg;
   --ring-x: 0px;
   --ring-y: -180px;
   --ring-angle: 0deg;
@@ -149,7 +186,8 @@ a.card:focus-visible {
 }
 
 .cardSlot2 {
-  --scatter-delay: 1.29s;
+  --scatter-offset: 0.09s;
+  --release-angle: 194.4deg;
   --ring-x: 106px;
   --ring-y: -146px;
   --ring-angle: 36deg;
@@ -159,7 +197,8 @@ a.card:focus-visible {
 }
 
 .cardSlot3 {
-  --scatter-delay: 1.2s;
+  --scatter-offset: 0s;
+  --release-angle: 0deg;
   --ring-x: 171px;
   --ring-y: -56px;
   --ring-angle: 72deg;
@@ -171,7 +210,8 @@ a.card:focus-visible {
 }
 
 .cardSlot4 {
-  --scatter-delay: 1.2s;
+  --scatter-offset: 0s;
+  --release-angle: 0deg;
   --ring-x: 171px;
   --ring-y: 56px;
   --ring-angle: 108deg;
@@ -183,7 +223,9 @@ a.card:focus-visible {
 }
 
 .cardSlot5 {
-  --scatter-delay: 1.38s;
+  --scatter-offset: 0.18s;
+  --release-angle: 388.8deg;
+  --scatter-spin: 1440deg;
   --ring-x: 106px;
   --ring-y: 146px;
   --ring-angle: 144deg;
@@ -193,7 +235,9 @@ a.card:focus-visible {
 }
 
 .cardSlot6 {
-  --scatter-delay: 1.38s;
+  --scatter-offset: 0.18s;
+  --release-angle: 388.8deg;
+  --scatter-spin: 1440deg;
   --ring-x: 0px;
   --ring-y: 180px;
   --ring-angle: 180deg;
@@ -203,7 +247,9 @@ a.card:focus-visible {
 }
 
 .cardSlot7 {
-  --scatter-delay: 1.56s;
+  --scatter-offset: 0.36s;
+  --release-angle: 777.6deg;
+  --scatter-spin: 1800deg;
   --ring-x: -106px;
   --ring-y: 146px;
   --ring-angle: 216deg;
@@ -215,7 +261,9 @@ a.card:focus-visible {
 }
 
 .cardSlot8 {
-  --scatter-delay: 1.56s;
+  --scatter-offset: 0.36s;
+  --release-angle: 777.6deg;
+  --scatter-spin: 1800deg;
   --ring-x: -171px;
   --ring-y: 56px;
   --ring-angle: 252deg;
@@ -227,7 +275,9 @@ a.card:focus-visible {
 }
 
 .cardSlot9 {
-  --scatter-delay: 1.47s;
+  --scatter-offset: 0.27s;
+  --release-angle: 583.2deg;
+  --scatter-spin: 1800deg;
   --ring-x: -171px;
   --ring-y: -56px;
   --ring-angle: 288deg;
@@ -237,7 +287,9 @@ a.card:focus-visible {
 }
 
 .cardSlot10 {
-  --scatter-delay: 1.47s;
+  --scatter-offset: 0.27s;
+  --release-angle: 583.2deg;
+  --scatter-spin: 1800deg;
   --ring-x: -106px;
   --ring-y: -146px;
   --ring-angle: 324deg;
@@ -268,7 +320,8 @@ a.card:focus-visible {
 }
 
 .contentAnimated {
-  animation: contentReveal 0.78s ease-out 1.46s both;
+  animation: contentReveal 0.78s ease-out calc(var(--scatter-start) + 0.26s)
+    both;
 }
 
 .eyebrow {
@@ -346,13 +399,37 @@ a.card:focus-visible {
   outline-offset: 4px;
 }
 
-@keyframes orbitAccelerate {
+@keyframes orbitSequence {
   0% {
     transform: rotate(0deg);
   }
 
-  100% {
+  83.9% {
     transform: rotate(360deg);
+  }
+
+  86.8% {
+    transform: rotate(360deg);
+    animation-timing-function: ease-in-out;
+  }
+
+  91.2% {
+    transform: rotate(315deg);
+    animation-timing-function: ease-in;
+  }
+
+  100% {
+    transform: rotate(1080deg);
+  }
+}
+
+@keyframes releaseOrbit {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(var(--release-angle));
   }
 }
 
@@ -367,8 +444,11 @@ a.card:focus-visible {
   100% {
     filter: blur(0);
     height: var(--resting-height);
-    transform: translate3d(var(--final-x), var(--final-y), 0)
-      rotate(var(--final-tilt)) scale(1);
+    transform: translate3d(var(--final-local-x), var(--final-local-y), 0)
+      rotate(
+        calc(var(--final-tilt) - var(--release-angle) + var(--scatter-spin))
+      )
+      scale(1);
   }
 }
 
@@ -424,6 +504,11 @@ a.card:focus-visible {
     animation: none;
     scroll-padding-inline: 24px;
     scroll-snap-type: x proximity;
+  }
+
+  .orbitTrack {
+    display: contents;
+    animation: none;
   }
 
   .card {
@@ -490,6 +575,7 @@ a.card:focus-visible {
 
 @media (prefers-reduced-motion: reduce) {
   .orbit,
+  .orbitTrack,
   .card,
   .contentAnimated {
     animation: none;

@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import { CodeXml } from "lucide-react";
 import LanguageSwitcher from "./LanguageSwitcher";
 import ThemeToggle from "./ThemeToggle";
+import styles from "./Header.module.css";
 import th from "../../../locales/th.json";
 import ja from "../../../locales/ja.json";
 import en from "../../../locales/en.json";
@@ -16,6 +17,11 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [locale, setLocale] = useState("en");
+  const [introState, setIntroState] = useState({ pathname, complete: false });
+
+  if (introState.pathname !== pathname) {
+    setIntroState({ pathname, complete: false });
+  }
 
   // Language change handler
   useEffect(() => {
@@ -40,6 +46,38 @@ export default function Header() {
     const frame = window.requestAnimationFrame(() => setMounted(true));
     return () => window.cancelAnimationFrame(frame);
   }, []);
+
+  useEffect(() => {
+    if (pathname !== "/") return;
+
+    const revealHeader = () => setIntroState({ pathname, complete: true });
+    const introMedia = window.matchMedia(
+      "(min-width: 1200px) and (prefers-reduced-motion: no-preference)"
+    );
+    const handleMediaChange = () => {
+      if (!introMedia.matches) revealHeader();
+    };
+
+    window.addEventListener("creativeHeroIntroComplete", revealHeader);
+    introMedia.addEventListener("change", handleMediaChange);
+
+    const frame = window.requestAnimationFrame(() => {
+      if (
+        !introMedia.matches ||
+        document.querySelector(
+          '[data-creative-hero][data-intro-complete="true"]'
+        )
+      ) {
+        revealHeader();
+      }
+    });
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("creativeHeroIntroComplete", revealHeader);
+      introMedia.removeEventListener("change", handleMediaChange);
+    };
+  }, [pathname]);
 
   // Helper function to get translations based on locale
   const getTranslations = (locale: string) => {
@@ -80,12 +118,14 @@ export default function Header() {
     };
   }, [isMenuOpen]);
 
-  if (!mounted) return null;
+  if (!mounted) return <div aria-hidden="true" className="h-16" />;
+
+  const introPending = pathname === "/" && !introState.complete;
 
   return (
     <>
       <header
-        className="sticky top-0 z-50 flex h-16 items-center border-b-2 px-4 transition-colors"
+        className={`sticky top-0 z-50 flex h-16 items-center border-b-2 px-4 ${introPending ? styles.introPending : "transition-all duration-300"}`}
         style={{
           backgroundColor: "var(--background)",
           borderColor: "var(--border)",

@@ -91,6 +91,8 @@ const cardLabels: Record<HeroLocale, Record<HeroCard["kind"], string>> = {
   },
 };
 
+const HERO_INTRO_COMPLETE_EVENT = "creativeHeroIntroComplete";
+
 export default function CreativeHero({
   translations,
   projects = [],
@@ -98,6 +100,7 @@ export default function CreativeHero({
   locale = "en",
 }: CreativeHeroProps) {
   const heroRef = useRef<HTMLElement>(null);
+  const completedCardsRef = useRef<Set<EventTarget>>(new Set());
   const activeLocale: HeroLocale =
     locale === "th" || locale === "ja" ? locale : "en";
   const projectQueue: HeroCard[] = projects.slice(0, 6).map((project) => ({
@@ -124,6 +127,31 @@ export default function CreativeHero({
     return card ? [card] : [];
   });
   const cardIdentity = cards.map((card) => `${card.kind}:${card.id}`).join("|");
+
+  useEffect(() => {
+    completedCardsRef.current.clear();
+
+    if (cards.length === 0 && heroRef.current) {
+      heroRef.current.dataset.introComplete = "true";
+      window.dispatchEvent(new Event(HERO_INTRO_COMPLETE_EVENT));
+    }
+  }, [cardIdentity, cards.length]);
+
+  const handleCardAnimationEnd = (
+    event: React.AnimationEvent<HTMLDivElement>
+  ) => {
+    if (!(event.target instanceof HTMLElement)) return;
+    if (!event.target.matches("[data-exit-side]")) return;
+
+    completedCardsRef.current.add(event.target);
+    if (completedCardsRef.current.size !== cards.length) return;
+
+    const hero = heroRef.current;
+    if (!hero || hero.dataset.introComplete === "true") return;
+
+    hero.dataset.introComplete = "true";
+    window.dispatchEvent(new Event(HERO_INTRO_COMPLETE_EVENT));
+  };
 
   useEffect(() => {
     const hero = heroRef.current;
@@ -208,6 +236,7 @@ export default function CreativeHero({
       ref={heroRef}
       className={styles.hero}
       aria-labelledby="home-hero-title"
+      data-creative-hero
     >
       <div
         className={`${styles.content} ${cards.length > 0 ? styles.contentAnimated : ""}`}
@@ -235,13 +264,13 @@ export default function CreativeHero({
       </div>
 
       {cards.length > 0 && (
-        <div className={styles.orbit}>
+        <div className={styles.orbit} onAnimationEnd={handleCardAnimationEnd}>
           {cards.map((card, index) => {
             const slotIndex = Math.round(
               (index * cardSlots.length) / cards.length
             );
             const slot = cardSlots[slotIndex];
-            const className = `${styles.card} ${slot} ${card.kind === "project" ? styles.projectCard : styles.certificateCard}`;
+            const className = `${styles.card} ${card.kind === "project" ? styles.projectCard : styles.certificateCard}`;
             const label = cardLabels[activeLocale][card.kind];
             const exitSide = slotIndex % 2 === 0 ? "left" : "right";
             const cardContents = (
@@ -270,28 +299,33 @@ export default function CreativeHero({
               </>
             );
 
-            return card.kind === "certificate" ? (
-              <a
+            return (
+              <div
                 key={`${card.kind}-${card.id}`}
-                href={card.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={className}
-                data-exit-side={exitSide}
-                aria-label={`${label}: ${card.title} (PDF)`}
+                className={`${styles.orbitTrack} ${slot}`}
               >
-                {cardContents}
-              </a>
-            ) : (
-              <Link
-                key={`${card.kind}-${card.id}`}
-                href={card.href}
-                className={className}
-                data-exit-side={exitSide}
-                aria-label={`${label}: ${card.title}`}
-              >
-                {cardContents}
-              </Link>
+                {card.kind === "certificate" ? (
+                  <a
+                    href={card.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={className}
+                    data-exit-side={exitSide}
+                    aria-label={`${label}: ${card.title} (PDF)`}
+                  >
+                    {cardContents}
+                  </a>
+                ) : (
+                  <Link
+                    href={card.href}
+                    className={className}
+                    data-exit-side={exitSide}
+                    aria-label={`${label}: ${card.title}`}
+                  >
+                    {cardContents}
+                  </Link>
+                )}
+              </div>
             );
           })}
         </div>
