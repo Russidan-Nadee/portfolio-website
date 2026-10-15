@@ -1,11 +1,13 @@
 .stage {
-  --terminal-offset: clamp(150px, 12vw, 230px);
-  --terminal-extra-height: 36px;
+  --terminal-offset: 19.5cqw;
+  --terminal-extra-height: 3.1cqw;
 
   position: relative;
-  width: 100%;
+  width: min(78%, 920px);
   height: auto;
   aspect-ratio: 1.85 / 1;
+  margin: 0 auto;
+  container-type: inline-size;
   isolation: isolate;
   font-family:
     var(--font-geist-mono), "SFMono-Regular", Consolas, "Liberation Mono",
@@ -29,14 +31,20 @@
 .codex {
   z-index: 1;
   top: 0;
-  left: 0;
+  left: -14cqw;
+  height: calc(
+    100% - var(--terminal-offset) + var(--terminal-extra-height) + 7.5cqw
+  );
   animation: codexFloat 8s ease-in-out infinite;
 }
 
 .claude {
   z-index: 2;
-  top: var(--terminal-offset);
+  top: calc(var(--terminal-offset) - 6cqw);
   right: 0;
+  height: calc(
+    100% - var(--terminal-offset) + var(--terminal-extra-height) + 8.5cqw
+  );
   border-color: #4d4340;
   background: #1a1b1c;
   animation: claudeFloat 8s ease-in-out infinite;
@@ -250,6 +258,7 @@
 
 @media (max-width: 800px) {
   .stage {
+    --terminal-extra-height: 36px;
     --mobile-terminal-height: calc(278px + var(--terminal-extra-height));
 
     width: min(100%, 640px);

@@ -39,21 +39,19 @@ const copyByLocale: Record<Locale, StoryCopy> = {
         tag: "01 / CODE",
         title: "AI เขียนโค้ด",
         description:
-          "ผมให้ Codex และ Claude Code ช่วยทำงานเขียนโค้ดที่ชัดเจน แล้วตรวจการเปลี่ยนแปลงและผลลัพธ์ด้วยตัวเอง",
+          "ใช้ Codex และ Claude Code ช่วยเขียนโค้ด ทำงานได้เร็วขึ้นมาก",
         products: [],
       },
       {
         tag: "02 / RESEARCH",
         title: "ให้ AI ช่วยค้น แล้วผมคิดต่อ",
-        description:
-          "Codex และ Claude ช่วยค้นเอกสารและตัวอย่างจากหลายแหล่ง ผมอ่านต้นทาง จับประเด็น และเลือกสิ่งที่นำมาใช้",
+        description: "ให้ AI รวบรวมข้อมูล ก่อนเลือกแนวทางที่เหมาะ",
         products: [],
       },
       {
         tag: "03 / APPLY",
         title: "AI ที่ใช้งานได้จริง",
-        description:
-          "สองตัวอย่างที่แสดงว่า AI ช่วยลดขั้นตอนของผู้ใช้ได้อย่างไร",
+        description: "Fastship AI ที่ผมพัฒนาให้ใช้งานได้จริง",
         products: [
           {
             name: "FormAI",
@@ -77,22 +75,19 @@ const copyByLocale: Record<Locale, StoryCopy> = {
       {
         tag: "01 / CODE",
         title: "Agentic coding",
-        description:
-          "I give Codex and Claude Code a concrete coding task, review their changes, and verify the result.",
+        description: "Codex and Claude Code make coding much faster.",
         products: [],
       },
       {
         tag: "02 / RESEARCH",
         title: "AI searches. I connect the dots.",
-        description:
-          "Codex and Claude help me find documentation and examples. I read the sources, connect what matters, and decide what to use.",
+        description: "Let AI gather facts. Choose the right path.",
         products: [],
       },
       {
         tag: "03 / APPLY",
         title: "AI people can use",
-        description:
-          "Two examples of how AI can make a task simpler for the person doing it.",
+        description: "Fastship AI, developed by me for real-world use.",
         products: [
           {
             name: "FormAI",
@@ -117,20 +112,19 @@ const copyByLocale: Record<Locale, StoryCopy> = {
         tag: "01 / CODE",
         title: "AI エージェントと開発",
         description:
-          "Codex と Claude Code に具体的な開発タスクを任せ、変更内容と結果を自分で確認します。",
+          "Codex と Claude Code を使ってコードを書き、開発を大幅に速くしています。",
         products: [],
       },
       {
         tag: "02 / RESEARCH",
         title: "AI と調べ、自分で考える",
-        description:
-          "Codex と Claude が資料や実例を探し、私は元の情報を確かめて要点を整理し、使うものを選びます。",
+        description: "AI が探し、私は資料を確かめて選びます。",
         products: [],
       },
       {
         tag: "03 / APPLY",
         title: "使える AI を形に",
-        description: "AI が利用者の作業をシンプルにする二つの例です。",
+        description: "Fastship AI を開発し、実際に使える形にしました。",
         products: [
           {
             name: "FormAI",
@@ -231,7 +225,9 @@ function StoryBody({
 }) {
   if (index < 2) {
     return (
-      <div className={`${styles.storyBody} ${styles.windowStoryBody}`}>
+      <div
+        className={`${styles.storyBody} ${styles.windowStoryBody} ${index === 0 ? styles.terminalStoryBody : ""}`}
+      >
         {index === 1 && (
           <>
             <h3
@@ -239,17 +235,19 @@ function StoryBody({
             >
               {railLabels[locale][1]}
             </h3>
-            <p className={styles.visuallyHidden}>{scene.description}</p>
           </>
         )}
         {index === 0 ? (
           <>
             <h3 className={styles.visuallyHidden}>{scene.title}</h3>
-            <p className={styles.visuallyHidden}>{scene.description}</p>
             <TerminalPair locale={locale} />
+            <p className={styles.sceneCaption}>{scene.description}</p>
           </>
         ) : (
-          <ResearchBrowser key={locale} locale={locale} />
+          <>
+            <ResearchBrowser key={locale} locale={locale} />
+            <p className={styles.sceneCaption}>{scene.description}</p>
+          </>
         )}
       </div>
     );
@@ -278,18 +276,39 @@ function StoryBody({
           aria-label={fastshipLinkLabel[locale]}
         />
       </div>
+      <p className={styles.sceneCaption}>{scene.description}</p>
     </div>
   );
 }
 
 export default function AiStoryPanel({ locale = "en" }: { locale?: Locale }) {
+  const introRef = useRef<HTMLElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
   const frameRef = useRef<HTMLDivElement>(null);
   const railRef = useRef<HTMLElement>(null);
   const triggerRef = useRef<ScrollTrigger | null>(null);
   const [activeScene, setActiveScene] = useState(0);
+  const [introVisible, setIntroVisible] = useState(false);
   const copy = copyByLocale[locale];
   const [leadBeforeAi, leadAfterAi] = introCopy[locale].lead.split("AI");
+
+  useEffect(() => {
+    const intro = introRef.current;
+    if (!intro) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIntroVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.2 }
+    );
+
+    observer.observe(intro);
+    return () => observer.disconnect();
+  }, []);
 
   const goToScene = (index: number) => {
     const trigger = triggerRef.current;
@@ -339,6 +358,19 @@ export default function AiStoryPanel({ locale = "en" }: { locale?: Locale }) {
           const enterHeight = (enterWidth * settledHeight) / settledWidth;
           const enterBottom =
             viewport.clientHeight - enterVertical - enterHeight;
+          const expandedShift = 1 - entrance;
+          const terminalLift = Math.min(
+            230,
+            Math.max(0, enterHeight - viewport.clientHeight) * 0.68
+          );
+          frame.style.setProperty(
+            "--terminal-entrance-y",
+            `${(-terminalLift * expandedShift).toFixed(2)}px`
+          );
+          frame.style.setProperty(
+            "--terminal-entrance-x",
+            `${(Math.min(70, viewport.clientWidth * 0.04) * expandedShift).toFixed(2)}px`
+          );
           const setInset = (name: string, start: number, end: number) => {
             frame.style.setProperty(
               name,
@@ -379,6 +411,8 @@ export default function AiStoryPanel({ locale = "en" }: { locale?: Locale }) {
             "--frame-right",
             "--frame-top",
             "--frame-bottom",
+            "--terminal-entrance-x",
+            "--terminal-entrance-y",
           ]) {
             frame.style.removeProperty(property);
           }
@@ -395,7 +429,8 @@ export default function AiStoryPanel({ locale = "en" }: { locale?: Locale }) {
   return (
     <>
       <section
-        className={styles.intro}
+        ref={introRef}
+        className={`${styles.intro} ${introVisible ? styles.introVisible : ""}`}
         lang={locale}
         aria-labelledby="ai-intro-title"
       >
