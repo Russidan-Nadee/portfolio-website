@@ -120,6 +120,42 @@
   flex: 1;
 }
 
+.macbook {
+  position: relative;
+  width: min(100%, 1100px);
+  aspect-ratio: 1800 / 862;
+  align-self: center;
+  margin: auto;
+}
+
+.macbookScreen {
+  position: absolute;
+  inset: 2.12% 18.78% 11.77% 16.58%;
+  overflow: hidden;
+  border-radius: 4px 4px 0 0;
+  background: linear-gradient(145deg, #222936, #11151c 72%);
+}
+
+.macbookScreen::after {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 10.6%;
+  height: 2.8%;
+  min-height: 6px;
+  border-radius: 0 0 8px 8px;
+  background: radial-gradient(circle at 50% 45%, #1e3c5e 0 2px, #000 4px);
+  content: "";
+  transform: translateX(-50%);
+}
+
+.macbookFrame {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 .staticCard .windowSceneTitle {
   position: static;
   width: auto;

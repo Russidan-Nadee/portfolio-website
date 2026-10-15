@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import ResearchBrowser from "./ResearchBrowser";
@@ -191,56 +192,20 @@ function StoryBody({
   }
 
   return (
-    <div className={styles.storyBody}>
-      <div className={styles.storyCopy}>
-        <span className={styles.sceneTag}>
-          <span className={styles.pulse} aria-hidden="true" />
-          {scene.tag}
-        </span>
-        <h3 className={styles.title}>{scene.title}</h3>
-        <p className={styles.description}>{scene.description}</p>
-        <span className={styles.sceneNumber} aria-hidden="true">
-          0{index + 1}
-          <span> / 03</span>
-        </span>
-      </div>
-
-      <div className={`${styles.visual} ${styles.productVisual}`}>
-        <div className={styles.visualGrid} aria-hidden="true" />
-        <div className={styles.products}>
-          {scene.products.map((product, productIndex) => (
-            <a
-              key={product.name}
-              className={styles.productCard}
-              href={product.href}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <span className={styles.productIndex}>0{productIndex + 1}</span>
-              <span className={styles.productText}>
-                <span className={styles.productType}>{product.type}</span>
-                <strong>{product.name}</strong>
-                <span className={styles.productDescription}>
-                  {product.description}
-                </span>
-              </span>
-              <svg
-                className={styles.productArrow}
-                viewBox="0 0 24 24"
-                fill="none"
-                aria-hidden="true"
-              >
-                <path
-                  d="M5 19 19 5M8 5h11v11"
-                  stroke="currentColor"
-                  strokeWidth="1.7"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </a>
-          ))}
-        </div>
+    <div className={`${styles.storyBody} ${styles.windowStoryBody}`}>
+      <h3 className={`${styles.visuallyHidden} ${styles.windowSceneTitle}`}>
+        {railLabels[locale][2]}
+      </h3>
+      <div className={styles.macbook} aria-hidden="true">
+        <div className={styles.macbookScreen} />
+        <Image
+          className={styles.macbookFrame}
+          src="/images/ai/macbook-pro-16-silver.webp"
+          alt=""
+          width={1800}
+          height={862}
+          sizes="(min-width: 1200px) 65vw, 100vw"
+        />
       </div>
     </div>
   );
@@ -387,10 +352,7 @@ export default function AiStoryPanel({ locale = "en" }: { locale?: Locale }) {
           ))}
         </nav>
 
-        <div
-          ref={frameRef}
-          className={`${styles.frame} ${activeScene < 2 ? styles.windowFrame : ""}`}
-        >
+        <div ref={frameRef} className={`${styles.frame} ${styles.windowFrame}`}>
           <div
             id="ai-story-panel"
             key={`${locale}-${activeScene}`}
@@ -417,7 +379,7 @@ export default function AiStoryPanel({ locale = "en" }: { locale?: Locale }) {
       <div className={styles.staticList}>
         {copy.scenes.map((scene, index) => (
           <article
-            className={`${styles.staticCard} ${index < 2 ? styles.windowStaticCard : ""}`}
+            className={`${styles.staticCard} ${styles.windowStaticCard}`}
             key={scene.tag}
           >
             <StoryBody scene={scene} index={index} locale={locale} />
