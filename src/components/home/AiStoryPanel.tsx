@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
+import ResearchBrowser from "./ResearchBrowser";
+import TerminalPair from "./TerminalPair";
 import styles from "./AiStoryPanel.module.css";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -20,7 +22,6 @@ interface StoryScene {
   tag: string;
   title: string;
   description: string;
-  steps: string[];
   products: Product[];
 }
 
@@ -38,15 +39,13 @@ const copyByLocale: Record<Locale, StoryCopy> = {
         title: "ผมใช้ AI ยังไง",
         description:
           "ใช้ AI ช่วยจับประเด็นจากสิ่งที่เจอระหว่างทำงาน แล้วจัดเป็นบันทึกที่กลับมาใช้ได้",
-        steps: ["คำถามที่เจอ", "แยกประเด็น", "บันทึกไว้ใช้ซ้ำ"],
         products: [],
       },
       {
-        tag: "02 / BUILD",
-        title: "คิดเร็วขึ้น ลงมือให้รอบคอบ",
+        tag: "02 / RESEARCH",
+        title: "ให้ AI ช่วยค้น แล้วผมคิดต่อ",
         description:
-          "ใช้ AI ช่วยแตกโจทย์และร่างทางเลือก ก่อนตรวจโค้ด ทดสอบ และตัดสินใจด้วยตัวเอง",
-        steps: ["สำรวจแนวทาง", "ลงมือสร้าง", "ตรวจและทดสอบ"],
+          "Codex และ Claude ช่วยค้นเอกสารและตัวอย่างจากหลายแหล่ง ผมอ่านต้นทาง จับประเด็น และเลือกสิ่งที่นำมาใช้",
         products: [],
       },
       {
@@ -54,7 +53,6 @@ const copyByLocale: Record<Locale, StoryCopy> = {
         title: "AI ที่ใช้งานได้จริง",
         description:
           "สองตัวอย่างที่แสดงว่า AI ช่วยลดขั้นตอนของผู้ใช้ได้อย่างไร",
-        steps: [],
         products: [
           {
             name: "FormAI",
@@ -80,15 +78,13 @@ const copyByLocale: Record<Locale, StoryCopy> = {
         title: "How I use AI",
         description:
           "I use AI to capture what I learn while building and turn it into notes I can return to.",
-        steps: ["A question", "The key idea", "A reusable note"],
         products: [],
       },
       {
-        tag: "02 / BUILD",
-        title: "Explore faster. Build carefully.",
+        tag: "02 / RESEARCH",
+        title: "AI searches. I connect the dots.",
         description:
-          "AI helps me explore approaches and draft ideas. I review the code, test the result, and make the final call.",
-        steps: ["Explore", "Build", "Review and test"],
+          "Codex and Claude help me find documentation and examples. I read the sources, connect what matters, and decide what to use.",
         products: [],
       },
       {
@@ -96,7 +92,6 @@ const copyByLocale: Record<Locale, StoryCopy> = {
         title: "AI people can use",
         description:
           "Two examples of how AI can make a task simpler for the person doing it.",
-        steps: [],
         products: [
           {
             name: "FormAI",
@@ -122,22 +117,19 @@ const copyByLocale: Record<Locale, StoryCopy> = {
         title: "私の AI 活用法",
         description:
           "開発中に得た気づきを AI で整理し、後から活用できるメモに残します。",
-        steps: ["疑問", "要点を整理", "再利用できるメモ"],
         products: [],
       },
       {
-        tag: "02 / BUILD",
-        title: "速く考え、丁寧に作る",
+        tag: "02 / RESEARCH",
+        title: "AI と調べ、自分で考える",
         description:
-          "AI で方法を探り、案を形にします。コードの確認とテスト、最終判断は自分で行います。",
-        steps: ["方法を探る", "作る", "確認・テスト"],
+          "Codex と Claude が資料や実例を探し、私は元の情報を確かめて要点を整理し、使うものを選びます。",
         products: [],
       },
       {
         tag: "03 / APPLY",
         title: "使える AI を形に",
         description: "AI が利用者の作業をシンプルにする二つの例です。",
-        steps: [],
         products: [
           {
             name: "FormAI",
@@ -158,12 +150,46 @@ const copyByLocale: Record<Locale, StoryCopy> = {
 };
 
 const railLabels: Record<Locale, [string, string, string]> = {
-  th: ["ผมใช้ AI ยังไง", "พัฒนาให้ไวขึ้น", "AI ที่ใช้งานจริง"],
-  en: ["How I use AI", "Build with AI", "AI in practice"],
-  ja: ["AI の使い方", "開発での活用", "実用的な AI"],
+  th: ["ผมใช้ AI ยังไง", "คิดร่วมกับ AI", "AI ที่ใช้งานจริง"],
+  en: ["How I use AI", "Thinking with AI", "AI in practice"],
+  ja: ["AI の使い方", "AI と考える", "実用的な AI"],
 };
 
-function StoryBody({ scene, index }: { scene: StoryScene; index: number }) {
+function StoryBody({
+  scene,
+  index,
+  locale,
+}: {
+  scene: StoryScene;
+  index: number;
+  locale: Locale;
+}) {
+  if (index < 2) {
+    return (
+      <div className={`${styles.storyBody} ${styles.windowStoryBody}`}>
+        {index === 1 && (
+          <>
+            <h3
+              className={`${styles.visuallyHidden} ${styles.windowSceneTitle}`}
+            >
+              {railLabels[locale][1]}
+            </h3>
+            <p className={styles.visuallyHidden}>{scene.description}</p>
+          </>
+        )}
+        {index === 0 ? (
+          <>
+            <h3 className={styles.visuallyHidden}>{scene.title}</h3>
+            <p className={styles.visuallyHidden}>{scene.description}</p>
+            <TerminalPair locale={locale} />
+          </>
+        ) : (
+          <ResearchBrowser key={locale} locale={locale} />
+        )}
+      </div>
+    );
+  }
+
   return (
     <div className={styles.storyBody}>
       <div className={styles.storyCopy}>
@@ -179,61 +205,42 @@ function StoryBody({ scene, index }: { scene: StoryScene; index: number }) {
         </span>
       </div>
 
-      <div
-        className={`${styles.visual} ${scene.products.length > 0 ? styles.productVisual : ""}`}
-      >
+      <div className={`${styles.visual} ${styles.productVisual}`}>
         <div className={styles.visualGrid} aria-hidden="true" />
-        {scene.products.length > 0 ? (
-          <div className={styles.products}>
-            {scene.products.map((product, productIndex) => (
-              <a
-                key={product.name}
-                className={styles.productCard}
-                href={product.href}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <span className={styles.productIndex}>0{productIndex + 1}</span>
-                <span className={styles.productText}>
-                  <span className={styles.productType}>{product.type}</span>
-                  <strong>{product.name}</strong>
-                  <span className={styles.productDescription}>
-                    {product.description}
-                  </span>
+        <div className={styles.products}>
+          {scene.products.map((product, productIndex) => (
+            <a
+              key={product.name}
+              className={styles.productCard}
+              href={product.href}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span className={styles.productIndex}>0{productIndex + 1}</span>
+              <span className={styles.productText}>
+                <span className={styles.productType}>{product.type}</span>
+                <strong>{product.name}</strong>
+                <span className={styles.productDescription}>
+                  {product.description}
                 </span>
-                <svg
-                  className={styles.productArrow}
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M5 19 19 5M8 5h11v11"
-                    stroke="currentColor"
-                    strokeWidth="1.7"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </a>
-            ))}
-          </div>
-        ) : (
-          <div className={styles.process} aria-label={scene.steps.join(" → ")}>
-            <div className={styles.orbit} aria-hidden="true">
-              <span className={styles.orbitCore}>AI</span>
-            </div>
-            <div className={styles.processSteps}>
-              {scene.steps.map((step, stepIndex) => (
-                <div className={styles.processStep} key={step}>
-                  <span>0{stepIndex + 1}</span>
-                  <strong>{step}</strong>
-                  <i aria-hidden="true" />
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+              </span>
+              <svg
+                className={styles.productArrow}
+                viewBox="0 0 24 24"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path
+                  d="M5 19 19 5M8 5h11v11"
+                  stroke="currentColor"
+                  strokeWidth="1.7"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </a>
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -380,13 +387,20 @@ export default function AiStoryPanel({ locale = "en" }: { locale?: Locale }) {
           ))}
         </nav>
 
-        <div ref={frameRef} className={styles.frame}>
+        <div
+          ref={frameRef}
+          className={`${styles.frame} ${activeScene < 2 ? styles.windowFrame : ""}`}
+        >
           <div
             id="ai-story-panel"
             key={`${locale}-${activeScene}`}
             className={styles.sceneEnter}
           >
-            <StoryBody scene={copy.scenes[activeScene]} index={activeScene} />
+            <StoryBody
+              scene={copy.scenes[activeScene]}
+              index={activeScene}
+              locale={locale}
+            />
           </div>
 
           <div className={styles.progress} aria-hidden="true">
@@ -402,8 +416,11 @@ export default function AiStoryPanel({ locale = "en" }: { locale?: Locale }) {
 
       <div className={styles.staticList}>
         {copy.scenes.map((scene, index) => (
-          <article className={styles.staticCard} key={scene.tag}>
-            <StoryBody scene={scene} index={index} />
+          <article
+            className={`${styles.staticCard} ${index < 2 ? styles.windowStaticCard : ""}`}
+            key={scene.tag}
+          >
+            <StoryBody scene={scene} index={index} locale={locale} />
           </article>
         ))}
       </div>
