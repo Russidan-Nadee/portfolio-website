@@ -92,21 +92,32 @@ export default function ProjectsShowcase({
 
     let frame = 0;
     let addedPadding = 0;
-    const updateExit = () => {
+    const updateTransition = () => {
       frame = 0;
       const viewportHeight = window.innerHeight;
-      const originalBottom =
-        section.getBoundingClientRect().bottom - addedPadding;
-      const progress = Math.min(
+      const bounds = section.getBoundingClientRect();
+      const maxInset = Math.min(80, window.innerWidth * 0.042);
+      const entryProgress = Math.min(
+        1,
+        Math.max(0, (viewportHeight - bounds.top) / (viewportHeight * 0.7))
+      );
+      const entryInset = (1 - entryProgress) * maxInset;
+      const originalBottom = bounds.bottom - addedPadding;
+      const exitProgress = Math.min(
         1,
         Math.max(0, (viewportHeight - originalBottom) / (viewportHeight / 4))
       );
-      const inset = progress * Math.min(80, window.innerWidth * 0.042);
-      addedPadding = progress * 96;
-      section.style.setProperty("--exit-inset", `${inset.toFixed(1)}px`);
+      const exitInset = exitProgress * maxInset;
+      addedPadding = exitProgress * 96;
+      section.style.setProperty("--entry-inset", `${entryInset.toFixed(1)}px`);
+      section.style.setProperty(
+        "--entry-radius",
+        `${((1 - entryProgress) * 48).toFixed(1)}px`
+      );
+      section.style.setProperty("--exit-inset", `${exitInset.toFixed(1)}px`);
       section.style.setProperty(
         "--exit-radius",
-        `${(progress * 48).toFixed(1)}px`
+        `${(exitProgress * 48).toFixed(1)}px`
       );
       section.style.setProperty(
         "--exit-padding",
@@ -114,16 +125,18 @@ export default function ProjectsShowcase({
       );
     };
     const scheduleUpdate = () => {
-      if (!frame) frame = window.requestAnimationFrame(updateExit);
+      if (!frame) frame = window.requestAnimationFrame(updateTransition);
     };
 
-    updateExit();
+    updateTransition();
     window.addEventListener("scroll", scheduleUpdate, { passive: true });
     window.addEventListener("resize", scheduleUpdate);
     return () => {
       window.removeEventListener("scroll", scheduleUpdate);
       window.removeEventListener("resize", scheduleUpdate);
       window.cancelAnimationFrame(frame);
+      section.style.removeProperty("--entry-inset");
+      section.style.removeProperty("--entry-radius");
       section.style.removeProperty("--exit-inset");
       section.style.removeProperty("--exit-radius");
       section.style.removeProperty("--exit-padding");

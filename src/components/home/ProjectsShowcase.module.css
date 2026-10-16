@@ -10,9 +10,12 @@
   position: relative;
   z-index: 1;
   overflow: visible;
-  width: calc(100% - 2 * var(--exit-inset, 0px));
+  width: calc(
+    100% - 2 * max(var(--entry-inset, min(80px, 4.2vw)), var(--exit-inset, 0px))
+  );
   margin-inline: auto;
-  border-radius: 0 0 var(--exit-radius, 0px) var(--exit-radius, 0px);
+  border-radius: var(--entry-radius, 48px) var(--entry-radius, 48px)
+    var(--exit-radius, 0px) var(--exit-radius, 0px);
   box-shadow: 0 16px 32px rgb(0 0 0 / 8%);
   padding: 104px 0 calc(96px + var(--exit-padding, 0px));
   color: var(--showcase-ink);
