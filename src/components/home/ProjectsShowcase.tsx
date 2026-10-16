@@ -87,6 +87,50 @@ export default function ProjectsShowcase({
   }, [projectCount]);
 
   useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    let frame = 0;
+    let addedPadding = 0;
+    const updateExit = () => {
+      frame = 0;
+      const viewportHeight = window.innerHeight;
+      const originalBottom =
+        section.getBoundingClientRect().bottom - addedPadding;
+      const progress = Math.min(
+        1,
+        Math.max(0, (viewportHeight - originalBottom) / (viewportHeight / 4))
+      );
+      const inset = progress * Math.min(80, window.innerWidth * 0.042);
+      addedPadding = progress * 96;
+      section.style.setProperty("--exit-inset", `${inset.toFixed(1)}px`);
+      section.style.setProperty(
+        "--exit-radius",
+        `${(progress * 48).toFixed(1)}px`
+      );
+      section.style.setProperty(
+        "--exit-padding",
+        `${addedPadding.toFixed(1)}px`
+      );
+    };
+    const scheduleUpdate = () => {
+      if (!frame) frame = window.requestAnimationFrame(updateExit);
+    };
+
+    updateExit();
+    window.addEventListener("scroll", scheduleUpdate, { passive: true });
+    window.addEventListener("resize", scheduleUpdate);
+    return () => {
+      window.removeEventListener("scroll", scheduleUpdate);
+      window.removeEventListener("resize", scheduleUpdate);
+      window.cancelAnimationFrame(frame);
+      section.style.removeProperty("--exit-inset");
+      section.style.removeProperty("--exit-radius");
+      section.style.removeProperty("--exit-padding");
+    };
+  }, [projectCount]);
+
+  useEffect(() => {
     const stage = stageRef.current;
     if (!stage) return;
 
@@ -205,7 +249,19 @@ export default function ProjectsShowcase({
     };
   }, [finishPointer]);
 
-  if (projectCount === 0) return <AiStoryPanel locale={locale} />;
+  if (projectCount === 0) {
+    return (
+      <section
+        ref={sectionRef}
+        className={`${styles.showcase} ${styles.emptyShowcase}`}
+        aria-label={
+          translations?.home?.projectsShowcase?.title || "Featured Projects"
+        }
+      >
+        <AiStoryPanel locale={locale} />
+      </section>
+    );
+  }
 
   const visibleOffsets = projectCount === 1 ? [0] : [-3, -2, -1, 0, 1, 2, 3];
 

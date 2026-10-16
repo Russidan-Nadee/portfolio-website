@@ -87,7 +87,10 @@ export default function HomeContent({
       />
 
       {/* Final CTA Section */}
-      <section className="text-center py-20">
+      <section
+        className="relative -mt-48 flex min-h-screen flex-col items-center justify-center px-6 pt-64 pb-24 text-center"
+        style={{ backgroundColor: "var(--cta-reveal-background)" }}
+      >
         <h2
           className="text-3xl md:text-4xl font-bold mb-4"
           style={{ color: "var(--foreground)" }}
