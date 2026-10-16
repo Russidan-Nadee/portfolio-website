@@ -1,7 +1,7 @@
 // src/app/admin/projects/ProjectsBoard.tsx
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   DndContext,
@@ -55,12 +55,15 @@ export default function ProjectsBoard({
 }>) {
   const router = useRouter();
   const [items, setItems] = useState<ProjectData[]>(initialItems);
+  const [previousInitialItems, setPreviousInitialItems] =
+    useState(initialItems);
   const [creating, setCreating] = useState<ProjectHeaderValue | null>(null);
   const [saving, setSaving] = useState(false);
 
-  useEffect(() => {
+  if (initialItems !== previousInitialItems) {
+    setPreviousInitialItems(initialItems);
     setItems(initialItems);
-  }, [initialItems]);
+  }
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } })

@@ -2,8 +2,7 @@
 "use client";
 
 import { useInitialLocale } from "@/components/layout/LocaleProvider";
-import { localeFromPath } from "@/lib/locale-path";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ProjectNavigation from "@/components/portfolio/ProjectNavigation";
 import ProjectHeader from "@/components/portfolio/ProjectHeader";
 import ProjectInfoBar from "@/components/portfolio/ProjectInfoBar";
@@ -55,10 +54,9 @@ export default function ProjectDetailContent({
   };
 }>) {
   const [locale, setLocale] = useState<Locale>(useInitialLocale());
-  const [scrollProgress, setScrollProgress] = useState(0);
+  const progressBarRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setLocale((localeFromPath(window.location.pathname) as Locale) || "th");
     const handleLanguageChange = (e: Event) => {
       setLocale((e as CustomEvent<{ language: Locale }>).detail.language);
     };
@@ -68,16 +66,32 @@ export default function ProjectDetailContent({
   }, []);
 
   useEffect(() => {
+    let frameId = 0;
     const updateProgressBar = () => {
       const winScroll =
         document.body.scrollTop || document.documentElement.scrollTop;
       const height =
         document.documentElement.scrollHeight -
         document.documentElement.clientHeight;
-      setScrollProgress(height > 0 ? (winScroll / height) * 100 : 0);
+      const progress = height > 0 ? Math.min(1, winScroll / height) : 0;
+      if (progressBarRef.current) {
+        progressBarRef.current.style.transform = `scaleX(${progress})`;
+      }
+      frameId = 0;
     };
-    window.addEventListener("scroll", updateProgressBar);
-    return () => window.removeEventListener("scroll", updateProgressBar);
+
+    const scheduleProgressBar = () => {
+      if (!frameId) frameId = requestAnimationFrame(updateProgressBar);
+    };
+
+    scheduleProgressBar();
+    window.addEventListener("scroll", scheduleProgressBar, { passive: true });
+    window.addEventListener("resize", scheduleProgressBar);
+    return () => {
+      window.removeEventListener("scroll", scheduleProgressBar);
+      window.removeEventListener("resize", scheduleProgressBar);
+      if (frameId) cancelAnimationFrame(frameId);
+    };
   }, []);
 
   const scrollToTop = () => {
@@ -106,9 +120,10 @@ export default function ProjectDetailContent({
         style={{ backgroundColor: "var(--muted)" }}
       >
         <div
-          className="h-full transition-all duration-300"
+          ref={progressBarRef}
+          className="h-full transition-transform duration-300 origin-left"
           style={{
-            width: `${scrollProgress}%`,
+            transform: "scaleX(0)",
             backgroundColor: "var(--foreground)",
           }}
         />

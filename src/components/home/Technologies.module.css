@@ -49,6 +49,11 @@
   translate: var(--exit-x, 0px) var(--exit-y, 0px);
   transform-style: preserve-3d;
   animation: arcTravel 34s linear var(--orbit-delay) infinite;
+  animation-play-state: paused;
+}
+
+.scene[data-motion-active="true"] .logo {
+  animation-play-state: running;
 }
 
 .upperLogo {
@@ -72,6 +77,11 @@
   object-fit: contain;
   filter: drop-shadow(0 12px 15px rgb(0 0 0 / 15%));
   animation: logoFloat 6.5s ease-in-out var(--float-delay) infinite;
+  animation-play-state: paused;
+}
+
+.scene[data-motion-active="true"] .icon {
+  animation-play-state: running;
 }
 
 :global([data-theme="dark"]) .monochromeIcon {

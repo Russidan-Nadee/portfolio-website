@@ -2,6 +2,7 @@
 "use client";
 
 import { useState } from "react";
+import ProjectImage from "./ProjectImage";
 
 interface TextItem {
   title: string;
@@ -37,6 +38,11 @@ interface ProjectTabsContentProps {
   imageAlt: string;
   locale: string;
 }
+
+const WIDESCREEN_OVERVIEW_PATHS = new Set([
+  "/images/projects/asset-management/asset-management-overview.jpg",
+  "/images/projects/calculator-app/calculator-overview.png",
+]);
 
 // Page chrome (tab names, section headings) — same wording across every project,
 // so it isn't admin-editable content; kept here instead of in the database.
@@ -93,6 +99,10 @@ export default function ProjectTabsContent({
 }: ProjectTabsContentProps) {
   const [activeTab, setActiveTab] = useState("overview");
   const t = LABELS[locale] || LABELS.en;
+  const overviewPath = imagePath.split(/[?#]/, 1)[0];
+  const overviewAspectRatio = WIDESCREEN_OVERVIEW_PATHS.has(overviewPath)
+    ? "16 / 9"
+    : "4 / 3";
 
   const tabs = [
     { id: "overview", label: t.overview },
@@ -141,32 +151,31 @@ export default function ProjectTabsContent({
         <div>
           <div className="mb-8">
             {imagePath ? (
-              <div className="w-full mb-5">
-                <img
+              <div
+                className="relative w-full mb-5 rounded-2xl overflow-hidden shadow-lg"
+                style={{
+                  aspectRatio: overviewAspectRatio,
+                  backgroundColor: "var(--card)",
+                }}
+              >
+                <ProjectImage
                   src={imagePath}
                   alt={imageAlt}
-                  className="w-full h-auto rounded-2xl shadow-lg object-contain"
-                  style={{
-                    maxWidth: "100%",
-                    height: "auto",
-                  }}
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.style.display = "none";
-                    if (target.parentElement) {
-                      target.parentElement.innerHTML = `
-                                    <div class="w-full rounded-2xl flex items-center justify-center text-lg font-semibold border-2 border-dashed" style="
-                                       background-color: var(--muted);
-                                       border-color: var(--border);
-                                       color: var(--muted-foreground);
-                                       height: 280px;
-                                       aspect-ratio: 16/9;
-                                    ">
-                                       ${imageAlt}
-                                    </div>
-                                 `;
-                    }
-                  }}
+                  fill
+                  sizes="(max-width: 767px) calc(100vw - 4.5rem), (max-width: 1200px) calc(100vw - 7rem), 1088px"
+                  className="object-contain"
+                  fallback={
+                    <div
+                      className="w-full h-full flex items-center justify-center text-lg font-semibold border-2 border-dashed"
+                      style={{
+                        backgroundColor: "var(--muted)",
+                        borderColor: "var(--border)",
+                        color: "var(--muted-foreground)",
+                      }}
+                    >
+                      {imageAlt}
+                    </div>
+                  }
                 />
               </div>
             ) : (
@@ -319,13 +328,26 @@ export default function ProjectTabsContent({
               {content.gallery.map((image) => (
                 <div
                   key={image.url}
-                  className="rounded-xl overflow-hidden border transition-transform duration-300 hover:scale-105"
+                  className="relative rounded-xl overflow-hidden border transition-transform duration-300 hover:scale-105"
                   style={{ borderColor: "var(--border)", height: "180px" }}
                 >
-                  <img
+                  <ProjectImage
                     src={image.url}
                     alt={image.alt}
-                    className="w-full h-full object-cover"
+                    fill
+                    sizes="(max-width: 767px) calc(100vw - 4.5rem), (max-width: 1023px) calc(50vw - 3.5rem), 340px"
+                    className="object-cover"
+                    fallback={
+                      <div
+                        className="w-full h-full flex items-center justify-center text-center p-4"
+                        style={{
+                          backgroundColor: "var(--muted)",
+                          color: "var(--muted-foreground)",
+                        }}
+                      >
+                        {image.alt}
+                      </div>
+                    }
                   />
                 </div>
               ))}

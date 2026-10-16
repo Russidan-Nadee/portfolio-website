@@ -3,6 +3,7 @@
 
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import Image from "next/image";
 import { MdEdit, MdDeleteOutline } from "react-icons/md";
 import type { SkillData } from "./types";
 
@@ -89,9 +90,12 @@ export default function SortableSkillCard({
       )}
 
       {skill.icon && (
-        <img
+        <Image
           src={skill.icon}
           alt={skill.name}
+          width={48}
+          height={48}
+          unoptimized
           className="w-12 h-12 object-contain mt-2"
         />
       )}

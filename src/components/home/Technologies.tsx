@@ -81,6 +81,42 @@ export default function Technologies({
     const scene = sceneRef.current;
     if (!scene) return;
 
+    if (typeof IntersectionObserver === "undefined") {
+      scene.dataset.motionActive = "true";
+      return () => {
+        delete scene.dataset.motionActive;
+      };
+    }
+
+    let inView = false;
+    const updateMotion = () => {
+      if (inView && !document.hidden) {
+        scene.dataset.motionActive = "true";
+      } else {
+        delete scene.dataset.motionActive;
+      }
+    };
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        inView = entry.isIntersecting;
+        updateMotion();
+      },
+      { rootMargin: "200px 0px" }
+    );
+
+    observer.observe(scene);
+    document.addEventListener("visibilitychange", updateMotion);
+    return () => {
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", updateMotion);
+      delete scene.dataset.motionActive;
+    };
+  }, []);
+
+  useEffect(() => {
+    const scene = sceneRef.current;
+    if (!scene) return;
+
     const copy = scene.querySelector<HTMLElement>(`.${styles.copy}`);
     const upperLogos = scene.querySelectorAll<HTMLElement>(
       `.${styles.upperLogo}`
@@ -193,7 +229,7 @@ export default function Technologies({
                 width={160}
                 height={160}
                 unoptimized
-                loading="eager"
+                loading="lazy"
                 className={`${styles.icon} ${darkLogos.has(technology.name) ? styles.monochromeIcon : ""}`}
               />
             </li>

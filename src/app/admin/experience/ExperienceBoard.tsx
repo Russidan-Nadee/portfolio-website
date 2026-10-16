@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   MdClose,
   MdWork,
@@ -75,13 +75,16 @@ export default function ExperienceBoard({
   initialItems: ExperienceData[];
 }>) {
   const [items, setItems] = useState<ExperienceData[]>(initialItems);
+  const [previousInitialItems, setPreviousInitialItems] =
+    useState(initialItems);
   const [editing, setEditing] = useState<ExperienceData | null>(null);
   const [skillDraft, setSkillDraft] = useState("");
   const [saving, setSaving] = useState(false);
 
-  useEffect(() => {
+  if (initialItems !== previousInitialItems) {
+    setPreviousInitialItems(initialItems);
     setItems(initialItems);
-  }, [initialItems]);
+  }
 
   const workItems = items.filter((item) => item.type === "work");
   const educationItems = items.filter((item) => item.type === "education");

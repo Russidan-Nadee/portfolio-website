@@ -1,550 +1,657 @@
 // src/components/about/PersonalIntro.tsx
-'use client'
+"use client";
 
 import { useInitialLocale } from "@/components/layout/LocaleProvider";
 import { localeFromPath } from "@/lib/locale-path";
-import { useEffect, useRef, useState } from 'react'
-import th from '../../../locales/th.json'
-import ja from '../../../locales/ja.json'
-import en from '../../../locales/en.json'
+import { useEffect, useMemo, useRef, useState } from "react";
+import OptimizedImage from "@/components/ui/OptimizedImage";
+import th from "../../../locales/th.json";
+import ja from "../../../locales/ja.json";
+import en from "../../../locales/en.json";
 
 interface PersonalIntroProps {
-   translations: any
+  translations: typeof en | typeof th | typeof ja;
 }
 
 export default function PersonalIntro({ translations }: PersonalIntroProps) {
-   const [locale, setLocale] = useState(useInitialLocale())
+  const [locale, setLocale] = useState(useInitialLocale());
+  const localeRef = useRef(locale);
 
-   const introRef = useRef<HTMLDivElement>(null)
-   const textRef = useRef<HTMLDivElement>(null)
-   const imageRef = useRef<HTMLDivElement>(null)
-   const roleRef = useRef<HTMLSpanElement>(null)
-   const roleMeasureRef = useRef<HTMLDivElement>(null)
-   const postTitleRef = useRef<HTMLDivElement>(null)
+  const introRef = useRef<HTMLDivElement>(null);
+  const textRef = useRef<HTMLDivElement>(null);
+  const imageRef = useRef<HTMLDivElement>(null);
+  const roleRef = useRef<HTMLSpanElement>(null);
+  const roleMeasureRef = useRef<HTMLDivElement>(null);
+  const floatingElementsRef = useRef<(HTMLDivElement | null)[]>([]);
 
-   const [isVisible, setIsVisible] = useState(false)
-   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+  const [isVisible, setIsVisible] = useState(false);
+  const [profileImageFailed, setProfileImageFailed] = useState(false);
 
-   // Typing animation for role text
-   const [displayedRole, setDisplayedRole] = useState('')
-   const [isTyping, setIsTyping] = useState(false)
-   const [showContentReveal, setShowContentReveal] = useState(false)
-   const [currentRoleIndex, setCurrentRoleIndex] = useState(0)
-   const [isDeleting, setIsDeleting] = useState(false)
-   const [roleFontSize, setRoleFontSize] = useState<number | null>(null)
+  // Typing animation for role text
+  const [displayedRole, setDisplayedRole] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
+  const [showContentReveal, setShowContentReveal] = useState(false);
+  const [currentRoleIndex, setCurrentRoleIndex] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [roleFontSize, setRoleFontSize] = useState<number | null>(null);
 
-   // Helper function to get translations based on locale
-   const getTranslations = (locale: string) => {
-      switch (locale) {
-         case 'th':
-            return th
-         case 'ja':
-            return ja
-         default:
-            return en
-      }
-   }
+  // Helper function to get translations based on locale
+  const getTranslations = (locale: string) => {
+    switch (locale) {
+      case "th":
+        return th;
+      case "ja":
+        return ja;
+      default:
+        return en;
+    }
+  };
 
-   // Load translations with fallback
-   const currentTranslations = translations || getTranslations(locale)
+  // Load translations with fallback
+  const currentTranslations = translations || getTranslations(locale);
 
-   // Language change handler
-   useEffect(() => {
-      // Get initial language from localStorage
-      setLocale(localeFromPath(window.location.pathname) || 'en')
+  // Language change handler
+  useEffect(() => {
+    // Listen for language changes
+    const handleLanguageChange = (event: Event) => {
+      const nextLocale = localeFromPath(
+        `/${(event as CustomEvent<{ language: string }>).detail.language}`
+      );
+      if (localeRef.current === nextLocale) return;
+      localeRef.current = nextLocale;
+      setLocale(nextLocale);
+      setIsVisible(false);
+      setDisplayedRole("");
+      setIsTyping(false);
+      setShowContentReveal(false);
+      setCurrentRoleIndex(0);
+      setIsDeleting(false);
+    };
 
-      // Listen for language changes
-      const handleLanguageChange = (e: any) => {
-         setLocale(e.detail.language)
-      }
+    window.addEventListener("languageChange", handleLanguageChange);
+    return () =>
+      window.removeEventListener("languageChange", handleLanguageChange);
+  }, []);
 
-      window.addEventListener('languageChange', handleLanguageChange)
-      return () => window.removeEventListener('languageChange', handleLanguageChange)
-   }, [])
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !isVisible) {
+            setIsVisible(true);
 
-   useEffect(() => {
-      const observer = new IntersectionObserver(
-         (entries) => {
-            entries.forEach((entry) => {
-               if (entry.isIntersecting && !isVisible) {
-                  setIsVisible(true)
-
-                  // Animate text side
-                  if (textRef.current) {
-                     textRef.current.style.transform = 'translateX(0)'
-                     textRef.current.style.opacity = '1'
-                  }
-
-                  // Start typing animation
-                  setTimeout(() => {
-                     setIsTyping(true)
-                  }, 800)
-
-                  // Animate image side with delay
-                  setTimeout(() => {
-                     if (imageRef.current) {
-                        imageRef.current.style.transform = 'translateX(0) scale(1)'
-                        imageRef.current.style.opacity = '1'
-                     }
-                  }, 300)
-               }
-            })
-         },
-         { threshold: 0.1 }
-      )
-
-      if (introRef.current) {
-         observer.observe(introRef.current)
-      }
-
-      return () => observer.disconnect()
-   }, [isVisible])
-
-   // Define roles based on current language
-   const getRoles = (locale: string) => {
-      switch (locale) {
-         case 'th':
-            return [
-               'นักพัฒนา',
-               'วิศวกรซอฟต์แวร์',
-               'นักพัฒนาแอปพลิเคชัน',
-               'นักพัฒนาเว็บไซต์',
-               'นักพัฒนาแอปมือถือ'
-            ]
-         case 'ja':
-            return [
-               '開発者',
-               'ソフトウェアエンジニア',
-               'アプリ開発者',
-               'ウェブ開発者',
-               'モバイル開発者'
-            ]
-         default:
-            return [
-               'Developer',
-               'Full-Stack Engineer',
-               'Mobile Developer',
-               'Web Developer',
-               'Software Engineer'
-            ]
-      }
-   }
-
-   const roles = getRoles(locale)
-
-   useEffect(() => {
-      const text = textRef.current
-      const measure = roleMeasureRef.current
-      if (!text || !measure) return
-      let active = true
-
-      const fitRole = () => {
-         if (!active) return
-         const baseSize = parseFloat(getComputedStyle(measure).fontSize)
-         const availableWidth = text.clientWidth - Math.max(16, baseSize * 0.35) // Leave room for |.
-         const widestRole = Math.max(...Array.from(measure.children, (role) => role.scrollWidth))
-         if (availableWidth <= 0 || widestRole <= 0) return
-         setRoleFontSize(Math.floor(baseSize * Math.min(1, availableWidth / widestRole)))
-      }
-
-      const observer = new ResizeObserver(fitRole)
-      observer.observe(text)
-      window.addEventListener('resize', fitRole)
-      document.fonts.ready.then(fitRole)
-      fitRole()
-      return () => {
-         active = false
-         observer.disconnect()
-         window.removeEventListener('resize', fitRole)
-      }
-   }, [locale])
-
-   // Typing animation effect with continuous loop
-   useEffect(() => {
-      if (!isTyping) return
-
-      let timeoutId: NodeJS.Timeout
-
-      const typeWriter = () => {
-         const currentRole = roles[currentRoleIndex]
-
-         if (!isDeleting) {
-            // Typing phase
-            if (displayedRole.length < currentRole.length) {
-               setDisplayedRole(currentRole.slice(0, displayedRole.length + 1))
-               timeoutId = setTimeout(typeWriter, 150)
-            } else {
-               // Finished typing, wait then start deleting
-               timeoutId = setTimeout(() => {
-                  setIsDeleting(true)
-                  typeWriter()
-               }, 2000)
+            // Animate text side
+            if (textRef.current) {
+              textRef.current.style.transform = "translateX(0)";
+              textRef.current.style.opacity = "1";
             }
-         } else {
-            // Deleting phase
-            if (displayedRole.length > 0) {
-               setDisplayedRole(displayedRole.slice(0, -1))
-               timeoutId = setTimeout(typeWriter, 50)
-            } else {
-               // Finished deleting, move to next role
-               setIsDeleting(false)
-               setCurrentRoleIndex((prev) => (prev + 1) % roles.length)
-               timeoutId = setTimeout(typeWriter, 500)
-            }
-         }
+
+            // Start typing animation
+            setTimeout(() => {
+              setIsTyping(true);
+            }, 800);
+
+            // Animate image side with delay
+            setTimeout(() => {
+              if (imageRef.current) {
+                imageRef.current.style.transform = "translateX(0) scale(1)";
+                imageRef.current.style.opacity = "1";
+              }
+            }, 300);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    if (introRef.current) {
+      observer.observe(introRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [isVisible]);
+
+  // Define roles based on current language
+  const getRoles = (locale: string) => {
+    switch (locale) {
+      case "th":
+        return [
+          "นักพัฒนา",
+          "วิศวกรซอฟต์แวร์",
+          "นักพัฒนาแอปพลิเคชัน",
+          "นักพัฒนาเว็บไซต์",
+          "นักพัฒนาแอปมือถือ",
+        ];
+      case "ja":
+        return [
+          "開発者",
+          "ソフトウェアエンジニア",
+          "アプリ開発者",
+          "ウェブ開発者",
+          "モバイル開発者",
+        ];
+      default:
+        return [
+          "Developer",
+          "Full-Stack Engineer",
+          "Mobile Developer",
+          "Web Developer",
+          "Software Engineer",
+        ];
+    }
+  };
+
+  const roles = useMemo(() => getRoles(locale), [locale]);
+
+  useEffect(() => {
+    const text = textRef.current;
+    const measure = roleMeasureRef.current;
+    if (!text || !measure) return;
+    let active = true;
+
+    const fitRole = () => {
+      if (!active) return;
+      const baseSize = parseFloat(getComputedStyle(measure).fontSize);
+      const availableWidth = text.clientWidth - Math.max(16, baseSize * 0.35); // Leave room for |.
+      const widestRole = Math.max(
+        ...Array.from(measure.children, (role) => role.scrollWidth)
+      );
+      if (availableWidth <= 0 || widestRole <= 0) return;
+      setRoleFontSize(
+        Math.floor(baseSize * Math.min(1, availableWidth / widestRole))
+      );
+    };
+
+    const observer = new ResizeObserver(fitRole);
+    observer.observe(text);
+    window.addEventListener("resize", fitRole);
+    document.fonts.ready.then(fitRole);
+    fitRole();
+    return () => {
+      active = false;
+      observer.disconnect();
+      window.removeEventListener("resize", fitRole);
+    };
+  }, [locale]);
+
+  // Typing animation effect with continuous loop
+  useEffect(() => {
+    if (!isTyping) return;
+
+    let timeoutId: NodeJS.Timeout;
+
+    const typeWriter = () => {
+      const currentRole = roles[currentRoleIndex];
+
+      if (!isDeleting) {
+        // Typing phase
+        if (displayedRole.length < currentRole.length) {
+          setDisplayedRole(currentRole.slice(0, displayedRole.length + 1));
+          timeoutId = setTimeout(typeWriter, 150);
+        } else {
+          // Finished typing, wait then start deleting
+          timeoutId = setTimeout(() => {
+            setIsDeleting(true);
+            typeWriter();
+          }, 2000);
+        }
+      } else {
+        // Deleting phase
+        if (displayedRole.length > 0) {
+          setDisplayedRole(displayedRole.slice(0, -1));
+          timeoutId = setTimeout(typeWriter, 50);
+        } else {
+          // Finished deleting, move to next role
+          setIsDeleting(false);
+          setCurrentRoleIndex((prev) => (prev + 1) % roles.length);
+          timeoutId = setTimeout(typeWriter, 500);
+        }
       }
+    };
 
-      timeoutId = setTimeout(typeWriter, 100)
+    timeoutId = setTimeout(typeWriter, 100);
 
-      // Show content reveal after first role is typed
-      if (!showContentReveal && displayedRole === roles[0]) {
-         setTimeout(() => {
-            setShowContentReveal(true)
-         }, 500)
-      }
+    // Show content reveal after first role is typed
+    if (!showContentReveal && displayedRole === roles[0]) {
+      setTimeout(() => {
+        setShowContentReveal(true);
+      }, 500);
+    }
 
-      return () => clearTimeout(timeoutId)
-   }, [isTyping, currentRoleIndex, isDeleting, displayedRole, showContentReveal, roles])
+    return () => clearTimeout(timeoutId);
+  }, [
+    isTyping,
+    currentRoleIndex,
+    isDeleting,
+    displayedRole,
+    showContentReveal,
+    roles,
+  ]);
 
-   // Mouse tracking for parallax effect
-   useEffect(() => {
-      const handleMouseMove = (e: MouseEvent) => {
-         if (introRef.current) {
-            const rect = introRef.current.getBoundingClientRect()
-            const x = (e.clientX - rect.left - rect.width / 2) / rect.width
-            const y = (e.clientY - rect.top - rect.height / 2) / rect.height
-            setMousePosition({ x: x * 20, y: y * 20 })
-         }
-      }
+  // Mouse tracking for parallax effect
+  useEffect(() => {
+    const section = introRef.current;
+    if (!section) return;
+    let frame = 0;
+    let pointerX = 0;
+    let pointerY = 0;
+    const multipliers = [0.5, -0.3, 0.8, 0.1, -0.1];
 
-      const section = introRef.current
-      if (section) {
-         section.addEventListener('mousemove', handleMouseMove)
-         return () => section.removeEventListener('mousemove', handleMouseMove)
-      }
-   }, [])
+    const updatePosition = () => {
+      frame = 0;
+      const rect = section.getBoundingClientRect();
+      const x = ((pointerX - rect.left - rect.width / 2) / rect.width) * 20;
+      const y = ((pointerY - rect.top - rect.height / 2) / rect.height) * 20;
+      floatingElementsRef.current.forEach((element, index) => {
+        if (element)
+          element.style.translate = `${x * multipliers[index]}px ${y * multipliers[index]}px`;
+      });
+    };
 
-   // Reset animations when locale changes
-   useEffect(() => {
-      setIsVisible(false)
-      setDisplayedRole('')
-      setIsTyping(false)
-      setShowContentReveal(false)
-      setCurrentRoleIndex(0)
-      setIsDeleting(false)
-   }, [locale])
+    const handlePointerMove = (event: PointerEvent) => {
+      pointerX = event.clientX;
+      pointerY = event.clientY;
+      if (!frame) frame = window.requestAnimationFrame(updatePosition);
+    };
 
-   return (
-      <section
-         ref={introRef}
-         className="min-h-[80vh] flex items-center justify-center mb-16 relative overflow-hidden"
-         style={{ backgroundColor: 'var(--background)' }}
-      >
-         {/* Animated Background Elements */}
-         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            {/* Floating Geometric Shapes */}
+    const resetPosition = () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      frame = 0;
+      floatingElementsRef.current.forEach((element) => {
+        if (element) element.style.translate = "0 0";
+      });
+    };
+
+    section.addEventListener("pointermove", handlePointerMove);
+    section.addEventListener("pointerleave", resetPosition);
+    return () => {
+      section.removeEventListener("pointermove", handlePointerMove);
+      section.removeEventListener("pointerleave", resetPosition);
+      if (frame) window.cancelAnimationFrame(frame);
+    };
+  }, []);
+
+  return (
+    <section
+      ref={introRef}
+      className="min-h-[80vh] flex items-center justify-center mb-16 relative overflow-hidden"
+      style={{ backgroundColor: "var(--background)" }}
+    >
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Floating Geometric Shapes */}
+        <div
+          ref={(element) => {
+            floatingElementsRef.current[0] = element;
+          }}
+          className="absolute top-20 left-10 w-20 h-20 opacity-5 rounded-full transition-transform duration-1000 ease-out"
+          style={{
+            backgroundColor: "var(--foreground)",
+            transform: isVisible ? "scale(1)" : "scale(0)",
+          }}
+        />
+        <div
+          ref={(element) => {
+            floatingElementsRef.current[1] = element;
+          }}
+          className="absolute bottom-32 right-20 w-16 h-16 opacity-5 transition-transform duration-1000 ease-out"
+          style={{
+            backgroundColor: "var(--foreground)",
+            clipPath: "polygon(50% 0%, 0% 100%, 100% 100%)",
+            transform: isVisible ? "scale(1)" : "scale(0)",
+          }}
+        />
+        <div
+          ref={(element) => {
+            floatingElementsRef.current[2] = element;
+          }}
+          className="absolute top-1/2 right-1/4 w-12 h-12 opacity-5 transition-transform duration-1000 ease-out"
+          style={{
+            backgroundColor: "var(--foreground)",
+            clipPath: "polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%)",
+            transform: isVisible ? "scale(1)" : "scale(0)",
+          }}
+        />
+      </div>
+
+      <div className="intro-layout max-w-6xl w-full flex flex-col lg:flex-row items-center justify-between gap-12 px-8 relative z-10">
+        {/* Text Content - Left Side */}
+        <div
+          ref={textRef}
+          className="flex-1 min-w-0 text-left lg:text-left transition-all duration-1000 ease-out relative"
+          style={{
+            transform: "translateX(-50px)",
+            opacity: 0,
+            color: "var(--foreground)",
+            minHeight: "500px", // Fixed height to prevent layout shifts
+          }}
+        >
+          <p
+            className="text-xl md:text-2xl mb-4 opacity-70 transition-all duration-500"
+            style={{
+              color: "var(--muted-foreground)",
+              transform: isVisible ? "translateY(0)" : "translateY(20px)",
+            }}
+          >
+            {currentTranslations?.about?.intro || "I'm a"}
+          </p>
+
+          {/* Fixed container for Developer text */}
+          <div
+            className="relative mb-4"
+            style={{ minHeight: "96px", transform: "translateZ(0)" }}
+          >
             <div
-               className="absolute top-20 left-10 w-20 h-20 opacity-5 rounded-full transition-transform duration-1000 ease-out"
-               style={{
-                  backgroundColor: 'var(--foreground)',
-                  transform: `translate(${mousePosition.x * 0.5}px, ${mousePosition.y * 0.5}px) ${isVisible ? 'scale(1)' : 'scale(0)'}`
-               }}
-            />
-            <div
-               className="absolute bottom-32 right-20 w-16 h-16 opacity-5 transition-transform duration-1000 ease-out"
-               style={{
-                  backgroundColor: 'var(--foreground)',
-                  clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)',
-                  transform: `translate(${mousePosition.x * -0.3}px, ${mousePosition.y * -0.3}px) ${isVisible ? 'scale(1)' : 'scale(0)'}`
-               }}
-            />
-            <div
-               className="absolute top-1/2 right-1/4 w-12 h-12 opacity-5 transition-transform duration-1000 ease-out"
-               style={{
-                  backgroundColor: 'var(--foreground)',
-                  clipPath: 'polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%)',
-                  transform: `translate(${mousePosition.x * 0.8}px, ${mousePosition.y * 0.8}px) ${isVisible ? 'scale(1)' : 'scale(0)'}`
-               }}
-            />
-         </div>
-
-         <div className="intro-layout max-w-6xl w-full flex flex-col lg:flex-row items-center justify-between gap-12 px-8 relative z-10">
-
-            {/* Text Content - Left Side */}
-            <div
-               ref={textRef}
-               className="flex-1 min-w-0 text-left lg:text-left transition-all duration-1000 ease-out relative"
-               style={{
-                  transform: 'translateX(-50px)',
-                  opacity: 0,
-                  color: 'var(--foreground)',
-                  minHeight: '500px' // Fixed height to prevent layout shifts
-               }}
+              ref={roleMeasureRef}
+              aria-hidden="true"
+              className="absolute invisible text-5xl md:text-7xl lg:text-8xl font-bold"
             >
-               <p
-                  className="text-xl md:text-2xl mb-4 opacity-70 transition-all duration-500"
+              {roles.map((role) => (
+                <span key={role} className="block whitespace-nowrap">
+                  {role}
+                </span>
+              ))}
+            </div>
+            <h1
+              className="text-5xl md:text-7xl lg:text-8xl font-bold leading-tight"
+              style={{
+                fontSize: roleFontSize ? `${roleFontSize}px` : undefined,
+                transform: showContentReveal
+                  ? "translate3d(0, -10px, 0)"
+                  : "translate3d(0, 0, 0)",
+                transition:
+                  "transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+                willChange: "transform",
+                backfaceVisibility: "hidden",
+              }}
+            >
+              <span
+                ref={roleRef}
+                className="flex relative items-center whitespace-nowrap"
+              >
+                <span
                   style={{
-                     color: 'var(--muted-foreground)',
-                     transform: isVisible ? 'translateY(0)' : 'translateY(20px)'
+                    background:
+                      "linear-gradient(135deg, var(--foreground) 0%, var(--muted-foreground) 100%)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
                   }}
-               >
-                  {currentTranslations?.about?.intro || 'I\'m a'}
-               </p>
-
-               {/* Fixed container for Developer text */}
-               <div className="relative mb-4" style={{ minHeight: '96px', transform: 'translateZ(0)' }}>
-                  <div
-                     ref={roleMeasureRef}
-                     aria-hidden="true"
-                     className="absolute invisible text-5xl md:text-7xl lg:text-8xl font-bold"
+                >
+                  {displayedRole}
+                </span>
+                {/* Typing Cursor */}
+                {isTyping && (
+                  <span
+                    className="ml-1 shrink-0 typing-cursor"
+                    aria-hidden="true"
+                    style={{
+                      color: "var(--foreground)",
+                      fontSize: "0.72em",
+                      fontWeight: 400,
+                      lineHeight: 1,
+                    }}
                   >
-                     {roles.map((role) => (
-                        <span key={role} className="block whitespace-nowrap">{role}</span>
-                     ))}
+                    |
+                  </span>
+                )}
+              </span>
+            </h1>
+          </div>
+
+          {/* Description with line-by-line reveal */}
+          <div
+            className="overflow-hidden"
+            style={{
+              maxHeight: showContentReveal ? "300px" : "0",
+              transition: "max-height 0.6s ease-out 0.2s",
+            }}
+          >
+            <p
+              className="text-lg md:text-xl max-w-lg leading-relaxed opacity-80"
+              style={{
+                color: "var(--muted-foreground)",
+                transform: showContentReveal
+                  ? "translateY(0)"
+                  : "translateY(-100%)",
+                transition: "transform 0.6s ease-out 0.3s",
+              }}
+            >
+              {currentTranslations?.about?.description ||
+                "A passionate developer with expertise in cross-platform development."}
+            </p>
+          </div>
+
+          {/* Subtle Skills Highlight with line-by-line reveal */}
+          <div
+            className="overflow-hidden mt-6"
+            style={{
+              maxHeight: showContentReveal ? "100px" : "0",
+              transition: "max-height 0.6s ease-out 0.4s",
+            }}
+          >
+            <div
+              className="flex gap-2 opacity-60"
+              style={{
+                transform: showContentReveal
+                  ? "translateY(0)"
+                  : "translateY(-100%)",
+                transition: "transform 0.6s ease-out 0.5s",
+              }}
+            >
+              {[""].map((skill, index) => (
+                <span
+                  key={skill}
+                  className="px-3 py-1 text-sm rounded-full transition-all duration-300 hover:opacity-100 whitespace-nowrap"
+                  style={{
+                    backgroundColor: "var(--muted)",
+                    color: "var(--muted-foreground)",
+                    border: "1px solid var(--border)",
+                    opacity: showContentReveal ? 1 : 0,
+                    transform: showContentReveal
+                      ? "translateY(0) scale(1)"
+                      : "translateY(20px) scale(0.8)",
+                    transition: `all 0.4s ease-out ${0.6 + index * 0.1}s`,
+                  }}
+                >
+                  {skill}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Profile Image - Right Side */}
+        <div
+          ref={imageRef}
+          className="flex-1 flex justify-center lg:justify-end transition-all duration-1000 ease-out"
+          style={{
+            transform: "translateX(50px) scale(0.9)",
+            opacity: 0,
+          }}
+        >
+          <div className="relative">
+            {/* Main Profile Container */}
+            <div
+              className="w-80 h-96 md:w-96 md:h-[450px] rounded-2xl shadow-2xl overflow-hidden relative profile-shine"
+              style={{
+                backgroundColor: "var(--muted)",
+                border: "2px solid var(--border)",
+              }}
+            >
+              {/* Animated Gradient Overlay */}
+              <div
+                className="absolute inset-0 opacity-10"
+                style={{
+                  background:
+                    "linear-gradient(45deg, var(--foreground), transparent, var(--foreground))",
+                  animation: isVisible
+                    ? "gradientShift 3s ease-in-out infinite"
+                    : "none",
+                }}
+              />
+
+              {/* Profile Image */}
+              <div className="w-full h-full relative z-10">
+                {profileImageFailed ? (
+                  <div className="w-full h-full flex items-center justify-center">
+                    <div className="text-center">
+                      <div
+                        className="w-24 h-24 rounded-full mx-auto mb-4"
+                        style={{ backgroundColor: "var(--muted-foreground)" }}
+                      />
+                      <p
+                        className="text-sm opacity-50"
+                        style={{ color: "var(--muted-foreground)" }}
+                      >
+                        Profile Photo
+                      </p>
+                    </div>
                   </div>
-                  <h1
-                     className="text-5xl md:text-7xl lg:text-8xl font-bold leading-tight"
-                     style={{
-                        fontSize: roleFontSize ? `${roleFontSize}px` : undefined,
-                        transform: showContentReveal ? 'translate3d(0, -10px, 0)' : 'translate3d(0, 0, 0)',
-                        transition: 'transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-                        willChange: 'transform',
-                        backfaceVisibility: 'hidden'
-                     }}
-                  >
-                     <span
-                        ref={roleRef}
-                        className="flex relative items-center whitespace-nowrap"
-                     >
-                        <span
-                           style={{
-                              background: 'linear-gradient(135deg, var(--foreground) 0%, var(--muted-foreground) 100%)',
-                              WebkitBackgroundClip: 'text',
-                              WebkitTextFillColor: 'transparent',
-                              backgroundClip: 'text'
-                           }}
-                        >
-                           {displayedRole}
-                        </span>
-                        {/* Typing Cursor */}
-                        {isTyping && (
-                           <span
-                              className="ml-1 shrink-0 typing-cursor"
-                              aria-hidden="true"
-                              style={{ color: 'var(--foreground)', fontSize: '0.72em', fontWeight: 400, lineHeight: 1 }}
-                           >
-                              |
-                           </span>
-                        )}
-                     </span>
-                  </h1>
-               </div>
-
-               {/* Description with line-by-line reveal */}
-               <div
-                  className="overflow-hidden"
-                  style={{
-                     maxHeight: showContentReveal ? '300px' : '0',
-                     transition: 'max-height 0.6s ease-out 0.2s'
-                  }}
-               >
-                  <p
-                     className="text-lg md:text-xl max-w-lg leading-relaxed opacity-80"
-                     style={{
-                        color: 'var(--muted-foreground)',
-                        transform: showContentReveal ? 'translateY(0)' : 'translateY(-100%)',
-                        transition: 'transform 0.6s ease-out 0.3s'
-                     }}
-                  >
-                     {currentTranslations?.about?.description || 'A passionate developer with expertise in cross-platform development.'}
-                  </p>
-               </div>
-
-               {/* Subtle Skills Highlight with line-by-line reveal */}
-               <div
-                  className="overflow-hidden mt-6"
-                  style={{
-                     maxHeight: showContentReveal ? '100px' : '0',
-                     transition: 'max-height 0.6s ease-out 0.4s'
-                  }}
-               >
-                  <div
-                     className="flex gap-2 opacity-60"
-                     style={{
-                        transform: showContentReveal ? 'translateY(0)' : 'translateY(-100%)',
-                        transition: 'transform 0.6s ease-out 0.5s'
-                     }}
-                  >
-                     {[''].map((skill, index) => (
-                        <span
-                           key={skill}
-                           className="px-3 py-1 text-sm rounded-full transition-all duration-300 hover:opacity-100 whitespace-nowrap"
-                           style={{
-                              backgroundColor: 'var(--muted)',
-                              color: 'var(--muted-foreground)',
-                              border: '1px solid var(--border)',
-                              opacity: showContentReveal ? 1 : 0,
-                              transform: showContentReveal ? 'translateY(0) scale(1)' : 'translateY(20px) scale(0.8)',
-                              transition: `all 0.4s ease-out ${0.6 + index * 0.1}s`
-                           }}
-                        >
-                           {skill}
-                        </span>
-                     ))}
-                  </div>
-               </div>
+                ) : (
+                  <OptimizedImage
+                    src="/images/about/profile-main.jpg"
+                    alt={`${currentTranslations?.about?.name || "Russidan Nadee"} Profile`}
+                    fill
+                    sizes="(max-width: 767px) 320px, 384px"
+                    priority
+                    className="object-cover"
+                    onError={() => setProfileImageFailed(true)}
+                  />
+                )}
+              </div>
             </div>
 
-            {/* Profile Image - Right Side */}
+            {/* Enhanced Decorative Elements */}
             <div
-               ref={imageRef}
-               className="flex-1 flex justify-center lg:justify-end transition-all duration-1000 ease-out"
-               style={{
-                  transform: 'translateX(50px) scale(0.9)',
-                  opacity: 0
-               }}
-            >
-               <div className="relative">
-                  {/* Main Profile Container */}
-                  <div
-                     className="w-80 h-96 md:w-96 md:h-[450px] rounded-2xl shadow-2xl overflow-hidden relative profile-shine"
-                     style={{
-                        backgroundColor: 'var(--muted)',
-                        border: '2px solid var(--border)'
-                     }}
-                  >
-                     {/* Animated Gradient Overlay */}
-                     <div
-                        className="absolute inset-0 opacity-10"
-                        style={{
-                           background: 'linear-gradient(45deg, var(--foreground), transparent, var(--foreground))',
-                           animation: isVisible ? 'gradientShift 3s ease-in-out infinite' : 'none'
-                        }}
-                     />
+              ref={(element) => {
+                floatingElementsRef.current[3] = element;
+              }}
+              className="absolute -top-6 -right-6 w-12 h-12 rounded-full opacity-20 transition-all duration-500"
+              style={{
+                backgroundColor: "var(--foreground)",
+                animation: isVisible ? "float 3s ease-in-out infinite" : "none",
+              }}
+            />
+            <div
+              ref={(element) => {
+                floatingElementsRef.current[4] = element;
+              }}
+              className="absolute -bottom-4 -left-4 w-8 h-8 rounded-full opacity-30 transition-all duration-500"
+              style={{
+                backgroundColor: "var(--foreground)",
+                animation: isVisible
+                  ? "float 3s ease-in-out infinite reverse"
+                  : "none",
+              }}
+            />
 
-                     {/* Profile Image */}
-                     <div className="w-full h-full relative z-10">
-                        <img
-                           src="/images/about/profile-main.jpg"
-                           alt={`${currentTranslations?.about?.name || 'Russidan Nadee'} Profile`}
-                           className="w-full h-full object-cover"
-                           onError={(e) => {
-                              // Fallback to placeholder if image fails to load
-                              const target = e.target as HTMLImageElement
-                              target.style.display = 'none'
-                              if (target.parentElement) {
-                                 target.parentElement.innerHTML = `
-                                    <div class="w-full h-full flex items-center justify-center">
-                                       <div class="text-center">
-                                          <div class="w-24 h-24 rounded-full mx-auto mb-4 relative" style="background-color: var(--muted-foreground)">
-                                             <div class="absolute inset-0 rounded-full border-2 border-transparent transition-all duration-1000" style="border-top-color: var(--foreground); border-right-color: var(--foreground); animation: ${isVisible ? 'spin 4s linear infinite' : 'none'}; opacity: 0.3"></div>
-                                          </div>
-                                          <p class="text-sm opacity-50" style="color: var(--muted-foreground)">Profile Photo</p>
-                                       </div>
-                                    </div>
-                                 `
-                              }
-                           }}
-                        />
+            {/* Pulse Effect */}
+            <div
+              className="absolute top-1/2 left-1/2 w-2 h-2 rounded-full opacity-40 transition-all duration-300"
+              style={{
+                backgroundColor: "var(--foreground)",
+                transform: "translate(-50%, -50%)",
+                animation: isVisible ? "pulse 2s ease-in-out infinite" : "none",
+              }}
+            />
+          </div>
+        </div>
+      </div>
 
-                     </div>
-                  </div>
+      {/* Enhanced CSS Animations */}
+      <style jsx>{`
+        @media (min-width: 1024px) {
+          .intro-layout {
+            align-items: flex-start;
+          }
+        }
 
-                  {/* Enhanced Decorative Elements */}
-                  <div
-                     className="absolute -top-6 -right-6 w-12 h-12 rounded-full opacity-20 transition-all duration-500"
-                     style={{
-                        backgroundColor: 'var(--foreground)',
-                        transform: `translate(${mousePosition.x * 0.1}px, ${mousePosition.y * 0.1}px)`,
-                        animation: isVisible ? 'float 3s ease-in-out infinite' : 'none'
-                     }}
-                  />
-                  <div
-                     className="absolute -bottom-4 -left-4 w-8 h-8 rounded-full opacity-30 transition-all duration-500"
-                     style={{
-                        backgroundColor: 'var(--foreground)',
-                        transform: `translate(${mousePosition.x * -0.1}px, ${mousePosition.y * -0.1}px)`,
-                        animation: isVisible ? 'float 3s ease-in-out infinite reverse' : 'none'
-                     }}
-                  />
+        @keyframes cursorBlink {
+          50% {
+            opacity: 0;
+          }
+        }
 
-                  {/* Pulse Effect */}
-                  <div
-                     className="absolute top-1/2 left-1/2 w-2 h-2 rounded-full opacity-40 transition-all duration-300"
-                     style={{
-                        backgroundColor: 'var(--foreground)',
-                        transform: 'translate(-50%, -50%)',
-                        animation: isVisible ? 'pulse 2s ease-in-out infinite' : 'none'
-                     }}
-                  />
-               </div>
-            </div>
-         </div>
+        .typing-cursor {
+          animation: cursorBlink 1s steps(1, end) infinite;
+        }
 
-         {/* Enhanced CSS Animations */}
-         <style jsx>{`
-            @media (min-width: 1024px) {
-               .intro-layout {
-                  align-items: flex-start;
-               }
-            }
+        @keyframes gradientShift {
+          0%,
+          100% {
+            transform: translateX(-100%);
+          }
+          50% {
+            transform: translateX(100%);
+          }
+        }
 
-            @keyframes cursorBlink {
-               50% { opacity: 0; }
-            }
+        @keyframes float {
+          0%,
+          100% {
+            transform: translateY(0px);
+          }
+          50% {
+            transform: translateY(-10px);
+          }
+        }
 
-            .typing-cursor {
-               animation: cursorBlink 1s steps(1, end) infinite;
-            }
+        @keyframes spin {
+          from {
+            transform: rotate(0deg);
+          }
+          to {
+            transform: rotate(360deg);
+          }
+        }
 
-            @keyframes gradientShift {
-               0%, 100% { transform: translateX(-100%); }
-               50% { transform: translateX(100%); }
-            }
-            
-            @keyframes float {
-               0%, 100% { transform: translateY(0px); }
-               50% { transform: translateY(-10px); }
-            }
-            
-            @keyframes spin {
-               from { transform: rotate(0deg); }
-               to { transform: rotate(360deg); }
-            }
-            
-            @keyframes pulse {
-               0%, 100% { opacity: 0.4; transform: translate(-50%, -50%) scale(1); }
-               50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.5); }
-            }
+        @keyframes pulse {
+          0%,
+          100% {
+            opacity: 0.4;
+            transform: translate(-50%, -50%) scale(1);
+          }
+          50% {
+            opacity: 0.8;
+            transform: translate(-50%, -50%) scale(1.5);
+          }
+        }
 
-            @keyframes autoShine {
-               0% { left: -100%; }
-               50% { left: 100%; }
-               100% { left: 100%; }
-            }
+        @keyframes autoShine {
+          0% {
+            left: -100%;
+          }
+          50% {
+            left: 100%;
+          }
+          100% {
+            left: 100%;
+          }
+        }
 
-            .profile-shine {
-               position: relative;
-               overflow: hidden;
-            }
+        .profile-shine {
+          position: relative;
+          overflow: hidden;
+        }
 
-            .profile-shine::before {
-               content: '';
-               position: absolute;
-               top: 0;
-               left: -100%;
-               width: 100%;
-               height: 100%;
-               background: linear-gradient(
-                  90deg,
-                  transparent,
-                  rgba(255, 255, 255, 0.3),
-                  transparent
-               );
-               animation: autoShine 4s ease-in-out infinite;
-               z-index: 20;
-            }
-         `}</style>
-      </section>
-   )
+        .profile-shine::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(
+            90deg,
+            transparent,
+            rgba(255, 255, 255, 0.3),
+            transparent
+          );
+          animation: autoShine 4s ease-in-out infinite;
+          z-index: 20;
+        }
+      `}</style>
+    </section>
+  );
 }

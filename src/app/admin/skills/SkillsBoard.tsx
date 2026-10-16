@@ -2,6 +2,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { MdClose, MdUpload } from "react-icons/md";
 import {
   DndContext,
@@ -70,10 +71,12 @@ export default function SkillsBoard({
   } | null>(null);
   const [uploading, setUploading] = useState(false);
   const [localCategories, setLocalCategories] = useState(categories);
+  const [previousCategories, setPreviousCategories] = useState(categories);
 
-  useEffect(() => {
+  if (categories !== previousCategories) {
+    setPreviousCategories(categories);
     setLocalCategories(categories);
-  }, [categories]);
+  }
 
   const categorySensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
@@ -370,9 +373,12 @@ export default function SkillsBoard({
                     </div>
                   )}
                   {!uploading && iconValue && (
-                    <img
+                    <Image
                       src={iconValue}
                       alt=""
+                      width={32}
+                      height={32}
+                      unoptimized
                       className="w-8 h-8 object-contain mt-2"
                     />
                   )}

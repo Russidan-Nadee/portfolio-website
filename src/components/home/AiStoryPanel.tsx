@@ -296,18 +296,32 @@ export default function AiStoryPanel({ locale = "en" }: { locale?: Locale }) {
     const intro = introRef.current;
     if (!intro) return;
 
+    let inView = false;
+    const updateMotion = () => {
+      if (inView && !document.hidden) {
+        intro.dataset.motionActive = "true";
+      } else {
+        delete intro.dataset.motionActive;
+      }
+    };
     const observer = new IntersectionObserver(
       ([entry]) => {
+        inView = entry.isIntersecting;
+        updateMotion();
         if (entry.isIntersecting) {
           setIntroVisible(true);
-          observer.disconnect();
         }
       },
       { threshold: 0.2 }
     );
 
     observer.observe(intro);
-    return () => observer.disconnect();
+    document.addEventListener("visibilitychange", updateMotion);
+    return () => {
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", updateMotion);
+      delete intro.dataset.motionActive;
+    };
   }, []);
 
   const goToScene = (index: number) => {

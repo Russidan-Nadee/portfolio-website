@@ -1,8 +1,9 @@
 // src/app/admin/projects/actions.ts
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { prisma } from "@/lib/prisma";
+import { publicCacheTags } from "@/lib/public-cache-tags";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
 import type { Prisma } from "@/generated/prisma/client";
 import type { ProjectContent, ProjectData } from "./types";
@@ -12,11 +13,16 @@ type ProjectHeaderInput = Omit<
   "id" | "order" | "content" | "featured"
 >;
 
-function revalidateProjectPaths(slug?: string) {
+function revalidateProjectPaths(slug?: string, previousSlug?: string) {
   revalidatePath("/admin/projects");
   revalidatePath("/portfolio");
   revalidatePath("/");
   if (slug) revalidatePath(`/portfolio/${slug}`);
+  if (previousSlug && previousSlug !== slug) {
+    revalidatePath(`/portfolio/${previousSlug}`);
+  }
+  revalidateTag(publicCacheTags.portfolio, { expire: 0 });
+  revalidateTag(publicCacheTags.home, { expire: 0 });
 }
 
 // Fixed path per slug (upsert) so the URL stays stable across re-uploads —
@@ -40,7 +46,11 @@ async function uploadFixedSlot(
   if (error) throw new Error(`Upload failed: ${error.message}`);
 
   const { data } = supabase.storage.from("project-images").getPublicUrl(path);
-  return data.publicUrl;
+  // The slot is overwritten at the same storage path. A new URL ensures both
+  // the storage CDN and Next Image request a fresh optimized variant.
+  const publicUrl = new URL(data.publicUrl);
+  publicUrl.searchParams.set("v", Date.now().toString());
+  return publicUrl.toString();
 }
 
 export async function uploadProjectThumbnail(formData: FormData, slug: string) {
@@ -116,6 +126,10 @@ export async function createProject(data: ProjectHeaderInput) {
 }
 
 export async function updateProject(id: string, data: ProjectHeaderInput) {
+  const previous = await prisma.project.findUniqueOrThrow({
+    where: { id },
+    select: { slug: true },
+  });
   await prisma.project.update({
     where: { id },
     data: {
@@ -137,7 +151,7 @@ export async function updateProject(id: string, data: ProjectHeaderInput) {
       technologies: data.technologies,
     },
   });
-  revalidateProjectPaths(data.slug);
+  revalidateProjectPaths(data.slug, previous.slug);
 }
 
 export async function updateProjectContent(

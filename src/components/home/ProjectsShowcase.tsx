@@ -58,6 +58,8 @@ export default function ProjectsShowcase({
   const [activeSequence, setActiveSequence] = useState(0);
   const [cardWidth, setCardWidth] = useState(320);
   const [isVisible, setIsVisible] = useState(false);
+  const [isOnscreen, setIsOnscreen] = useState(false);
+  const [isTabVisible, setIsTabVisible] = useState(true);
   const [entranceFinished, setEntranceFinished] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
@@ -89,11 +91,37 @@ export default function ProjectsShowcase({
   }, [projectCount]);
 
   useEffect(() => {
+    const stage = stageRef.current;
+    if (!stage) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsOnscreen(entry.isIntersecting),
+      { rootMargin: "150px 0px" }
+    );
+    observer.observe(stage);
+    return () => observer.disconnect();
+  }, [projectCount]);
+
+  useEffect(() => {
+    const updateVisibility = () => setIsTabVisible(!document.hidden);
+    updateVisibility();
+    document.addEventListener("visibilitychange", updateVisibility);
+    return () =>
+      document.removeEventListener("visibilitychange", updateVisibility);
+  }, []);
+
+  useEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
 
     let frame = 0;
     let addedPadding = 0;
+    const previousValues = new Map<string, string>();
+    const setChangedProperty = (name: string, value: string) => {
+      if (previousValues.get(name) === value) return;
+      section.style.setProperty(name, value);
+      previousValues.set(name, value);
+    };
     const updateTransition = () => {
       frame = 0;
       const viewportHeight = window.innerHeight;
@@ -111,29 +139,38 @@ export default function ProjectsShowcase({
       );
       const exitInset = exitProgress * maxInset;
       addedPadding = exitProgress * 96;
-      section.style.setProperty("--entry-inset", `${entryInset.toFixed(1)}px`);
-      section.style.setProperty(
+      setChangedProperty("--entry-inset", `${entryInset.toFixed(1)}px`);
+      setChangedProperty(
         "--entry-radius",
         `${((1 - entryProgress) * 48).toFixed(1)}px`
       );
-      section.style.setProperty("--exit-inset", `${exitInset.toFixed(1)}px`);
-      section.style.setProperty(
+      setChangedProperty("--exit-inset", `${exitInset.toFixed(1)}px`);
+      setChangedProperty(
         "--exit-radius",
         `${(exitProgress * 48).toFixed(1)}px`
       );
-      section.style.setProperty(
-        "--exit-padding",
-        `${addedPadding.toFixed(1)}px`
-      );
+      setChangedProperty("--exit-padding", `${addedPadding.toFixed(1)}px`);
     };
     const scheduleUpdate = () => {
       if (!frame) frame = window.requestAnimationFrame(updateTransition);
     };
 
     updateTransition();
-    window.addEventListener("scroll", scheduleUpdate, { passive: true });
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          window.addEventListener("scroll", scheduleUpdate, { passive: true });
+          scheduleUpdate();
+        } else {
+          window.removeEventListener("scroll", scheduleUpdate);
+        }
+      },
+      { rootMargin: "200px 0px" }
+    );
+    observer.observe(section);
     window.addEventListener("resize", scheduleUpdate);
     return () => {
+      observer.disconnect();
       window.removeEventListener("scroll", scheduleUpdate);
       window.removeEventListener("resize", scheduleUpdate);
       window.cancelAnimationFrame(frame);
@@ -177,6 +214,8 @@ export default function ProjectsShowcase({
   useEffect(() => {
     if (
       !entranceFinished ||
+      !isOnscreen ||
+      !isTabVisible ||
       prefersReducedMotion ||
       isDragging ||
       projectCount < 2
@@ -193,6 +232,8 @@ export default function ProjectsShowcase({
   }, [
     activeSequence,
     entranceFinished,
+    isOnscreen,
+    isTabVisible,
     prefersReducedMotion,
     isDragging,
     projectCount,

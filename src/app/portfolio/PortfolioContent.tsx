@@ -2,25 +2,27 @@
 "use client";
 
 import { useInitialLocale } from "@/components/layout/LocaleProvider";
-import { localeFromPath, localizedPath } from "@/lib/locale-path";
-import { useState, useEffect, useRef } from "react";
+import { localizedPath } from "@/lib/locale-path";
+import { useState, useEffect, useMemo, useRef } from "react";
 import Link from "next/link";
 import th from "../../../locales/th.json";
 import ja from "../../../locales/ja.json";
 import en from "../../../locales/en.json";
-import AnimatedSection from "../../components/ui/AnimatedSection";
 import type { ProjectData } from "@/app/admin/projects/types";
+import ProjectImage from "@/components/portfolio/ProjectImage";
 
 type Locale = "th" | "en" | "ja";
+export type PortfolioCardData = Pick<
+  ProjectData,
+  "id" | "slug" | "title" | "filterTags" | "techSummary" | "thumbnailUrl"
+>;
 
 export default function PortfolioContent({
   projects,
-}: Readonly<{ projects: ProjectData[] }>) {
+}: Readonly<{ projects: PortfolioCardData[] }>) {
   const [locale, setLocale] = useState<Locale>(useInitialLocale());
-  const [mounted, setMounted] = useState(false);
-  const [visibleItems, setVisibleItems] = useState<Set<number>>(new Set());
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const portfolioRef = useRef<HTMLDivElement>(null);
+  const floatingElementsRef = useRef<(HTMLDivElement | null)[]>([]);
 
   const getTranslations = (locale: string) => {
     switch (locale) {
@@ -39,9 +41,6 @@ export default function PortfolioContent({
 
   // Language change handler
   useEffect(() => {
-    // Get initial language from localStorage
-    setLocale((localeFromPath(window.location.pathname) as Locale) || "en");
-
     // Listen for language changes
     const handleLanguageChange = (e: Event) => {
       setLocale((e as CustomEvent<{ language: Locale }>).detail.language);
@@ -66,46 +65,59 @@ export default function PortfolioContent({
     { key: "mobile", label: "Mobile" },
   ];
 
-  const filteredProjects = projects.filter((project) =>
-    activeFilter === "all"
-      ? true
-      : (project.filterTags as string[]).includes(activeFilter)
+  const filteredProjects = useMemo(
+    () =>
+      projects.filter((project) =>
+        activeFilter === "all"
+          ? true
+          : project.filterTags.includes(
+              activeFilter as ProjectData["filterTags"][number]
+            )
+      ),
+    [activeFilter, projects]
   );
-
-  // Stagger animation for projects
-  useEffect(() => {
-    setMounted(true);
-
-    const timer = setTimeout(() => {
-      filteredProjects.forEach((_, index) => {
-        setTimeout(() => {
-          setVisibleItems((prev) => new Set([...prev, index]));
-        }, index * 100);
-      });
-    }, 100);
-
-    return () => clearTimeout(timer);
-  }, [locale, activeFilter, filteredProjects]);
 
   // Mouse tracking for background elements
   useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    let frameId = 0;
+    let clientX = 0;
+    let clientY = 0;
+
+    const updateFloatingElements = () => {
+      frameId = 0;
+      const section = portfolioRef.current;
+      if (!section) return;
+      const rect = section.getBoundingClientRect();
+      const pointerX =
+        ((clientX - rect.left - rect.width / 2) / rect.width) * 10;
+      const pointerY =
+        ((clientY - rect.top - rect.height / 2) / rect.height) * 10;
+      const [first, second, third] = floatingElementsRef.current;
+      if (first)
+        first.style.translate = `${pointerX * 0.3}px ${pointerY * 0.3}px`;
+      if (second)
+        second.style.translate = `${pointerX * -0.2}px ${pointerY * -0.2}px`;
+      if (third)
+        third.style.translate = `${pointerX * 0.5}px ${pointerY * 0.5}px`;
+    };
+
     const handleMouseMove = (e: MouseEvent): void => {
-      if (portfolioRef.current) {
-        const rect = portfolioRef.current.getBoundingClientRect();
-        const x = (e.clientX - rect.left - rect.width / 2) / rect.width;
-        const y = (e.clientY - rect.top - rect.height / 2) / rect.height;
-        setMousePosition({ x: x * 10, y: y * 10 });
-      }
+      clientX = e.clientX;
+      clientY = e.clientY;
+      if (!frameId) frameId = requestAnimationFrame(updateFloatingElements);
     };
 
     const section = portfolioRef.current;
     if (section) {
       section.addEventListener("mousemove", handleMouseMove);
-      return () => section.removeEventListener("mousemove", handleMouseMove);
+      return () => {
+        section.removeEventListener("mousemove", handleMouseMove);
+        if (frameId) cancelAnimationFrame(frameId);
+      };
     }
   }, []);
-
-  if (!mounted) return null;
 
   return (
     <div
@@ -116,32 +128,38 @@ export default function PortfolioContent({
       {/* Floating background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div
+          ref={(element) => {
+            floatingElementsRef.current[0] = element;
+          }}
           className="absolute top-20 left-10 w-20 h-20 rounded-full floating-element"
           style={{
-            transform: `translate(${mousePosition.x * 0.3}px, ${mousePosition.y * 0.3}px)`,
             animationDelay: "0s",
           }}
         />
         <div
+          ref={(element) => {
+            floatingElementsRef.current[1] = element;
+          }}
           className="absolute bottom-32 right-20 w-16 h-16 floating-element"
           style={{
             clipPath: "polygon(50% 0%, 0% 100%, 100% 100%)",
-            transform: `translate(${mousePosition.x * -0.2}px, ${mousePosition.y * -0.2}px)`,
             animationDelay: "1s",
           }}
         />
         <div
+          ref={(element) => {
+            floatingElementsRef.current[2] = element;
+          }}
           className="absolute top-1/2 right-1/4 w-12 h-12 floating-element"
           style={{
             clipPath: "polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%)",
-            transform: `translate(${mousePosition.x * 0.5}px, ${mousePosition.y * 0.5}px)`,
             animationDelay: "2s",
           }}
         />
       </div>
       <div className="w-full max-w-6xl mx-auto relative z-10">
         {/* Headline + Subtitle with fade-in-up animation */}
-        <AnimatedSection animationType="fadeInUp" delay={0} duration={1}>
+        <div className="portfolio-section-enter">
           <div
             className="mb-12 animate-fade-in-up"
             style={{
@@ -164,21 +182,16 @@ export default function PortfolioContent({
                 "Explore my latest projects and technical achievements"}
             </p>
           </div>
-        </AnimatedSection>
+        </div>
 
         {/* Filter buttons */}
-        <AnimatedSection
-          animationType="fadeInUp"
-          delay={0}
-          duration={0.8}
-          stagger={true}
-          staggerDelay={0}
-        >
+        <div className="portfolio-section-enter">
           <div className="flex flex-wrap justify-center gap-4 mb-12">
             {filters.map((filter) => (
               <button
                 key={filter.key}
                 onClick={() => setActiveFilter(filter.key)}
+                aria-pressed={activeFilter === filter.key}
                 className={`px-6 py-3 rounded-lg font-medium transition-all duration-300 hover:scale-105 border ${
                   activeFilter === filter.key
                     ? "bg-foreground text-background border-foreground"
@@ -208,7 +221,7 @@ export default function PortfolioContent({
               return (
                 <div
                   key={project.id}
-                  className={`flex flex-col ${visibleItems.has(index) ? "animate-fade-in-up" : "opacity-0"}`}
+                  className="flex flex-col animate-fade-in-up"
                   style={{ animationDelay: `${0.1 + index * 0.05}s` }}
                 >
                   <Link href={getLocalizedLink(`/portfolio/${project.slug}`)}>
@@ -219,25 +232,34 @@ export default function PortfolioContent({
                         borderColor: "var(--border)",
                       }}
                     >
-                      <img
-                        src={project.thumbnailUrl}
-                        alt={title}
-                        className="w-full h-auto block"
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          target.style.display = "none";
-                          if (target.parentElement) {
-                            target.parentElement.innerHTML = `
-                                          <div class="w-full h-60 flex items-center justify-center" style="background-color: var(--muted); color: var(--muted-foreground)">
-                                             <div class="text-center">
-                                                <div class="text-4xl mb-2">📱</div>
-                                                <p>${title}</p>
-                                             </div>
-                                          </div>
-                                       `;
+                      <div className="relative w-full aspect-[1429/2000]">
+                        <ProjectImage
+                          src={project.thumbnailUrl}
+                          alt={title}
+                          fill
+                          sizes="(max-width: 767px) calc(100vw - 4rem), (max-width: 1023px) calc(50vw - 2.75rem), 368px"
+                          className="object-cover"
+                          fallback={
+                            <div
+                              className="w-full h-full flex items-center justify-center text-center p-6"
+                              style={{
+                                backgroundColor: "var(--muted)",
+                                color: "var(--muted-foreground)",
+                              }}
+                            >
+                              <div>
+                                <div
+                                  className="text-4xl mb-2"
+                                  aria-hidden="true"
+                                >
+                                  📱
+                                </div>
+                                <p>{title}</p>
+                              </div>
+                            </div>
                           }
-                        }}
-                      />
+                        />
+                      </div>
                       <div className="absolute bottom-0 left-0 right-0 p-6 z-10 bg-gradient-to-t from-black/60 via-transparent to-transparent">
                         <h3 className="text-white text-2xl font-bold mb-2 drop-shadow-lg">
                           {title}
@@ -271,7 +293,7 @@ export default function PortfolioContent({
               );
             })}
           </div>
-        </AnimatedSection>
+        </div>
 
         {/* Enhanced Styles */}
         <style jsx global>{`
@@ -312,6 +334,10 @@ export default function PortfolioContent({
             animation-fill-mode: both;
           }
 
+          .portfolio-section-enter {
+            animation: fade-in-up 0.8s ease-out both;
+          }
+
           .floating-element {
             animation: float 3s ease-in-out infinite;
             background: var(--foreground) !important;
@@ -346,6 +372,14 @@ export default function PortfolioContent({
 
           .project-card:hover::before {
             left: 100%;
+          }
+
+          @media (prefers-reduced-motion: reduce) {
+            .portfolio-section-enter,
+            .animate-fade-in-up,
+            .floating-element {
+              animation: none !important;
+            }
           }
 
           /* Smooth transitions for all interactive elements */

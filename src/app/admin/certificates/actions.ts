@@ -1,9 +1,10 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import type { Prisma } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
+import { publicCacheTags } from "@/lib/public-cache-tags";
 import {
   assertCertificateCanActivate,
   assertCertificateSlugAvailable,
@@ -18,7 +19,10 @@ const PDF_SIZE_LIMIT = 15 * 1024 * 1024;
 
 function revalidateCertificatePaths() {
   revalidatePath("/certificate");
+  revalidatePath("/");
   revalidatePath("/admin/certificates");
+  revalidateTag(publicCacheTags.certificate, { expire: 0 });
+  revalidateTag(publicCacheTags.home, { expire: 0 });
 }
 
 async function ensureCertificateBucket() {

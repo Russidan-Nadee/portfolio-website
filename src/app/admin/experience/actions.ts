@@ -1,11 +1,18 @@
 // src/app/admin/experience/actions.ts
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { prisma } from "@/lib/prisma";
+import { publicCacheTags } from "@/lib/public-cache-tags";
 import type { ExperienceData } from "./types";
 
 type ExperienceInput = Omit<ExperienceData, "id">;
+
+function revalidateExperiencePages() {
+  revalidatePath("/admin/experience");
+  revalidatePath("/about");
+  revalidateTag(publicCacheTags.about, { expire: 0 });
+}
 
 export async function createExperience(data: ExperienceInput) {
   await prisma.experience.create({
@@ -21,8 +28,7 @@ export async function createExperience(data: ExperienceInput) {
       icon: data.icon,
     },
   });
-  revalidatePath("/admin/experience");
-  revalidatePath("/about");
+  revalidateExperiencePages();
 }
 
 export async function updateExperience(id: string, data: ExperienceInput) {
@@ -40,12 +46,10 @@ export async function updateExperience(id: string, data: ExperienceInput) {
       icon: data.icon,
     },
   });
-  revalidatePath("/admin/experience");
-  revalidatePath("/about");
+  revalidateExperiencePages();
 }
 
 export async function deleteExperience(id: string) {
   await prisma.experience.delete({ where: { id } });
-  revalidatePath("/admin/experience");
-  revalidatePath("/about");
+  revalidateExperiencePages();
 }

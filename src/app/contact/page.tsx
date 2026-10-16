@@ -30,8 +30,6 @@ function ContactContent() {
   const [locale, setLocale] = useState(useInitialLocale());
   const [copiedItem, setCopiedItem] = useState<string | null>(null);
   const [loadingItem, setLoadingItem] = useState<string | null>(null);
-  const [mounted, setMounted] = useState(false);
-  const [visibleItems, setVisibleItems] = useState<Set<number>>(new Set());
 
   // Helper function to get translations based on locale
   const getTranslations = (locale: string) => {
@@ -166,24 +164,6 @@ function ContactContent() {
     },
   ];
 
-  useEffect(() => {
-    const mountFrame = window.requestAnimationFrame(() => setMounted(true));
-
-    // Stagger card animations
-    const timer = setTimeout(() => {
-      for (let index = 0; index < contactChannels.length; index++) {
-        setTimeout(() => {
-          setVisibleItems((prev) => new Set([...prev, index]));
-        }, index * 200);
-      }
-    }, 300);
-
-    return () => {
-      window.cancelAnimationFrame(mountFrame);
-      clearTimeout(timer);
-    };
-  }, [contactChannels.length]);
-
   const handleChannelClick = async (channel: ContactChannel) => {
     setLoadingItem(channel.id);
 
@@ -212,8 +192,6 @@ function ContactContent() {
     setCopiedItem(type);
     setTimeout(() => setCopiedItem(null), 2000);
   };
-
-  if (!mounted) return null;
 
   return (
     <div className="max-w-6xl mx-auto p-8 relative">
@@ -251,7 +229,7 @@ function ContactContent() {
           <ContactCard
             key={channel.id}
             {...channel}
-            isVisible={visibleItems.has(index)}
+            animationDelayMs={100 + index * 120}
             onClick={() => handleChannelClick(channel)}
             onCopy={handleCopy}
             loadingItem={loadingItem}

@@ -36,6 +36,7 @@
     100% - var(--terminal-offset) + var(--terminal-extra-height) + 7.5cqw
   );
   animation: codexFloat 8s ease-in-out infinite;
+  animation-play-state: paused;
 }
 
 .claude {
@@ -48,6 +49,7 @@
   border-color: #4d4340;
   background: #1a1b1c;
   animation: claudeFloat 8s ease-in-out infinite;
+  animation-play-state: paused;
 }
 
 .titleBar {
@@ -198,6 +200,13 @@
   height: 1.1em;
   background: #b4b7b8;
   animation: cursorBlink 1s steps(1, end) infinite;
+  animation-play-state: paused;
+}
+
+.stage[data-motion-active="true"] .codex,
+.stage[data-motion-active="true"] .claude,
+.stage[data-motion-active="true"] .cursor {
+  animation-play-state: running;
 }
 
 @keyframes codexFloat {

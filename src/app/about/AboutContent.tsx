@@ -3,6 +3,7 @@
 
 import { useInitialLocale } from "@/components/layout/LocaleProvider";
 import { localeFromPath, localizedPath } from "@/lib/locale-path";
+import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
@@ -49,9 +50,6 @@ export default function AboutContent({
 
   // Language change handler
   useEffect(() => {
-    // Get initial language from localStorage
-    setLocale(localeFromPath(window.location.pathname) || "en");
-
     // Listen for language changes
     const handleLanguageChange = (e: Event) => {
       setLocale(
@@ -67,47 +65,47 @@ export default function AboutContent({
   }, []);
 
   useEffect(() => {
-    // Title animation
-    if (titleRef.current) {
-      gsap.fromTo(
-        titleRef.current,
-        { opacity: 0, y: 30 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: titleRef.current,
-            start: "top 80%",
-            toggleActions: "play none none none",
-          },
-        }
-      );
-    }
+    const context = gsap.context(() => {
+      // Title animation
+      if (titleRef.current) {
+        gsap.fromTo(
+          titleRef.current,
+          { opacity: 0, y: 30 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: titleRef.current,
+              start: "top 80%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
+      }
 
-    // Description animation
-    if (descriptionRef.current) {
-      gsap.fromTo(
-        descriptionRef.current,
-        { opacity: 0, y: 20 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.6,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: descriptionRef.current,
-            start: "top 80%",
-            toggleActions: "play none none none",
-          },
-        }
-      );
-    }
+      // Description animation
+      if (descriptionRef.current) {
+        gsap.fromTo(
+          descriptionRef.current,
+          { opacity: 0, y: 20 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: descriptionRef.current,
+              start: "top 80%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
+      }
+    });
 
-    return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-    };
+    return () => context.revert();
   }, [locale]); // Re-run when locale changes
 
   return (
@@ -154,7 +152,7 @@ export default function AboutContent({
               "Interested in working together or learning more about my projects? I'd love to hear from you!"}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
+            <Link
               href={getLocalizedLink("/contact")}
               className="inline-block px-8 py-4 rounded-lg font-semibold transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl"
               style={{
@@ -163,8 +161,8 @@ export default function AboutContent({
               }}
             >
               {translations?.about?.cta?.contact || "Get In Touch"}
-            </a>
-            <a
+            </Link>
+            <Link
               href={getLocalizedLink("/portfolio")}
               className="inline-block px-8 py-4 rounded-lg font-semibold transition-all duration-300 hover:scale-105 border-2 hover:shadow-lg"
               style={{
@@ -174,7 +172,7 @@ export default function AboutContent({
               }}
             >
               {translations?.about?.cta?.projects || "View Projects"}
-            </a>
+            </Link>
           </div>
         </div>
       </div>

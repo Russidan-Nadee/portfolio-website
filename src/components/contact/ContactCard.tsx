@@ -1,7 +1,7 @@
 // src/components/contact/ContactCard.tsx
 "use client";
 
-import { useState, useEffect } from "react";
+import { useTheme } from "@/components/layout/ThemeProvider";
 import { MdContentCopy } from "react-icons/md";
 import { IconType } from "react-icons";
 import Image from "next/image";
@@ -15,7 +15,7 @@ interface ContactCardProps {
   href: string;
   iconColor: string;
   // Fix: Remove unused gradient parameter
-  isVisible: boolean;
+  animationDelayMs: number;
   onClick?: () => void;
   onCopy?: (text: string, type: string) => void;
   loadingItem: string | null;
@@ -32,7 +32,7 @@ export default function ContactCard({
   href,
   iconColor,
   // Fix: Remove gradient from destructuring
-  isVisible,
+  animationDelayMs,
   onClick,
   onCopy,
   loadingItem,
@@ -42,33 +42,8 @@ export default function ContactCard({
   const isLoading = loadingItem === id;
   // Fix: Remove unused isCopied variable
   const showCopyButton = id === "email" || id === "phone";
-  const [isDark, setIsDark] = useState(false);
-
-  // Monitor theme changes
-  useEffect(() => {
-    const checkTheme = () => {
-      const isDarkMode =
-        document.documentElement.classList.contains("dark") ||
-        document.documentElement.getAttribute("data-theme") === "dark" ||
-        document.body.classList.contains("dark");
-      setIsDark(isDarkMode);
-    };
-
-    checkTheme();
-
-    // Watch for theme changes
-    const observer = new MutationObserver(checkTheme);
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class", "data-theme"],
-    });
-    observer.observe(document.body, {
-      attributes: true,
-      attributeFilter: ["class"],
-    });
-
-    return () => observer.disconnect();
-  }, []);
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
 
   const handleCardClick = () => {
     if (onClick) {
@@ -94,13 +69,14 @@ export default function ContactCard({
         hover:scale-105 hover:shadow-2xl hover:shadow-black/20
         border border-gray-700/50 bg-transparent
         contact-card group overflow-hidden
-        transform ${isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"}
+        transform contact-card-entry
       `}
       style={
         {
           backgroundColor: "var(--card)",
           borderColor: "var(--border)",
           transition: "all 0.7s cubic-bezier(0.4, 0, 0.2, 1)",
+          animationDelay: `${animationDelayMs}ms`,
           "--shine-color": isDark ? "rgba(255,255,255,0.3)" : "rgba(0,0,0,0.3)",
           "--button-shine-color": isDark
             ? "rgba(255,255,255,0.25)"
@@ -196,6 +172,27 @@ export default function ContactCard({
       </div>
 
       <style jsx>{`
+        @keyframes contact-card-enter {
+          from {
+            opacity: 0;
+            translate: 0 32px;
+          }
+          to {
+            opacity: 1;
+            translate: 0 0;
+          }
+        }
+
+        .contact-card-entry {
+          animation: contact-card-enter 0.7s both;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .contact-card-entry {
+            animation: none;
+          }
+        }
+
         .contact-card {
           position: relative;
           overflow: hidden;

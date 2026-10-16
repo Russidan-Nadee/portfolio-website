@@ -19,11 +19,12 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  preload: false,
 });
 
 const inter = Inter({
   variable: "--font-inter",
-  subsets: ["latin", "latin-ext"],
+  subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800", "900"],
 });
 
@@ -123,10 +124,18 @@ export default async function RootLayout({
   return (
     <html lang={locale} suppressHydrationWarning>
       <head>
-        <link
-          href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;600;700;800;900&display=swap"
-          rel="stylesheet"
-        />
+        {locale === "th" && (
+          <link
+            href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700;800&display=swap"
+            rel="stylesheet"
+          />
+        )}
+        {locale === "ja" && (
+          <link
+            href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700;800;900&display=swap"
+            rel="stylesheet"
+          />
+        )}
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} antialiased overflow-x-clip`}

@@ -94,15 +94,30 @@ export default function TerminalPair({ locale }: { locale: Locale }) {
       timeline.set(codex, { zIndex: 3, filter: "brightness(1)" }, 8);
       timeline.set(claude, { zIndex: 1, filter: "brightness(0.8)" }, 8);
 
+      let inView = false;
+      const updateMotion = () => {
+        if (inView && !document.hidden) {
+          stage.dataset.motionActive = "true";
+          timeline.play();
+        } else {
+          delete stage.dataset.motionActive;
+          timeline.pause();
+        }
+      };
       const observer = new IntersectionObserver(
-        ([entry]) =>
-          entry.isIntersecting ? timeline.play() : timeline.pause(),
+        ([entry]) => {
+          inView = entry.isIntersecting;
+          updateMotion();
+        },
         { threshold: 0.1 }
       );
       observer.observe(stage);
+      document.addEventListener("visibilitychange", updateMotion);
 
       return () => {
         observer.disconnect();
+        document.removeEventListener("visibilitychange", updateMotion);
+        delete stage.dataset.motionActive;
         timeline.kill();
         gsap.set(lines, { clearProps: "all" });
         gsap.set([codex, claude], { clearProps: "zIndex,filter" });

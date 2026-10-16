@@ -1,58 +1,66 @@
-'use client'
+"use client";
 
-import React from 'react'
-import { useScrollAnimation } from '../../hooks/useScrollAnimation'
+import React from "react";
+import { useScrollAnimation } from "../../hooks/useScrollAnimation";
 
 interface AnimatedSectionProps {
-  children: React.ReactNode
-  className?: string
-  animationType?: 'fadeInUp' | 'fadeInDown' | 'fadeInLeft' | 'fadeInRight' | 'scaleIn' | 'slideInUp' | 'slideInDown' | 'rotateIn'
-  delay?: number
-  duration?: number
-  threshold?: number
-  triggerOnce?: boolean
-  stagger?: boolean
-  staggerDelay?: number
+  children: React.ReactNode;
+  className?: string;
+  animationType?:
+    | "fadeInUp"
+    | "fadeInDown"
+    | "fadeInLeft"
+    | "fadeInRight"
+    | "scaleIn"
+    | "slideInUp"
+    | "slideInDown"
+    | "rotateIn";
+  delay?: number;
+  duration?: number;
+  threshold?: number;
+  triggerOnce?: boolean;
+  stagger?: boolean;
+  staggerDelay?: number;
 }
 
 const AnimatedSection: React.FC<AnimatedSectionProps> = ({
   children,
-  className = '',
-  animationType = 'fadeInUp',
+  className = "",
+  animationType = "fadeInUp",
   delay = 0,
   duration = 0.8,
   threshold = 0.1,
   triggerOnce = true,
   stagger = false,
-  staggerDelay = 0
+  staggerDelay = 0,
 }) => {
   const { ref, isVisible } = useScrollAnimation({
     threshold,
     triggerOnce,
-    delay
-  })
+    delay,
+  });
 
   const getAnimationClass = () => {
-    const baseClass = 'animated-section'
-    const visibleClass = isVisible ? 'animated-section--visible' : ''
-    return `${baseClass} ${baseClass}--${animationType} ${visibleClass} ${className}`.trim()
-  }
+    const baseClass = "animated-section";
+    const visibleClass = isVisible ? "animated-section--visible" : "";
+    return `${baseClass} ${baseClass}--${animationType} ${visibleClass} ${className}`.trim();
+  };
 
   const staggerChildren = () => {
-    if (!stagger || !React.Children.count(children)) return children
+    if (!stagger || !React.Children.count(children)) return children;
 
     return React.Children.map(children, (child, index) => (
       <div
         className="animated-section-child"
         style={{
-          animationDelay: `${delay}s`,
-          animationDuration: `${duration}s`
+          animationDelay: `${delay + index * staggerDelay}s`,
+          animationDuration: `${duration}s`,
         }}
       >
         {child}
       </div>
-    ))
-  }
+    ));
+  };
 
   return (
     <div
@@ -60,7 +68,7 @@ const AnimatedSection: React.FC<AnimatedSectionProps> = ({
       className={getAnimationClass()}
       style={{
         animationDuration: `${duration}s`,
-        animationDelay: `${delay}s`
+        animationDelay: `${delay}s`,
       }}
     >
       {stagger ? staggerChildren() : children}
@@ -271,7 +279,7 @@ const AnimatedSection: React.FC<AnimatedSectionProps> = ({
         }
       `}</style>
     </div>
-  )
-}
+  );
+};
 
-export default AnimatedSection
+export default AnimatedSection;

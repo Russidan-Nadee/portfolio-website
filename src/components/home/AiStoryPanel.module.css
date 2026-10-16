@@ -55,6 +55,11 @@
   place-items: center;
   opacity: 0;
   animation: aiIconCycle 12s linear infinite;
+  animation-play-state: paused;
+}
+
+.intro[data-motion-active="true"] .aiIcon {
+  animation-play-state: running;
 }
 
 .aiIconImage {

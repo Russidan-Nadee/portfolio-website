@@ -3,15 +3,14 @@ import type {
   PublishedCertificateData,
 } from "@/features/certificates/types";
 import { prisma } from "@/lib/prisma";
+import { unstable_cache } from "next/cache";
+import { publicCacheTags } from "@/lib/public-cache-tags";
 import CertificateContent from "./CertificateContent";
 
 export const dynamic = "force-dynamic";
 
-async function loadCertificates(): Promise<{
-  certificates: PublishedCertificateData[];
-  unavailable: boolean;
-}> {
-  try {
+const queryCertificates = unstable_cache(
+  async (): Promise<PublishedCertificateData[]> => {
     const records = await prisma.certificate.findMany({
       where: {
         active: true,
@@ -24,21 +23,30 @@ async function loadCertificates(): Promise<{
         { id: "asc" },
       ],
     });
-    const certificates: PublishedCertificateData[] = records.map(
-      (certificate) => ({
-        id: certificate.id,
-        slug: certificate.slug,
-        order: certificate.order,
-        title: certificate.title as unknown as LocalizedText,
-        issuer: certificate.issuer,
-        issuedAt: certificate.issuedAt?.toISOString() ?? null,
-        category: certificate.category as PublishedCertificateData["category"],
-        imageUrl: certificate.imageUrl!,
-        pdfUrl: certificate.pdfUrl!,
-        credentialUrl: certificate.credentialUrl,
-        active: true,
-      })
-    );
+    return records.map((certificate) => ({
+      id: certificate.id,
+      slug: certificate.slug,
+      order: certificate.order,
+      title: certificate.title as unknown as LocalizedText,
+      issuer: certificate.issuer,
+      issuedAt: certificate.issuedAt?.toISOString() ?? null,
+      category: certificate.category as PublishedCertificateData["category"],
+      imageUrl: certificate.imageUrl!,
+      pdfUrl: certificate.pdfUrl!,
+      credentialUrl: certificate.credentialUrl,
+      active: true,
+    }));
+  },
+  ["certificate-data-v1"],
+  { tags: [publicCacheTags.certificate], revalidate: 3600 }
+);
+
+async function loadCertificates(): Promise<{
+  certificates: PublishedCertificateData[];
+  unavailable: boolean;
+}> {
+  try {
+    const certificates = await queryCertificates();
     return { certificates, unavailable: false };
   } catch (error) {
     console.error("Unable to load certificates", error);

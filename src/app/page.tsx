@@ -1,5 +1,7 @@
 // src/app/page.tsx
 import { prisma } from "@/lib/prisma";
+import { unstable_cache } from "next/cache";
+import { publicCacheTags } from "@/lib/public-cache-tags";
 import HomeContent from "./HomeContent";
 import type {
   HeroCertificateData,
@@ -15,9 +17,9 @@ const certificateCategoryPriority: Record<string, number> = {
   finance: 3,
 };
 
-export default async function Home() {
-  const [skills, featuredProjects, heroProjects, certificateRecords] =
-    await Promise.all([
+const loadHomeData = unstable_cache(
+  async () => {
+    return Promise.all([
       prisma.skill.findMany({
         where: { featured: true, active: true },
         orderBy: { order: "asc" },
@@ -63,6 +65,14 @@ export default async function Home() {
         },
       }),
     ]);
+  },
+  ["home-data-v1"],
+  { tags: [publicCacheTags.home], revalidate: 3600 }
+);
+
+export default async function Home() {
+  const [skills, featuredProjects, heroProjects, certificateRecords] =
+    await loadHomeData();
 
   const heroCertificates: HeroCertificateData[] = certificateRecords
     .sort(

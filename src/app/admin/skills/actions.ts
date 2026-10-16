@@ -1,9 +1,18 @@
 // src/app/admin/skills/actions.ts
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
+import { publicCacheTags } from "@/lib/public-cache-tags";
+
+function revalidateSkillPages() {
+  revalidatePath("/admin/skills");
+  revalidatePath("/about");
+  revalidatePath("/");
+  revalidateTag(publicCacheTags.about, { expire: 0 });
+  revalidateTag(publicCacheTags.home, { expire: 0 });
+}
 
 export async function uploadSkillIcon(formData: FormData) {
   const file = formData.get("file") as File | null;
@@ -52,13 +61,13 @@ export async function createCategory(formData: FormData) {
   const order = (last?.order ?? -1) + 1;
 
   await prisma.category.create({ data: { name, order } });
-  revalidatePath("/admin/skills");
+  revalidateSkillPages();
 }
 
 export async function updateCategory(id: string, formData: FormData) {
   const name = readLocaleField(formData, "category-name");
   await prisma.category.update({ where: { id }, data: { name } });
-  revalidatePath("/admin/skills");
+  revalidateSkillPages();
 }
 
 export async function deleteCategory(id: string) {
@@ -69,7 +78,7 @@ export async function deleteCategory(id: string) {
     );
   }
   await prisma.category.delete({ where: { id } });
-  revalidatePath("/admin/skills");
+  revalidateSkillPages();
 }
 
 export async function createSkill(formData: FormData) {
@@ -92,8 +101,7 @@ export async function createSkill(formData: FormData) {
       active: formData.get("active") === "on",
     },
   });
-  revalidatePath("/admin/skills");
-  revalidatePath("/about");
+  revalidateSkillPages();
 }
 
 export async function updateSkill(id: string, formData: FormData) {
@@ -109,25 +117,22 @@ export async function updateSkill(id: string, formData: FormData) {
       active: formData.get("active") === "on",
     },
   });
-  revalidatePath("/admin/skills");
-  revalidatePath("/about");
+  revalidateSkillPages();
 }
 
 export async function deleteSkill(id: string) {
   await prisma.skill.delete({ where: { id } });
-  revalidatePath("/admin/skills");
-  revalidatePath("/about");
+  revalidateSkillPages();
 }
 
 export async function toggleSkillFeatured(id: string, featured: boolean) {
   await prisma.skill.update({ where: { id }, data: { featured } });
-  revalidatePath("/admin/skills");
+  revalidateSkillPages();
 }
 
 export async function toggleSkillActive(id: string, active: boolean) {
   await prisma.skill.update({ where: { id }, data: { active } });
-  revalidatePath("/admin/skills");
-  revalidatePath("/about");
+  revalidateSkillPages();
 }
 
 export async function reorderCategories(orderedIds: string[]) {
@@ -136,8 +141,7 @@ export async function reorderCategories(orderedIds: string[]) {
       prisma.category.update({ where: { id }, data: { order } })
     )
   );
-  revalidatePath("/admin/skills");
-  revalidatePath("/about");
+  revalidateSkillPages();
 }
 
 export async function reorderSkills(orderedIds: string[]) {
@@ -146,6 +150,5 @@ export async function reorderSkills(orderedIds: string[]) {
       prisma.skill.update({ where: { id }, data: { order } })
     )
   );
-  revalidatePath("/admin/skills");
-  revalidatePath("/about");
+  revalidateSkillPages();
 }

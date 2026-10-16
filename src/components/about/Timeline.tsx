@@ -89,13 +89,21 @@ export default function Timeline({
   const headerRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const tabsRef = useRef<HTMLDivElement>(null);
+  const lineRef = useRef<HTMLDivElement>(null);
 
   const [activeTab, setActiveTab] = useState<"work" | "education">("work");
-  const [scrollProgress, setScrollProgress] = useState(0);
   const [visibleItems, setVisibleItems] = useState<number[]>([]);
   const [animationComplete, setAnimationComplete] = useState(false);
   const [headerAnimated, setHeaderAnimated] = useState(false);
   const [selectedCard, setSelectedCard] = useState<DisplayItem | null>(null);
+
+  const changeTab = (nextTab: "work" | "education") => {
+    if (nextTab === activeTab) return;
+    if (lineRef.current) lineRef.current.style.transform = "scaleY(0)";
+    setVisibleItems([]);
+    setAnimationComplete(false);
+    setActiveTab(nextTab);
+  };
 
   // Close the enlarged card modal on Escape
   useEffect(() => {
@@ -215,7 +223,9 @@ export default function Timeline({
   };
 
   useEffect(() => {
-    const handleScroll = () => {
+    let frame = 0;
+    const updateScroll = () => {
+      frame = 0;
       // Header animation
       if (headerRef.current && !headerAnimated) {
         const headerRect = headerRef.current.getBoundingClientRect();
@@ -251,7 +261,9 @@ export default function Timeline({
           Math.min(1, currentScroll / totalScrollableHeight)
         );
 
-        setScrollProgress(progress);
+        if (lineRef.current) {
+          lineRef.current.style.transform = `scaleY(${progress})`;
+        }
 
         // Show items based on progress - Faster for education with 2 items
         const totalItems = currentData.length;
@@ -267,7 +279,12 @@ export default function Timeline({
           }
         }
 
-        setVisibleItems(itemsToShow);
+        setVisibleItems((previous) =>
+          previous.length === itemsToShow.length &&
+          previous.every((item, index) => item === itemsToShow[index])
+            ? previous
+            : itemsToShow
+        );
 
         // Force 100% when last card shows OR when progress is high enough
         if (
@@ -275,13 +292,17 @@ export default function Timeline({
           progress >= 0.85
         ) {
           setAnimationComplete(true);
-          setScrollProgress(1); // Force 100%
-          setVisibleItems([...new Array(totalItems).keys()]); // Show all items
+          if (lineRef.current) lineRef.current.style.transform = "scaleY(1)";
+          setVisibleItems((previous) =>
+            previous.length === totalItems
+              ? previous
+              : [...new Array(totalItems).keys()]
+          );
         }
       } else if (elementTop > startOffset && !animationComplete) {
         // Reset when scrolled back up (only if animation not complete)
-        setScrollProgress(0);
-        setVisibleItems([]);
+        if (lineRef.current) lineRef.current.style.transform = "scaleY(0)";
+        setVisibleItems((previous) => (previous.length ? [] : previous));
       }
 
       // Additional check: Force complete when very close to bottom
@@ -295,26 +316,27 @@ export default function Timeline({
         currentData.length > 0
       ) {
         setAnimationComplete(true);
-        setScrollProgress(1);
-        setVisibleItems([...new Array(currentData.length).keys()]);
+        if (lineRef.current) lineRef.current.style.transform = "scaleY(1)";
+        setVisibleItems((previous) =>
+          previous.length === currentData.length
+            ? previous
+            : [...new Array(currentData.length).keys()]
+        );
       }
     };
 
-    // Add scroll listener
-    window.addEventListener("scroll", handleScroll);
-    handleScroll(); // Initial check
+    const handleScroll = () => {
+      if (!frame) frame = window.requestAnimationFrame(updateScroll);
+    };
 
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    updateScroll(); // Initial check
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (frame) window.cancelAnimationFrame(frame);
+    };
   }, [currentData.length, animationComplete, headerAnimated, activeTab]);
-
-  // Reset when tab changes
-  useEffect(() => {
-    // Preserve the timeline's immediate reset when switching tabs.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setScrollProgress(0);
-    setVisibleItems([]);
-    setAnimationComplete(false);
-  }, [activeTab]);
 
   // Reset header animation when tab changes or locale changes
   useEffect(() => {
@@ -409,7 +431,7 @@ export default function Timeline({
         }
 
         .timeline-line {
-          transform: scaleY(${scrollProgress});
+          transform: scaleY(0);
           transform-origin: top center;
           transition: transform 0.1s ease-out;
         }
@@ -570,7 +592,7 @@ export default function Timeline({
               className={`header-tabs inline-flex p-1 mb-8 ${styles.tabs} ${headerAnimated ? "animated" : ""}`}
             >
               <button
-                onClick={() => setActiveTab("work")}
+                onClick={() => changeTab("work")}
                 className={`px-3 py-2 md:px-6 md:py-3 text-xs md:text-base font-semibold transition-all duration-300 flex items-center gap-2 ${styles.tab}`}
                 aria-pressed={activeTab === "work"}
               >
@@ -579,7 +601,7 @@ export default function Timeline({
                   "Experience"}
               </button>
               <button
-                onClick={() => setActiveTab("education")}
+                onClick={() => changeTab("education")}
                 className={`px-3 py-2 md:px-6 md:py-3 text-xs md:text-base font-semibold transition-all duration-300 flex items-center gap-2 ${styles.tab}`}
                 aria-pressed={activeTab === "education"}
               >
@@ -605,7 +627,10 @@ export default function Timeline({
             >
               {/* Timeline Line */}
               <div className="absolute left-1/2 transform -translate-x-1/2 top-0 bottom-0 flex justify-center">
-                <div className={`timeline-line h-full ${styles.line}`} />
+                <div
+                  ref={lineRef}
+                  className={`timeline-line h-full ${styles.line}`}
+                />
               </div>
 
               {/* Timeline Items */}
