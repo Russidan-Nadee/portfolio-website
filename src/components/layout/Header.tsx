@@ -105,6 +105,10 @@ export default function Header() {
     return localizedPath(path, locale);
   };
 
+  const pagePath = pathname.replace(/^\/(en|th|ja)(?=\/|$)/, "") || "/";
+  const isActivePage = (path: string) =>
+    pagePath === path || (path !== "/" && pagePath.startsWith(`${path}/`));
+
   // Close menu when clicking outside or on link
   const closeMenu = () => {
     setIsMenuOpen(false);
@@ -167,69 +171,75 @@ export default function Header() {
             <Link
               href={getLocalizedLink("/")}
               className={`hover:opacity-70 pb-1 transition-all ${
-                pathname === "/" ? "border-b-2" : ""
+                isActivePage("/") ? "border-b-2" : ""
               }`}
               style={{
                 color: "var(--foreground)",
-                borderColor:
-                  pathname === "/" ? "var(--foreground)" : "transparent",
+                borderColor: isActivePage("/")
+                  ? "var(--foreground)"
+                  : "transparent",
               }}
+              aria-current={isActivePage("/") ? "page" : undefined}
             >
               {translations?.header?.nav?.home || "Home"}
             </Link>
             <Link
               href={getLocalizedLink("/about")}
               className={`hover:opacity-70 pb-1 transition-all ${
-                pathname.startsWith("/about") ? "border-b-2" : ""
+                isActivePage("/about") ? "border-b-2" : ""
               }`}
               style={{
                 color: "var(--foreground)",
-                borderColor: pathname.startsWith("/about")
+                borderColor: isActivePage("/about")
                   ? "var(--foreground)"
                   : "transparent",
               }}
+              aria-current={isActivePage("/about") ? "page" : undefined}
             >
               {translations?.header?.nav?.about || "About"}
             </Link>
             <Link
               href={getLocalizedLink("/portfolio")}
               className={`hover:opacity-70 pb-1 transition-all ${
-                pathname.startsWith("/portfolio") ? "border-b-2" : ""
+                isActivePage("/portfolio") ? "border-b-2" : ""
               }`}
               style={{
                 color: "var(--foreground)",
-                borderColor: pathname.startsWith("/portfolio")
+                borderColor: isActivePage("/portfolio")
                   ? "var(--foreground)"
                   : "transparent",
               }}
+              aria-current={isActivePage("/portfolio") ? "page" : undefined}
             >
               {translations?.header?.nav?.portfolio || "Portfolio"}
             </Link>
             <Link
               href={getLocalizedLink("/certificate")}
               className={`hover:opacity-70 pb-1 transition-all ${
-                pathname.startsWith("/certificate") ? "border-b-2" : ""
+                isActivePage("/certificate") ? "border-b-2" : ""
               }`}
               style={{
                 color: "var(--foreground)",
-                borderColor: pathname.startsWith("/certificate")
+                borderColor: isActivePage("/certificate")
                   ? "var(--foreground)"
                   : "transparent",
               }}
+              aria-current={isActivePage("/certificate") ? "page" : undefined}
             >
               {translations?.header?.nav?.certificate || "Certificates"}
             </Link>
             <Link
               href={getLocalizedLink("/contact")}
               className={`hover:opacity-70 pb-1 transition-all ${
-                pathname.startsWith("/contact") ? "border-b-2" : ""
+                isActivePage("/contact") ? "border-b-2" : ""
               }`}
               style={{
                 color: "var(--foreground)",
-                borderColor: pathname.startsWith("/contact")
+                borderColor: isActivePage("/contact")
                   ? "var(--foreground)"
                   : "transparent",
               }}
+              aria-current={isActivePage("/contact") ? "page" : undefined}
             >
               {translations?.header?.nav?.contact || "Contact"}
             </Link>
@@ -326,15 +336,18 @@ export default function Header() {
             href={getLocalizedLink("/")}
             onClick={closeMenu}
             className={`text-lg py-3 px-4 rounded-lg transition-all hover:bg-opacity-80 ${
-              pathname === "/" ? "border-l-4" : ""
+              isActivePage("/") ? "border-l-4" : ""
             }`}
             style={{
               color: "var(--foreground)",
-              backgroundColor:
-                pathname === "/" ? "var(--muted)" : "transparent",
-              borderColor:
-                pathname === "/" ? "var(--foreground)" : "transparent",
+              backgroundColor: isActivePage("/")
+                ? "var(--muted)"
+                : "transparent",
+              borderColor: isActivePage("/")
+                ? "var(--foreground)"
+                : "transparent",
             }}
+            aria-current={isActivePage("/") ? "page" : undefined}
           >
             {translations?.header?.nav?.home || "Home"}
           </Link>
@@ -342,17 +355,18 @@ export default function Header() {
             href={getLocalizedLink("/about")}
             onClick={closeMenu}
             className={`text-lg py-3 px-4 rounded-lg transition-all hover:bg-opacity-80 ${
-              pathname.startsWith("/about") ? "border-l-4" : ""
+              isActivePage("/about") ? "border-l-4" : ""
             }`}
             style={{
               color: "var(--foreground)",
-              backgroundColor: pathname.startsWith("/about")
+              backgroundColor: isActivePage("/about")
                 ? "var(--muted)"
                 : "transparent",
-              borderColor: pathname.startsWith("/about")
+              borderColor: isActivePage("/about")
                 ? "var(--foreground)"
                 : "transparent",
             }}
+            aria-current={isActivePage("/about") ? "page" : undefined}
           >
             {translations?.header?.nav?.about || "About"}
           </Link>
@@ -360,17 +374,18 @@ export default function Header() {
             href={getLocalizedLink("/portfolio")}
             onClick={closeMenu}
             className={`text-lg py-3 px-4 rounded-lg transition-all hover:bg-opacity-80 ${
-              pathname.startsWith("/portfolio") ? "border-l-4" : ""
+              isActivePage("/portfolio") ? "border-l-4" : ""
             }`}
             style={{
               color: "var(--foreground)",
-              backgroundColor: pathname.startsWith("/portfolio")
+              backgroundColor: isActivePage("/portfolio")
                 ? "var(--muted)"
                 : "transparent",
-              borderColor: pathname.startsWith("/portfolio")
+              borderColor: isActivePage("/portfolio")
                 ? "var(--foreground)"
                 : "transparent",
             }}
+            aria-current={isActivePage("/portfolio") ? "page" : undefined}
           >
             {translations?.header?.nav?.portfolio || "Portfolio"}
           </Link>
@@ -378,17 +393,18 @@ export default function Header() {
             href={getLocalizedLink("/certificate")}
             onClick={closeMenu}
             className={`text-lg py-3 px-4 rounded-lg transition-all hover:bg-opacity-80 ${
-              pathname.startsWith("/certificate") ? "border-l-4" : ""
+              isActivePage("/certificate") ? "border-l-4" : ""
             }`}
             style={{
               color: "var(--foreground)",
-              backgroundColor: pathname.startsWith("/certificate")
+              backgroundColor: isActivePage("/certificate")
                 ? "var(--muted)"
                 : "transparent",
-              borderColor: pathname.startsWith("/certificate")
+              borderColor: isActivePage("/certificate")
                 ? "var(--foreground)"
                 : "transparent",
             }}
+            aria-current={isActivePage("/certificate") ? "page" : undefined}
           >
             {translations?.header?.nav?.certificate || "Certificates"}
           </Link>
@@ -396,17 +412,18 @@ export default function Header() {
             href={getLocalizedLink("/contact")}
             onClick={closeMenu}
             className={`text-lg py-3 px-4 rounded-lg transition-all hover:bg-opacity-80 ${
-              pathname.startsWith("/contact") ? "border-l-4" : ""
+              isActivePage("/contact") ? "border-l-4" : ""
             }`}
             style={{
               color: "var(--foreground)",
-              backgroundColor: pathname.startsWith("/contact")
+              backgroundColor: isActivePage("/contact")
                 ? "var(--muted)"
                 : "transparent",
-              borderColor: pathname.startsWith("/contact")
+              borderColor: isActivePage("/contact")
                 ? "var(--foreground)"
                 : "transparent",
             }}
+            aria-current={isActivePage("/contact") ? "page" : undefined}
           >
             {translations?.header?.nav?.contact || "Contact"}
           </Link>

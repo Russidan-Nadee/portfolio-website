@@ -5,7 +5,6 @@ import { useInitialLocale } from "@/components/layout/LocaleProvider";
 import { localeFromPath } from "@/lib/locale-path";
 import { useEffect, useRef, useState } from "react";
 import { MdSchool, MdRestaurant, MdFastfood, MdLocalBar } from "react-icons/md";
-import { HiLightningBolt } from "react-icons/hi";
 import { FaGraduationCap, FaBriefcase, FaLaptopCode } from "react-icons/fa";
 import th from "../../../locales/th.json";
 import ja from "../../../locales/ja.json";
@@ -152,7 +151,7 @@ export default function Timeline({
       case "ja":
         return "現在";
       default:
-        return "Current";
+        return "Present";
     }
   };
 
@@ -645,14 +644,9 @@ export default function Timeline({
                         >
                           <div className="mb-2">
                             <span
-                              className={`inline-flex items-center gap-2 px-3 py-1 text-sm font-medium rounded-full ${styles.badge} ${item.isCurrent ? styles.currentBadge : ""}`}
+                              className={`inline-flex items-center gap-2 px-3 py-1 text-sm font-medium rounded-full ${styles.badge}`}
                             >
-                              {item.isCurrent && (
-                                <HiLightningBolt aria-hidden="true" />
-                              )}
-                              {item.isCurrent
-                                ? getCurrentText(locale)
-                                : item.period}
+                              {item.period}
                             </span>
                             {item.isCurrent && isVisible && (
                               <div
@@ -677,15 +671,6 @@ export default function Timeline({
                           >
                             {item.company}
                           </h4>
-
-                          {item.isCurrent && (
-                            <p
-                              className="text-sm font-medium mb-3"
-                              style={{ color: "var(--muted-foreground)" }}
-                            >
-                              {item.period}
-                            </p>
-                          )}
 
                           <p
                             className="leading-relaxed mb-4 text-sm"
@@ -761,20 +746,11 @@ export default function Timeline({
                   <span
                     className="inline-flex items-center gap-2 px-3 py-1 text-sm font-medium rounded-full"
                     style={{
-                      backgroundColor: selectedCard.isCurrent
-                        ? "var(--foreground)"
-                        : "var(--muted)",
-                      color: selectedCard.isCurrent
-                        ? "var(--background)"
-                        : "var(--muted-foreground)",
+                      backgroundColor: "var(--muted)",
+                      color: "var(--muted-foreground)",
                     }}
                   >
-                    {selectedCard.isCurrent && (
-                      <HiLightningBolt className="text-yellow-400" />
-                    )}
-                    {selectedCard.isCurrent
-                      ? getCurrentText(locale)
-                      : selectedCard.period}
+                    {selectedCard.period}
                   </span>
                 </div>
 
@@ -791,15 +767,6 @@ export default function Timeline({
                 >
                   {selectedCard.company}
                 </h4>
-
-                {selectedCard.isCurrent && (
-                  <p
-                    className="text-base xl:text-lg font-medium mb-6"
-                    style={{ color: "var(--muted-foreground)" }}
-                  >
-                    {selectedCard.period}
-                  </p>
-                )}
 
                 <p
                   className="leading-relaxed mb-8 text-lg xl:text-xl"
