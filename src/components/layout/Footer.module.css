@@ -1,0 +1,170 @@
+.footer {
+  position: relative;
+  margin-top: auto;
+  padding-inline: clamp(24px, 6vw, 112px);
+  background: var(--muted);
+  color: var(--foreground);
+}
+
+.footer::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  background: var(--muted-foreground);
+  opacity: 0.5;
+}
+
+.inner {
+  width: 100%;
+  max-width: 1240px;
+  margin-inline: auto;
+  padding-block: 22px 16px;
+}
+
+.top,
+.middle,
+.bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.brand {
+  color: var(--foreground);
+  text-decoration: none;
+}
+
+.location {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 5px 0 0;
+  color: var(--muted-foreground);
+  font-size: 0.82rem;
+}
+
+.locationIcon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.contact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+}
+
+.contact a,
+.nav a,
+.bottom a {
+  color: var(--foreground);
+  text-decoration: none;
+}
+
+.contact a:hover,
+.nav a:hover,
+.bottom a:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.middle {
+  margin-top: 16px;
+  padding-block: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.nav,
+.languages {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.nav {
+  gap: 8px 20px;
+}
+
+.languages {
+  flex-shrink: 0;
+  gap: 4px;
+}
+
+.languages button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 58px;
+  padding: 6px;
+  border-radius: 6px;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-weight: 650;
+}
+
+.flag {
+  width: 18px;
+  height: 13px;
+  flex-shrink: 0;
+  border-radius: 2px;
+}
+
+.languages button[aria-pressed="true"] {
+  background: var(--foreground);
+  color: var(--background);
+}
+
+.languages button:hover:not([aria-pressed="true"]) {
+  color: var(--foreground);
+}
+
+.bottom {
+  padding-top: 12px;
+  color: var(--muted-foreground);
+  font-size: 0.82rem;
+}
+
+.bottom p {
+  margin: 0;
+}
+
+.bottom a {
+  color: var(--muted-foreground);
+}
+
+.brand:focus-visible,
+.contact a:focus-visible,
+.nav a:focus-visible,
+.languages button:focus-visible,
+.bottom a:focus-visible {
+  outline: 2px solid var(--foreground);
+  outline-offset: 4px;
+}
+
+@media (max-width: 800px) {
+  .top,
+  .middle {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .middle {
+    margin-top: 14px;
+  }
+}
+
+@media (max-width: 560px) {
+  .inner {
+    padding-block: 22px 16px;
+  }
+
+  .contact,
+  .bottom {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

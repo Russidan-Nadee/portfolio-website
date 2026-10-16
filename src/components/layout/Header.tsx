@@ -130,14 +130,16 @@ export default function Header() {
   return (
     <>
       <header
-        className={`sticky top-0 z-50 flex h-16 items-center border-b-2 px-4 ${introPending ? styles.introPending : "transition-all duration-300"}`}
+        className={`sticky top-0 z-50 flex h-16 items-center border-b-2 ${styles.container} ${introPending ? styles.introPending : "transition-all duration-300"}`}
         style={{
           backgroundColor: "var(--background)",
           borderColor: "var(--border)",
           color: "var(--foreground)",
         }}
       >
-        <nav className="flex justify-between items-center max-w-6xl mx-auto w-full">
+        <nav
+          className={`flex justify-between items-center mx-auto w-full ${styles.nav}`}
+        >
           {/* Logo */}
           <div className="flex items-center">
             <Link

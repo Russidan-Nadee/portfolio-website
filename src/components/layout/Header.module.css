@@ -1,3 +1,11 @@
+.container {
+  padding-inline: clamp(24px, 6vw, 112px);
+}
+
+.nav {
+  max-width: 1240px;
+}
+
 @media (min-width: 1200px) and (prefers-reduced-motion: no-preference) {
   .introPending {
     visibility: hidden;

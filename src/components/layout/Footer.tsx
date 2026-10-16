@@ -1,64 +1,42 @@
-// src/components/layout/Footer.tsx
-"use client";
+﻿"use client";
 
-import { useInitialLocale } from "@/components/layout/LocaleProvider";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { CodeXml, MapPin } from "lucide-react";
+import { GB, TH, JP } from "country-flag-icons/react/3x2";
 import {
   localeFromPath,
   localizedDestination,
   localizedPath,
 } from "@/lib/locale-path";
-import { useState, useEffect } from "react";
-import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { FaFacebook, FaInstagram, FaLinkedin, FaGithub } from "react-icons/fa";
-import { GB, TH, JP } from "country-flag-icons/react/3x2";
+import styles from "./Footer.module.css";
 import th from "../../../locales/th.json";
 import ja from "../../../locales/ja.json";
 import en from "../../../locales/en.json";
 
+const languageOptions = [
+  { code: "en", Flag: GB },
+  { code: "th", Flag: TH },
+  { code: "ja", Flag: JP },
+] as const;
+
 export default function Footer() {
   const pathname = usePathname();
   const router = useRouter();
-  const [locale, setLocale] = useState(useInitialLocale());
+  const locale = localeFromPath(pathname);
+  const translations = locale === "th" ? th : locale === "ja" ? ja : en;
+  const [city, country] = translations.footer.location
+    .split(",")
+    .map((part) => part.trim());
 
-  // Helper function to get translations based on locale
-  const getTranslations = (locale: string) => {
-    switch (locale) {
-      case "th":
-        return th;
-      case "ja":
-        return ja;
-      default:
-        return en;
-    }
-  };
-
-  // Load translations with fallback
-  const translations = getTranslations(locale);
-
-  // Language change handler
-  useEffect(() => {
-    // Get initial language from localStorage
-    setLocale(localeFromPath(window.location.pathname) || "en");
-
-    // Listen for language changes
-    const handleLanguageChange = (e: Event) => {
-      setLocale(
-        localeFromPath(
-          "/" + (e as CustomEvent<{ language: string }>).detail.language
-        )
-      );
-    };
-
-    window.addEventListener("languageChange", handleLanguageChange);
-    return () =>
-      window.removeEventListener("languageChange", handleLanguageChange);
-  }, [pathname]);
-
-  // Helper function to generate localized links
-  const getLocalizedLink = (path: string) => {
-    return localizedPath(path, locale);
-  };
+  const getLocalizedLink = (path: string) => localizedPath(path, locale);
+  const navLinks = [
+    { path: "/", label: translations.header.nav.home },
+    { path: "/about", label: translations.header.nav.about },
+    { path: "/portfolio", label: translations.header.nav.portfolio },
+    { path: "/certificate", label: translations.header.nav.certificate },
+    { path: "/contact", label: translations.header.nav.contact },
+  ];
 
   const handleLanguageSwitch = (newLocale: string) => {
     localStorage.setItem("lang", newLocale);
@@ -72,252 +50,74 @@ export default function Footer() {
     );
   };
 
-  const languageOptions = [
-    {
-      code: "en",
-      name: "English",
-      Flag: GB,
-      nativeName: "English",
-    },
-    {
-      code: "th",
-      name: "Thai",
-      Flag: TH,
-      nativeName: "ไทย",
-    },
-    {
-      code: "ja",
-      name: "Japanese",
-      Flag: JP,
-      nativeName: "日本語",
-    },
-  ];
-
-  const socialLinks = [
-    {
-      name: "GitHub",
-      icon: FaGithub,
-      url: "https://github.com/Russidan-Nadee",
-      color: "#6b7280",
-    },
-    {
-      name: "LinkedIn",
-      icon: FaLinkedin,
-      url: "https://www.linkedin.com/in/russidan-nadee-1734a2352/",
-      color: "#0ea5e9",
-    },
-    {
-      name: "Facebook",
-      icon: FaFacebook,
-      url: "https://www.facebook.com/russidan.nadee.2025",
-      color: "#1877f2",
-    },
-    {
-      name: "Instagram",
-      icon: FaInstagram,
-      url: "https://www.instagram.com/firstl._/",
-      color: "#e91e63",
-    },
-  ];
-
   return (
-    <footer
-      className="border-t mt-auto"
-      style={{
-        backgroundColor: "var(--muted)",
-        borderColor: "var(--border)",
-      }}
-    >
-      <div className="max-w-6xl mx-auto px-8 py-12">
-        {/* Main Footer Content */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8 mb-8">
-          {/* Quick Navigation */}
+    <footer className={styles.footer}>
+      <div className={styles.inner}>
+        <div className={styles.top}>
           <div>
-            <h3
-              className="font-semibold text-lg mb-4"
-              style={{ color: "var(--foreground)" }}
+            <Link
+              href={getLocalizedLink("/")}
+              className={`${styles.brand} inline-flex items-center gap-2 whitespace-nowrap transition-opacity hover:opacity-70`}
+              aria-label="Russidan Nadee, home"
             >
-              {translations?.footer?.sections?.quickLinks || "Quick Links"}
-            </h3>
-            <nav className="space-y-3">
-              <Link
-                href={getLocalizedLink("/")}
-                className="block hover:opacity-70 transition-opacity"
-                style={{ color: "var(--muted-foreground)" }}
+              <CodeXml
+                aria-hidden="true"
+                className="size-8 shrink-0 lg:size-10"
+                strokeWidth={2.25}
+              />
+              <span
+                className="text-[21px] font-bold leading-none lg:text-[30px]"
+                style={{ fontFamily: "var(--font-geist-sans), sans-serif" }}
               >
-                {translations?.header?.nav?.home || "Home"}
-              </Link>
-              <Link
-                href={getLocalizedLink("/about")}
-                className="block hover:opacity-70 transition-opacity"
-                style={{ color: "var(--muted-foreground)" }}
-              >
-                {translations?.header?.nav?.about || "About"}
-              </Link>
-              <Link
-                href={getLocalizedLink("/portfolio")}
-                className="block hover:opacity-70 transition-opacity"
-                style={{ color: "var(--muted-foreground)" }}
-              >
-                {translations?.header?.nav?.portfolio || "Portfolio"}
-              </Link>
-              <Link
-                href={getLocalizedLink("/certificate")}
-                className="block hover:opacity-70 transition-opacity"
-                style={{ color: "var(--muted-foreground)" }}
-              >
-                {translations?.header?.nav?.certificate || "Certificates"}
-              </Link>
-              <Link
-                href={getLocalizedLink("/contact")}
-                className="block hover:opacity-70 transition-opacity"
-                style={{ color: "var(--muted-foreground)" }}
-              >
-                {translations?.header?.nav?.contact || "Contact"}
-              </Link>
-            </nav>
+                RUSSIDAN
+              </span>
+            </Link>
+            <p className={styles.location}>
+              <MapPin aria-hidden="true" className={styles.locationIcon} />
+              <span>{city},</span>
+              <span>{country}</span>
+            </p>
           </div>
-
-          {/* Contact Information */}
-          <div>
-            <h3
-              className="font-semibold text-lg mb-4"
-              style={{ color: "var(--foreground)" }}
-            >
-              {translations?.footer?.sections?.contact || "Contact"}
-            </h3>
-            <div className="space-y-3">
-              <div
-                className="text-sm"
-                style={{ color: "var(--muted-foreground)" }}
-              >
-                russidan.nadee@gmail.com
-              </div>
-              <div
-                className="text-sm"
-                style={{ color: "var(--muted-foreground)" }}
-              >
-                +66 93-108-9420
-              </div>
-              <div
-                className="text-sm"
-                style={{ color: "var(--muted-foreground)" }}
-              >
-                {translations?.footer?.location || "Bangkok, Thailand"}
-              </div>
-            </div>
-          </div>
-
-          {/* Social Media */}
-          <div>
-            <h3
-              className="font-semibold text-lg mb-4"
-              style={{ color: "var(--foreground)" }}
-            >
-              {translations?.footer?.sections?.followMe || "Follow Me"}
-            </h3>
-            <div className="grid grid-cols-2 gap-4 w-[132px]">
-              {socialLinks.map((social) => {
-                const IconComponent = social.icon;
-                return (
-                  <a
-                    key={social.name}
-                    href={social.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-14 h-14 rounded-lg hover:scale-110 transition-all duration-300 flex items-center justify-center"
-                    style={{
-                      backgroundColor: "var(--card)",
-                      border: "1px solid var(--border)",
-                    }}
-                    aria-label={social.name}
-                  >
-                    <IconComponent size={18} style={{ color: social.color }} />
-                  </a>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Legal & Copyright */}
-          <div>
-            <h3
-              className="font-semibold text-lg mb-4"
-              style={{ color: "var(--foreground)" }}
-            >
-              {translations?.footer?.sections?.legal || "Legal"}
-            </h3>
-            <nav className="space-y-3">
-              <Link
-                href={getLocalizedLink("/legal/privacy-policy")}
-                className="block hover:opacity-70 transition-opacity"
-                style={{ color: "var(--muted-foreground)" }}
-              >
-                {translations?.footer?.legal?.privacyPolicy || "Privacy Policy"}
-              </Link>
-              <Link
-                href={getLocalizedLink("/legal/terms-of-service")}
-                className="block hover:opacity-70 transition-opacity"
-                style={{ color: "var(--muted-foreground)" }}
-              >
-                {translations?.footer?.legal?.termsOfService ||
-                  "Terms of Service"}
-              </Link>
-            </nav>
-          </div>
-
-          {/* Language Switcher */}
-          <div>
-            <h3
-              className="font-semibold text-lg mb-4"
-              style={{ color: "var(--foreground)" }}
-            >
-              {translations?.footer?.sections?.language || "Language"}
-            </h3>
-            <div className="space-y-2">
-              {languageOptions.map((lang) => (
-                <button
-                  key={lang.code}
-                  onClick={() => handleLanguageSwitch(lang.code)}
-                  className={`flex items-center gap-2 text-sm hover:opacity-70 transition-opacity text-left ${locale === lang.code ? "font-semibold" : ""}`}
-                  style={{
-                    color:
-                      locale === lang.code
-                        ? "var(--foreground)"
-                        : "var(--muted-foreground)",
-                  }}
-                >
-                  <lang.Flag
-                    title={lang.name}
-                    className="w-5 h-[15px] rounded-sm object-cover"
-                  />
-                  {lang.nativeName}
-                </button>
-              ))}
-            </div>
+          <div className={styles.contact}>
+            <a href="mailto:russidan.nadee@gmail.com">
+              russidan.nadee@gmail.com
+            </a>
+            <a href="tel:+66931089420">+66 93-108-9420</a>
           </div>
         </div>
 
-        {/* Bottom Section */}
-        <div
-          className="pt-8 border-t flex flex-col md:flex-row justify-between items-center gap-4"
-          style={{ borderColor: "var(--border)" }}
-        >
-          <p
-            className="text-sm text-center md:text-left"
-            style={{ color: "var(--muted-foreground)" }}
+        <div className={styles.middle}>
+          <nav className={styles.nav} aria-label="Footer navigation">
+            {navLinks.map((item) => (
+              <Link key={item.path} href={getLocalizedLink(item.path)}>
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+          <div
+            className={styles.languages}
+            role="group"
+            aria-label={translations.footer.sections.language}
           >
-            {translations?.footer?.copyright ||
-              "© 2025 Russidan Nadee. All rights reserved."}
-          </p>
+            {languageOptions.map(({ code, Flag }) => (
+              <button
+                key={code}
+                type="button"
+                onClick={() => handleLanguageSwitch(code)}
+                aria-pressed={locale === code}
+              >
+                <Flag aria-hidden="true" className={styles.flag} />
+                {code.toUpperCase()}
+              </button>
+            ))}
+          </div>
+        </div>
 
-          <p
-            className="text-sm text-center md:text-right"
-            style={{ color: "var(--muted-foreground)" }}
-          >
-            {translations?.footer?.builtWith ||
-              "Built with Next.js & TypeScript"}
-          </p>
+        <div className={styles.bottom}>
+          <p>{translations.footer.copyright}</p>
+          <Link href={getLocalizedLink("/legal/privacy-policy")}>
+            {translations.footer.legal.privacyPolicy}
+          </Link>
         </div>
       </div>
     </footer>

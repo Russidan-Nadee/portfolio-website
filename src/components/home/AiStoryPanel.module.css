@@ -512,7 +512,7 @@
   }
 
   .root {
-    height: 400svh;
+    height: 330svh;
     margin-top: clamp(32px, 3vw, 48px);
     padding: 0;
   }
