@@ -10,6 +10,7 @@ import { FaGraduationCap, FaBriefcase, FaLaptopCode } from "react-icons/fa";
 import th from "../../../locales/th.json";
 import ja from "../../../locales/ja.json";
 import en from "../../../locales/en.json";
+import styles from "./Timeline.module.css";
 
 export interface LocalizedText {
   th: string;
@@ -125,6 +126,8 @@ export default function Timeline({
   // Language change handler
   useEffect(() => {
     // Get initial language from localStorage
+    // Keep the existing locale synchronization until the About page locale flow is consolidated.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLocale(localeFromPath(window.location.pathname) || "en");
 
     // Listen for language changes
@@ -176,13 +179,13 @@ export default function Timeline({
 
     // Map icon names to actual React components
     const iconMap: { [key: string]: React.ReactNode } = {
-      FaBriefcase: <FaBriefcase className="text-blue-600" />, // Professional work
-      FaLaptopCode: <FaLaptopCode className="text-green-600" />, // Developer/Programming
-      FaGraduationCap: <FaGraduationCap className="text-purple-600" />, // University/College
-      MdWork: <MdLocalBar className="text-purple-600" />, // Beverage Staff/Bartender
-      MdRestaurant: <MdRestaurant className="text-orange-600" />, // Restaurant/service work
-      MdFastfood: <MdFastfood className="text-red-600" />, // Fast food/kitchen work
-      MdSchool: <MdSchool className="text-green-600" />, // High school
+      FaBriefcase: <FaBriefcase />, // Professional work
+      FaLaptopCode: <FaLaptopCode />, // Developer/Programming
+      FaGraduationCap: <FaGraduationCap />, // University/College
+      MdWork: <MdLocalBar />, // Beverage Staff/Bartender
+      MdRestaurant: <MdRestaurant />, // Restaurant/service work
+      MdFastfood: <MdFastfood />, // Fast food/kitchen work
+      MdSchool: <MdSchool />, // High school
     };
 
     // Return the mapped icon or fallback
@@ -194,7 +197,7 @@ export default function Timeline({
     const title = item.title?.toLowerCase() || "";
 
     if (activeTab === "education") {
-      return <MdSchool className="text-blue-600" />;
+      return <MdSchool />;
     }
 
     if (activeTab === "work") {
@@ -203,13 +206,13 @@ export default function Timeline({
         title.includes("engineer") ||
         title.includes("programmer")
       ) {
-        return <FaLaptopCode className="text-green-600" />;
+        return <FaLaptopCode />;
       }
-      return <FaBriefcase className="text-gray-600" />;
+      return <FaBriefcase />;
     }
 
     // Default fallback
-    return <FaBriefcase className="text-gray-600" />;
+    return <FaBriefcase />;
   };
 
   useEffect(() => {
@@ -307,6 +310,8 @@ export default function Timeline({
 
   // Reset when tab changes
   useEffect(() => {
+    // Preserve the timeline's immediate reset when switching tabs.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setScrollProgress(0);
     setVisibleItems([]);
     setAnimationComplete(false);
@@ -314,6 +319,8 @@ export default function Timeline({
 
   // Reset header animation when tab changes or locale changes
   useEffect(() => {
+    // Keep the existing heading replay behavior on tab and locale changes.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setHeaderAnimated(false);
   }, [activeTab, locale]);
 
@@ -437,10 +444,12 @@ export default function Timeline({
         @keyframes pulse {
           0%,
           100% {
-            box-shadow: 0 0 20px rgba(59, 130, 246, 0.3) !important;
+            box-shadow: 0 0 20px
+              color-mix(in srgb, var(--foreground) 20%, transparent) !important;
           }
           50% {
-            box-shadow: 0 0 40px rgba(59, 130, 246, 0.8) !important;
+            box-shadow: 0 0 32px
+              color-mix(in srgb, var(--foreground) 34%, transparent) !important;
           }
         }
 
@@ -543,12 +552,12 @@ export default function Timeline({
         }
       `}</style>
 
-      <section ref={timelineRef} className="py-16 mb-16">
+      <section ref={timelineRef} className={`py-16 mb-16 ${styles.section}`}>
         <div className="max-w-6xl mx-auto px-8">
-          <div ref={headerRef} className="text-center mb-16">
+          <div ref={headerRef} className={`text-center mb-16 ${styles.header}`}>
             <h2
               ref={titleRef}
-              className={`header-title text-4xl md:text-5xl font-bold mb-8 ${headerAnimated ? "animated animated-gradient" : ""}`}
+              className={`header-title text-4xl md:text-5xl font-bold mb-8 ${styles.title} ${headerAnimated ? "animated animated-gradient" : ""}`}
               style={{
                 color: headerAnimated ? "transparent" : "var(--foreground)",
               }}
@@ -559,42 +568,23 @@ export default function Timeline({
 
             <div
               ref={tabsRef}
-              className={`header-tabs inline-flex rounded-xl p-1 mb-8 ${headerAnimated ? "animated" : ""}`}
-              style={{ backgroundColor: "var(--muted)" }}
+              className={`header-tabs inline-flex p-1 mb-8 ${styles.tabs} ${headerAnimated ? "animated" : ""}`}
             >
               <button
                 onClick={() => setActiveTab("work")}
-                className={`px-3 py-2 md:px-6 md:py-3 rounded-lg text-xs md:text-base font-semibold transition-all duration-300 flex items-center gap-2 ${
-                  activeTab === "work" ? "shadow-md" : "hover:opacity-70"
-                }`}
-                style={{
-                  backgroundColor:
-                    activeTab === "work" ? "var(--card)" : "transparent",
-                  color:
-                    activeTab === "work"
-                      ? "var(--foreground)"
-                      : "var(--muted-foreground)",
-                }}
+                className={`px-3 py-2 md:px-6 md:py-3 text-xs md:text-base font-semibold transition-all duration-300 flex items-center gap-2 ${styles.tab}`}
+                aria-pressed={activeTab === "work"}
               >
-                <FaBriefcase className="text-blue-600" />
+                <FaBriefcase aria-hidden="true" />
                 {currentTranslations?.about?.timeline?.tabs?.work ||
                   "Work Experience"}
               </button>
               <button
                 onClick={() => setActiveTab("education")}
-                className={`px-3 py-2 md:px-6 md:py-3 rounded-lg text-xs md:text-base font-semibold transition-all duration-300 flex items-center gap-2 ${
-                  activeTab === "education" ? "shadow-md" : "hover:opacity-70"
-                }`}
-                style={{
-                  backgroundColor:
-                    activeTab === "education" ? "var(--card)" : "transparent",
-                  color:
-                    activeTab === "education"
-                      ? "var(--foreground)"
-                      : "var(--muted-foreground)",
-                }}
+                className={`px-3 py-2 md:px-6 md:py-3 text-xs md:text-base font-semibold transition-all duration-300 flex items-center gap-2 ${styles.tab}`}
+                aria-pressed={activeTab === "education"}
               >
-                <FaGraduationCap className="text-purple-600" />
+                <FaGraduationCap aria-hidden="true" />
                 {currentTranslations?.about?.timeline?.tabs?.education ||
                   "Education"}
               </button>
@@ -609,21 +599,14 @@ export default function Timeline({
             </div>
           ) : (
             <div
-              className="relative max-w-4xl mx-auto"
+              className={`relative max-w-4xl mx-auto ${styles.timeline}`}
               style={{
                 minHeight: currentData.length === 2 ? "800px" : "600px",
               }}
             >
               {/* Timeline Line */}
               <div className="absolute left-1/2 transform -translate-x-1/2 top-0 bottom-0 flex justify-center">
-                <div
-                  className="timeline-line w-2 h-full"
-                  style={{
-                    background:
-                      "linear-gradient(to bottom, var(--foreground), var(--muted-foreground))",
-                    borderRadius: "2px",
-                  }}
-                />
+                <div className={`timeline-line h-full ${styles.line}`} />
               </div>
 
               {/* Timeline Items */}
@@ -651,7 +634,7 @@ export default function Timeline({
                         <div
                           role="button"
                           tabIndex={0}
-                          className={`rounded-xl p-6 border transition-all duration-300 hover:scale-105 cursor-pointer`}
+                          className={`rounded-xl p-6 border transition-all duration-300 cursor-pointer ${styles.card} ${item.isCurrent ? styles.currentCard : ""}`}
                           onClick={() => setSelectedCard(item)}
                           onKeyDown={(e) => {
                             if (e.key === "Enter" || e.key === " ") {
@@ -659,32 +642,13 @@ export default function Timeline({
                               setSelectedCard(item);
                             }
                           }}
-                          style={{
-                            backgroundColor: "var(--card)",
-                            borderColor: item.isCurrent
-                              ? "var(--foreground)"
-                              : "var(--border)",
-                            borderWidth: item.isCurrent ? "2px" : "1px",
-                            boxShadow:
-                              item.isCurrent && isVisible
-                                ? "0 0 20px rgba(59, 130, 246, 0.3)"
-                                : "none",
-                          }}
                         >
                           <div className="mb-2">
                             <span
-                              className="inline-flex items-center gap-2 px-3 py-1 text-sm font-medium rounded-full"
-                              style={{
-                                backgroundColor: item.isCurrent
-                                  ? "var(--foreground)"
-                                  : "var(--muted)",
-                                color: item.isCurrent
-                                  ? "var(--background)"
-                                  : "var(--muted-foreground)",
-                              }}
+                              className={`inline-flex items-center gap-2 px-3 py-1 text-sm font-medium rounded-full ${styles.badge} ${item.isCurrent ? styles.currentBadge : ""}`}
                             >
                               {item.isCurrent && (
-                                <HiLightningBolt className="text-yellow-400" />
+                                <HiLightningBolt aria-hidden="true" />
                               )}
                               {item.isCurrent
                                 ? getCurrentText(locale)
@@ -692,7 +656,7 @@ export default function Timeline({
                             </span>
                             {item.isCurrent && isVisible && (
                               <div
-                                className="current-item absolute inset-0 rounded-xl pointer-events-none"
+                                className={`current-item absolute inset-0 rounded-xl pointer-events-none ${styles.currentPulse}`}
                                 style={{
                                   background: "transparent",
                                 }}
@@ -734,11 +698,7 @@ export default function Timeline({
                             {item.skills?.map((skill: string) => (
                               <span
                                 key={skill}
-                                className="text-xs px-2 py-1 rounded-md transition-colors hover:opacity-80"
-                                style={{
-                                  backgroundColor: "var(--muted)",
-                                  color: "var(--muted-foreground)",
-                                }}
+                                className={`text-xs px-2 py-1 transition-colors ${styles.skill}`}
                               >
                                 {skill}
                               </span>
@@ -749,16 +709,7 @@ export default function Timeline({
 
                       {/* Icon */}
                       <div
-                        className={`timeline-icon absolute left-1/2 w-16 h-16 rounded-full flex items-center justify-center text-xl z-20 ${isVisible ? "visible" : ""}`}
-                        style={{
-                          backgroundColor: "var(--card)",
-                          border: item.isCurrent
-                            ? "4px solid var(--foreground)"
-                            : "3px solid var(--foreground)",
-                          boxShadow: item.isCurrent
-                            ? "0 0 20px rgba(59, 130, 246, 0.4), 0 4px 6px -1px rgba(0, 0, 0, 0.1)"
-                            : "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
-                        }}
+                        className={`timeline-icon absolute left-1/2 w-16 h-16 rounded-full flex items-center justify-center text-xl z-20 ${styles.marker} ${item.isCurrent ? styles.currentMarker : ""} ${isVisible ? "visible" : ""}`}
                       >
                         {getTimelineIcon(item)}
                       </div>
@@ -802,7 +753,7 @@ export default function Timeline({
                     : "var(--border)",
                   borderWidth: selectedCard.isCurrent ? "2px" : "1px",
                   boxShadow: selectedCard.isCurrent
-                    ? "0 0 30px rgba(59, 130, 246, 0.4)"
+                    ? "0 20px 48px rgba(0, 0, 0, 0.18)"
                     : "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
                 }}
               >
