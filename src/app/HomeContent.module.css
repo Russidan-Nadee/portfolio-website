@@ -1,0 +1,228 @@
+.cta {
+  position: relative;
+  display: grid;
+  min-height: 100svh;
+  place-items: center;
+  margin-top: -192px;
+  padding: clamp(240px, 28vh, 340px) clamp(24px, 6vw, 112px)
+    clamp(76px, 10vh, 132px);
+  background: #1a1a1a;
+  color: #e8e8e8;
+}
+
+.ctaCard {
+  display: grid;
+  width: min(100%, 1240px);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 600px);
+  align-items: center;
+  gap: clamp(32px, 4vw, 68px);
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(28px, 4vw, 44px);
+  text-align: left;
+}
+
+.profilePreview {
+  --preview-scale: 0.66;
+
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  border: 7px solid #393939;
+  border-radius: 22px;
+  background: #f6f6f6;
+}
+
+.profileFrame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 900px;
+  height: 600px;
+  border: 0;
+  pointer-events: none;
+  transform: scale(var(--preview-scale));
+  transform-origin: top left;
+}
+
+.profileLink {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 12px;
+  text-decoration: none;
+}
+
+.profileLink:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: -6px;
+}
+
+.externalMark {
+  display: grid;
+  width: 38px;
+  aspect-ratio: 1;
+  place-items: center;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 50%;
+  background: #1a1a1a;
+  color: #fff;
+  font-size: 1.35rem;
+  line-height: 1;
+  transition: transform 180ms ease;
+}
+
+.profileLink:hover .externalMark {
+  transform: translate(2px, -2px);
+}
+
+.headline {
+  max-width: 18ch;
+  margin: 0;
+  font-size: clamp(3rem, 5.2vw, 5.5rem);
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  line-height: 1.12;
+  text-wrap: balance;
+}
+
+.cta:lang(th) .headline,
+.cta:lang(ja) .headline {
+  max-width: 16ch;
+  font-size: clamp(2.85rem, 4.6vw, 4.9rem);
+  letter-spacing: -0.025em;
+  line-height: 1.22;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.primaryAction {
+  display: inline-flex;
+  min-height: 54px;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 32px;
+  border-radius: 999px;
+  background: #e8e8e8;
+  color: #1a1a1a;
+  font-size: 0.95rem;
+  font-weight: 650;
+  line-height: 1.2;
+  text-decoration: none;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.primaryAction:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 7px 18px rgb(25 29 37 / 14%);
+}
+
+.primaryAction:focus-visible {
+  outline: 3px solid #e8e8e8;
+  outline-offset: 4px;
+}
+
+.socialLink {
+  display: inline-grid;
+  width: 44px;
+  height: 48px;
+  place-items: center;
+  color: #e8e8e8;
+  font-size: 1.7rem;
+  text-decoration: none;
+  transition:
+    color 180ms ease,
+    transform 180ms ease;
+}
+
+.socialLink:hover {
+  color: #fff;
+  transform: translateY(-3px);
+}
+
+.socialLink:focus-visible {
+  outline: 3px solid #e8e8e8;
+  outline-offset: 4px;
+}
+
+@media (min-width: 901px) {
+  .cta {
+    min-height: 120svh;
+  }
+}
+
+@media (max-width: 1100px) {
+  .ctaCard {
+    max-width: 720px;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .profilePreview {
+    width: min(100%, 600px);
+    margin-inline: auto;
+  }
+}
+
+@media (max-width: 900px) {
+  .cta {
+    padding-top: max(240px, 28vh);
+  }
+
+  .headline {
+    max-width: 16ch;
+    font-size: clamp(3.2rem, 8vw, 4.9rem);
+  }
+}
+
+@media (max-width: 560px) {
+  .cta {
+    margin-top: -160px;
+    padding: 220px 24px 80px;
+  }
+
+  .ctaCard {
+    gap: 28px;
+  }
+
+  .inner {
+    gap: 24px;
+  }
+
+  .headline,
+  .cta:lang(th) .headline,
+  .cta:lang(ja) .headline {
+    font-size: clamp(2.75rem, 11vw, 4.5rem);
+  }
+
+  .profilePreview {
+    border-width: 5px;
+    border-radius: 16px;
+  }
+
+  .externalMark {
+    width: 32px;
+    font-size: 1.2rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .primaryAction,
+  .socialLink,
+  .externalMark {
+    transition: none;
+  }
+}

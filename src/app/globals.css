@@ -8,7 +8,6 @@
   --border: #e5e7eb;
   --muted: #f8f9fa;
   --muted-foreground: #6c757d;
-  --cta-reveal-background: #dce4ed;
 }
 
 [data-theme="dark"] {
@@ -19,7 +18,6 @@
   --border: #404040;
   --muted: #262626;
   --muted-foreground: #a0a0a0;
-  --cta-reveal-background: #11161d;
   color-scheme: dark;
 }
 

@@ -1,8 +1,9 @@
 // src/app/HomeContent.tsx
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { FaGithub, FaLinkedin } from "react-icons/fa";
 import CreativeHero from "../components/home/CreativeHero";
 import type {
   HeroCertificateData,
@@ -14,6 +15,9 @@ import th from "../../locales/th.json";
 import ja from "../../locales/ja.json";
 import en from "../../locales/en.json";
 import type { ProjectData } from "./admin/projects/types";
+import styles from "./HomeContent.module.css";
+
+const FASTWORK_PROFILE_URL = "https://fastwork.com/user/afe25s";
 
 export default function HomeContent({
   technologies,
@@ -27,6 +31,7 @@ export default function HomeContent({
   heroCertificates: HeroCertificateData[];
 }>) {
   const [locale, setLocale] = useState("en");
+  const previewRef = useRef<HTMLDivElement>(null);
 
   // Helper function to get translations based on locale
   const getTranslations = (locale: string) => {
@@ -62,11 +67,22 @@ export default function HomeContent({
     };
   }, []);
 
-  // Helper function to generate localized links
-  const getLocalizedLink = (path: string) => {
-    // Since we're not using URL params anymore, just return the path
-    return path;
-  };
+  useEffect(() => {
+    const preview = previewRef.current;
+    if (!preview) return;
+
+    const observer = new ResizeObserver(([entry]) => {
+      if (entry) {
+        preview.style.setProperty(
+          "--preview-scale",
+          String(entry.contentRect.width / 900)
+        );
+      }
+    });
+
+    observer.observe(preview);
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <div
@@ -86,36 +102,64 @@ export default function HomeContent({
         locale={locale as "th" | "en" | "ja"}
       />
 
-      {/* Final CTA Section */}
       <section
-        className="relative -mt-48 flex min-h-screen flex-col items-center justify-center px-6 pt-64 pb-24 text-center"
-        style={{ backgroundColor: "var(--cta-reveal-background)" }}
+        className={styles.cta}
+        lang={locale}
+        aria-labelledby="home-cta-title"
       >
-        <h2
-          className="text-3xl md:text-4xl font-bold mb-4"
-          style={{ color: "var(--foreground)" }}
-        >
-          {translations?.home?.cta?.title ||
-            "Let's build something great together."}
-        </h2>
-        <p
-          className="mb-6 text-lg md:text-xl"
-          style={{ color: "var(--muted-foreground)" }}
-        >
-          {translations?.home?.cta?.subtitle ||
-            "Looking for a passionate developer? I'm ready to collaborate on your next idea."}
-        </p>
-        <Link
-          href={getLocalizedLink("/contact")}
-          className="inline-block px-8 py-4 rounded-lg font-semibold transition hover:scale-105 shadow-md"
-          style={{
-            backgroundColor: "var(--foreground)",
-            color: "var(--background)",
-            boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
-          }}
-        >
-          {translations?.home?.cta?.button || "Contact Me"}
-        </Link>
+        <div className={styles.ctaCard}>
+          <div className={styles.inner}>
+            <h2 id="home-cta-title" className={styles.headline}>
+              {translations.home.cta.title}
+            </h2>
+            <div className={styles.actions}>
+              <Link href="/contact" className={styles.primaryAction}>
+                {translations.home.cta.button}
+              </Link>
+              <a
+                className={styles.socialLink}
+                href="https://github.com/Russidan-Nadee"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="GitHub"
+                title="GitHub"
+              >
+                <FaGithub aria-hidden="true" />
+              </a>
+              <a
+                className={styles.socialLink}
+                href="https://www.linkedin.com/in/russidan-nadee-1734a2352/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="LinkedIn"
+                title="LinkedIn"
+              >
+                <FaLinkedin aria-hidden="true" />
+              </a>
+            </div>
+          </div>
+          <div className={styles.profilePreview} ref={previewRef}>
+            <iframe
+              className={styles.profileFrame}
+              src={FASTWORK_PROFILE_URL}
+              title="Russidan Nadee on Fastwork"
+              loading="lazy"
+              tabIndex={-1}
+              aria-hidden="true"
+            />
+            <a
+              className={styles.profileLink}
+              href={FASTWORK_PROFILE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Fastwork"
+            >
+              <span className={styles.externalMark} aria-hidden="true">
+                ↗
+              </span>
+            </a>
+          </div>
+        </div>
       </section>
     </div>
   );
