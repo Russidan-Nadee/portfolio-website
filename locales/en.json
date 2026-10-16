@@ -237,9 +237,9 @@
         "title": "Phone",
         "action": "Call Now"
       },
-      "facebook": {
-        "title": "Facebook",
-        "action": "Visit Profile"
+      "fastwork": {
+        "title": "Fastwork",
+        "action": "Hire Me"
       },
       "instagram": {
         "title": "Instagram",

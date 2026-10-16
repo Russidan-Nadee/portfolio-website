@@ -233,9 +233,9 @@
         "title": "電話",
         "action": "今すぐ電話"
       },
-      "facebook": {
-        "title": "Facebook",
-        "action": "プロフィールを見る"
+      "fastwork": {
+        "title": "Fastwork",
+        "action": "仕事を依頼する"
       },
       "instagram": {
         "title": "Instagram",
