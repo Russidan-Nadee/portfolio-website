@@ -6,8 +6,8 @@
   margin-top: -192px;
   padding: clamp(240px, 28vh, 340px) clamp(24px, 6vw, 112px)
     clamp(76px, 10vh, 132px);
-  background: #1a1a1a;
-  color: #e8e8e8;
+  background: var(--background);
+  color: var(--foreground);
 }
 
 .ctaCard {
@@ -33,7 +33,7 @@
   width: 100%;
   aspect-ratio: 3 / 2;
   overflow: hidden;
-  border: 7px solid #393939;
+  border: 7px solid var(--border);
   border-radius: 22px;
   background: #f6f6f6;
 }
@@ -61,7 +61,7 @@
 }
 
 .profileLink:focus-visible {
-  outline: 3px solid #fff;
+  outline: 3px solid var(--foreground);
   outline-offset: -6px;
 }
 
@@ -70,10 +70,10 @@
   width: 38px;
   aspect-ratio: 1;
   place-items: center;
-  border: 1px solid rgb(255 255 255 / 20%);
+  border: 1px solid var(--border);
   border-radius: 50%;
-  background: #1a1a1a;
-  color: #fff;
+  background: var(--background);
+  color: var(--foreground);
   font-size: 1.35rem;
   line-height: 1;
   transition: transform 180ms ease;
@@ -115,8 +115,8 @@
   justify-content: center;
   padding: 14px 32px;
   border-radius: 999px;
-  background: #e8e8e8;
-  color: #1a1a1a;
+  background: var(--foreground);
+  color: var(--background);
   font-size: 0.95rem;
   font-weight: 650;
   line-height: 1.2;
@@ -132,7 +132,7 @@
 }
 
 .primaryAction:focus-visible {
-  outline: 3px solid #e8e8e8;
+  outline: 3px solid var(--foreground);
   outline-offset: 4px;
 }
 
@@ -141,7 +141,7 @@
   width: 44px;
   height: 48px;
   place-items: center;
-  color: #e8e8e8;
+  color: var(--foreground);
   font-size: 1.7rem;
   text-decoration: none;
   transition:
@@ -150,12 +150,12 @@
 }
 
 .socialLink:hover {
-  color: #fff;
+  color: var(--foreground);
   transform: translateY(-3px);
 }
 
 .socialLink:focus-visible {
-  outline: 3px solid #e8e8e8;
+  outline: 3px solid var(--foreground);
   outline-offset: 4px;
 }
 
