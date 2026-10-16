@@ -50,10 +50,6 @@ export default function CertificateCard({
       }}
     >
       <div
-        className="absolute inset-x-0 top-0 z-10 h-1"
-        style={{ backgroundColor: accent }}
-      />
-      <div
         className="relative aspect-[1.414/1] overflow-hidden p-3"
         style={{ backgroundColor: "var(--muted)" }}
       >

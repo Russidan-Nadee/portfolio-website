@@ -18,7 +18,11 @@ async function loadCertificates(): Promise<{
         imageUrl: { not: null },
         pdfUrl: { not: null },
       },
-      orderBy: { order: "asc" },
+      orderBy: [
+        { issuedAt: { sort: "desc", nulls: "last" } },
+        { order: "asc" },
+        { id: "asc" },
+      ],
     });
     const certificates: PublishedCertificateData[] = records.map(
       (certificate) => ({
