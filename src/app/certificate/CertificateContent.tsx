@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode, type RefObject } from "react";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 import CertificateCard from "@/components/certificate/CertificateCard";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import type {
   Locale,
   PublishedCertificateData,
@@ -12,6 +13,23 @@ import th from "../../../locales/th.json";
 import ja from "../../../locales/ja.json";
 
 const dictionaries = { en, th, ja };
+
+function CertificateCardEntrance({
+  children,
+  index,
+}: Readonly<{ children: ReactNode; index: number }>) {
+  const { ref, isVisible } = useScrollAnimation();
+
+  return (
+    <div
+      ref={ref as RefObject<HTMLDivElement>}
+      className={`certificate-card-entrance h-full${isVisible ? " certificate-card-entrance--visible" : ""}`}
+      style={{ animationDelay: `${index * 0.05}s` }}
+    >
+      {children}
+    </div>
+  );
+}
 
 export default function CertificateContent({
   certificates,
@@ -75,30 +93,42 @@ export default function CertificateContent({
             {unavailable ? translations.unavailable : translations.empty}
           </div>
         ) : (
-          <AnimatedSection
-            animationType="fadeInUp"
-            duration={0.8}
-            stagger
-            staggerDelay={0.08}
+          <section
+            aria-label={translations.title}
+            className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
           >
-            <section
-              aria-label={translations.title}
-              className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
-            >
-              {certificates.map((certificate) => (
+            {certificates.map((certificate, index) => (
+              <CertificateCardEntrance key={certificate.id} index={index}>
                 <CertificateCard
-                  key={certificate.id}
                   certificate={certificate}
                   locale={locale}
                   translations={translations}
                 />
-              ))}
-            </section>
-          </AnimatedSection>
+              </CertificateCardEntrance>
+            ))}
+          </section>
         )}
       </div>
 
       <style jsx global>{`
+        .certificate-card-entrance {
+          opacity: 0;
+          transform: scale(0.8) translateY(40px);
+        }
+        .certificate-card-entrance--visible {
+          animation: certificate-card-enter 0.8s
+            cubic-bezier(0.34, 1.56, 0.64, 1) both;
+        }
+        @keyframes certificate-card-enter {
+          from {
+            opacity: 0;
+            transform: scale(0.8) translateY(40px);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+          }
+        }
         .certificate-card {
           transition:
             transform 350ms cubic-bezier(0.22, 1, 0.36, 1),
@@ -126,6 +156,11 @@ export default function CertificateContent({
           transform: translateX(130%) skewX(-18deg);
         }
         @media (prefers-reduced-motion: reduce) {
+          .certificate-card-entrance {
+            animation: none !important;
+            opacity: 1;
+            transform: none;
+          }
           .certificate-card,
           .certificate-card::after,
           .certificate-card img {
