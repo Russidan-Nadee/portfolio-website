@@ -6,7 +6,6 @@ import "./globals.css";
 import { ThemeProvider } from "../components/layout/ThemeProvider";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
-import CustomCursor from "../components/ui/CustomCursor";
 import SiteAnalytics from "../components/analytics/SiteAnalytics";
 
 const geistSans = Geist({
@@ -105,7 +104,6 @@ export default function RootLayout({
             <Header />
             <main className="flex-1">{children}</main>
             <Footer />
-            <CustomCursor />
           </div>
         </ThemeProvider>
         <SiteAnalytics />
