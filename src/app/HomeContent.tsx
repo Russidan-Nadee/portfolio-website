@@ -1,6 +1,8 @@
 // src/app/HomeContent.tsx
 "use client";
 
+import { useInitialLocale } from "@/components/layout/LocaleProvider";
+import { localeFromPath, localizedPath } from "@/lib/locale-path";
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
@@ -30,7 +32,7 @@ export default function HomeContent({
   heroProjects: HeroProjectData[];
   heroCertificates: HeroCertificateData[];
 }>) {
-  const [locale, setLocale] = useState("en");
+  const [locale, setLocale] = useState(useInitialLocale());
   const previewRef = useRef<HTMLDivElement>(null);
 
   // Helper function to get translations based on locale
@@ -52,12 +54,16 @@ export default function HomeContent({
   useEffect(() => {
     // Get initial language from localStorage
     const frame = window.requestAnimationFrame(() => {
-      setLocale(localStorage.getItem("lang") || "en");
+      setLocale(localeFromPath(window.location.pathname) || "en");
     });
 
     // Listen for language changes
     const handleLanguageChange = (e: Event) => {
-      setLocale((e as CustomEvent<{ language: string }>).detail.language);
+      setLocale(
+        localeFromPath(
+          "/" + (e as CustomEvent<{ language: string }>).detail.language
+        )
+      );
     };
 
     window.addEventListener("languageChange", handleLanguageChange);
@@ -113,7 +119,10 @@ export default function HomeContent({
               {translations.home.cta.title}
             </h2>
             <div className={styles.actions}>
-              <Link href="/contact" className={styles.primaryAction}>
+              <Link
+                href={localizedPath("/contact", locale)}
+                className={styles.primaryAction}
+              >
                 {translations.home.cta.button}
               </Link>
               <a

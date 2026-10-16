@@ -1,6 +1,8 @@
 // src/components/layout/Header.tsx
 "use client";
 
+import { useInitialLocale } from "@/components/layout/LocaleProvider";
+import { localeFromPath, localizedPath } from "@/lib/locale-path";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
@@ -16,7 +18,7 @@ export default function Header() {
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const [locale, setLocale] = useState("en");
+  const [locale, setLocale] = useState(useInitialLocale());
   const [introState, setIntroState] = useState({ pathname, complete: false });
 
   if (introState.pathname !== pathname) {
@@ -27,12 +29,16 @@ export default function Header() {
   useEffect(() => {
     // Get initial language from localStorage
     const frame = window.requestAnimationFrame(() => {
-      setLocale(localStorage.getItem("lang") || "en");
+      setLocale(localeFromPath(window.location.pathname) || "en");
     });
 
     // Listen for language changes
     const handleLanguageChange = (event: Event) => {
-      setLocale((event as CustomEvent<{ language: string }>).detail.language);
+      setLocale(
+        localeFromPath(
+          "/" + (event as CustomEvent<{ language: string }>).detail.language
+        )
+      );
     };
 
     window.addEventListener("languageChange", handleLanguageChange);
@@ -40,7 +46,7 @@ export default function Header() {
       window.cancelAnimationFrame(frame);
       window.removeEventListener("languageChange", handleLanguageChange);
     };
-  }, []);
+  }, [pathname]);
 
   useEffect(() => {
     const frame = window.requestAnimationFrame(() => setMounted(true));
@@ -48,7 +54,7 @@ export default function Header() {
   }, []);
 
   useEffect(() => {
-    if (pathname !== "/") return;
+    if (!/^\/(en|th|ja)\/?$/.test(pathname)) return;
 
     const revealHeader = () => setIntroState({ pathname, complete: true });
     const introMedia = window.matchMedia(
@@ -96,8 +102,7 @@ export default function Header() {
 
   // Helper function to generate localized links
   const getLocalizedLink = (path: string) => {
-    // Since we're not using URL params anymore, just return the path
-    return path;
+    return localizedPath(path, locale);
   };
 
   // Close menu when clicking outside or on link

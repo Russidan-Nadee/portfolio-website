@@ -1,6 +1,8 @@
 // src/app/legal/privacy-policy/page.tsx
 "use client";
 
+import { useInitialLocale } from "@/components/layout/LocaleProvider";
+import { localeFromPath } from "@/lib/locale-path";
 import { useState, useEffect } from "react";
 import th from "../../../../locales/th.json";
 import ja from "../../../../locales/ja.json";
@@ -12,7 +14,7 @@ interface ThirdPartyItem {
 }
 
 function PrivacyPolicyContent() {
-  const [locale, setLocale] = useState("en");
+  const [locale, setLocale] = useState(useInitialLocale());
 
   // Helper function to get translations based on locale
   const getTranslations = (locale: string) => {
@@ -32,7 +34,7 @@ function PrivacyPolicyContent() {
   // Language change handler
   useEffect(() => {
     // Get initial language from localStorage
-    setLocale(localStorage.getItem("lang") || "en");
+    setLocale(localeFromPath(window.location.pathname) || "en");
 
     // Listen for language changes
     const handleLanguageChange = (e: any) => {

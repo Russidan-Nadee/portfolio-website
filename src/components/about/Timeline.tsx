@@ -1,6 +1,8 @@
 // src/components/about/Timeline.tsx
 "use client";
 
+import { useInitialLocale } from "@/components/layout/LocaleProvider";
+import { localeFromPath } from "@/lib/locale-path";
 import { useEffect, useRef, useState } from "react";
 import { MdSchool, MdRestaurant, MdFastfood, MdLocalBar } from "react-icons/md";
 import { HiLightningBolt } from "react-icons/hi";
@@ -81,7 +83,7 @@ export default function Timeline({
   translations,
   experiences,
 }: Readonly<TimelineProps>) {
-  const [locale, setLocale] = useState("en");
+  const [locale, setLocale] = useState(useInitialLocale());
 
   const timelineRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
@@ -123,11 +125,15 @@ export default function Timeline({
   // Language change handler
   useEffect(() => {
     // Get initial language from localStorage
-    setLocale(localStorage.getItem("lang") || "en");
+    setLocale(localeFromPath(window.location.pathname) || "en");
 
     // Listen for language changes
     const handleLanguageChange = (e: Event) => {
-      setLocale((e as CustomEvent<{ language: string }>).detail.language);
+      setLocale(
+        localeFromPath(
+          "/" + (e as CustomEvent<{ language: string }>).detail.language
+        )
+      );
     };
 
     window.addEventListener("languageChange", handleLanguageChange);

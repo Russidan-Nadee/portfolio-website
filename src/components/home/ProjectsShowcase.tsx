@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { localizedPath } from "@/lib/locale-path";
 import type { ProjectData } from "@/app/admin/projects/types";
 import AiStoryPanel from "./AiStoryPanel";
 import styles from "./ProjectsShowcase.module.css";
@@ -372,7 +373,7 @@ export default function ProjectsShowcase({
                 {isActive ? (
                   <Link
                     className={styles.cardAction}
-                    href={`/portfolio/${project.slug}`}
+                    href={localizedPath(`/portfolio/${project.slug}`, locale)}
                     draggable={false}
                     aria-label={`${copy.view} ${project.title[locale] || project.title.en}`}
                   />

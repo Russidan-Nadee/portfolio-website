@@ -1,5 +1,7 @@
 'use client'
 
+import { useInitialLocale } from "@/components/layout/LocaleProvider";
+import { localeFromPath } from "@/lib/locale-path";
 import { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
@@ -32,7 +34,7 @@ interface SkillsGridProps {
 }
 
 export default function SkillsGrid({ translations, categories }: SkillsGridProps) {
-   const [locale, setLocale] = useState('en')
+   const [locale, setLocale] = useState(useInitialLocale())
 
    const skillsRef = useRef<HTMLDivElement>(null)
    const categoryGridRefs = useRef<(HTMLDivElement | null)[]>([])
@@ -58,7 +60,7 @@ export default function SkillsGrid({ translations, categories }: SkillsGridProps
 
    // Language change handler
    useEffect(() => {
-      setLocale(localStorage.getItem('lang') || 'en')
+      setLocale(localeFromPath(window.location.pathname) || 'en')
       const handleLanguageChange = (e: any) => setLocale(e.detail.language)
       window.addEventListener('languageChange', handleLanguageChange)
       return () => window.removeEventListener('languageChange', handleLanguageChange)

@@ -1,8 +1,15 @@
 // src/components/layout/Footer.tsx
 "use client";
 
+import { useInitialLocale } from "@/components/layout/LocaleProvider";
+import {
+  localeFromPath,
+  localizedDestination,
+  localizedPath,
+} from "@/lib/locale-path";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { FaFacebook, FaInstagram, FaLinkedin, FaGithub } from "react-icons/fa";
 import { GB, TH, JP } from "country-flag-icons/react/3x2";
 import th from "../../../locales/th.json";
@@ -10,7 +17,9 @@ import ja from "../../../locales/ja.json";
 import en from "../../../locales/en.json";
 
 export default function Footer() {
-  const [locale, setLocale] = useState("en");
+  const pathname = usePathname();
+  const router = useRouter();
+  const [locale, setLocale] = useState(useInitialLocale());
 
   // Helper function to get translations based on locale
   const getTranslations = (locale: string) => {
@@ -30,33 +39,36 @@ export default function Footer() {
   // Language change handler
   useEffect(() => {
     // Get initial language from localStorage
-    setLocale(localStorage.getItem("lang") || "en");
+    setLocale(localeFromPath(window.location.pathname) || "en");
 
     // Listen for language changes
     const handleLanguageChange = (e: Event) => {
-      setLocale((e as CustomEvent<{ language: string }>).detail.language);
+      setLocale(
+        localeFromPath(
+          "/" + (e as CustomEvent<{ language: string }>).detail.language
+        )
+      );
     };
 
     window.addEventListener("languageChange", handleLanguageChange);
     return () =>
       window.removeEventListener("languageChange", handleLanguageChange);
-  }, []);
+  }, [pathname]);
 
   // Helper function to generate localized links
   const getLocalizedLink = (path: string) => {
-    // Since we're not using URL params anymore, just return the path
-    return path;
+    return localizedPath(path, locale);
   };
 
   const handleLanguageSwitch = (newLocale: string) => {
     localStorage.setItem("lang", newLocale);
-    setLocale(newLocale);
-
-    // Dispatch custom event to notify other components
-    window.dispatchEvent(
-      new CustomEvent("languageChange", {
-        detail: { language: newLocale },
-      })
+    router.push(
+      localizedDestination(
+        pathname,
+        newLocale,
+        window.location.search,
+        window.location.hash
+      )
     );
   };
 

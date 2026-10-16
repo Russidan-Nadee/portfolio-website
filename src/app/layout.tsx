@@ -1,12 +1,15 @@
 // src/app/layout.tsx
 /* eslint-disable @next/next/no-page-custom-font -- Fonts are loaded in the App Router root layout for every page. */
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "../components/layout/ThemeProvider";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import SiteAnalytics from "../components/analytics/SiteAnalytics";
+import { LocaleProvider } from "../components/layout/LocaleProvider";
+import { locales, type Locale } from "@/lib/locale-path";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,7 +27,7 @@ const inter = Inter({
   weight: ["400", "500", "600", "700", "800", "900"],
 });
 
-export const metadata: Metadata = {
+const baseMetadata: Metadata = {
   title: "Russidan Nadee",
   description: "Personal portfolio website",
   openGraph: {
@@ -82,13 +85,43 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export async function generateMetadata(): Promise<Metadata> {
+  const requestHeaders = await headers();
+  const locale = requestHeaders.get("x-site-locale");
+  const host =
+    requestHeaders.get("x-forwarded-host") || requestHeaders.get("host");
+  const protocol = requestHeaders.get("x-forwarded-proto") || "https";
+  const origin = host ? `${protocol}://${host}` : "http://localhost:3000";
+  if (!locale) return { ...baseMetadata, metadataBase: new URL(origin) };
+
+  const pathname = requestHeaders.get("x-site-pathname") || `/${locale}`;
+  const suffix = pathname.replace(/^\/(en|th|ja)(?=\/|$)/, "") || "";
+  const languagePaths = {
+    en: `${origin}/en${suffix}`,
+    th: `${origin}/th${suffix}`,
+    ja: `${origin}/ja${suffix}`,
+  };
+
+  return {
+    ...baseMetadata,
+    metadataBase: new URL(origin),
+    alternates: {
+      canonical: `${origin}${pathname}`,
+      languages: { ...languagePaths, "x-default": languagePaths.en },
+    },
+  };
+}
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const requestedLocale = (await headers()).get("x-site-locale");
+  const locale: Locale =
+    locales.find((item) => item === requestedLocale) || "en";
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning>
       <head>
         <link
           href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;600;700;800;900&display=swap"
@@ -99,13 +132,15 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} antialiased overflow-x-clip`}
         suppressHydrationWarning
       >
-        <ThemeProvider>
-          <div className="min-h-screen flex flex-col overflow-x-clip">
-            <Header />
-            <main className="flex-1">{children}</main>
-            <Footer />
-          </div>
-        </ThemeProvider>
+        <LocaleProvider locale={locale}>
+          <ThemeProvider>
+            <div className="min-h-screen flex flex-col overflow-x-clip">
+              <Header />
+              <main className="flex-1">{children}</main>
+              <Footer />
+            </div>
+          </ThemeProvider>
+        </LocaleProvider>
         <SiteAnalytics />
       </body>
     </html>

@@ -1,6 +1,8 @@
 // src/app/about/AboutContent.tsx
 "use client";
 
+import { useInitialLocale } from "@/components/layout/LocaleProvider";
+import { localeFromPath, localizedPath } from "@/lib/locale-path";
 import { useState, useEffect, useRef } from "react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
@@ -20,7 +22,7 @@ export default function AboutContent({
   skillCategories: CategoryItem[];
   experiences: ExperienceItem[];
 }>) {
-  const [locale, setLocale] = useState("en");
+  const [locale, setLocale] = useState(useInitialLocale());
 
   const titleRef = useRef<HTMLHeadingElement>(null);
   const descriptionRef = useRef<HTMLParagraphElement>(null);
@@ -42,18 +44,21 @@ export default function AboutContent({
 
   // Helper function to generate localized links
   const getLocalizedLink = (path: string) => {
-    // Since we're not using URL params anymore, just return the path
-    return path;
+    return localizedPath(path, locale);
   };
 
   // Language change handler
   useEffect(() => {
     // Get initial language from localStorage
-    setLocale(localStorage.getItem("lang") || "en");
+    setLocale(localeFromPath(window.location.pathname) || "en");
 
     // Listen for language changes
     const handleLanguageChange = (e: Event) => {
-      setLocale((e as CustomEvent<{ language: string }>).detail.language);
+      setLocale(
+        localeFromPath(
+          "/" + (e as CustomEvent<{ language: string }>).detail.language
+        )
+      );
     };
 
     window.addEventListener("languageChange", handleLanguageChange);

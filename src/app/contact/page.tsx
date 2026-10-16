@@ -1,6 +1,8 @@
 // src/app/contact/page.tsx
 'use client'
 
+import { useInitialLocale } from "@/components/layout/LocaleProvider";
+import { localeFromPath } from "@/lib/locale-path";
 import { useState, useEffect } from 'react'
 import { MdEmail, MdPhone } from 'react-icons/md'
 import { FaFacebook, FaInstagram, FaLinkedin, FaGithub } from 'react-icons/fa'
@@ -24,7 +26,7 @@ interface ContactChannel {
 }
 
 function ContactContent() {
-   const [locale, setLocale] = useState('en')
+   const [locale, setLocale] = useState(useInitialLocale())
    const [copiedItem, setCopiedItem] = useState<string | null>(null)
    const [loadingItem, setLoadingItem] = useState<string | null>(null)
    const [mounted, setMounted] = useState(false)
@@ -48,7 +50,7 @@ function ContactContent() {
    // Language change handler
    useEffect(() => {
       // Get initial language from localStorage
-      setLocale(localStorage.getItem('lang') || 'en')
+      setLocale(localeFromPath(window.location.pathname) || 'en')
 
       // Listen for language changes
       const handleLanguageChange = (e: any) => {

@@ -1,6 +1,8 @@
 // src/app/portfolio/PortfolioContent.tsx
 "use client";
 
+import { useInitialLocale } from "@/components/layout/LocaleProvider";
+import { localeFromPath, localizedPath } from "@/lib/locale-path";
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import th from "../../../locales/th.json";
@@ -14,7 +16,7 @@ type Locale = "th" | "en" | "ja";
 export default function PortfolioContent({
   projects,
 }: Readonly<{ projects: ProjectData[] }>) {
-  const [locale, setLocale] = useState<Locale>("en");
+  const [locale, setLocale] = useState<Locale>(useInitialLocale());
   const [mounted, setMounted] = useState(false);
   const [visibleItems, setVisibleItems] = useState<Set<number>>(new Set());
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -38,7 +40,7 @@ export default function PortfolioContent({
   // Language change handler
   useEffect(() => {
     // Get initial language from localStorage
-    setLocale((localStorage.getItem("lang") as Locale) || "en");
+    setLocale((localeFromPath(window.location.pathname) as Locale) || "en");
 
     // Listen for language changes
     const handleLanguageChange = (e: Event) => {
@@ -52,8 +54,7 @@ export default function PortfolioContent({
 
   // Helper function to generate localized links
   const getLocalizedLink = (path: string) => {
-    // Since we're not using URL params anymore, just return the path
-    return path;
+    return localizedPath(path, locale);
   };
 
   const filters = [

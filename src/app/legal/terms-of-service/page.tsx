@@ -1,13 +1,15 @@
 // src/app/legal/terms-of-service/page.tsx
 'use client'
 
+import { useInitialLocale } from "@/components/layout/LocaleProvider";
+import { localeFromPath } from "@/lib/locale-path";
 import { useState, useEffect } from 'react'
 import th from '../../../../locales/th.json'
 import ja from '../../../../locales/ja.json'
 import en from '../../../../locales/en.json'
 
 function TermsOfServiceContent() {
-   const [locale, setLocale] = useState('en')
+   const [locale, setLocale] = useState(useInitialLocale())
 
    // Helper function to get translations based on locale
    const getTranslations = (locale: string) => {
@@ -27,7 +29,7 @@ function TermsOfServiceContent() {
    // Language change handler
    useEffect(() => {
       // Get initial language from localStorage
-      setLocale(localStorage.getItem('lang') || 'en')
+      setLocale(localeFromPath(window.location.pathname) || 'en')
 
       // Listen for language changes
       const handleLanguageChange = (e: any) => {

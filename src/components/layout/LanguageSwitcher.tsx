@@ -1,29 +1,36 @@
 // src/components/layout/LanguageSwitcher.tsx
 "use client";
 
+import { localeFromPath, localizedDestination } from "@/lib/locale-path";
 import { useState, useEffect } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import { GB, TH, JP } from "country-flag-icons/react/3x2";
 
 export default function LanguageSwitcher() {
+  const pathname = usePathname();
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
-  const [currentLocale, setCurrentLocale] = useState("en");
+  const currentLocale = localeFromPath(pathname);
 
   useEffect(() => {
-    // Get language from localStorage on mount
-    const savedLang = localStorage.getItem("lang") || "en";
-    setCurrentLocale(savedLang);
-  }, []);
+    localStorage.setItem("lang", currentLocale);
+    window.dispatchEvent(
+      new CustomEvent("languageChange", {
+        detail: { language: currentLocale },
+      })
+    );
+  }, [currentLocale]);
 
   const switchLanguage = (newLocale: string) => {
     // Save to localStorage
     localStorage.setItem("lang", newLocale);
-    setCurrentLocale(newLocale);
-
-    // Dispatch custom event to notify other components
-    window.dispatchEvent(
-      new CustomEvent("languageChange", {
-        detail: { language: newLocale },
-      })
+    router.push(
+      localizedDestination(
+        pathname,
+        newLocale,
+        window.location.search,
+        window.location.hash
+      )
     );
 
     setIsOpen(false);

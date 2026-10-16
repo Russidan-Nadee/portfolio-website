@@ -1,6 +1,8 @@
 // src/app/portfolio/[slug]/ProjectDetailContent.tsx
 "use client";
 
+import { useInitialLocale } from "@/components/layout/LocaleProvider";
+import { localeFromPath } from "@/lib/locale-path";
 import { useEffect, useState } from "react";
 import ProjectNavigation from "@/components/portfolio/ProjectNavigation";
 import ProjectHeader from "@/components/portfolio/ProjectHeader";
@@ -52,11 +54,11 @@ export default function ProjectDetailContent({
     nextProjectSlug?: string;
   };
 }>) {
-  const [locale, setLocale] = useState<Locale>("th");
+  const [locale, setLocale] = useState<Locale>(useInitialLocale());
   const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
-    setLocale((localStorage.getItem("lang") as Locale) || "th");
+    setLocale((localeFromPath(window.location.pathname) as Locale) || "th");
     const handleLanguageChange = (e: Event) => {
       setLocale((e as CustomEvent<{ language: Locale }>).detail.language);
     };

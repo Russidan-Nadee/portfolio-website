@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { localizedPath } from "@/lib/locale-path";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import type { ProjectData } from "@/app/admin/projects/types";
@@ -300,10 +301,16 @@ export default function CreativeHero({
             "Building web apps in the AI era, from the interface to the back end."}
         </p>
         <div className={styles.actions}>
-          <Link href="/portfolio" className={styles.primaryAction}>
+          <Link
+            href={localizedPath("/portfolio", activeLocale)}
+            className={styles.primaryAction}
+          >
             {translations?.home?.buttons?.portfolio || "View projects"}
           </Link>
-          <Link href="/contact" className={styles.secondaryAction}>
+          <Link
+            href={localizedPath("/contact", activeLocale)}
+            className={styles.secondaryAction}
+          >
             {translations?.home?.buttons?.contact || "Get in touch"}
           </Link>
         </div>
@@ -363,7 +370,7 @@ export default function CreativeHero({
                   </a>
                 ) : (
                   <Link
-                    href={card.href}
+                    href={localizedPath(card.href, activeLocale)}
                     className={className}
                     data-exit-side={exitSide}
                     aria-label={`${label}: ${card.title}`}

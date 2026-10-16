@@ -3,6 +3,7 @@
 
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { localizedPath } from '@/lib/locale-path'
 
 interface ProjectNavigationData {
    backLink: string
@@ -22,7 +23,7 @@ export default function ProjectNavigation({ data, locale = 'th' }: ProjectNaviga
    const router = useRouter()
 
    const handleNavigation = (slug: string) => {
-      router.push(`/portfolio/${slug}`)
+      router.push(localizedPath(`/portfolio/${slug}`, locale))
    }
 
    // Dynamic text based on locale
@@ -47,7 +48,7 @@ export default function ProjectNavigation({ data, locale = 'th' }: ProjectNaviga
          }}
       >
          <Link
-            href={data.backLink}
+            href={localizedPath(data.backLink, locale)}
             className="flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-300 hover:opacity-70"
             style={{ color: 'var(--foreground)' }}
          >

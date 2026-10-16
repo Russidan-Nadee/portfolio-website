@@ -1,6 +1,8 @@
 // src/components/about/PersonalIntro.tsx
 'use client'
 
+import { useInitialLocale } from "@/components/layout/LocaleProvider";
+import { localeFromPath } from "@/lib/locale-path";
 import { useEffect, useRef, useState } from 'react'
 import th from '../../../locales/th.json'
 import ja from '../../../locales/ja.json'
@@ -11,7 +13,7 @@ interface PersonalIntroProps {
 }
 
 export default function PersonalIntro({ translations }: PersonalIntroProps) {
-   const [locale, setLocale] = useState('en')
+   const [locale, setLocale] = useState(useInitialLocale())
 
    const introRef = useRef<HTMLDivElement>(null)
    const textRef = useRef<HTMLDivElement>(null)
@@ -47,7 +49,7 @@ export default function PersonalIntro({ translations }: PersonalIntroProps) {
    // Language change handler
    useEffect(() => {
       // Get initial language from localStorage
-      setLocale(localStorage.getItem('lang') || 'en')
+      setLocale(localeFromPath(window.location.pathname) || 'en')
 
       // Listen for language changes
       const handleLanguageChange = (e: any) => {

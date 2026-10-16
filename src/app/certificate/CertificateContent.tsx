@@ -1,5 +1,7 @@
 "use client";
 
+import { useInitialLocale } from "@/components/layout/LocaleProvider";
+import { localeFromPath } from "@/lib/locale-path";
 import { useEffect, useState, type ReactNode, type RefObject } from "react";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 import CertificateCard from "@/components/certificate/CertificateCard";
@@ -38,11 +40,11 @@ export default function CertificateContent({
   certificates: PublishedCertificateData[];
   unavailable?: boolean;
 }>) {
-  const [locale, setLocale] = useState<Locale>("en");
+  const [locale, setLocale] = useState<Locale>(useInitialLocale());
   const translations = dictionaries[locale].certificate;
 
   useEffect(() => {
-    const stored = localStorage.getItem("lang");
+    const stored = localeFromPath(window.location.pathname);
     const frame = window.requestAnimationFrame(() => {
       if (stored === "th" || stored === "en" || stored === "ja") {
         setLocale(stored);
