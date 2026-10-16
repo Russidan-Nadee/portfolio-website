@@ -3,7 +3,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { localizedPath } from "@/lib/locale-path";
-import type { ProjectData } from "@/app/admin/projects/types";
+import OptimizedImage from "@/components/ui/OptimizedImage";
+import type { HeroProjectData } from "./CreativeHero";
 import AiStoryPanel from "./AiStoryPanel";
 import styles from "./ProjectsShowcase.module.css";
 
@@ -11,7 +12,7 @@ interface ProjectsShowcaseProps {
   // The three locale files do not currently share one translation type.
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   translations?: any;
-  projects: ProjectData[];
+  projects: HeroProjectData[];
   locale?: "th" | "en" | "ja";
 }
 
@@ -348,12 +349,12 @@ export default function ProjectsShowcase({
                   style={{ animationDelay: `${180 + distance * 90}ms` }}
                 >
                   {project.thumbnailUrl && (
-                    // CMS thumbnails may be local or remote and are already sized for cards.
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
+                    <OptimizedImage
                       className={styles.image}
                       src={project.thumbnailUrl}
                       alt=""
+                      fill
+                      sizes="(max-width: 480px) 240px, 320px"
                       draggable={false}
                       loading={distance > 1 ? "lazy" : "eager"}
                       onError={(event) => {

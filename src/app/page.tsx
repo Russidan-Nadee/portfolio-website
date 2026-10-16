@@ -1,7 +1,6 @@
 // src/app/page.tsx
 import { prisma } from "@/lib/prisma";
 import HomeContent from "./HomeContent";
-import type { ProjectData } from "./admin/projects/types";
 import type {
   HeroCertificateData,
   HeroProjectData,
@@ -27,6 +26,13 @@ export default async function Home() {
       prisma.project.findMany({
         where: { featured: true },
         orderBy: { order: "asc" },
+        select: {
+          id: true,
+          slug: true,
+          title: true,
+          thumbnailUrl: true,
+          techSummary: true,
+        },
       }),
       prisma.project.findMany({
         orderBy: { order: "asc" },
@@ -76,7 +82,7 @@ export default async function Home() {
   return (
     <HomeContent
       technologies={skills}
-      featuredProjects={featuredProjects as unknown as ProjectData[]}
+      featuredProjects={featuredProjects as unknown as HeroProjectData[]}
       heroProjects={heroProjects as unknown as HeroProjectData[]}
       heroCertificates={heroCertificates}
     />

@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { localizedPath } from "@/lib/locale-path";
+import OptimizedImage from "@/components/ui/OptimizedImage";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import type { ProjectData } from "@/app/admin/projects/types";
@@ -146,10 +146,14 @@ export default function CreativeHero({
     const images = Array.from(orbit.querySelectorAll("img"));
     const pendingImages = new Set(images);
 
-    const finishIntro = () => {
-      if (pendingImages.size > 0 || hero.dataset.introFinishing === "true") {
+    const finishIntro = (force = false) => {
+      if (
+        (!force && pendingImages.size > 0) ||
+        hero.dataset.introFinishing === "true"
+      ) {
         return;
       }
+      window.clearTimeout(maxWaitTimer);
 
       const transform = getComputedStyle(orbit).transform;
       const matrix = new DOMMatrixReadOnly(
@@ -176,9 +180,11 @@ export default function CreativeHero({
       image.addEventListener("error", markImageReady);
       if (image.complete) pendingImages.delete(image);
     });
+    const maxWaitTimer = window.setTimeout(() => finishIntro(true), 2500);
     finishIntro();
 
     return () => {
+      window.clearTimeout(maxWaitTimer);
       images.forEach((image) => {
         image.removeEventListener("load", markImageReady);
         image.removeEventListener("error", markImageReady);
@@ -330,7 +336,7 @@ export default function CreativeHero({
               <>
                 <span className={styles.cardImage}>
                   {card.imageUrl ? (
-                    <Image
+                    <OptimizedImage
                       src={card.imageUrl}
                       alt=""
                       fill

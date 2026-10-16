@@ -16,7 +16,6 @@ import Technologies, { TechnologyItem } from "../components/home/Technologies";
 import th from "../../locales/th.json";
 import ja from "../../locales/ja.json";
 import en from "../../locales/en.json";
-import type { ProjectData } from "./admin/projects/types";
 import styles from "./HomeContent.module.css";
 
 const FASTWORK_PROFILE_URL = "https://fastwork.com/user/afe25s";
@@ -28,7 +27,7 @@ export default function HomeContent({
   heroCertificates,
 }: Readonly<{
   technologies: TechnologyItem[];
-  featuredProjects: ProjectData[];
+  featuredProjects: HeroProjectData[];
   heroProjects: HeroProjectData[];
   heroCertificates: HeroCertificateData[];
 }>) {
