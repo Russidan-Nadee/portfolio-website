@@ -18,7 +18,8 @@ export default function PersonalIntro({ translations }: PersonalIntroProps) {
    const introRef = useRef<HTMLDivElement>(null)
    const textRef = useRef<HTMLDivElement>(null)
    const imageRef = useRef<HTMLDivElement>(null)
-   const roleRef = useRef<HTMLHeadingElement>(null)
+   const roleRef = useRef<HTMLSpanElement>(null)
+   const roleMeasureRef = useRef<HTMLDivElement>(null)
    const postTitleRef = useRef<HTMLDivElement>(null)
 
    const [isVisible, setIsVisible] = useState(false)
@@ -30,6 +31,7 @@ export default function PersonalIntro({ translations }: PersonalIntroProps) {
    const [showContentReveal, setShowContentReveal] = useState(false)
    const [currentRoleIndex, setCurrentRoleIndex] = useState(0)
    const [isDeleting, setIsDeleting] = useState(false)
+   const [roleFontSize, setRoleFontSize] = useState<number | null>(null)
 
    // Helper function to get translations based on locale
    const getTranslations = (locale: string) => {
@@ -129,6 +131,33 @@ export default function PersonalIntro({ translations }: PersonalIntroProps) {
    }
 
    const roles = getRoles(locale)
+
+   useEffect(() => {
+      const text = textRef.current
+      const measure = roleMeasureRef.current
+      if (!text || !measure) return
+      let active = true
+
+      const fitRole = () => {
+         if (!active) return
+         const baseSize = parseFloat(getComputedStyle(measure).fontSize)
+         const availableWidth = text.clientWidth - Math.max(16, baseSize * 0.35) // Leave room for |.
+         const widestRole = Math.max(...Array.from(measure.children, (role) => role.scrollWidth))
+         if (availableWidth <= 0 || widestRole <= 0) return
+         setRoleFontSize(Math.floor(baseSize * Math.min(1, availableWidth / widestRole)))
+      }
+
+      const observer = new ResizeObserver(fitRole)
+      observer.observe(text)
+      window.addEventListener('resize', fitRole)
+      document.fonts.ready.then(fitRole)
+      fitRole()
+      return () => {
+         active = false
+         observer.disconnect()
+         window.removeEventListener('resize', fitRole)
+      }
+   }, [locale])
 
    // Typing animation effect with continuous loop
    useEffect(() => {
@@ -239,12 +268,12 @@ export default function PersonalIntro({ translations }: PersonalIntroProps) {
             />
          </div>
 
-         <div className="max-w-6xl w-full flex flex-col lg:flex-row items-center justify-between gap-12 px-8 relative z-10">
+         <div className="intro-layout max-w-6xl w-full flex flex-col lg:flex-row items-center justify-between gap-12 px-8 relative z-10">
 
             {/* Text Content - Left Side */}
             <div
                ref={textRef}
-               className="flex-1 text-left lg:text-left transition-all duration-1000 ease-out relative"
+               className="flex-1 min-w-0 text-left lg:text-left transition-all duration-1000 ease-out relative"
                style={{
                   transform: 'translateX(-50px)',
                   opacity: 0,
@@ -263,10 +292,20 @@ export default function PersonalIntro({ translations }: PersonalIntroProps) {
                </p>
 
                {/* Fixed container for Developer text */}
-               <div className="relative mb-8" style={{ minHeight: '120px', transform: 'translateZ(0)' }}>
+               <div className="relative mb-4" style={{ minHeight: '96px', transform: 'translateZ(0)' }}>
+                  <div
+                     ref={roleMeasureRef}
+                     aria-hidden="true"
+                     className="absolute invisible text-5xl md:text-7xl lg:text-8xl font-bold"
+                  >
+                     {roles.map((role) => (
+                        <span key={role} className="block whitespace-nowrap">{role}</span>
+                     ))}
+                  </div>
                   <h1
                      className="text-5xl md:text-7xl lg:text-8xl font-bold leading-tight"
                      style={{
+                        fontSize: roleFontSize ? `${roleFontSize}px` : undefined,
                         transform: showContentReveal ? 'translate3d(0, -10px, 0)' : 'translate3d(0, 0, 0)',
                         transition: 'transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
                         willChange: 'transform',
@@ -275,24 +314,27 @@ export default function PersonalIntro({ translations }: PersonalIntroProps) {
                   >
                      <span
                         ref={roleRef}
-                        className="block relative"
-                        style={{
-                           background: 'linear-gradient(135deg, var(--foreground) 0%, var(--muted-foreground) 100%)',
-                           WebkitBackgroundClip: 'text',
-                           WebkitTextFillColor: 'transparent',
-                           backgroundClip: 'text'
-                        }}
+                        className="flex relative items-center whitespace-nowrap"
                      >
-                        {displayedRole}
+                        <span
+                           style={{
+                              background: 'linear-gradient(135deg, var(--foreground) 0%, var(--muted-foreground) 100%)',
+                              WebkitBackgroundClip: 'text',
+                              WebkitTextFillColor: 'transparent',
+                              backgroundClip: 'text'
+                           }}
+                        >
+                           {displayedRole}
+                        </span>
                         {/* Typing Cursor */}
                         {isTyping && (
                            <span
-                              className="inline-block w-1 ml-1 animate-pulse"
-                              style={{
-                                 backgroundColor: 'var(--foreground)',
-                                 height: '0.8em'
-                              }}
-                           />
+                              className="ml-1 shrink-0 typing-cursor"
+                              aria-hidden="true"
+                              style={{ color: 'var(--foreground)', fontSize: '0.72em', fontWeight: 400, lineHeight: 1 }}
+                           >
+                              |
+                           </span>
                         )}
                      </span>
                   </h1>
@@ -362,10 +404,10 @@ export default function PersonalIntro({ translations }: PersonalIntroProps) {
                   opacity: 0
                }}
             >
-               <div className="relative group">
+               <div className="relative">
                   {/* Main Profile Container */}
                   <div
-                     className="w-80 h-96 md:w-96 md:h-[450px] rounded-2xl shadow-2xl overflow-hidden transition-all duration-500 hover:scale-105 relative profile-shine"
+                     className="w-80 h-96 md:w-96 md:h-[450px] rounded-2xl shadow-2xl overflow-hidden relative profile-shine"
                      style={{
                         backgroundColor: 'var(--muted)',
                         border: '2px solid var(--border)'
@@ -373,7 +415,7 @@ export default function PersonalIntro({ translations }: PersonalIntroProps) {
                   >
                      {/* Animated Gradient Overlay */}
                      <div
-                        className="absolute inset-0 opacity-10 transition-opacity duration-500 group-hover:opacity-20"
+                        className="absolute inset-0 opacity-10"
                         style={{
                            background: 'linear-gradient(45deg, var(--foreground), transparent, var(--foreground))',
                            animation: isVisible ? 'gradientShift 3s ease-in-out infinite' : 'none'
@@ -385,7 +427,7 @@ export default function PersonalIntro({ translations }: PersonalIntroProps) {
                         <img
                            src="/images/about/profile-main.jpg"
                            alt={`${currentTranslations?.about?.name || 'Russidan Nadee'} Profile`}
-                           className="w-full h-full object-cover transition-all duration-500 group-hover:scale-110"
+                           className="w-full h-full object-cover"
                            onError={(e) => {
                               // Fallback to placeholder if image fails to load
                               const target = e.target as HTMLImageElement
@@ -394,10 +436,10 @@ export default function PersonalIntro({ translations }: PersonalIntroProps) {
                                  target.parentElement.innerHTML = `
                                     <div class="w-full h-full flex items-center justify-center">
                                        <div class="text-center">
-                                          <div class="w-24 h-24 rounded-full mx-auto mb-4 relative transition-all duration-500 group-hover:scale-110" style="background-color: var(--muted-foreground)">
+                                          <div class="w-24 h-24 rounded-full mx-auto mb-4 relative" style="background-color: var(--muted-foreground)">
                                              <div class="absolute inset-0 rounded-full border-2 border-transparent transition-all duration-1000" style="border-top-color: var(--foreground); border-right-color: var(--foreground); animation: ${isVisible ? 'spin 4s linear infinite' : 'none'}; opacity: 0.3"></div>
                                           </div>
-                                          <p class="text-sm opacity-50 transition-opacity duration-300 group-hover:opacity-70" style="color: var(--muted-foreground)">Profile Photo</p>
+                                          <p class="text-sm opacity-50" style="color: var(--muted-foreground)">Profile Photo</p>
                                        </div>
                                     </div>
                                  `
@@ -405,8 +447,6 @@ export default function PersonalIntro({ translations }: PersonalIntroProps) {
                            }}
                         />
 
-                        {/* Hover Overlay Effect */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                      </div>
                   </div>
 
@@ -443,6 +483,20 @@ export default function PersonalIntro({ translations }: PersonalIntroProps) {
 
          {/* Enhanced CSS Animations */}
          <style jsx>{`
+            @media (min-width: 1024px) {
+               .intro-layout {
+                  align-items: flex-start;
+               }
+            }
+
+            @keyframes cursorBlink {
+               50% { opacity: 0; }
+            }
+
+            .typing-cursor {
+               animation: cursorBlink 1s steps(1, end) infinite;
+            }
+
             @keyframes gradientShift {
                0%, 100% { transform: translateX(-100%); }
                50% { transform: translateX(100%); }

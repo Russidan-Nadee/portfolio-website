@@ -577,7 +577,7 @@ export default function Timeline({
               >
                 <FaBriefcase aria-hidden="true" />
                 {currentTranslations?.about?.timeline?.tabs?.work ||
-                  "Work Experience"}
+                  "Experience"}
               </button>
               <button
                 onClick={() => setActiveTab("education")}
