@@ -1,4 +1,7 @@
 .hero {
+  --hero-height: clamp(760px, calc(100svh - 4rem), 980px);
+  --scene-width: 100vw;
+  --card-width: 210px;
   --finish-duration: 0.9s;
   --orbit-start-angle: 0deg;
   --orbit-reverse-angle: -45deg;
@@ -7,7 +10,7 @@
   isolation: isolate;
   display: grid;
   place-items: center;
-  min-height: clamp(760px, calc(100svh - 4rem), 980px);
+  min-height: var(--hero-height);
   overflow: hidden;
   background: var(--background);
   color: var(--foreground);
@@ -42,6 +45,7 @@
 }
 
 .card {
+  --final-y: calc(var(--hero-height) * var(--final-y-ratio));
   /* Undo the frozen track angle so each card lands at its original coordinates. */
   --final-local-x: calc(
     var(--final-x) * cos(var(--release-angle)) + var(--final-y) *
@@ -56,7 +60,7 @@
   top: 50%;
   left: 50%;
   display: block;
-  width: 210px;
+  width: var(--card-width);
   overflow: hidden;
   border: 1px solid var(--border);
   border-radius: 19px;
@@ -65,6 +69,7 @@
   box-shadow: 0 14px 42px rgb(25 29 37 / 13%);
   pointer-events: auto;
   text-decoration: none;
+  translate: -50% -50%;
   transform: translate3d(var(--final-x), var(--final-y), 0)
     rotate(var(--final-tilt));
   animation: cardScatter 0.4s cubic-bezier(0.16, 0.82, 0.2, 1) both;
@@ -112,14 +117,14 @@
 }
 
 .projectCard {
-  --resting-height: 294px;
+  --resting-height: calc(var(--card-width) * 1.4);
 
   aspect-ratio: 5 / 7;
   z-index: 1;
 }
 
 .certificateCard {
-  --resting-height: 140px;
+  --resting-height: calc(var(--card-width) / 1.5);
 
   aspect-ratio: 1.5;
 }
@@ -193,8 +198,8 @@ a.card:focus-visible {
   --ring-x: 0px;
   --ring-y: -180px;
   --ring-angle: 0deg;
-  --final-x: calc(-50vw + 220px);
-  --final-y: -26vh;
+  --final-x: calc(var(--scene-width) * -0.5 + 220px);
+  --final-y-ratio: -0.26;
   --final-tilt: -9deg;
 }
 
@@ -204,8 +209,8 @@ a.card:focus-visible {
   --ring-x: 106px;
   --ring-y: -146px;
   --ring-angle: 36deg;
-  --final-x: calc(50vw - 220px);
-  --final-y: -26vh;
+  --final-x: calc(var(--scene-width) * 0.5 - 220px);
+  --final-y-ratio: -0.26;
   --final-tilt: 8deg;
 }
 
@@ -215,8 +220,8 @@ a.card:focus-visible {
   --ring-x: 171px;
   --ring-y: -56px;
   --ring-angle: 72deg;
-  --final-x: calc(-50vw + 350px);
-  --final-y: -37vh;
+  --final-x: calc(var(--scene-width) * -0.5 + 350px);
+  --final-y-ratio: -0.37;
   --final-tilt: 7deg;
 
   z-index: 0;
@@ -228,8 +233,8 @@ a.card:focus-visible {
   --ring-x: 171px;
   --ring-y: 56px;
   --ring-angle: 108deg;
-  --final-x: calc(50vw - 350px);
-  --final-y: -37vh;
+  --final-x: calc(var(--scene-width) * 0.5 - 350px);
+  --final-y-ratio: -0.37;
   --final-tilt: -8deg;
 
   z-index: 0;
@@ -242,8 +247,8 @@ a.card:focus-visible {
   --ring-x: 106px;
   --ring-y: 146px;
   --ring-angle: 144deg;
-  --final-x: calc(-50vw + 108px);
-  --final-y: -1vh;
+  --final-x: calc(var(--scene-width) * -0.5 + 108px);
+  --final-y-ratio: -0.01;
   --final-tilt: -6deg;
 }
 
@@ -254,8 +259,8 @@ a.card:focus-visible {
   --ring-x: 0px;
   --ring-y: 180px;
   --ring-angle: 180deg;
-  --final-x: calc(50vw - 108px);
-  --final-y: -1vh;
+  --final-x: calc(var(--scene-width) * 0.5 - 108px);
+  --final-y-ratio: -0.01;
   --final-tilt: 7deg;
 }
 
@@ -266,8 +271,8 @@ a.card:focus-visible {
   --ring-x: -106px;
   --ring-y: 146px;
   --ring-angle: 216deg;
-  --final-x: calc(-50vw + 330px);
-  --final-y: 34vh;
+  --final-x: calc(var(--scene-width) * -0.5 + 330px);
+  --final-y-ratio: 0.34;
   --final-tilt: 8deg;
 
   z-index: 2;
@@ -280,8 +285,8 @@ a.card:focus-visible {
   --ring-x: -171px;
   --ring-y: 56px;
   --ring-angle: 252deg;
-  --final-x: calc(50vw - 330px);
-  --final-y: 34vh;
+  --final-x: calc(var(--scene-width) * 0.5 - 330px);
+  --final-y-ratio: 0.34;
   --final-tilt: -5deg;
 
   z-index: 2;
@@ -294,8 +299,8 @@ a.card:focus-visible {
   --ring-x: -171px;
   --ring-y: -56px;
   --ring-angle: 288deg;
-  --final-x: calc(-50vw + 220px);
-  --final-y: 24vh;
+  --final-x: calc(var(--scene-width) * -0.5 + 220px);
+  --final-y-ratio: 0.24;
   --final-tilt: -8deg;
 }
 
@@ -306,8 +311,8 @@ a.card:focus-visible {
   --ring-x: -106px;
   --ring-y: -146px;
   --ring-angle: 324deg;
-  --final-x: calc(50vw - 220px);
-  --final-y: 24vh;
+  --final-x: calc(var(--scene-width) * 0.5 - 220px);
+  --final-y-ratio: 0.24;
   --final-tilt: 9deg;
 }
 
@@ -326,10 +331,12 @@ a.card:focus-visible {
   z-index: 2;
   display: flex;
   width: min(800px, calc(100% - 440px));
+  min-width: 0;
   flex-direction: column;
   align-items: center;
   padding: 3rem 0 4rem;
   text-align: center;
+  overflow-wrap: anywhere;
 }
 
 .contentAnimated {
@@ -477,110 +484,96 @@ a.card:focus-visible {
 
 @media (max-width: 1199px) {
   .hero {
-    display: flex;
-    min-height: auto;
-    flex-direction: column;
-    padding: 76px 0 52px;
+    --hero-height: clamp(640px, calc(100svh - 4rem), 900px);
+    --scene-width: max(100vw, 1000px);
+    --card-width: clamp(120px, 16vw, 190px);
   }
 
   .content {
-    order: 1;
-    width: min(730px, calc(100% - 48px));
-    padding: 0;
-  }
-
-  .contentAnimated {
-    animation: none;
+    width: min(600px, calc(100% - 320px));
+    padding: 2rem 0;
   }
 
   .title {
-    font-size: clamp(2.45rem, 6.6vw, 4.3rem);
+    font-size: clamp(2rem, 4.6vw, 3.5rem);
   }
 
-  .orbit {
-    position: relative;
-    inset: auto;
-    display: flex;
-    order: 2;
-    min-width: 0;
-    width: 100%;
-    max-width: 100%;
-    align-self: stretch;
-    align-items: flex-start;
-    justify-content: flex-start;
-    gap: 15px;
-    margin-top: 30px;
-    overflow-x: auto;
-    padding: 0 24px 10px;
-    animation: none;
-    scroll-padding-inline: 24px;
-    scroll-snap-type: x proximity;
+  .subtitle {
+    font-size: 0.95rem;
   }
 
-  .orbitTrack {
-    display: contents;
-    animation: none;
-  }
-
-  .card {
-    position: relative;
-    top: auto;
-    left: auto;
-    flex: 0 0 220px;
-    width: 220px;
-    transform: none;
-    animation: none;
-    scroll-snap-align: start;
-    will-change: auto;
+  .actions {
+    margin-top: 28px;
   }
 }
 
 @media (max-width: 600px) {
   .hero {
-    padding-top: 70px;
+    --hero-height: clamp(560px, calc(100svh - 4rem), 760px);
+    --scene-width: 800px;
+    --card-width: 120px;
   }
 
   .content {
-    width: calc(100% - 36px);
+    width: calc(100% - 144px);
   }
 
   .eyebrow {
-    margin-bottom: 17px;
-    font-size: 0.78rem;
+    margin-bottom: 14px;
+    font-size: 0.65rem;
   }
 
   .title {
-    font-size: clamp(2.05rem, 8.8vw, 3.25rem);
+    font-size: clamp(1.25rem, 5.6vw, 2.1rem);
     line-height: 1.28;
   }
 
   .subtitle {
-    margin-top: 20px;
-    font-size: 0.99rem;
-    line-height: 1.7;
+    margin-top: 16px;
+    font-size: 0.8rem;
+    line-height: 1.6;
   }
 
   .actions {
-    gap: 10px;
-    margin-top: 28px;
+    gap: 8px;
+    margin-top: 22px;
   }
 
   .primaryAction,
   .secondaryAction {
-    min-height: 48px;
-    padding: 10px 17px;
-    font-size: 0.86rem;
+    min-height: 44px;
+    padding: 10px 14px;
+    font-size: 0.75rem;
   }
 
-  .orbit {
-    gap: 12px;
-    padding: 0 18px 8px;
-    scroll-padding-inline: 18px;
+  .cardSlot3,
+  .cardSlot7 {
+    --final-x: -120px;
   }
 
-  .card {
-    flex-basis: 192px;
-    width: 192px;
+  .cardSlot4,
+  .cardSlot8 {
+    --final-x: 120px;
+  }
+
+  .cardSlot5 {
+    --final-x: calc(-50vw - 40px);
+  }
+
+  .cardSlot6 {
+    --final-x: calc(50vw + 40px);
+  }
+
+  .cardDetails {
+    padding: 24px 8px 8px;
+  }
+
+  .cardTitle {
+    font-size: 9px;
+  }
+
+  .cardMeta {
+    font-size: 8px;
   }
 }
 

@@ -241,8 +241,8 @@ export default function CreativeHero({
 
         cards.forEach((card) => {
           const horizontalDirection = card.dataset.exitSide === "left" ? -1 : 1;
-          const finalY = Number.parseFloat(
-            getComputedStyle(card).getPropertyValue("--final-y")
+          const finalYRatio = Number.parseFloat(
+            getComputedStyle(card).getPropertyValue("--final-y-ratio")
           );
 
           timeline.to(
@@ -250,7 +250,7 @@ export default function CreativeHero({
             {
               "--exit-x": () => `${horizontalDirection * exitDistance()}px`,
               "--exit-card-y": () =>
-                `${Math.round((finalY / 100) * window.innerHeight * 1.4)}px`,
+                `${Math.round(finalYRatio * hero.offsetHeight * 1.4)}px`,
               "--exit-scale": 1.14,
               duration: 0.8,
               ease: "none",
@@ -340,7 +340,7 @@ export default function CreativeHero({
                       src={card.imageUrl}
                       alt=""
                       fill
-                      sizes="(max-width: 1199px) 220px, 210px"
+                      sizes="(max-width: 600px) 120px, (max-width: 1199px) 16vw, 210px"
                       className={styles.projectImage}
                     />
                   ) : (
