@@ -102,7 +102,7 @@ function validResponses(): Response[] {
     documentedAggregateResponse(
       "requestPath",
       [{ requestPath: "/portfolio", pageviews: 640, visitors: 510 }],
-      5
+      100
     ),
     documentedAggregateResponse(
       "country",
@@ -177,7 +177,7 @@ test("builds personal-project requests without a team id", async () => {
     [
       [null, null],
       ["day", null],
-      ["requestPath", "5"],
+      ["requestPath", "100"],
       ["country", "5"],
       ["referrerHostname", "5"],
       ["deviceType", "5"],
@@ -266,7 +266,7 @@ test("maps an empty response set to zero totals and empty collections", async ()
   const { fetcher } = createResponseSequenceFetcher([
     documentedCountResponse(0, 0),
     documentedAggregateResponse("day", []),
-    documentedAggregateResponse("requestPath", [], 5),
+    documentedAggregateResponse("requestPath", [], 100),
     documentedAggregateResponse("country", [], 5),
     documentedAggregateResponse("referrerHostname", [], 5),
     documentedAggregateResponse("deviceType", [], 5),
@@ -419,3 +419,72 @@ test("aborts pending requests after an immediate request failure", async () => {
   assert.equal(pendingRequests, 5);
   assert.equal(abortedRequests, 5);
 });
+
+test.each([
+  {
+    name: "HTTP status",
+    fetcher: async () =>
+      jsonResponse({ error: "secret-token https://private.example" }, 403),
+    expected: /403: upstream request failed/,
+  },
+  {
+    name: "timeout",
+    fetcher: async (): Promise<Response> => {
+      throw new DOMException(
+        "secret-token https://private.example",
+        "AbortError"
+      );
+    },
+    expected: /timeout: request timed out/,
+  },
+  {
+    name: "network failure",
+    fetcher: async (): Promise<Response> => {
+      throw new TypeError("secret-token https://private.example");
+    },
+    expected: /network: network request failed/,
+  },
+  {
+    name: "invalid JSON",
+    fetcher: async () => new Response("secret-token https://private.example"),
+    expected: /invalid-response: invalid JSON response/,
+  },
+  {
+    name: "invalid response data",
+    fetcher: async () =>
+      jsonResponse({ data: "secret-token https://private.example" }),
+    expected: /invalid-response: Invalid analytics totals/,
+  },
+  {
+    name: "unexpected failure",
+    fetcher: async (): Promise<Response> => {
+      throw new Error("secret-token https://private.example");
+    },
+    expected: /unknown: request failed/,
+  },
+])(
+  "logs $name as readable text without exposing credentials",
+  async ({ fetcher, expected }) => {
+    const errorLog = vi.spyOn(console, "error").mockImplementation(() => {});
+    try {
+      const result = await loadVercelAnalytics({
+        env: {
+          VERCEL_ACCESS_TOKEN: "secret-token",
+          VERCEL_PROJECT_ID: "prj_private",
+        },
+        fetcher,
+        now,
+      });
+      assert.deepEqual(result, { status: "unavailable" });
+      assert.equal(errorLog.mock.calls.length, 1);
+      const args = errorLog.mock.calls[0];
+      assert.equal(args.length, 1);
+      assert.equal(typeof args[0], "string");
+      assert.match(args[0], /^\[vercel-analytics\]/);
+      assert.match(args[0], expected);
+      assert.doesNotMatch(args[0], /secret-token|prj_private|private\.example/);
+    } finally {
+      errorLog.mockRestore();
+    }
+  }
+);

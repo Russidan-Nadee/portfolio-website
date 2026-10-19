@@ -16,6 +16,12 @@ import en from "../../../locales/en.json";
 
 export default function Header() {
   const pathname = usePathname();
+  if (pathname === "/admin" || pathname.startsWith("/admin/")) return null;
+  return <PublicHeader />;
+}
+
+function PublicHeader() {
+  const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [locale, setLocale] = useState(useInitialLocale());

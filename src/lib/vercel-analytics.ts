@@ -61,7 +61,7 @@ class AnalyticsHttpError extends Error {
 const querySpecs: QuerySpec[] = [
   { endpoint: "visits/count" },
   { endpoint: "visits/aggregate", groupBy: "day" },
-  { endpoint: "visits/aggregate", groupBy: "requestPath", limit: 5 },
+  { endpoint: "visits/aggregate", groupBy: "requestPath", limit: 100 },
   { endpoint: "visits/aggregate", groupBy: "country", limit: 5 },
   {
     endpoint: "visits/aggregate",
@@ -157,14 +157,43 @@ function parseBreakdown(
 }
 
 function logFailure(error: unknown): void {
-  const details =
-    error instanceof AnalyticsHttpError
-      ? { status: error.status, message: "upstream request failed" }
-      : error instanceof Error && error.name === "AbortError"
-        ? { status: "timeout", message: "request timed out" }
-        : { status: "unknown", message: "request failed" };
+  let status: string | number = "unknown";
+  let message = "request failed";
 
-  console.error("[vercel-analytics]", details);
+  if (error instanceof AnalyticsHttpError) {
+    status = error.status;
+    message = "upstream request failed";
+  } else if (
+    error instanceof Error &&
+    (error.name === "AbortError" || error.name === "TimeoutError")
+  ) {
+    status = "timeout";
+    message = "request timed out";
+  } else if (error instanceof SyntaxError) {
+    status = "invalid-response";
+    message = "invalid JSON response";
+  } else if (
+    error instanceof Error &&
+    [
+      "Invalid analytics response",
+      "Invalid analytics metric",
+      "Invalid analytics totals",
+      "Invalid analytics trend",
+      "Invalid analytics trend row",
+      "Invalid analytics breakdown",
+      "Invalid analytics breakdown row",
+    ].includes(error.message)
+  ) {
+    status = "invalid-response";
+    message = error.message;
+  } else if (error instanceof TypeError) {
+    status = "network";
+    message = "network request failed";
+  }
+
+  // Keep diagnostics readable across the server-to-browser development overlay.
+  // Only controlled messages are logged; upstream error text can contain secrets.
+  console.error(`[vercel-analytics] ${status}: ${message}`);
 }
 
 export async function loadVercelAnalytics(
