@@ -124,7 +124,7 @@ export default function AdminChrome({
 
   return (
     <div
-      className="flex h-dvh overflow-hidden"
+      className="fixed inset-0 flex overflow-hidden"
       style={{ backgroundColor: "var(--background)" }}
     >
       <aside
@@ -133,7 +133,7 @@ export default function AdminChrome({
         role={mobileOpen ? "dialog" : undefined}
         aria-modal={mobileOpen ? true : undefined}
         aria-labelledby="admin-sidebar-title"
-        className={`fixed inset-y-0 left-0 z-[10001] flex h-dvh w-64 max-w-[calc(100vw-3rem)] shrink-0 flex-col border-r transition-[transform,visibility] duration-200 motion-reduce:transition-none md:visible md:static md:z-auto md:max-w-none md:translate-x-0 ${mobileOpen ? "visible translate-x-0" : "invisible -translate-x-full"}`}
+        className={`fixed inset-y-0 left-0 z-[10001] flex h-full w-64 max-w-[calc(100vw-3rem)] shrink-0 flex-col border-r transition-[transform,visibility] duration-200 motion-reduce:transition-none md:visible md:static md:z-auto md:max-w-none md:translate-x-0 ${mobileOpen ? "visible translate-x-0" : "invisible -translate-x-full"}`}
         style={{ borderColor: "var(--border)", backgroundColor: "var(--card)" }}
       >
         <div
