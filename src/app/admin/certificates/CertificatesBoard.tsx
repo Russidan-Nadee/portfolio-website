@@ -215,7 +215,7 @@ export default function CertificatesBoard({
         <button
           type="button"
           onClick={() => setEditing(blankCertificate())}
-          className="rounded-lg px-4 py-2 text-sm font-medium"
+          className="site-button px-4 py-2 text-sm font-medium"
           style={{
             backgroundColor: "var(--foreground)",
             color: "var(--background)",
@@ -285,6 +285,7 @@ export default function CertificatesBoard({
                 {editing.id ? "Edit Certificate" : "Add Certificate"}
               </h2>
               <button
+                className="site-button site-button--secondary p-2"
                 type="button"
                 onClick={() => setEditing(null)}
                 aria-label="Close certificate form"
@@ -466,7 +467,7 @@ export default function CertificatesBoard({
               <button
                 type="button"
                 onClick={() => setEditing(null)}
-                className="rounded-lg border px-4 py-2 text-sm"
+                className="site-button site-button--secondary px-4 py-2 text-sm"
                 style={{ borderColor: "var(--border)" }}
               >
                 Cancel
@@ -474,7 +475,7 @@ export default function CertificatesBoard({
               <button
                 type="submit"
                 disabled={!canSave || saving}
-                className="rounded-lg px-5 py-2 text-sm font-semibold disabled:opacity-40"
+                className="site-button px-5 py-2 text-sm font-semibold disabled:opacity-40"
                 style={{
                   backgroundColor: "var(--foreground)",
                   color: "var(--background)",
@@ -551,7 +552,7 @@ function AssetField({
         type="button"
         onClick={onChoose}
         disabled={uploading}
-        className="mt-3 flex items-center gap-2 rounded-lg border px-3 py-2 text-sm disabled:opacity-50"
+        className="site-button site-button--secondary mt-3 flex items-center gap-2 px-3 py-2 text-sm disabled:opacity-50"
         style={{ borderColor: "var(--border)" }}
       >
         {icon}

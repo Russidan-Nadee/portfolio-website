@@ -29,25 +29,24 @@
 }
 
 .tabs {
-  gap: 4px;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  background: var(--muted);
+  gap: 8px;
 }
 
 .tab {
-  border-radius: 999px;
-  color: var(--muted-foreground);
+  border: 0;
+  border-radius: var(--button-radius);
+  background: var(--button-secondary-background);
+  color: var(--foreground);
+  cursor: pointer;
 }
 
 .tab[aria-pressed="true"] {
   background: var(--foreground);
   color: var(--background);
-  box-shadow: 0 4px 12px rgb(0 0 0 / 10%);
 }
 
 .tab:hover:not([aria-pressed="true"]) {
-  color: var(--foreground);
+  opacity: 0.8;
 }
 
 .tab:focus-visible,

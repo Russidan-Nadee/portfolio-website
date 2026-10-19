@@ -68,7 +68,7 @@ export default function AdminChrome({
           <form action={logout}>
             <button
               type="submit"
-              className="w-full text-left rounded-lg px-3 py-2 text-sm font-medium hover:opacity-70 transition-opacity"
+              className="site-button site-button--secondary w-full text-left px-3 py-2 text-sm font-medium hover:opacity-70 transition-opacity justify-start"
               style={{ color: "var(--muted-foreground)" }}
             >
               Log Out

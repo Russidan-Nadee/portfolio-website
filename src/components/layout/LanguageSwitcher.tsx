@@ -6,7 +6,11 @@ import { useState, useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { GB, TH, JP } from "country-flag-icons/react/3x2";
 
-export default function LanguageSwitcher() {
+export default function LanguageSwitcher({
+  placement = "bottom",
+}: {
+  placement?: "top" | "bottom";
+}) {
   const pathname = usePathname();
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
@@ -55,7 +59,7 @@ export default function LanguageSwitcher() {
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-3 py-2 rounded-lg hover:opacity-70 transition-all duration-200"
+        className="flex items-center gap-2 px-3 py-2 rounded-[var(--button-radius)] hover:opacity-70 transition-all duration-200"
         style={{
           color: "var(--foreground)",
           backgroundColor: isOpen ? "var(--muted)" : "transparent",
@@ -95,10 +99,13 @@ export default function LanguageSwitcher() {
 
           {/* Dropdown menu */}
           <div
-            className="absolute right-0 mt-2 w-48 border rounded-lg shadow-lg z-20"
+            className={`absolute right-0 w-48 overflow-y-auto overscroll-contain border rounded-[var(--button-radius)] shadow-lg z-20 ${
+              placement === "top" ? "bottom-full mb-2" : "top-full mt-2"
+            }`}
             style={{
               backgroundColor: "var(--card)",
               borderColor: "var(--border)",
+              maxHeight: "min(16rem, calc(100dvh - 2rem))",
             }}
           >
             <div className="py-1">

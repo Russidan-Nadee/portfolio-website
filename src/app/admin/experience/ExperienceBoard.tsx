@@ -211,6 +211,7 @@ export default function ExperienceBoard({
                 {editing.type === "work" ? "Work" : "Education"}
               </h2>
               <button
+                className="site-button site-button--secondary p-2"
                 type="button"
                 onClick={() => setEditing(null)}
                 style={{ color: "var(--muted-foreground)" }}
@@ -397,7 +398,7 @@ export default function ExperienceBoard({
                       type="button"
                       title={icon}
                       onClick={() => setEditing({ ...editing, icon })}
-                      className="w-9 h-9 rounded-lg flex items-center justify-center text-lg border"
+                      className="site-button site-button--secondary w-9 h-9 flex items-center justify-center text-lg"
                       style={{
                         backgroundColor:
                           editing.icon === icon
@@ -449,7 +450,7 @@ export default function ExperienceBoard({
                   <button
                     type="button"
                     onClick={addSkillTag}
-                    className="rounded-lg border px-3 text-sm"
+                    className="site-button site-button--secondary px-3 text-sm"
                     style={{
                       borderColor: "var(--border)",
                       color: "var(--foreground)",
@@ -470,6 +471,7 @@ export default function ExperienceBoard({
                     >
                       {skill}
                       <button
+                        className="site-button site-button--secondary p-2"
                         type="button"
                         onClick={() => removeSkillTag(skill)}
                         style={{ color: "var(--muted-foreground)" }}
@@ -501,7 +503,7 @@ export default function ExperienceBoard({
                 <button
                   type="button"
                   onClick={() => setEditing(null)}
-                  className="rounded-lg px-4 py-2 text-sm font-medium border"
+                  className="site-button site-button--secondary px-4 py-2 text-sm font-medium"
                   style={{
                     borderColor: "var(--border)",
                     color: "var(--foreground)",
@@ -513,7 +515,7 @@ export default function ExperienceBoard({
                   type="button"
                   disabled={saving}
                   onClick={handleSubmit}
-                  className="rounded-lg px-4 py-2 text-sm font-medium disabled:opacity-50"
+                  className="site-button px-4 py-2 text-sm font-medium disabled:opacity-50"
                   style={{
                     backgroundColor: "var(--foreground)",
                     color: "var(--background)",

@@ -32,7 +32,7 @@ export default function ExperienceSection({
         </h2>
         <button
           onClick={onCreate}
-          className="rounded-lg px-4 py-2 text-sm font-medium"
+          className="site-button px-4 py-2 text-sm font-medium"
           style={{
             backgroundColor: "var(--foreground)",
             color: "var(--background)",
@@ -63,7 +63,7 @@ export default function ExperienceSection({
           >
             <div className="absolute top-2 right-2 flex gap-3">
               <button
-                className="hover:opacity-70"
+                className="site-button site-button--secondary hover:opacity-70 p-2"
                 style={{ color: "var(--foreground)" }}
                 title="Edit"
                 onClick={() => onEdit(item)}
@@ -71,7 +71,7 @@ export default function ExperienceSection({
                 <MdEdit size={16} />
               </button>
               <button
-                className="hover:opacity-70"
+                className="site-button site-button--secondary hover:opacity-70 p-2"
                 style={{ color: "#dc2626" }}
                 title="Delete"
                 onClick={() => onDelete(item.id)}

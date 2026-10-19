@@ -99,8 +99,10 @@
   gap: 6px;
   min-width: 58px;
   padding: 6px;
-  border-radius: 6px;
-  color: var(--muted-foreground);
+  border: 0;
+  border-radius: var(--button-radius);
+  background: var(--button-secondary-background);
+  color: var(--foreground);
   cursor: pointer;
   font-size: 0.75rem;
   font-weight: 650;

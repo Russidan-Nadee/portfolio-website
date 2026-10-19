@@ -6,7 +6,7 @@ import { localeFromPath, localizedPath } from "@/lib/locale-path";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
-import { CodeXml } from "lucide-react";
+import { ArrowUpRight, CodeXml, X } from "lucide-react";
 import LanguageSwitcher from "./LanguageSwitcher";
 import ThemeToggle from "./ThemeToggle";
 import styles from "./Header.module.css";
@@ -252,9 +252,10 @@ export default function Header() {
             <ThemeToggle />
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="p-2 rounded-lg transition-colors hover:bg-opacity-80"
-              style={{ backgroundColor: "var(--muted)" }}
+              className={styles.menuToggle}
               aria-label="Toggle menu"
+              aria-expanded={isMenuOpen}
+              aria-controls="mobile-menu"
             >
               <div className="w-6 h-6 flex flex-col justify-center items-center space-y-1">
                 <span
@@ -278,168 +279,69 @@ export default function Header() {
       {/* Mobile Menu Overlay */}
       {isMenuOpen && (
         <div
-          className="fixed inset-0 z-[10000] bg-black bg-opacity-50 md:hidden"
+          className={`${styles.menuOverlay} md:hidden`}
           onClick={closeMenu}
         />
       )}
 
       {/* Mobile Menu Slide Panel */}
       <div
-        className={`
-            fixed top-0 right-0 z-[10001] h-full w-80 max-w-[90vw] md:hidden
-            transform transition-transform duration-300 ease-in-out
-            ${isMenuOpen ? "translate-x-0" : "translate-x-full"}
-         `}
-        style={{
-          backgroundColor: "var(--background)",
-          borderLeft: "1px solid var(--border)",
-        }}
+        id="mobile-menu"
+        className={`${styles.mobileMenu} md:hidden`}
+        data-open={isMenuOpen}
+        inert={!isMenuOpen}
+        aria-label="Mobile menu"
       >
-        {/* Mobile Menu Header */}
-        <div
-          className="flex justify-between items-center p-6 border-b"
-          style={{ borderColor: "var(--border)" }}
-        >
-          <h3
-            className="text-lg font-semibold"
-            style={{ color: "var(--foreground)" }}
-          >
-            Menu
-          </h3>
-          <button
+        <div className={styles.menuHeader}>
+          <Link
+            href={getLocalizedLink("/")}
+            className={styles.menuBrand}
             onClick={closeMenu}
-            className="p-2 rounded-lg transition-colors hover:bg-opacity-80"
-            style={{ backgroundColor: "var(--muted)" }}
+            aria-label="Russidan Nadee, home"
+          >
+            <CodeXml aria-hidden="true" size={28} strokeWidth={2.25} />
+            <span>RUSSIDAN</span>
+          </Link>
+          <button
+            type="button"
+            onClick={closeMenu}
+            className={styles.menuClose}
             aria-label="Close menu"
           >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              style={{ color: "var(--foreground)" }}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
+            <X aria-hidden="true" size={20} />
           </button>
         </div>
 
-        {/* Mobile Menu Content */}
-        <div className="flex flex-col p-6 space-y-4">
-          {/* Navigation Links */}
-          <Link
-            href={getLocalizedLink("/")}
-            onClick={closeMenu}
-            className={`text-lg py-3 px-4 rounded-lg transition-all hover:bg-opacity-80 ${
-              isActivePage("/") ? "border-l-4" : ""
-            }`}
-            style={{
-              color: "var(--foreground)",
-              backgroundColor: isActivePage("/")
-                ? "var(--muted)"
-                : "transparent",
-              borderColor: isActivePage("/")
-                ? "var(--foreground)"
-                : "transparent",
-            }}
-            aria-current={isActivePage("/") ? "page" : undefined}
-          >
-            {translations?.header?.nav?.home || "Home"}
-          </Link>
-          <Link
-            href={getLocalizedLink("/about")}
-            onClick={closeMenu}
-            className={`text-lg py-3 px-4 rounded-lg transition-all hover:bg-opacity-80 ${
-              isActivePage("/about") ? "border-l-4" : ""
-            }`}
-            style={{
-              color: "var(--foreground)",
-              backgroundColor: isActivePage("/about")
-                ? "var(--muted)"
-                : "transparent",
-              borderColor: isActivePage("/about")
-                ? "var(--foreground)"
-                : "transparent",
-            }}
-            aria-current={isActivePage("/about") ? "page" : undefined}
-          >
-            {translations?.header?.nav?.about || "About"}
-          </Link>
-          <Link
-            href={getLocalizedLink("/portfolio")}
-            onClick={closeMenu}
-            className={`text-lg py-3 px-4 rounded-lg transition-all hover:bg-opacity-80 ${
-              isActivePage("/portfolio") ? "border-l-4" : ""
-            }`}
-            style={{
-              color: "var(--foreground)",
-              backgroundColor: isActivePage("/portfolio")
-                ? "var(--muted)"
-                : "transparent",
-              borderColor: isActivePage("/portfolio")
-                ? "var(--foreground)"
-                : "transparent",
-            }}
-            aria-current={isActivePage("/portfolio") ? "page" : undefined}
-          >
-            {translations?.header?.nav?.portfolio || "Portfolio"}
-          </Link>
-          <Link
-            href={getLocalizedLink("/certificate")}
-            onClick={closeMenu}
-            className={`text-lg py-3 px-4 rounded-lg transition-all hover:bg-opacity-80 ${
-              isActivePage("/certificate") ? "border-l-4" : ""
-            }`}
-            style={{
-              color: "var(--foreground)",
-              backgroundColor: isActivePage("/certificate")
-                ? "var(--muted)"
-                : "transparent",
-              borderColor: isActivePage("/certificate")
-                ? "var(--foreground)"
-                : "transparent",
-            }}
-            aria-current={isActivePage("/certificate") ? "page" : undefined}
-          >
-            {translations?.header?.nav?.certificate || "Certificates"}
-          </Link>
-          <Link
-            href={getLocalizedLink("/contact")}
-            onClick={closeMenu}
-            className={`text-lg py-3 px-4 rounded-lg transition-all hover:bg-opacity-80 ${
-              isActivePage("/contact") ? "border-l-4" : ""
-            }`}
-            style={{
-              color: "var(--foreground)",
-              backgroundColor: isActivePage("/contact")
-                ? "var(--muted)"
-                : "transparent",
-              borderColor: isActivePage("/contact")
-                ? "var(--foreground)"
-                : "transparent",
-            }}
-            aria-current={isActivePage("/contact") ? "page" : undefined}
-          >
-            {translations?.header?.nav?.contact || "Contact"}
-          </Link>
+        <div className={styles.menuContent}>
+          <nav className={styles.menuLinks} aria-label="Mobile navigation">
+            {[
+              { path: "/", label: translations.header.nav.home },
+              { path: "/about", label: translations.header.nav.about },
+              { path: "/portfolio", label: translations.header.nav.portfolio },
+              {
+                path: "/certificate",
+                label: translations.header.nav.certificate,
+              },
+              { path: "/contact", label: translations.header.nav.contact },
+            ].map(({ path, label }) => (
+              <Link
+                key={path}
+                href={getLocalizedLink(path)}
+                onClick={closeMenu}
+                className={styles.menuLink}
+                aria-current={isActivePage(path) ? "page" : undefined}
+              >
+                <span>{label}</span>
+                <ArrowUpRight aria-hidden="true" size={20} strokeWidth={1.75} />
+              </Link>
+            ))}
+          </nav>
 
-          {/* Language Switcher */}
-          <div
-            className="pt-4 border-t"
-            style={{ borderColor: "var(--border)" }}
-          >
-            <p
-              className="text-sm font-medium mb-3 opacity-70"
-              style={{ color: "var(--foreground)" }}
-            >
-              Language
+          <div className={styles.menuPreferences}>
+            <p className={styles.menuLabel}>
+              {translations.footer.sections.language}
             </p>
-            <LanguageSwitcher />
+            <LanguageSwitcher placement="top" />
           </div>
         </div>
       </div>

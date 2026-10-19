@@ -6,6 +6,177 @@
   max-width: 1240px;
 }
 
+.menuToggle,
+.menuClose {
+  display: inline-flex;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: var(--button-radius);
+  background: var(--muted);
+  color: var(--foreground);
+  cursor: pointer;
+}
+
+.menuToggle:hover,
+.menuClose:hover {
+  background: var(--button-secondary-background);
+}
+
+.menuOverlay {
+  position: fixed;
+  z-index: 10000;
+  inset: 0;
+  background: rgb(0 0 0 / 45%);
+  backdrop-filter: blur(6px);
+}
+
+.mobileMenu {
+  position: fixed;
+  z-index: 10001;
+  inset: 0 0 0 auto;
+  display: flex;
+  width: min(360px, calc(100% - 24px));
+  height: 100%;
+  height: 100dvh;
+  flex-direction: column;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border-left: 1px solid var(--border);
+  border-radius: 0;
+  background: var(--background);
+  color: var(--foreground);
+  box-shadow: -20px 0 60px rgb(0 0 0 / 12%);
+  visibility: hidden;
+  transform: translateX(100%);
+  transition:
+    transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 280ms;
+}
+
+.mobileMenu[data-open="true"] {
+  visibility: visible;
+  transform: translateX(0);
+}
+
+.menuHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-inline: 24px;
+  padding-block: max(24px, env(safe-area-inset-top)) 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.menuBrand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), sans-serif;
+  font-size: 21px;
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  text-decoration: none;
+}
+
+.menuContent {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 32px;
+  padding: 28px 24px max(28px, env(safe-area-inset-bottom));
+}
+
+.menuLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.menuLink {
+  display: flex;
+  min-height: 56px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 20px;
+  border: 0;
+  border-radius: var(--button-radius);
+  color: var(--foreground);
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.4;
+  text-decoration: none;
+}
+
+.menuLink svg {
+  flex-shrink: 0;
+  opacity: 0.4;
+}
+
+.menuLink:hover {
+  background: var(--muted);
+}
+
+.menuLink[aria-current="page"] {
+  background: var(--foreground);
+  color: var(--background);
+}
+
+.menuLink[aria-current="page"] svg {
+  opacity: 1;
+}
+
+.menuPreferences {
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+}
+
+.menuLabel {
+  margin-bottom: 12px;
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.menuPreferences > div > button {
+  width: 100%;
+  min-height: 44px;
+  border: 0;
+  border-radius: var(--button-radius);
+}
+
+.menuPreferences > div > button > svg:last-child {
+  margin-left: auto;
+}
+
+.menuToggle:focus-visible,
+.menuClose:focus-visible,
+.menuBrand:focus-visible,
+.menuLink:focus-visible,
+.menuPreferences button:focus-visible {
+  outline: 2px solid var(--foreground);
+  outline-offset: 4px;
+}
+
+@media (min-width: 768px) {
+  .mobileMenu,
+  .menuOverlay {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobileMenu {
+    transition: none;
+  }
+}
+
 @media (min-width: 1200px) and (prefers-reduced-motion: no-preference) {
   .introPending {
     visibility: hidden;

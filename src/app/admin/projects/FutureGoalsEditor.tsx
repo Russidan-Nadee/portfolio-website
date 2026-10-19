@@ -95,7 +95,7 @@ function SortableGoalRow({
         <button
           type="button"
           onClick={() => onDelete(index)}
-          className="hover:opacity-70 pt-2"
+          className="site-button site-button--secondary hover:opacity-70 pt-2 p-2"
           style={{ color: "#dc2626" }}
           title="Delete"
         >
@@ -164,7 +164,7 @@ export default function FutureGoalsEditor({
       <button
         type="button"
         onClick={addBlank}
-        className="self-start rounded-lg px-4 py-2 text-sm font-medium border"
+        className="site-button site-button--secondary self-start px-4 py-2 text-sm font-medium"
         style={{ borderColor: "var(--border)", color: "var(--foreground)" }}
       >
         + Add Future Goal

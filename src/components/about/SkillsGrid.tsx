@@ -365,11 +365,7 @@ export default function SkillsGrid({
                             const newWindow = window.open(skill.url, "_blank");
                             if (newWindow) newWindow.opener = null;
                           }}
-                          className="px-1.5 py-0.5 md:px-2 md:py-1 lg:px-4 lg:py-2 rounded-lg text-[9px] md:text-xs lg:text-sm font-medium transition-all duration-300 hover:scale-105"
-                          style={{
-                            backgroundColor: "var(--foreground)",
-                            color: "var(--background)",
-                          }}
+                          className="site-button px-1.5 py-0.5 md:px-2 md:py-1 lg:px-4 lg:py-2 text-[9px] md:text-xs lg:text-sm"
                         >
                           {getLearnMoreText(locale)}
                         </button>

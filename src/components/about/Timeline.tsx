@@ -744,11 +744,7 @@ export default function Timeline({
               {/* Close button */}
               <button
                 onClick={() => setSelectedCard(null)}
-                className="absolute -top-2 -right-2 w-8 h-8 rounded-full flex items-center justify-center text-xl font-bold z-10 hover:scale-110 transition-transform"
-                style={{
-                  backgroundColor: "var(--foreground)",
-                  color: "var(--background)",
-                }}
+                className="site-button absolute -top-2 -right-2 w-8 h-8 text-xl z-10"
               >
                 ×
               </button>

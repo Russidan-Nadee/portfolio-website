@@ -122,7 +122,7 @@ export default function CertificateCard({
             href={certificate.pdfUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-xs font-semibold transition-transform hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+            className="site-button px-3 py-2 text-xs"
             style={{ backgroundColor: accent, color: onAccent }}
           >
             <MdOpenInNew aria-hidden="true" />
@@ -131,9 +131,8 @@ export default function CertificateCard({
           <a
             href={downloadUrl}
             download={`${certificate.slug}.pdf`}
-            className="inline-flex items-center gap-1.5 rounded-full border px-3 py-2 text-xs font-semibold transition-colors hover:bg-black/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 dark:hover:bg-white/5"
+            className="site-button site-button--secondary px-3 py-2 text-xs"
             style={{
-              borderColor: "var(--border)",
               backgroundColor: `color-mix(in srgb, ${accent} 12%, var(--card))`,
               color: accentText,
             }}

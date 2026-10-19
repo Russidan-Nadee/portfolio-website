@@ -186,28 +186,15 @@ export default function PortfolioContent({
 
         {/* Filter buttons */}
         <div className="portfolio-section-enter">
-          <div className="flex flex-wrap justify-center gap-4 mb-12">
+          <div className="flex flex-wrap justify-center gap-2 mb-12">
             {filters.map((filter) => (
               <button
                 key={filter.key}
                 onClick={() => setActiveFilter(filter.key)}
                 aria-pressed={activeFilter === filter.key}
-                className={`px-6 py-3 rounded-lg font-medium transition-all duration-300 hover:scale-105 border ${
-                  activeFilter === filter.key
-                    ? "bg-foreground text-background border-foreground"
-                    : "bg-card text-foreground border-border hover:bg-muted"
+                className={`site-button px-4 py-2 text-sm ${
+                  activeFilter === filter.key ? "" : "site-button--secondary"
                 }`}
-                style={{
-                  backgroundColor:
-                    activeFilter === filter.key
-                      ? "var(--foreground)"
-                      : "var(--card)",
-                  color:
-                    activeFilter === filter.key
-                      ? "var(--background)"
-                      : "var(--foreground)",
-                  borderColor: "var(--border)",
-                }}
               >
                 {filter.label}
               </button>

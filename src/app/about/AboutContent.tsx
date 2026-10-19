@@ -154,22 +154,13 @@ export default function AboutContent({
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href={getLocalizedLink("/contact")}
-              className="inline-block px-8 py-4 rounded-lg font-semibold transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl"
-              style={{
-                backgroundColor: "var(--foreground)",
-                color: "var(--background)",
-              }}
+              className="site-button px-8 py-4"
             >
               {translations?.about?.cta?.contact || "Get In Touch"}
             </Link>
             <Link
               href={getLocalizedLink("/portfolio")}
-              className="inline-block px-8 py-4 rounded-lg font-semibold transition-all duration-300 hover:scale-105 border-2 hover:shadow-lg"
-              style={{
-                backgroundColor: "var(--card)",
-                color: "var(--foreground)",
-                borderColor: "var(--border)",
-              }}
+              className="site-button site-button--secondary px-8 py-4"
             >
               {translations?.about?.cta?.projects || "View Projects"}
             </Link>

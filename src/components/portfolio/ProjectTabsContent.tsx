@@ -121,25 +121,15 @@ export default function ProjectTabsContent({
       }}
     >
       {/* Tabs */}
-      <div
-        className="flex gap-0 mb-6 border-b-2"
-        style={{ borderColor: "var(--border)" }}
-      >
+      <div className="flex flex-wrap gap-2 mb-6">
         {tabs.map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`flex-1 px-2 py-3 border-b-2 transition-all duration-300 text-xs sm:text-sm lg:text-base ${
-              activeTab === tab.id ? "font-semibold" : "hover:opacity-70"
+            aria-pressed={activeTab === tab.id}
+            className={`site-button flex-1 px-3 py-2 text-xs sm:text-sm lg:text-base ${
+              activeTab === tab.id ? "" : "site-button--secondary"
             }`}
-            style={{
-              color:
-                activeTab === tab.id
-                  ? "var(--foreground)"
-                  : "var(--muted-foreground)",
-              borderBottomColor:
-                activeTab === tab.id ? "var(--foreground)" : "transparent",
-            }}
           >
             {tab.label}
           </button>

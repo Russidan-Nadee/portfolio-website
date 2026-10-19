@@ -134,7 +134,7 @@ export default function ContactCard({
             {showCopyButton && (
               <button
                 onClick={handleCopy}
-                className="p-1 hover:bg-gray-600/50 rounded transition-all duration-300 hover:scale-110 hover:rotate-12"
+                className="site-button site-button--secondary p-1"
               >
                 <MdContentCopy
                   size={14}
@@ -147,19 +147,7 @@ export default function ContactCard({
 
         {/* Enhanced action button */}
         <button
-          className={`
-            w-full py-3 px-4 rounded-xl font-medium transition-all duration-500
-            hover:opacity-80 border relative overflow-hidden
-            ${isLoading ? "opacity-50 cursor-not-allowed" : ""}
-            hover:shadow-lg hover:shadow-black/10
-            transform hover:scale-105 active:scale-95
-            action-button
-          `}
-          style={{
-            backgroundColor: "var(--muted)",
-            color: "var(--foreground)",
-            borderColor: "var(--border)",
-          }}
+          className="site-button w-full py-3 px-4 relative overflow-hidden action-button"
           disabled={isLoading}
         >
           {/* Button shine effect - Theme responsive */}

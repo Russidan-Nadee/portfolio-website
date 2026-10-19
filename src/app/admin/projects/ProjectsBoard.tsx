@@ -130,7 +130,7 @@ export default function ProjectsBoard({
         </h1>
         <button
           onClick={() => setCreating(blankHeader())}
-          className="rounded-lg px-4 py-2 text-sm font-medium"
+          className="site-button px-4 py-2 text-sm font-medium"
           style={{
             backgroundColor: "var(--foreground)",
             color: "var(--background)",
@@ -192,6 +192,7 @@ export default function ProjectsBoard({
                 Add Project
               </h2>
               <button
+                className="site-button site-button--secondary p-2"
                 type="button"
                 onClick={() => setCreating(null)}
                 style={{ color: "var(--muted-foreground)" }}
@@ -215,7 +216,7 @@ export default function ProjectsBoard({
               <button
                 type="button"
                 onClick={() => setCreating(null)}
-                className="rounded-lg px-4 py-2 text-sm font-medium border"
+                className="site-button site-button--secondary px-4 py-2 text-sm font-medium"
                 style={{
                   borderColor: "var(--border)",
                   color: "var(--foreground)",
@@ -227,7 +228,7 @@ export default function ProjectsBoard({
                 type="button"
                 disabled={saving || !creating.slug || !creating.title.en}
                 onClick={handleCreate}
-                className="rounded-lg px-4 py-2 text-sm font-medium disabled:opacity-50"
+                className="site-button px-4 py-2 text-sm font-medium disabled:opacity-50"
                 style={{
                   backgroundColor: "var(--foreground)",
                   color: "var(--background)",

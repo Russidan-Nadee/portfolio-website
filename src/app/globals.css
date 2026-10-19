@@ -8,6 +8,8 @@
   --border: #e5e7eb;
   --muted: #f8f9fa;
   --muted-foreground: #6c757d;
+  --button-radius: 4px;
+  --button-secondary-background: #ededed;
 }
 
 [data-theme="dark"] {
@@ -18,6 +20,7 @@
   --border: #404040;
   --muted: #262626;
   --muted-foreground: #a0a0a0;
+  --button-secondary-background: #333333;
   color-scheme: dark;
 }
 
@@ -46,6 +49,48 @@ body {
   font-family:
     var(--font-inter), "IBM Plex Sans Thai", "Noto Sans JP", system-ui,
     sans-serif;
+}
+
+@layer components {
+  .site-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: 0;
+    border-radius: var(--button-radius);
+    background: var(--foreground);
+    color: var(--background);
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: opacity 160ms ease;
+  }
+
+  .site-button--secondary {
+    background: var(--button-secondary-background);
+    color: var(--foreground);
+  }
+
+  .site-button:hover:not(:disabled) {
+    opacity: 0.8;
+  }
+
+  .site-button:focus-visible {
+    outline: 2px solid var(--foreground);
+    outline-offset: 3px;
+  }
+
+  .site-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .site-button {
+      transition: none;
+    }
+  }
 }
 
 /* Dark mode utilities */

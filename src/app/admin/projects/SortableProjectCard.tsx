@@ -106,7 +106,7 @@ export default function SortableProjectCard({
             <MdEdit size={16} />
           </Link>
           <button
-            className="hover:opacity-70"
+            className="site-button site-button--secondary hover:opacity-70 p-2"
             style={{ color: "#dc2626" }}
             title="Delete"
             onClick={() => onDelete(project.id, project.slug)}
@@ -134,7 +134,7 @@ export default function SortableProjectCard({
               <button
                 type="button"
                 onClick={() => setPreviewOpen(false)}
-                className="w-8 h-8 rounded-full flex items-center justify-center"
+                className="site-button site-button--secondary w-8 h-8 flex items-center justify-center"
                 style={{
                   backgroundColor: "var(--card)",
                   color: "var(--foreground)",

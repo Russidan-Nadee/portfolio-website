@@ -109,7 +109,7 @@ export default function SortableSkillCard({
 
       <div className="flex gap-3">
         <button
-          className="hover:opacity-70"
+          className="site-button site-button--secondary hover:opacity-70 p-2"
           style={{ color: "var(--foreground)" }}
           title="Edit"
           onClick={() => onEdit(skill)}
@@ -117,7 +117,7 @@ export default function SortableSkillCard({
           <MdEdit size={16} />
         </button>
         <button
-          className="hover:opacity-70"
+          className="site-button site-button--secondary hover:opacity-70 p-2"
           style={{ color: "#dc2626" }}
           title="Delete"
           onClick={() => onDelete(skill.id)}

@@ -386,15 +386,13 @@ a.card:focus-visible {
   align-items: center;
   justify-content: center;
   padding: 12px 25px;
-  border: 1px solid var(--foreground);
-  border-radius: 999px;
+  border: 0;
+  border-radius: var(--button-radius);
   font-size: 0.95rem;
   font-weight: 650;
   line-height: 1.2;
   text-decoration: none;
-  transition:
-    transform 180ms ease,
-    box-shadow 180ms ease;
+  transition: opacity 160ms ease;
 }
 
 .primaryAction {
@@ -403,14 +401,14 @@ a.card:focus-visible {
 }
 
 .secondaryAction {
-  background: var(--background);
+  border: 1px solid var(--foreground);
+  background: transparent;
   color: var(--foreground);
 }
 
 .primaryAction:hover,
 .secondaryAction:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 7px 18px rgb(25 29 37 / 14%);
+  opacity: 0.8;
 }
 
 .primaryAction:focus-visible,

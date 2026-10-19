@@ -35,7 +35,7 @@ export default function LoginForm() {
       <button
         type="button"
         onClick={handleGoogleLogin}
-        className="w-full rounded-lg py-2 font-medium flex items-center justify-center gap-2 border"
+        className="site-button site-button--secondary w-full py-2 font-medium flex items-center justify-center gap-2"
         style={{ borderColor: "var(--border)", color: "var(--foreground)" }}
       >
         <FaGoogle size={16} />

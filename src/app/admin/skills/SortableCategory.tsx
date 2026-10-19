@@ -85,7 +85,7 @@ export default function SortableCategory({
           {category.name.en || category.name.th}
         </h2>
         <button
-          className="hover:opacity-70"
+          className="site-button site-button--secondary hover:opacity-70 p-2"
           style={{ color: "var(--muted-foreground)" }}
           title="Rename"
           onClick={() => onRename(category)}
@@ -93,7 +93,7 @@ export default function SortableCategory({
           <MdDriveFileRenameOutline size={18} />
         </button>
         <button
-          className="hover:opacity-70"
+          className="site-button site-button--secondary hover:opacity-70 p-2"
           style={{ color: "#dc2626" }}
           title="Delete Category"
           onClick={() => onDeleteCategory(category.id)}
@@ -102,7 +102,7 @@ export default function SortableCategory({
         </button>
         <button
           onClick={() => onCreateSkill(category.id)}
-          className="ml-auto rounded-lg px-3 py-1.5 text-sm font-medium"
+          className="site-button ml-auto px-3 py-1.5 text-sm font-medium"
           style={{
             backgroundColor: "var(--foreground)",
             color: "var(--background)",

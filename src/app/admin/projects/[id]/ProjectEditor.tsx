@@ -150,7 +150,7 @@ export default function ProjectEditor({
         </div>
         <button
           onClick={handleDelete}
-          className="rounded-lg px-4 py-2 text-sm font-medium border"
+          className="site-button site-button--secondary px-4 py-2 text-sm font-medium"
           style={{ borderColor: "#dc2626", color: "#dc2626" }}
         >
           Delete Project
@@ -165,7 +165,7 @@ export default function ProjectEditor({
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
-            className="rounded-md px-4 py-1.5 text-sm font-medium"
+            className="site-button site-button--secondary px-4 py-1.5 text-sm font-medium"
             style={{
               backgroundColor:
                 activeTab === tab ? "var(--card)" : "transparent",
@@ -200,7 +200,7 @@ export default function ProjectEditor({
             <button
               onClick={handleSaveHeader}
               disabled={savingHeader}
-              className="rounded-lg px-4 py-2 text-sm font-medium disabled:opacity-50"
+              className="site-button px-4 py-2 text-sm font-medium disabled:opacity-50"
               style={{
                 backgroundColor: "var(--foreground)",
                 color: "var(--background)",
@@ -277,7 +277,7 @@ export default function ProjectEditor({
             <button
               onClick={handleSaveContent}
               disabled={savingContent}
-              className="rounded-lg px-4 py-2 text-sm font-medium disabled:opacity-50"
+              className="site-button px-4 py-2 text-sm font-medium disabled:opacity-50"
               style={{
                 backgroundColor: "var(--foreground)",
                 color: "var(--background)",
@@ -300,7 +300,7 @@ export default function ProjectEditor({
             <button
               onClick={handleSaveContent}
               disabled={savingContent}
-              className="rounded-lg px-4 py-2 text-sm font-medium disabled:opacity-50"
+              className="site-button px-4 py-2 text-sm font-medium disabled:opacity-50"
               style={{
                 backgroundColor: "var(--foreground)",
                 color: "var(--background)",
@@ -327,7 +327,7 @@ export default function ProjectEditor({
             <button
               onClick={handleSaveContent}
               disabled={savingContent}
-              className="rounded-lg px-4 py-2 text-sm font-medium disabled:opacity-50"
+              className="site-button px-4 py-2 text-sm font-medium disabled:opacity-50"
               style={{
                 backgroundColor: "var(--foreground)",
                 color: "var(--background)",
@@ -380,7 +380,7 @@ export default function ProjectEditor({
             <button
               onClick={handleSaveContent}
               disabled={savingContent}
-              className="rounded-lg px-4 py-2 text-sm font-medium disabled:opacity-50"
+              className="site-button px-4 py-2 text-sm font-medium disabled:opacity-50"
               style={{
                 backgroundColor: "var(--foreground)",
                 color: "var(--background)",
@@ -425,7 +425,7 @@ export default function ProjectEditor({
             <button
               onClick={handleSaveContent}
               disabled={savingContent}
-              className="rounded-lg px-4 py-2 text-sm font-medium disabled:opacity-50"
+              className="site-button px-4 py-2 text-sm font-medium disabled:opacity-50"
               style={{
                 backgroundColor: "var(--foreground)",
                 color: "var(--background)",

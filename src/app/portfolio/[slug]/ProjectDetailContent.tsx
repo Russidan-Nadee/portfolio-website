@@ -205,11 +205,7 @@ export default function ProjectDetailContent({
 
       <div className="fixed bottom-8 right-8 flex flex-col gap-4 z-40">
         <button
-          className="w-14 h-14 rounded-full shadow-lg transition-all duration-300 hover:scale-110 flex items-center justify-center"
-          style={{
-            backgroundColor: "var(--muted-foreground)",
-            color: "var(--background)",
-          }}
+          className="site-button site-button--secondary w-12 h-12"
           title="แชร์โปรเจค"
           onClick={handleShare}
         >
@@ -228,11 +224,7 @@ export default function ProjectDetailContent({
           </svg>
         </button>
         <button
-          className="w-14 h-14 rounded-full shadow-lg transition-all duration-300 hover:scale-110 flex items-center justify-center"
-          style={{
-            backgroundColor: "var(--foreground)",
-            color: "var(--background)",
-          }}
+          className="site-button w-12 h-12"
           title="กลับขึ้นด้านบน"
           onClick={scrollToTop}
         >

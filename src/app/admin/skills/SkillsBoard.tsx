@@ -228,7 +228,7 @@ export default function SkillsBoard({
         </h1>
         <button
           onClick={openCreateCategory}
-          className="rounded-lg px-4 py-2 text-sm font-medium border"
+          className="site-button site-button--secondary px-4 py-2 text-sm font-medium"
           style={{ borderColor: "var(--border)", color: "var(--foreground)" }}
         >
           + New Category
@@ -291,6 +291,7 @@ export default function SkillsBoard({
                 {editingSkill.id ? "Edit Skill" : "Add Skill"}
               </h2>
               <button
+                className="site-button site-button--secondary p-2"
                 type="button"
                 onClick={() => setEditingSkill(null)}
                 style={{ color: "var(--muted-foreground)" }}
@@ -348,7 +349,7 @@ export default function SkillsBoard({
                       disabled={uploading}
                       onClick={() => fileInputRef.current?.click()}
                       title="Upload icon file"
-                      className="shrink-0 rounded-lg border px-3 flex items-center disabled:opacity-50"
+                      className="site-button site-button--secondary shrink-0 px-3 flex items-center disabled:opacity-50"
                       style={{
                         borderColor: "var(--border)",
                         color: "var(--foreground)",
@@ -497,7 +498,7 @@ export default function SkillsBoard({
               <button
                 type="button"
                 onClick={() => setEditingSkill(null)}
-                className="rounded-lg px-4 py-2 text-sm font-medium border"
+                className="site-button site-button--secondary px-4 py-2 text-sm font-medium"
                 style={{
                   borderColor: "var(--border)",
                   color: "var(--foreground)",
@@ -507,7 +508,7 @@ export default function SkillsBoard({
               </button>
               <button
                 type="submit"
-                className="rounded-lg px-4 py-2 text-sm font-medium"
+                className="site-button px-4 py-2 text-sm font-medium"
                 style={{
                   backgroundColor: "var(--foreground)",
                   color: "var(--background)",
@@ -547,6 +548,7 @@ export default function SkillsBoard({
                 {editingCategory.id ? "Rename Category" : "Add Category"}
               </h2>
               <button
+                className="site-button site-button--secondary p-2"
                 type="button"
                 onClick={() => setEditingCategory(null)}
                 style={{ color: "var(--muted-foreground)" }}
@@ -584,7 +586,7 @@ export default function SkillsBoard({
               <button
                 type="button"
                 onClick={() => setEditingCategory(null)}
-                className="rounded-lg px-4 py-2 text-sm font-medium border"
+                className="site-button site-button--secondary px-4 py-2 text-sm font-medium"
                 style={{
                   borderColor: "var(--border)",
                   color: "var(--foreground)",
@@ -594,7 +596,7 @@ export default function SkillsBoard({
               </button>
               <button
                 type="submit"
-                className="rounded-lg px-4 py-2 text-sm font-medium"
+                className="site-button px-4 py-2 text-sm font-medium"
                 style={{
                   backgroundColor: "var(--foreground)",
                   color: "var(--background)",

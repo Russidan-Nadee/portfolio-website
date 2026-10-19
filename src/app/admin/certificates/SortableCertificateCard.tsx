@@ -121,6 +121,7 @@ export default function SortableCertificateCard({
           style={{ borderColor: "var(--border)" }}
         >
           <button
+            className="site-button site-button--secondary p-2"
             type="button"
             onClick={() => onEdit(certificate)}
             aria-label={`Edit ${certificate.title.en}`}
@@ -141,7 +142,7 @@ export default function SortableCertificateCard({
             type="button"
             onClick={() => onDelete(certificate)}
             aria-label={`Delete ${certificate.title.en}`}
-            className="ml-auto text-red-600"
+            className="site-button site-button--secondary ml-auto text-red-600 p-2"
           >
             <MdDeleteOutline size={18} />
           </button>

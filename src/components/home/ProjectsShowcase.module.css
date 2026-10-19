@@ -1,9 +1,6 @@
 .showcase {
   --showcase-ink: #181b22;
   --showcase-halo: rgb(50 77 120 / 8%);
-  --showcase-control-border: rgb(24 27 34 / 26%);
-  --showcase-control-bg: rgb(24 27 34 / 5%);
-  --showcase-control-hover: rgb(24 27 34 / 12%);
   --showcase-card-border: rgb(24 27 34 / 16%);
   --showcase-card-active-border: rgb(24 27 34 / 30%);
 
@@ -30,9 +27,6 @@
 :global([data-theme="dark"]) .showcase {
   --showcase-ink: #f6f6f7;
   --showcase-halo: rgb(255 255 255 / 7.5%);
-  --showcase-control-border: rgb(255 255 255 / 30%);
-  --showcase-control-bg: rgb(255 255 255 / 6%);
-  --showcase-control-hover: rgb(255 255 255 / 16%);
   --showcase-card-border: rgb(255 255 255 / 13%);
   --showcase-card-active-border: rgb(255 255 255 / 28%);
 
@@ -241,19 +235,16 @@
   flex: none;
   place-items: center;
   padding: 0;
-  border: 1px solid var(--showcase-control-border);
-  border-radius: 50%;
-  background: var(--showcase-control-bg);
-  color: var(--showcase-ink);
+  border: 0;
+  border-radius: var(--button-radius);
+  background: var(--foreground);
+  color: var(--background);
   cursor: pointer;
-  transition:
-    background-color 0.2s ease,
-    transform 0.2s ease;
+  transition: opacity 160ms ease;
 }
 
 .arrow:hover {
-  background: var(--showcase-control-hover);
-  transform: translateY(-2px);
+  opacity: 0.8;
 }
 
 .arrow:focus-visible,

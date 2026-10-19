@@ -225,7 +225,7 @@ function ImageUploadField({
               disabled={uploading}
               onClick={() => fileInputRef.current?.click()}
               title="Upload image file"
-              className="shrink-0 rounded-lg border px-3 flex items-center disabled:opacity-50"
+              className="site-button site-button--secondary shrink-0 px-3 flex items-center disabled:opacity-50"
               style={{
                 borderColor: "var(--border)",
                 color: "var(--foreground)",
@@ -247,7 +247,7 @@ function ImageUploadField({
             type="button"
             onClick={() => onUrlChange("")}
             title="Remove image"
-            className="shrink-0 rounded-lg border px-3 flex items-center"
+            className="site-button site-button--secondary shrink-0 px-3 flex items-center"
             style={{ borderColor: "#dc2626", color: "#dc2626" }}
           >
             <MdDeleteOutline size={18} />

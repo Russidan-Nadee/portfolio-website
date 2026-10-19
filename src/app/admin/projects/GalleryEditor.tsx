@@ -93,7 +93,7 @@ function SortableGalleryItem({
         <button
           type="button"
           onClick={() => onDelete(index)}
-          className="hover:opacity-70"
+          className="site-button site-button--secondary hover:opacity-70 p-2"
           style={{ color: "#dc2626" }}
           title="Delete"
         >
@@ -197,7 +197,7 @@ export default function GalleryEditor({
           type="button"
           disabled={uploading}
           onClick={() => fileInputRef.current?.click()}
-          className="rounded-lg px-4 py-2 text-sm font-medium border flex items-center gap-2 disabled:opacity-50"
+          className="site-button site-button--secondary px-4 py-2 text-sm font-medium flex items-center gap-2 disabled:opacity-50"
           style={{ borderColor: "var(--border)", color: "var(--foreground)" }}
         >
           <MdUpload size={16} />

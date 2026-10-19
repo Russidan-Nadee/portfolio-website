@@ -70,10 +70,10 @@
   width: 38px;
   aspect-ratio: 1;
   place-items: center;
-  border: 1px solid var(--border);
-  border-radius: 50%;
-  background: var(--background);
-  color: var(--foreground);
+  border: 0;
+  border-radius: var(--button-radius);
+  background: var(--foreground);
+  color: var(--background);
   font-size: 1.35rem;
   line-height: 1;
   transition: transform 180ms ease;
@@ -114,21 +114,18 @@
   align-items: center;
   justify-content: center;
   padding: 14px 32px;
-  border-radius: 999px;
+  border-radius: var(--button-radius);
   background: var(--foreground);
   color: var(--background);
   font-size: 0.95rem;
   font-weight: 650;
   line-height: 1.2;
   text-decoration: none;
-  transition:
-    transform 180ms ease,
-    box-shadow 180ms ease;
+  transition: opacity 160ms ease;
 }
 
 .primaryAction:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 7px 18px rgb(25 29 37 / 14%);
+  opacity: 0.8;
 }
 
 .primaryAction:focus-visible {
