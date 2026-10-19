@@ -16,11 +16,20 @@ import {
   useSortable,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { useRef, useState } from "react";
+import {
+  memo,
+  useCallback,
+  useMemo,
+  useRef,
+  useState,
+  type Dispatch,
+  type SetStateAction,
+} from "react";
 import { MdDeleteOutline, MdUpload } from "react-icons/md";
 import type { GalleryImage, LocalizedText } from "./types";
 
 const LOCALES = ["th", "en", "ja"] as const;
+const POINTER_SENSOR_OPTIONS = { activationConstraint: { distance: 5 } };
 
 const inputStyle = {
   backgroundColor: "var(--background)",
@@ -28,7 +37,7 @@ const inputStyle = {
   color: "var(--foreground)",
 };
 
-function SortableGalleryItem({
+const SortableGalleryItem = memo(function SortableGalleryItem({
   id,
   image,
   index,
@@ -114,7 +123,7 @@ function SortableGalleryItem({
       </div>
     </div>
   );
-}
+});
 
 export default function GalleryEditor({
   items,
@@ -122,15 +131,19 @@ export default function GalleryEditor({
   onUpload,
 }: {
   items: GalleryImage[];
-  onChange: (items: GalleryImage[]) => void;
+  onChange: Dispatch<SetStateAction<GalleryImage[]>>;
   onUpload: (file: File) => Promise<string>;
 }) {
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const sensors = useSensors(
-    useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
+  const sensors = useSensors(useSensor(PointerSensor, POINTER_SENSOR_OPTIONS));
+  const itemCount = items.length;
+  // Text edits do not change the sortable positions. Keep the context's items
+  // stable so editing one caption does not notify every sortable card.
+  const ids = useMemo(
+    () => Array.from({ length: itemCount }, (_, i) => `gallery-${i}`),
+    [itemCount]
   );
-  const ids = items.map((_, i) => `gallery-${i}`);
 
   const handleFilesChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files ?? []);
@@ -138,8 +151,8 @@ export default function GalleryEditor({
     setUploading(true);
     try {
       const uploaded = await Promise.all(files.map((file) => onUpload(file)));
-      onChange([
-        ...items,
+      onChange((current) => [
+        ...current,
         ...uploaded.map((url) => ({ url, alt: { th: "", en: "", ja: "" } })),
       ]);
     } catch (err) {
@@ -155,16 +168,25 @@ export default function GalleryEditor({
     if (!over || active.id === over.id) return;
     const oldIndex = ids.indexOf(String(active.id));
     const newIndex = ids.indexOf(String(over.id));
-    onChange(arrayMove(items, oldIndex, newIndex));
+    if (oldIndex < 0 || newIndex < 0) return;
+    onChange((current) => arrayMove(current, oldIndex, newIndex));
   };
 
-  const updateAt = (index: number, image: GalleryImage) => {
-    onChange(items.map((img, i) => (i === index ? image : img)));
-  };
+  const updateAt = useCallback(
+    (index: number, image: GalleryImage) => {
+      onChange((current) =>
+        current.map((img, i) => (i === index ? image : img))
+      );
+    },
+    [onChange]
+  );
 
-  const deleteAt = (index: number) => {
-    onChange(items.filter((_, i) => i !== index));
-  };
+  const deleteAt = useCallback(
+    (index: number) => {
+      onChange((current) => current.filter((_, i) => i !== index));
+    },
+    [onChange]
+  );
 
   return (
     <div className="flex flex-col gap-3">

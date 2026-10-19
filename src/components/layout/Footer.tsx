@@ -23,6 +23,8 @@ const languageOptions = [
 export default function Footer() {
   const pathname = usePathname();
   const router = useRouter();
+  if (pathname === "/admin" || pathname.startsWith("/admin/")) return null;
+
   const locale = localeFromPath(pathname);
   const translations = locale === "th" ? th : locale === "ja" ? ja : en;
   const [city, country] = translations.footer.location

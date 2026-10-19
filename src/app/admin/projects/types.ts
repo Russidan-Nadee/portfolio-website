@@ -81,6 +81,17 @@ export interface ProjectData {
   featured: boolean;
 }
 
+export type ProjectSummary = Pick<
+  ProjectData,
+  | "id"
+  | "slug"
+  | "order"
+  | "title"
+  | "techSummary"
+  | "thumbnailUrl"
+  | "featured"
+>;
+
 export const blankLocalizedText = (): LocalizedText => ({
   th: "",
   en: "",

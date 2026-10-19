@@ -27,7 +27,7 @@ import SortableProjectCard from "./SortableProjectCard";
 import ProjectHeaderFields, {
   type ProjectHeaderValue,
 } from "./ProjectHeaderFields";
-import type { ProjectData } from "./types";
+import type { ProjectSummary } from "./types";
 
 const blankHeader = (): ProjectHeaderValue => ({
   slug: "",
@@ -51,10 +51,10 @@ const blankHeader = (): ProjectHeaderValue => ({
 export default function ProjectsBoard({
   initialItems,
 }: Readonly<{
-  initialItems: ProjectData[];
+  initialItems: ProjectSummary[];
 }>) {
   const router = useRouter();
-  const [items, setItems] = useState<ProjectData[]>(initialItems);
+  const [items, setItems] = useState<ProjectSummary[]>(initialItems);
   const [previousInitialItems, setPreviousInitialItems] =
     useState(initialItems);
   const [creating, setCreating] = useState<ProjectHeaderValue | null>(null);

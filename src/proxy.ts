@@ -5,13 +5,13 @@ import { locales } from "./lib/locale-path";
 
 export async function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
-  if (
-    /\.[^/]+$/.test(pathname) &&
-    !/^\/(?:en\/|th\/|ja\/)?portfolio\//.test(pathname)
-  ) {
-    return NextResponse.next();
-  }
   if (!pathname.startsWith("/admin/") && pathname !== "/admin") {
+    if (
+      /\.[^/]+$/.test(pathname) &&
+      !/^\/(?:en\/|th\/|ja\/)?portfolio\//.test(pathname)
+    ) {
+      return NextResponse.next();
+    }
     const segment = pathname.split("/")[1];
     if (!locales.some((locale) => locale === segment)) {
       const url = request.nextUrl.clone();
@@ -73,6 +73,24 @@ export async function proxy(request: NextRequest) {
     await supabase.auth.signOut();
   }
 
+  // The layout only needs the already verified email for display. Forward it
+  // inside the request instead of making a second auth network request there.
+  // Always overwrite client-supplied values and carry refreshed cookies along.
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.delete("x-admin-email");
+  if (isAuthorized && user.email) {
+    requestHeaders.set("x-admin-email", user.email);
+  }
+  const refreshedCookies = response.cookies.getAll();
+  response = NextResponse.next({ request: { headers: requestHeaders } });
+  refreshedCookies.forEach((cookie) => response.cookies.set(cookie));
+
+  const redirectWithCookies = (url: URL) => {
+    const redirect = NextResponse.redirect(url);
+    refreshedCookies.forEach((cookie) => redirect.cookies.set(cookie));
+    return redirect;
+  };
+
   if (isAuthCallback) {
     return response;
   }
@@ -80,13 +98,13 @@ export async function proxy(request: NextRequest) {
   if (!isLoginPage && !isAuthorized) {
     const url = request.nextUrl.clone();
     url.pathname = "/admin/login/";
-    return NextResponse.redirect(url);
+    return redirectWithCookies(url);
   }
 
   if (isLoginPage && isAuthorized) {
     const url = request.nextUrl.clone();
     url.pathname = "/admin/";
-    return NextResponse.redirect(url);
+    return redirectWithCookies(url);
   }
 
   return response;

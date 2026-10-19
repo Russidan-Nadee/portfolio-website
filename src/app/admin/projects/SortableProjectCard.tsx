@@ -6,14 +6,14 @@ import Link from "next/link";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { MdEdit, MdDeleteOutline, MdClose } from "react-icons/md";
-import type { ProjectData } from "./types";
+import type { ProjectSummary } from "./types";
 
 export default function SortableProjectCard({
   project,
   onToggleFeatured,
   onDelete,
 }: {
-  project: ProjectData;
+  project: ProjectSummary;
   onToggleFeatured: (id: string, featured: boolean) => void;
   onDelete: (id: string, slug: string) => void;
 }) {

@@ -70,6 +70,17 @@ pnpm dev
 4. **Open browser**
    Go to [http://localhost:3000](http://localhost:3000)
 
+### Database connections
+
+Copy `.env.example` to `.env` and fill in your Supabase credentials. Use separate connection URLs:
+
+- `DATABASE_URL`: the Supabase transaction pooler on port `6543`, with `?pgbouncer=true`, for the running app.
+- `DIRECT_URL`: the session pooler on port `5432` (or a direct database connection) for Prisma migrations. `prisma.config.ts` reads this variable first, with `DATABASE_URL` as a fallback for older setups.
+
+Set both variables in the deployment environment too, then redeploy. Changing local `.env` does not update Vercel. Restart the local dev server after changing a connection URL so its Prisma client opens a new pool. No database schema migration is required for this change.
+
+See [Supabase's Prisma guide](https://supabase.com/docs/guides/database/prisma) for the connection modes.
+
 ## 📁 Project Structure
 
 ```

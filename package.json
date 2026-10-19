@@ -58,6 +58,7 @@
     "@vitest/coverage-v8": "^4.1.11",
     "eslint": "^9",
     "eslint-config-next": "^16.1.6",
+    "happy-dom": "^21.0.3",
     "husky": "^9.1.7",
     "lint-staged": "^17.1.1",
     "prettier": "^3.9.6",

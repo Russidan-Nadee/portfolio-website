@@ -1,5 +1,5 @@
 // src/app/admin/layout.tsx
-import { createSupabaseServerAuthClient } from "@/lib/supabase-auth-server";
+import { headers } from "next/headers";
 import AdminChrome from "./AdminChrome";
 
 export default async function AdminLayout({
@@ -7,10 +7,7 @@ export default async function AdminLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const supabase = await createSupabaseServerAuthClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const email = (await headers()).get("x-admin-email");
 
-  return <AdminChrome email={user?.email ?? null}>{children}</AdminChrome>;
+  return <AdminChrome email={email}>{children}</AdminChrome>;
 }

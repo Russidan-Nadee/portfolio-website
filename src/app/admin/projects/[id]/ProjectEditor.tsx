@@ -1,7 +1,7 @@
 // src/app/admin/projects/[id]/ProjectEditor.tsx
 "use client";
 
-import { useState } from "react";
+import { useCallback, useState, type SetStateAction } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { MdArrowBack } from "react-icons/md";
@@ -20,7 +20,7 @@ import CardListEditor from "../CardListEditor";
 import GalleryEditor from "../GalleryEditor";
 import TechnicalDetailsEditor from "../TechnicalDetailsEditor";
 import FutureGoalsEditor from "../FutureGoalsEditor";
-import type { ProjectContent, ProjectData } from "../types";
+import type { GalleryImage, ProjectContent, ProjectData } from "../types";
 
 const TABS = [
   "Header",
@@ -65,6 +65,16 @@ export default function ProjectEditor({
   const [content, setContent] = useState<ProjectContent>(project.content);
   const [savingHeader, setSavingHeader] = useState(false);
   const [savingContent, setSavingContent] = useState(false);
+
+  const handleGalleryChange = useCallback(
+    (next: SetStateAction<GalleryImage[]>) => {
+      setContent((current) => ({
+        ...current,
+        gallery: typeof next === "function" ? next(current.gallery) : next,
+      }));
+    },
+    []
+  );
 
   const handleSaveHeader = async () => {
     setSavingHeader(true);
@@ -316,7 +326,7 @@ export default function ProjectEditor({
         <div className="flex flex-col gap-4">
           <GalleryEditor
             items={content.gallery}
-            onChange={(gallery) => setContent({ ...content, gallery })}
+            onChange={handleGalleryChange}
             onUpload={(file) => {
               const formData = new FormData();
               formData.set("file", file);
