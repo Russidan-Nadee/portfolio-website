@@ -1,4 +1,4 @@
-﻿.stage {
+.stage {
   position: relative;
   width: min(100%, var(--research-width, 920px));
   min-width: 0;

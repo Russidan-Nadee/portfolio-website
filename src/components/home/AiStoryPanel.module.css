@@ -209,6 +209,28 @@
   animation: sceneIn 0.4s ease-out both;
 }
 
+.productScene {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  visibility: hidden;
+  opacity: 0;
+  animation: none;
+}
+
+.changingScene[hidden] {
+  display: none;
+}
+
+.productSceneActive {
+  position: relative;
+  inset: auto;
+  pointer-events: auto;
+  visibility: visible;
+  opacity: 1;
+  animation: sceneIn 0.4s ease-out both;
+}
+
 .storyBody {
   display: grid;
   width: 100%;
@@ -671,6 +693,58 @@
 @media (max-width: 1023px),
   (max-height: 619px),
   (prefers-reduced-motion: reduce) {
+  .root {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Let the one persistent product scene follow the static cards on small
+     screens, without moving or recreating its iframe. */
+  .stickyViewport,
+  .frame {
+    display: contents;
+  }
+
+  .changingScene {
+    display: none;
+  }
+
+  .staticList {
+    order: 1;
+    margin-bottom: 18px;
+  }
+
+  .productScene {
+    position: static;
+    display: flex;
+    width: min(100%, 760px);
+    flex: none;
+    order: 2;
+    margin: 0 auto;
+    pointer-events: auto;
+    visibility: visible;
+    opacity: 1;
+    animation: none;
+  }
+
+  .productScene .storyBody {
+    gap: 26px;
+  }
+
+  .productScene .windowSceneTitle {
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip: auto;
+    margin: 0;
+    color: var(--ai-ink);
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 800;
+    line-height: 1.25;
+    white-space: normal;
+  }
+
   .staticCard .storyBody {
     gap: 26px;
   }
@@ -724,12 +798,27 @@
   }
 }
 
+@media (min-width: 1200px) and (prefers-reduced-motion: reduce),
+  (min-width: 1200px) and (max-height: 619px) {
+  .productScene {
+    width: min(100%, calc(100vw - 48px));
+  }
+}
+
 @media (max-width: 800px) {
+  .staticList {
+    margin-bottom: 64px;
+  }
+
   .staticCard:not(:last-child) {
     margin-bottom: 64px;
   }
 
   .staticCard .storyBody {
+    gap: 36px;
+  }
+
+  .productScene .storyBody {
     gap: 36px;
   }
 }

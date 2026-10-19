@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
@@ -175,13 +175,30 @@ const aiIcons = [
 ];
 
 const fastshipUrl = "https://fastship.ai/";
+const stickyLayoutQuery =
+  "(min-width: 1024px) and (min-height: 620px) and (prefers-reduced-motion: no-preference)";
+
+function subscribeStickyLayout(onChange: () => void) {
+  const media = window.matchMedia(stickyLayoutQuery);
+  media.addEventListener("change", onChange);
+  return () => media.removeEventListener("change", onChange);
+}
+
+function getStickyLayout() {
+  return window.matchMedia(stickyLayoutQuery).matches;
+}
+
+function getServerStickyLayout() {
+  return false;
+}
+
 const fastshipLinkLabel: Record<Locale, string> = {
   th: "เปิด FastShip AI ในแท็บใหม่",
   en: "Open FastShip AI in a new tab",
   ja: "FastShip AI を新しいタブで開く",
 };
 
-function FastshipPreview() {
+function FastshipPreview({ loadPreview }: { loadPreview: boolean }) {
   const screenRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -203,13 +220,15 @@ function FastshipPreview() {
 
   return (
     <div ref={screenRef} className={styles.macbookScreen} aria-hidden="true">
-      <iframe
-        className={styles.macbookSite}
-        src={fastshipUrl}
-        title="FastShip AI website preview"
-        loading="lazy"
-        tabIndex={-1}
-      />
+      {loadPreview && (
+        <iframe
+          className={styles.macbookSite}
+          src={fastshipUrl}
+          title="FastShip AI website preview"
+          loading="eager"
+          tabIndex={-1}
+        />
+      )}
     </div>
   );
 }
@@ -218,10 +237,12 @@ function StoryBody({
   scene,
   index,
   locale,
+  loadPreview = false,
 }: {
   scene: StoryScene;
   index: number;
   locale: Locale;
+  loadPreview?: boolean;
 }) {
   if (index < 2) {
     return (
@@ -265,7 +286,7 @@ function StoryBody({
         {railLabels[locale][2]}
       </h3>
       <div className={styles.macbook}>
-        <FastshipPreview />
+        <FastshipPreview loadPreview={loadPreview} />
         <Image
           className={styles.macbookFrame}
           src="/images/ai/macbook-pro-16-silver.webp"
@@ -295,8 +316,40 @@ export default function AiStoryPanel({ locale = "en" }: { locale?: Locale }) {
   const triggerRef = useRef<ScrollTrigger | null>(null);
   const [activeScene, setActiveScene] = useState(0);
   const [introVisible, setIntroVisible] = useState(false);
+  const [previewStarted, setPreviewStarted] = useState(false);
+  const isStickyLayout = useSyncExternalStore(
+    subscribeStickyLayout,
+    getStickyLayout,
+    getServerStickyLayout
+  );
+  const productHidden = isStickyLayout && activeScene !== 2;
   const copy = copyByLocale[locale];
   const [leadBeforeAi, leadAfterAi] = introCopy[locale].lead.split("AI");
+
+  useEffect(() => {
+    const intro = introRef.current;
+    const section = sectionRef.current;
+    if (!intro || !section) return;
+
+    if (typeof IntersectionObserver === "undefined") {
+      const frame = window.requestAnimationFrame(() => setPreviewStarted(true));
+      return () => window.cancelAnimationFrame(frame);
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+        setPreviewStarted(true);
+        observer.disconnect();
+      },
+      { rootMargin: "1000px 0px", threshold: 0 }
+    );
+    // Observe the whole section too, so restored scroll positions and direct
+    // navigation into a later scene also start the preview.
+    observer.observe(intro);
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const intro = introRef.current;
@@ -348,100 +401,95 @@ export default function AiStoryPanel({ locale = "en" }: { locale?: Locale }) {
     if (!section || !frame || !rail || !viewport) return;
 
     const media = gsap.matchMedia();
-    media.add(
-      "(min-width: 1024px) and (min-height: 620px) and (prefers-reduced-motion: no-preference)",
-      () => {
-        const clamp01 = (value: number) => Math.max(0, Math.min(1, value));
-        const mix = (from: number, to: number, progress: number) =>
-          from + (to - from) * progress;
-        const updateStory = (progress: number) => {
-          const entrance = clamp01((progress - 0.04) / 0.25);
-          const railEntrance = clamp01((progress - 0.15) / 0.1);
-          const enterHorizontal = Math.min(
-            72,
-            Math.max(48, window.innerWidth * 0.04)
-          );
-          const enterVertical = Math.min(
-            72,
-            Math.max(56, window.innerHeight * 0.07)
-          );
-          const settledRight = Math.min(
-            32,
-            Math.max(22, window.innerWidth * 0.024)
-          );
-          const settledVertical = window.innerHeight < 720 ? 20 : 28;
-          const settledLeft = Math.round(window.innerWidth * 0.32);
-          const settledWidth =
-            viewport.clientWidth - settledLeft - settledRight;
-          const settledHeight = viewport.clientHeight - settledVertical * 2;
-          const enterWidth = viewport.clientWidth - enterHorizontal * 2;
-          const enterHeight = (enterWidth * settledHeight) / settledWidth;
-          const enterBottom =
-            viewport.clientHeight - enterVertical - enterHeight;
-          const expandedShift = 1 - entrance;
-          const terminalLift = Math.min(
-            230,
-            Math.max(0, enterHeight - viewport.clientHeight) * 0.68
-          );
+    media.add(stickyLayoutQuery, () => {
+      const clamp01 = (value: number) => Math.max(0, Math.min(1, value));
+      const mix = (from: number, to: number, progress: number) =>
+        from + (to - from) * progress;
+      const updateStory = (progress: number) => {
+        const entrance = clamp01((progress - 0.04) / 0.25);
+        const railEntrance = clamp01((progress - 0.15) / 0.1);
+        const enterHorizontal = Math.min(
+          72,
+          Math.max(48, window.innerWidth * 0.04)
+        );
+        const enterVertical = Math.min(
+          72,
+          Math.max(56, window.innerHeight * 0.07)
+        );
+        const settledRight = Math.min(
+          32,
+          Math.max(22, window.innerWidth * 0.024)
+        );
+        const settledVertical = window.innerHeight < 720 ? 20 : 28;
+        const settledLeft = Math.round(window.innerWidth * 0.32);
+        const settledWidth = viewport.clientWidth - settledLeft - settledRight;
+        const settledHeight = viewport.clientHeight - settledVertical * 2;
+        const enterWidth = viewport.clientWidth - enterHorizontal * 2;
+        const enterHeight = (enterWidth * settledHeight) / settledWidth;
+        const enterBottom = viewport.clientHeight - enterVertical - enterHeight;
+        const expandedShift = 1 - entrance;
+        const terminalLift = Math.min(
+          230,
+          Math.max(0, enterHeight - viewport.clientHeight) * 0.68
+        );
+        frame.style.setProperty(
+          "--terminal-entrance-y",
+          `${(-terminalLift * expandedShift).toFixed(2)}px`
+        );
+        frame.style.setProperty(
+          "--terminal-entrance-x",
+          `${(Math.min(70, viewport.clientWidth * 0.04) * expandedShift).toFixed(2)}px`
+        );
+        const setInset = (name: string, start: number, end: number) => {
           frame.style.setProperty(
-            "--terminal-entrance-y",
-            `${(-terminalLift * expandedShift).toFixed(2)}px`
+            name,
+            `${mix(start, end, entrance).toFixed(2)}px`
           );
-          frame.style.setProperty(
-            "--terminal-entrance-x",
-            `${(Math.min(70, viewport.clientWidth * 0.04) * expandedShift).toFixed(2)}px`
-          );
-          const setInset = (name: string, start: number, end: number) => {
-            frame.style.setProperty(
-              name,
-              `${mix(start, end, entrance).toFixed(2)}px`
-            );
-          };
-
-          setInset("--frame-left", enterHorizontal, settledLeft);
-          setInset("--frame-right", enterHorizontal, settledRight);
-          setInset("--frame-top", enterVertical, settledVertical);
-          setInset("--frame-bottom", enterBottom, settledVertical);
-
-          rail.style.opacity = railEntrance.toFixed(3);
-          rail.style.visibility = railEntrance === 0 ? "hidden" : "visible";
-          rail.style.transform = `translateX(${mix(-24, 0, railEntrance).toFixed(2)}px)`;
-
-          const next = progress < 0.36 ? 0 : progress < 0.64 ? 1 : 2;
-          setActiveScene((current) => (current === next ? current : next));
         };
 
-        const trigger = ScrollTrigger.create({
-          trigger: section,
-          start: "top top+=64",
-          end: "bottom bottom",
-          onUpdate: (self) => updateStory(self.progress),
-          onRefresh: (self) => updateStory(self.progress),
-          onLeaveBack: () => updateStory(0),
-        });
+        setInset("--frame-left", enterHorizontal, settledLeft);
+        setInset("--frame-right", enterHorizontal, settledRight);
+        setInset("--frame-top", enterVertical, settledVertical);
+        setInset("--frame-bottom", enterBottom, settledVertical);
 
-        triggerRef.current = trigger;
-        updateStory(trigger.progress);
+        rail.style.opacity = railEntrance.toFixed(3);
+        rail.style.visibility = railEntrance === 0 ? "hidden" : "visible";
+        rail.style.transform = `translateX(${mix(-24, 0, railEntrance).toFixed(2)}px)`;
 
-        return () => {
-          trigger.kill();
-          triggerRef.current = null;
-          for (const property of [
-            "--frame-left",
-            "--frame-right",
-            "--frame-top",
-            "--frame-bottom",
-            "--terminal-entrance-x",
-            "--terminal-entrance-y",
-          ]) {
-            frame.style.removeProperty(property);
-          }
-          rail.style.removeProperty("opacity");
-          rail.style.removeProperty("visibility");
-          rail.style.removeProperty("transform");
-        };
-      }
-    );
+        const next = progress < 0.36 ? 0 : progress < 0.64 ? 1 : 2;
+        setActiveScene((current) => (current === next ? current : next));
+      };
+
+      const trigger = ScrollTrigger.create({
+        trigger: section,
+        start: "top top+=64",
+        end: "bottom bottom",
+        onUpdate: (self) => updateStory(self.progress),
+        onRefresh: (self) => updateStory(self.progress),
+        onLeaveBack: () => updateStory(0),
+      });
+
+      triggerRef.current = trigger;
+      updateStory(trigger.progress);
+
+      return () => {
+        trigger.kill();
+        triggerRef.current = null;
+        for (const property of [
+          "--frame-left",
+          "--frame-right",
+          "--frame-top",
+          "--frame-bottom",
+          "--terminal-entrance-x",
+          "--terminal-entrance-y",
+        ]) {
+          frame.style.removeProperty(property);
+        }
+        rail.style.removeProperty("opacity");
+        rail.style.removeProperty("visibility");
+        rail.style.removeProperty("transform");
+      };
+    });
 
     return () => media.revert();
   }, []);
@@ -494,6 +542,17 @@ export default function AiStoryPanel({ locale = "en" }: { locale?: Locale }) {
           {copy.sectionTitle}
         </h2>
 
+        <div className={styles.staticList}>
+          {copy.scenes.slice(0, 2).map((scene, index) => (
+            <article
+              className={`${styles.staticCard} ${styles.windowStaticCard}`}
+              key={scene.tag}
+            >
+              <StoryBody scene={scene} index={index} locale={locale} />
+            </article>
+          ))}
+        </div>
+
         <div className={styles.stickyViewport}>
           <nav
             ref={railRef}
@@ -515,19 +574,37 @@ export default function AiStoryPanel({ locale = "en" }: { locale?: Locale }) {
           </nav>
 
           <div
+            id="ai-story-panel"
             ref={frameRef}
             data-ai-story-frame
             className={`${styles.frame} ${styles.windowFrame}`}
           >
             <div
-              id="ai-story-panel"
               key={`${locale}-${activeScene}`}
-              className={styles.sceneEnter}
+              className={`${styles.sceneEnter} ${styles.changingScene}`}
+              hidden={activeScene === 2}
+            >
+              {activeScene !== 2 && (
+                <StoryBody
+                  scene={copy.scenes[activeScene]}
+                  index={activeScene}
+                  locale={locale}
+                />
+              )}
+            </div>
+
+            {/* Keep this scene and its iframe mounted across scene, locale,
+                and responsive-layout changes. */}
+            <div
+              className={`${styles.sceneEnter} ${styles.productScene} ${activeScene === 2 ? styles.productSceneActive : ""}`}
+              aria-hidden={productHidden}
+              inert={productHidden}
             >
               <StoryBody
-                scene={copy.scenes[activeScene]}
-                index={activeScene}
+                scene={copy.scenes[2]}
+                index={2}
                 locale={locale}
+                loadPreview={previewStarted}
               />
             </div>
 
@@ -540,17 +617,6 @@ export default function AiStoryPanel({ locale = "en" }: { locale?: Locale }) {
               ))}
             </div>
           </div>
-        </div>
-
-        <div className={styles.staticList}>
-          {copy.scenes.map((scene, index) => (
-            <article
-              className={`${styles.staticCard} ${styles.windowStaticCard}`}
-              key={scene.tag}
-            >
-              <StoryBody scene={scene} index={index} locale={locale} />
-            </article>
-          ))}
         </div>
       </section>
     </>
