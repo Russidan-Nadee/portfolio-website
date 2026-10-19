@@ -64,14 +64,18 @@ const loadHomeData = unstable_cache(
           pdfUrl: true,
         },
       }),
+      prisma.resume.findUnique({
+        where: { id: "current" },
+        select: { id: true },
+      }),
     ]);
   },
-  ["home-data-v1"],
+  ["home-data-v2"],
   { tags: [publicCacheTags.home], revalidate: 3600 }
 );
 
 export default async function Home() {
-  const [skills, featuredProjects, heroProjects, certificateRecords] =
+  const [skills, featuredProjects, heroProjects, certificateRecords, resume] =
     await loadHomeData();
 
   const heroCertificates: HeroCertificateData[] = certificateRecords
@@ -95,6 +99,7 @@ export default async function Home() {
       featuredProjects={featuredProjects as unknown as HeroProjectData[]}
       heroProjects={heroProjects as unknown as HeroProjectData[]}
       heroCertificates={heroCertificates}
+      resumeAvailable={Boolean(resume)}
     />
   );
 }

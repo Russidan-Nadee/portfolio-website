@@ -16,7 +16,8 @@
     "location": "ตั้งอยู่ที่กรุงเทพมหานคร ประเทศไทย",
     "buttons": {
       "portfolio": "ผลงาน",
-      "contact": "ติดต่อ"
+      "contact": "ติดต่อ",
+      "resume": "ดาวน์โหลดเรซูเม่"
     },
     "projectsShowcase": {
       "title": "โปรเจกต์แนะนำ",

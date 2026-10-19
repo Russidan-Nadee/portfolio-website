@@ -16,7 +16,8 @@
     "location": "based in Bangkok, Thailand.",
     "buttons": {
       "portfolio": "Portfolio",
-      "contact": "Contact"
+      "contact": "Contact",
+      "resume": "Download resume"
     },
     "projectsShowcase": {
       "title": "Featured Projects",

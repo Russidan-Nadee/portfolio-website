@@ -16,7 +16,8 @@
     "location": "タイ、バンコクを拠点としています。",
     "buttons": {
       "portfolio": "ポートフォリオ",
-      "contact": "お問い合わせ"
+      "contact": "お問い合わせ",
+      "resume": "履歴書をダウンロード"
     },
     "projectsShowcase": {
       "title": "注目のプロジェクト",

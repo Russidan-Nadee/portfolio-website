@@ -412,9 +412,43 @@ a.card:focus-visible {
 }
 
 .primaryAction:focus-visible,
-.secondaryAction:focus-visible {
+.secondaryAction:focus-visible,
+.resumeAction:focus-visible {
   outline: 3px solid var(--foreground);
   outline-offset: 4px;
+}
+
+.resumeAction {
+  display: inline-flex;
+  min-height: 44px;
+  max-width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  margin-top: 18px;
+  padding: 9px 15px;
+  border: 1px solid color-mix(in srgb, var(--foreground) 18%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--foreground) 4%, var(--background));
+  color: var(--foreground);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.5;
+  text-decoration: none;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    transform 160ms ease;
+}
+
+.resumeAction svg {
+  flex-shrink: 0;
+}
+
+.resumeAction:hover {
+  border-color: color-mix(in srgb, var(--foreground) 40%, transparent);
+  background: color-mix(in srgb, var(--foreground) 8%, var(--background));
+  transform: translateY(-2px);
 }
 
 @keyframes slowOrbit {
@@ -512,6 +546,10 @@ a.card:focus-visible {
     --card-width: 120px;
   }
 
+  .hero[data-has-resume="true"] {
+    --hero-height: clamp(640px, calc(100svh - 4rem), 760px);
+  }
+
   .content {
     width: calc(100% - 144px);
   }
@@ -542,6 +580,17 @@ a.card:focus-visible {
     min-height: 44px;
     padding: 10px 14px;
     font-size: 0.75rem;
+  }
+
+  .resumeAction {
+    gap: 5px;
+    padding-inline: 10px;
+    font-size: 0.65rem;
+  }
+
+  .resumeAction svg {
+    width: 14px;
+    height: 14px;
   }
 
   .cardSlot3,
@@ -593,7 +642,8 @@ a.card:focus-visible {
   }
 
   .primaryAction,
-  .secondaryAction {
+  .secondaryAction,
+  .resumeAction {
     transition: none;
   }
 }

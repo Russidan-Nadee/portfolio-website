@@ -10,6 +10,7 @@ const navItems = [
   { label: "Experience", href: "/admin/experience" },
   { label: "Projects", href: "/admin/projects" },
   { label: "Certificates", href: "/admin/certificates" },
+  { label: "Resume", href: "/admin/resume" },
 ];
 
 export default function AdminChrome({

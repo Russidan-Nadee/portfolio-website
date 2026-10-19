@@ -102,3 +102,12 @@ model Certificate {
   @@index([active, order])
   @@map("certificates")
 }
+
+model Resume {
+  id          String   @id @default("current")
+  storagePath String
+  sizeBytes   Int
+  updatedAt   DateTime @updatedAt
+
+  @@map("resumes")
+}

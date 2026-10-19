@@ -2,12 +2,14 @@
 
 import { useEffect, useRef } from "react";
 import Link from "next/link";
+import { Download } from "lucide-react";
 import { localizedPath } from "@/lib/locale-path";
 import OptimizedImage from "@/components/ui/OptimizedImage";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import type { ProjectData } from "@/app/admin/projects/types";
 import styles from "./CreativeHero.module.css";
+import ResumePreview from "./ResumePreview";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -21,6 +23,7 @@ interface HeroTranslations {
     buttons?: {
       portfolio?: string;
       contact?: string;
+      resume?: string;
     };
   };
 }
@@ -43,6 +46,7 @@ interface CreativeHeroProps {
   projects?: HeroProjectData[];
   certificates?: HeroCertificateData[];
   locale?: HeroLocale;
+  resumeAvailable?: boolean;
 }
 
 interface HeroCard {
@@ -99,11 +103,13 @@ export default function CreativeHero({
   projects = [],
   certificates = [],
   locale = "en",
+  resumeAvailable = false,
 }: CreativeHeroProps) {
   const heroRef = useRef<HTMLElement>(null);
   const completedCardsRef = useRef<Set<EventTarget>>(new Set());
   const activeLocale: HeroLocale =
     locale === "th" || locale === "ja" ? locale : "en";
+  const resumeLabel = translations?.home?.buttons?.resume || "Download resume";
   const projectQueue: HeroCard[] = projects.slice(0, 6).map((project) => ({
     kind: "project",
     id: project.id || project.slug,
@@ -292,6 +298,7 @@ export default function CreativeHero({
       className={styles.hero}
       aria-labelledby="home-hero-title"
       data-creative-hero
+      data-has-resume={resumeAvailable ? "true" : undefined}
     >
       <div
         className={`${styles.content} ${cards.length > 0 ? styles.contentAnimated : ""}`}
@@ -315,11 +322,23 @@ export default function CreativeHero({
           </Link>
           <Link
             href={localizedPath("/contact", activeLocale)}
-            className={styles.secondaryAction}
+            className={styles.primaryAction}
           >
             {translations?.home?.buttons?.contact || "Get in touch"}
           </Link>
         </div>
+        {resumeAvailable && (
+          <a
+            href={localizedPath("/resume/download", activeLocale)}
+            download="russidan-resume.pdf"
+            className={styles.resumeAction}
+            aria-label={`${resumeLabel} (PDF)`}
+          >
+            <Download aria-hidden="true" size={16} />
+            <span>{resumeLabel}</span>
+            <ResumePreview locale={activeLocale} />
+          </a>
+        )}
       </div>
 
       {cards.length > 0 && (
