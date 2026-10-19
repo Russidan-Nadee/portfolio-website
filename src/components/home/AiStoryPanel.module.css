@@ -724,6 +724,16 @@
   }
 }
 
+@media (max-width: 800px) {
+  .staticCard:not(:last-child) {
+    margin-bottom: 64px;
+  }
+
+  .staticCard .storyBody {
+    gap: 36px;
+  }
+}
+
 @media (max-width: 540px) {
   .root {
     padding: 76px 14px 18px;

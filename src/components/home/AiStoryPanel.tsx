@@ -239,14 +239,20 @@ function StoryBody({
         )}
         {index === 0 ? (
           <>
-            <h3 className={styles.visuallyHidden}>{scene.title}</h3>
+            <h3
+              className={`${styles.visuallyHidden} ${styles.windowSceneTitle}`}
+            >
+              {railLabels[locale][0]}
+            </h3>
             <TerminalPair locale={locale} />
             <p className={styles.sceneCaption}>{scene.description}</p>
           </>
         ) : (
           <>
             <ResearchBrowser key={locale} locale={locale} />
-            <p className={styles.sceneCaption}>{scene.description}</p>
+            <p className={styles.sceneCaption} data-ai-story-caption>
+              {scene.description}
+            </p>
           </>
         )}
       </div>
@@ -510,6 +516,7 @@ export default function AiStoryPanel({ locale = "en" }: { locale?: Locale }) {
 
           <div
             ref={frameRef}
+            data-ai-story-frame
             className={`${styles.frame} ${styles.windowFrame}`}
           >
             <div
