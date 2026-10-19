@@ -110,3 +110,28 @@ model Resume {
 - Independent focused review found no blocking correctness or security issues.
 - User requested stronger visual treatment during implementation; the link now uses a secondary capsule, red PDF icon, and visible focus/hover states.
 - Hovering any part of the download button renders a first-page thumbnail above it, using lazy-loaded PDF.js and its bundled worker. The preview has no visible labels, toolbar, or scrollbar; Escape and pointer leave dismiss it. Reopening after dismissal was verified in the browser.
+
+## Thumbnail cache follow-up
+
+The user requested an image cache prepared after the first screen appears, to remove the delay on hover. The previous tooltip mounted a new PDF.js document and fetched/rendered the PDF on every hover.
+
+### Audit and selected change
+
+| Priority | Target and evidence                                                                                            | Change and expected impact                                                                                                                | Confidence / effort / risk                                                                              | Validation                                                                      |
+| -------- | -------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| 1        | `ResumePdfThumbnail`: three hovers generated three PDF requests per page; first hover took 560–3262 ms locally | Render once after the Hero intro, on browser idle; retain the image and share in-flight work. Removes fetch/render from ready-cache hover | High / low / stale versions and memory retention, bounded by one current entry and version invalidation | Same browser workload, request count, version/retry tests, tooltip interactions |
+| Deferred | Generate a persistent thumbnail when uploading the PDF                                                         | Would also avoid rendering after a full page reload                                                                                       | Medium / higher / additional publishing and storage failure paths                                       | Not needed for the requested in-page hover improvement                          |
+
+### Measurement and decision
+
+Local Next.js development server, same headless Chrome session via CDP port 9231, 1440×900 viewport, existing 175607-byte PDF. Each of three runs reloads `/en/`, waits for Hero intro completion plus 2000 ms, then opens/closes the tooltip three times. Latency measures pointer-enter to the next animation frame with a ready canvas or decoded image. This is a local comparison, not a production latency guarantee.
+
+Reproduce on this workspace with `node tmp/measure-resume-hover.mjs` while the dev server and test Chrome session are running. The harness and browser profiles are local ignored files.
+
+| Iteration | Change                                                          | Correctness                                                    | Before                                                                                                  | After                                                                                         | Decision                                                                                                        |
+| --------- | --------------------------------------------------------------- | -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| 1         | Versioned, single-entry image cache and post-intro idle preload | 68 tests, typecheck, source lint; browser interactions checked | First-hover samples: 2157.9 / 3261.9 / 559.8 ms; repeat hovers: 190.5–709.5 ms; 3 PDF requests per page | First-hover samples: 485.1 / 8.6 / 7.0 ms; repeat hovers: 6.4–14.6 ms; 1 PDF request per page | Keep: ready-cache hovers avoid network and rendering; first hover can still wait if preloading has not finished |
+
+The cache key comes from the current resume's update timestamp, serialized safely through the home-data cache. A new version replaces the retained entry; failures allow retry. Rendering is serialized through document cleanup to preserve PDF.js worker safety. The temporary canvas is released; the measured image data URL is about 70 KB. No upload or download authorization changes were required.
+
+Approved tests prove one render for concurrent/preload/repeated requests, new images for new versions, retry after failure, and protection of a newer entry from an older failed request. Browser checks cover scheduling after the intro, reduced-motion mode, touch suppression, image-only presentation above the button, keyboard focus, Escape, and blur. The bounded optimization stops here because the repeated hover delay has been removed; persistent cross-reload thumbnails remain deferred.

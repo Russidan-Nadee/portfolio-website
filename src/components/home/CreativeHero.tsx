@@ -46,7 +46,7 @@ interface CreativeHeroProps {
   projects?: HeroProjectData[];
   certificates?: HeroCertificateData[];
   locale?: HeroLocale;
-  resumeAvailable?: boolean;
+  resumeVersion?: string;
 }
 
 interface HeroCard {
@@ -103,7 +103,7 @@ export default function CreativeHero({
   projects = [],
   certificates = [],
   locale = "en",
-  resumeAvailable = false,
+  resumeVersion,
 }: CreativeHeroProps) {
   const heroRef = useRef<HTMLElement>(null);
   const completedCardsRef = useRef<Set<EventTarget>>(new Set());
@@ -298,7 +298,7 @@ export default function CreativeHero({
       className={styles.hero}
       aria-labelledby="home-hero-title"
       data-creative-hero
-      data-has-resume={resumeAvailable ? "true" : undefined}
+      data-has-resume={resumeVersion ? "true" : undefined}
     >
       <div
         className={`${styles.content} ${cards.length > 0 ? styles.contentAnimated : ""}`}
@@ -327,7 +327,7 @@ export default function CreativeHero({
             {translations?.home?.buttons?.contact || "Get in touch"}
           </Link>
         </div>
-        {resumeAvailable && (
+        {resumeVersion && (
           <a
             href={localizedPath("/resume/download", activeLocale)}
             download="russidan-resume.pdf"
@@ -336,7 +336,7 @@ export default function CreativeHero({
           >
             <Download aria-hidden="true" size={16} />
             <span>{resumeLabel}</span>
-            <ResumePreview locale={activeLocale} />
+            <ResumePreview locale={activeLocale} version={resumeVersion} />
           </a>
         )}
       </div>

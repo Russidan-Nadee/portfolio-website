@@ -66,11 +66,11 @@ const loadHomeData = unstable_cache(
       }),
       prisma.resume.findUnique({
         where: { id: "current" },
-        select: { id: true },
+        select: { updatedAt: true },
       }),
     ]);
   },
-  ["home-data-v2"],
+  ["home-data-v3"],
   { tags: [publicCacheTags.home], revalidate: 3600 }
 );
 
@@ -99,7 +99,9 @@ export default async function Home() {
       featuredProjects={featuredProjects as unknown as HeroProjectData[]}
       heroProjects={heroProjects as unknown as HeroProjectData[]}
       heroCertificates={heroCertificates}
-      resumeAvailable={Boolean(resume)}
+      resumeVersion={
+        resume ? new Date(resume.updatedAt).toISOString() : undefined
+      }
     />
   );
 }

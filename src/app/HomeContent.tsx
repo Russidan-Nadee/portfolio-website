@@ -25,13 +25,13 @@ export default function HomeContent({
   featuredProjects,
   heroProjects,
   heroCertificates,
-  resumeAvailable,
+  resumeVersion,
 }: Readonly<{
   technologies: TechnologyItem[];
   featuredProjects: HeroProjectData[];
   heroProjects: HeroProjectData[];
   heroCertificates: HeroCertificateData[];
-  resumeAvailable: boolean;
+  resumeVersion?: string;
 }>) {
   const [locale, setLocale] = useState(useInitialLocale());
   const previewRef = useRef<HTMLDivElement>(null);
@@ -101,7 +101,7 @@ export default function HomeContent({
         projects={heroProjects}
         certificates={heroCertificates}
         locale={locale as "th" | "en" | "ja"}
-        resumeAvailable={resumeAvailable}
+        resumeVersion={resumeVersion}
       />
       <Technologies translations={translations} technologies={technologies} />
       <ProjectsShowcase
