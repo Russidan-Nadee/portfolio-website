@@ -132,6 +132,7 @@ export default function CertificateContent({
           }
         }
         .certificate-card {
+          box-shadow: 0 18px 50px -32px var(--certificate-accent, #64748b);
           transition:
             transform 350ms cubic-bezier(0.22, 1, 0.36, 1),
             box-shadow 350ms ease;
@@ -152,7 +153,12 @@ export default function CertificateContent({
         }
         .certificate-card:hover {
           transform: translateY(-8px);
-          box-shadow: 0 28px 65px -35px rgba(76, 29, 149, 0.55);
+          box-shadow: 0 28px 65px -35px
+            color-mix(
+              in srgb,
+              var(--certificate-accent, #64748b) 55%,
+              transparent
+            );
         }
         .certificate-card:hover::after {
           transform: translateX(130%) skewX(-18deg);
