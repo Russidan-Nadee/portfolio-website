@@ -83,7 +83,11 @@ export default function ReferrersCard({
           No data available for this period.
         </p>
       ) : (
-        <ol className="mt-4 space-y-3">
+        <ol
+          className="mt-4 max-h-80 space-y-3 overflow-y-auto overscroll-contain rounded-md pr-3 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--foreground)]"
+          aria-label="Referrers list"
+          tabIndex={0}
+        >
           {items.map((item, index) => {
             const source = describeReferrer(item.label);
             return (

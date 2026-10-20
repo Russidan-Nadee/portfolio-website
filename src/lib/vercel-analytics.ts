@@ -66,7 +66,7 @@ const querySpecs: QuerySpec[] = [
   {
     endpoint: "visits/aggregate",
     groupBy: "referrerHostname",
-    limit: 5,
+    limit: 100,
   },
   { endpoint: "visits/aggregate", groupBy: "deviceType", limit: 5 },
 ];

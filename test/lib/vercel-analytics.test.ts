@@ -118,7 +118,7 @@ function validResponses(): Response[] {
           visitors: 75,
         },
       ],
-      5
+      100
     ),
     documentedAggregateResponse(
       "deviceType",
@@ -179,7 +179,7 @@ test("builds personal-project requests without a team id", async () => {
       ["day", null],
       ["requestPath", "100"],
       ["country", "5"],
-      ["referrerHostname", "5"],
+      ["referrerHostname", "100"],
       ["deviceType", "5"],
     ]
   );
@@ -268,7 +268,7 @@ test("maps an empty response set to zero totals and empty collections", async ()
     documentedAggregateResponse("day", []),
     documentedAggregateResponse("requestPath", [], 100),
     documentedAggregateResponse("country", [], 5),
-    documentedAggregateResponse("referrerHostname", [], 5),
+    documentedAggregateResponse("referrerHostname", [], 100),
     documentedAggregateResponse("deviceType", [], 5),
   ]);
 

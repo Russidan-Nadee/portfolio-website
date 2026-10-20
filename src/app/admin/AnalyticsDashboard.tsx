@@ -441,9 +441,10 @@ export function AnalyticsDashboard({
           title="Countries"
           items={data.countries}
           showCountryFlags
+          scrollable
         />
         <ReferrersCard items={data.referrers} />
-        <BreakdownCard title="Devices" items={data.devices} />
+        <BreakdownCard title="Devices" items={data.devices} scrollable />
       </div>
 
       <footer
