@@ -2,9 +2,8 @@ name: Keep Database Alive
 
 on:
   schedule:
-    # Every 3 days at 03:00 UTC — well under Supabase's free-tier ~7 day
-    # inactivity pause window.
-    - cron: '0 3 */3 * *'
+    # Every day at 03:00 UTC (10:00 Asia/Bangkok) to keep the database active.
+    - cron: "0 3 * * *"
   workflow_dispatch: {}
 
 jobs:
