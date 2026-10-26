@@ -52,6 +52,63 @@ describe("AnalyticsDashboard server rendering", () => {
     expect(html).toMatch(/No data available for this period/);
   });
 
+  it.each(["2026-09-07", "2026-09-07T00:00:00.000Z"])(
+    "shows today's visitors as new X only in the Visitors card for %s",
+    (timestamp) => {
+      const html = renderResult({
+        status: "ready",
+        data: {
+          ...emptyData,
+          totals: { visitors: 23, pageviews: 30 },
+          trend: [
+            { timestamp, visitors: 5, pageviews: 20 },
+            { timestamp: "2026-09-06", visitors: 18, pageviews: 10 },
+          ],
+        },
+      });
+      const document = new DOMParser().parseFromString(html, "text/html");
+      const [visitors, pageViews] = document.querySelectorAll("article");
+
+      expect(visitors.querySelector("p")?.textContent).toBe("Visitors");
+      expect(visitors.querySelector("span")?.textContent).toBe("new 5");
+      expect(visitors.textContent).toContain("23");
+      expect(pageViews.querySelector("p")?.textContent).toBe("Page Views");
+      expect(pageViews.textContent).toContain("30");
+      expect(pageViews.querySelector("span")).toBeNull();
+    }
+  );
+
+  it.each([
+    {
+      scenario: "today has zero visitors",
+      trend: [
+        { timestamp: "2026-09-06", visitors: 9, pageviews: 12 },
+        { timestamp: "2026-09-07", visitors: 0, pageviews: 0 },
+      ],
+    },
+    {
+      scenario: "today is missing but yesterday has visitors",
+      trend: [{ timestamp: "2026-09-06", visitors: 9, pageviews: 12 }],
+    },
+    { scenario: "the trend is empty", trend: [] },
+  ])("hides new X when $scenario", ({ trend }) => {
+    const html = renderResult({
+      status: "ready",
+      data: {
+        ...emptyData,
+        totals: { visitors: 23, pageviews: 30 },
+        trend,
+      },
+    });
+    const document = new DOMParser().parseFromString(html, "text/html");
+    const [visitors, pageViews] = document.querySelectorAll("article");
+
+    expect(visitors.textContent).toContain("23");
+    expect(visitors.textContent).not.toMatch(/new /);
+    expect(pageViews.textContent).toContain("30");
+    expect(pageViews.textContent).not.toMatch(/new /);
+  });
+
   it("renders totals, chart, breakdown labels, and update metadata", () => {
     const data: AnalyticsDashboardData = {
       ...emptyData,

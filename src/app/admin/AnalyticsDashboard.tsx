@@ -81,7 +81,8 @@ function UnavailableState() {
 function SummaryCard({
   label,
   value,
-}: Readonly<{ label: string; value: number }>) {
+  newCount = 0,
+}: Readonly<{ label: string; value: number; newCount?: number }>) {
   return (
     <article
       className="rounded-2xl border p-5"
@@ -96,12 +97,22 @@ function SummaryCard({
       >
         {label}
       </p>
-      <p
-        className="mt-3 text-3xl font-bold tracking-tight"
-        style={{ color: "var(--foreground)" }}
-      >
-        {formatMetric(value)}
-      </p>
+      <div className="mt-3 flex flex-wrap items-baseline gap-x-2 gap-y-1">
+        <p
+          className="text-3xl font-bold tracking-tight"
+          style={{ color: "var(--foreground)" }}
+        >
+          {formatMetric(value)}
+        </p>
+        {newCount > 0 && (
+          <span
+            className="text-xs"
+            style={{ color: "var(--muted-foreground)" }}
+          >
+            new {formatMetric(newCount)}
+          </span>
+        )}
+      </div>
     </article>
   );
 }
@@ -400,6 +411,9 @@ export function AnalyticsDashboard({
   if (result.status === "unavailable") return <UnavailableState />;
 
   const { data } = result;
+  const todayVisitors =
+    data.trend.find((point) => point.timestamp.slice(0, 10) === data.until)
+      ?.visitors ?? 0;
   const topPages = [...data.topPages].sort(
     (first, second) =>
       second.pageviews - first.pageviews ||
@@ -429,7 +443,11 @@ export function AnalyticsDashboard({
       </header>
 
       <div className="grid gap-4 sm:grid-cols-2">
-        <SummaryCard label="Visitors" value={data.totals.visitors} />
+        <SummaryCard
+          label="Visitors"
+          value={data.totals.visitors}
+          newCount={todayVisitors}
+        />
         <SummaryCard label="Page Views" value={data.totals.pageviews} />
       </div>
 
