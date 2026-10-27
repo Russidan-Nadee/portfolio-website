@@ -42,6 +42,7 @@ export interface FutureGoal {
 }
 
 export interface ProjectContent {
+  companyNames?: LocalizedText;
   overview: {
     media?: OverviewMedia;
     about: {

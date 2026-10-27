@@ -1,4 +1,4 @@
-﻿// @vitest-environment happy-dom
+// @vitest-environment happy-dom
 import { act } from "react";
 import { createRoot, type Root } from "react-dom/client";
 import { renderToStaticMarkup } from "react-dom/server";
@@ -32,6 +32,7 @@ vi.mock("next/navigation", () => ({
   useRouter: () => ({ push: () => {}, refresh: () => {} }),
   usePathname: () => "/en/portfolio/example/",
 }));
+import { LocaleProvider } from "@/components/layout/LocaleProvider";
 import ProjectEditor from "../../../src/app/admin/projects/[id]/ProjectEditor";
 import ProjectDetailContent from "../../../src/app/portfolio/[slug]/ProjectDetailContent";
 import { updateProjectContent } from "../../../src/app/admin/projects/actions";
@@ -399,4 +400,81 @@ describe("Gallery tab visibility", () => {
     await clickButton("Overview");
     expect(container.textContent).toContain("About the Project");
   });
+});
+
+describe("project information without development duration", () => {
+  it.each([
+    {
+      locale: "th",
+      durationLabel:
+        "\u0e23\u0e30\u0e22\u0e30\u0e40\u0e27\u0e25\u0e32\u0e1e\u0e31\u0e12\u0e19\u0e32",
+      durationValue: "91 \u0e27\u0e31\u0e19",
+      statusLabel: "\u0e2a\u0e16\u0e32\u0e19\u0e30",
+      statusValue:
+        "\u0e40\u0e1c\u0e22\u0e41\u0e1e\u0e23\u0e48\u0e41\u0e25\u0e49\u0e27",
+      companyLabel: "\u0e1a\u0e23\u0e34\u0e29\u0e31\u0e17",
+      technologyLabel:
+        "\u0e40\u0e17\u0e04\u0e42\u0e19\u0e42\u0e25\u0e22\u0e35\u0e2b\u0e25\u0e31\u0e01",
+    },
+    {
+      locale: "en",
+      durationLabel: "Development Duration",
+      durationValue: "91 days",
+      statusLabel: "Status",
+      statusValue: "Published",
+      companyLabel: "Company",
+      technologyLabel: "Core Technologies",
+    },
+    {
+      locale: "ja",
+      durationLabel: "\u958b\u767a\u671f\u9593",
+      durationValue: "91\u65e5\u9593",
+      statusLabel: "\u30b9\u30c6\u30fc\u30bf\u30b9",
+      statusValue: "\u516c\u958b\u6e08\u307f",
+      companyLabel: "\u4f1a\u793e",
+      technologyLabel: "\u4e3b\u8981\u6280\u8853",
+    },
+  ])(
+    "omits duration but retains the three useful information fields in $locale",
+    ({
+      locale,
+      durationLabel,
+      durationValue,
+      statusLabel,
+      statusValue,
+      companyLabel,
+      technologyLabel,
+    }) => {
+      const project = projectFixture();
+      project.duration = {
+        th: durationValue,
+        en: durationValue,
+        ja: durationValue,
+      };
+      project.status = { th: statusValue, en: statusValue, ja: statusValue };
+      project.company = "Example Client";
+      const page = document.createElement("div");
+      page.innerHTML = renderToStaticMarkup(
+        <LocaleProvider locale={locale as "th" | "en" | "ja"}>
+          <ProjectDetailContent
+            project={project}
+            navigation={{ projectNumber: 1, totalProjects: 1 }}
+          />
+        </LocaleProvider>
+      );
+      expect(page.textContent).not.toContain(durationLabel);
+      expect(page.textContent).not.toContain(durationValue);
+      const status = Array.from(page.querySelectorAll("div")).find(
+        (element) => element.textContent === statusLabel
+      );
+      expect(status).toBeDefined();
+      const informationGrid = status!.parentElement!.parentElement!;
+      expect(informationGrid.children.length).toBe(3);
+      expect(informationGrid.textContent).toContain(statusValue);
+      expect(informationGrid.textContent).toContain(companyLabel);
+      expect(informationGrid.textContent).toContain("Example Client");
+      expect(informationGrid.textContent).toContain(technologyLabel);
+      expect(informationGrid.textContent).toContain("React");
+    }
+  );
 });

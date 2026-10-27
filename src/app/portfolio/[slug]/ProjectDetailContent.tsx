@@ -17,22 +17,19 @@ const BACK_TEXT: Record<string, string> = {
 
 const INFO_LABELS: Record<
   string,
-  { duration: string; status: string; company: string; technology: string }
+  { status: string; company: string; technology: string }
 > = {
   th: {
-    duration: "ระยะเวลาพัฒนา",
     status: "สถานะ",
     company: "บริษัท",
     technology: "เทคโนโลยีหลัก",
   },
   en: {
-    duration: "Development Duration",
     status: "Status",
     company: "Company",
     technology: "Core Technologies",
   },
   ja: {
-    duration: "開発期間",
     status: "ステータス",
     company: "会社",
     technology: "主要技術",
@@ -155,9 +152,11 @@ export default function ProjectDetailContent({
 
         <ProjectInfoBar
           data={{
-            duration: project.duration[locale] || project.duration.en,
             status: project.status[locale] || project.status.en,
-            company: project.company,
+            company:
+              content.companyNames?.[locale] ||
+              content.companyNames?.en ||
+              project.company,
             technologies: project.technologies,
             labels: INFO_LABELS[locale],
           }}
