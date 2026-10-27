@@ -179,7 +179,7 @@ export default function ProjectDetailContent({
               title: f.title[locale] || f.title.en,
               description: f.description[locale] || f.description.en,
             })),
-            gallery: content.gallery.map((g) => ({
+            gallery: (content.gallery ?? []).map((g) => ({
               url: g.url,
               alt: g.alt[locale] || g.alt.en,
             })),
@@ -188,7 +188,7 @@ export default function ProjectDetailContent({
                 key: d.key,
                 value: d.value[locale] || d.value.en,
               })),
-              challenges: content.technical.challenges.map((c) => ({
+              challenges: (content.technical.challenges ?? []).map((c) => ({
                 title: c.title[locale] || c.title.en,
                 description: c.description[locale] || c.description.en,
               })),
@@ -197,7 +197,7 @@ export default function ProjectDetailContent({
               title: r.title[locale] || r.title.en,
               description: r.description[locale] || r.description.en,
             })),
-            futureGoals: content.futureGoals.map((g) => ({
+            futureGoals: (content.futureGoals ?? []).map((g) => ({
               description: g.description[locale] || g.description.en,
             })),
           }}

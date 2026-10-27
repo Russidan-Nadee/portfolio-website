@@ -121,7 +121,7 @@ export default function ProjectTabsContent({
     { id: "gallery", label: t.gallery },
     { id: "technical", label: t.technical },
     { id: "results", label: t.results },
-  ];
+  ].filter((tab) => tab.id !== "gallery" || content.gallery.length > 0);
 
   return (
     <div
@@ -412,49 +412,51 @@ export default function ProjectTabsContent({
             </div>
           </div>
 
-          <div className="mb-6">
-            <h3
-              className="text-xl font-semibold mb-4 flex items-center gap-2"
-              style={{ color: "var(--foreground)" }}
-            >
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+          {content.technical.challenges.length > 0 && (
+            <div className="mb-6">
+              <h3
+                className="text-xl font-semibold mb-4 flex items-center gap-2"
+                style={{ color: "var(--foreground)" }}
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"
-                />
-              </svg>
-              {t.challenges}
-            </h3>
-            <div className="space-y-3">
-              {content.technical.challenges.map((challenge, index) => (
-                <div
-                  key={index}
-                  className="p-4 rounded-lg border-l-4"
-                  style={{
-                    backgroundColor: "var(--muted)",
-                    borderLeftColor: "var(--muted-foreground)",
-                  }}
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
                 >
-                  <strong style={{ color: "var(--foreground)" }}>
-                    {challenge.title}:
-                  </strong>
-                  <span
-                    style={{ color: "var(--muted-foreground)" }}
-                    className="ml-2"
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"
+                  />
+                </svg>
+                {t.challenges}
+              </h3>
+              <div className="space-y-3">
+                {content.technical.challenges.map((challenge, index) => (
+                  <div
+                    key={index}
+                    className="p-4 rounded-lg border-l-4"
+                    style={{
+                      backgroundColor: "var(--muted)",
+                      borderLeftColor: "var(--muted-foreground)",
+                    }}
                   >
-                    {challenge.description}
-                  </span>
-                </div>
-              ))}
+                    <strong style={{ color: "var(--foreground)" }}>
+                      {challenge.title}:
+                    </strong>
+                    <span
+                      style={{ color: "var(--muted-foreground)" }}
+                      className="ml-2"
+                    >
+                      {challenge.description}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       )}
 
@@ -503,28 +505,30 @@ export default function ProjectTabsContent({
             ))}
           </div>
 
-          <div
-            className="mt-8 p-6 rounded-lg border"
-            style={{
-              backgroundColor: "var(--muted)",
-              borderColor: "var(--border)",
-            }}
-          >
-            <h4
-              className="text-lg font-semibold mb-3"
-              style={{ color: "var(--foreground)" }}
+          {content.futureGoals.length > 0 && (
+            <div
+              className="mt-8 p-6 rounded-lg border"
+              style={{
+                backgroundColor: "var(--muted)",
+                borderColor: "var(--border)",
+              }}
             >
-              {t.futureGoals}
-            </h4>
-            <ul
-              className="space-y-2"
-              style={{ color: "var(--muted-foreground)" }}
-            >
-              {content.futureGoals.map((goal, index) => (
-                <li key={index}>• {goal.description}</li>
-              ))}
-            </ul>
-          </div>
+              <h4
+                className="text-lg font-semibold mb-3"
+                style={{ color: "var(--foreground)" }}
+              >
+                {t.futureGoals}
+              </h4>
+              <ul
+                className="space-y-2"
+                style={{ color: "var(--muted-foreground)" }}
+              >
+                {content.futureGoals.map((goal, index) => (
+                  <li key={index}>• {goal.description}</li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       )}
     </div>

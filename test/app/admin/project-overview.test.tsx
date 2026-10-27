@@ -255,3 +255,148 @@ describe("Overview media editing and saving", () => {
     expect(database.writes).toBe(0);
   });
 });
+
+describe("optional project detail sections", () => {
+  async function openTab(project: ProjectData, tab: string) {
+    project = { ...project, overviewImageUrl: "" };
+    await act(async () =>
+      root.render(
+        <ProjectDetailContent
+          project={project}
+          navigation={{ projectNumber: 1, totalProjects: 1 }}
+        />
+      )
+    );
+    await clickButton(tab);
+  }
+
+  function headings() {
+    return Array.from(container.querySelectorAll("h3, h4")).map(
+      (heading) => heading.textContent
+    );
+  }
+
+  it.each([
+    { label: "null", value: null },
+    { label: "missing", value: undefined },
+    { label: "empty", value: [] },
+  ])(
+    "hides the Challenges section when its data is $label while retaining technical details",
+    async ({ value }) => {
+      const project = projectFixture();
+      project.content.technical.details = [
+        { key: "Framework", value: { th: "", en: "Next.js", ja: "" } },
+      ];
+      Object.assign(project.content.technical, { challenges: value });
+      await openTab(project, "Technical Details");
+      expect(headings()).not.toContain("Challenges");
+      expect(container.textContent).toContain("Next.js");
+    }
+  );
+
+  it("shows the Challenges heading and content when a challenge exists", async () => {
+    const project = projectFixture();
+    project.content.technical.challenges = [
+      {
+        title: { th: "", en: "Responsive layout", ja: "" },
+        description: {
+          th: "",
+          en: "Adapted the supplied design for mobile.",
+          ja: "",
+        },
+      },
+    ];
+    await openTab(project, "Technical Details");
+    expect(headings()).toContain("Challenges");
+    expect(container.textContent).toContain("Responsive layout");
+    expect(container.textContent).toContain(
+      "Adapted the supplied design for mobile."
+    );
+  });
+
+  it.each([
+    { label: "null", value: null },
+    { label: "missing", value: undefined },
+    { label: "empty", value: [] },
+  ])(
+    "hides Future Goals when its data is $label while retaining results",
+    async ({ value }) => {
+      const project = projectFixture();
+      project.content.results = [
+        {
+          title: { th: "", en: "Live website", ja: "" },
+          description: { th: "", en: "Delivered the website.", ja: "" },
+        },
+      ];
+      Object.assign(project.content, { futureGoals: value });
+      await openTab(project, "Results");
+      expect(headings()).not.toContain("Future Goals");
+      expect(container.textContent).toContain("Delivered the website.");
+    }
+  );
+
+  it("shows the Future Goals heading and content when a goal exists", async () => {
+    const project = projectFixture();
+    project.content.futureGoals = [
+      { description: { th: "", en: "Add another language.", ja: "" } },
+    ];
+    await openTab(project, "Results");
+    expect(headings()).toContain("Future Goals");
+    expect(container.querySelector("li")?.textContent).toContain(
+      "Add another language."
+    );
+  });
+});
+
+describe("Gallery tab visibility", () => {
+  async function mountProject(project: ProjectData) {
+    await act(async () =>
+      root.render(
+        <ProjectDetailContent
+          project={{ ...project, overviewImageUrl: "" }}
+          navigation={{ projectNumber: 1, totalProjects: 1 }}
+        />
+      )
+    );
+  }
+
+  it.each([
+    { label: "null", value: null },
+    { label: "missing", value: undefined },
+    { label: "empty", value: [] },
+  ])(
+    "hides the Gallery tab when gallery data is $label without affecting other tabs",
+    async ({ value }) => {
+      const project = projectFixture();
+      Object.assign(project.content, { gallery: value });
+      await mountProject(project);
+      const buttons = Array.from(container.querySelectorAll("button"));
+      expect(buttons.some((button) => button.textContent === "Gallery")).toBe(
+        false
+      );
+      expect(container.textContent).toContain("About the Project");
+      await clickButton("Features");
+      expect(container.textContent).toContain("Key Features");
+    }
+  );
+
+  it("shows a working Gallery tab and its image when gallery data exists", async () => {
+    const project = projectFixture();
+    project.content.gallery = [
+      {
+        url: "/images/gallery.png",
+        alt: { th: "", en: "Project screenshot", ja: "" },
+      },
+    ];
+    await mountProject(project);
+    await clickButton("Gallery");
+    const image = container.querySelector<HTMLImageElement>(
+      'img[alt="Project screenshot"]'
+    );
+    expect(image).not.toBeNull();
+    expect(image!.getAttribute("src")).toContain("gallery.png");
+    expect(container.textContent).toContain("Screenshots");
+    await clickButton("Overview");
+    expect(container.textContent).toContain("About the Project");
+  });
+});
