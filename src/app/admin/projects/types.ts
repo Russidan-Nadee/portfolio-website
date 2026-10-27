@@ -1,3 +1,5 @@
+import type { OverviewMedia } from "@/lib/project-overview-media";
+
 export interface LocalizedText {
   th: string;
   en: string;
@@ -41,6 +43,7 @@ export interface FutureGoal {
 
 export interface ProjectContent {
   overview: {
+    media?: OverviewMedia;
     about: {
       paragraphs: LocalizedList;
     };

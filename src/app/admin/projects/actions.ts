@@ -4,6 +4,7 @@
 import { revalidatePath, revalidateTag } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { publicCacheTags } from "@/lib/public-cache-tags";
+import { getOverviewMediaError } from "@/lib/project-overview-media";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
 import type { Prisma } from "@/generated/prisma/client";
 import type { ProjectContent, ProjectData } from "./types";
@@ -159,6 +160,9 @@ export async function updateProjectContent(
   content: ProjectContent,
   slug: string
 ) {
+  const mediaError = getOverviewMediaError(content.overview.media);
+  if (mediaError) throw new Error(mediaError);
+
   await prisma.project.update({
     where: { id },
     data: { content: content as unknown as Prisma.InputJsonValue },

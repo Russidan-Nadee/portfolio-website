@@ -3,6 +3,7 @@
 
 import { useCallback, useState, type SetStateAction } from "react";
 import Link from "next/link";
+import { getOverviewMediaError } from "@/lib/project-overview-media";
 import { useRouter } from "next/navigation";
 import { MdArrowBack } from "react-icons/md";
 import {
@@ -87,7 +88,14 @@ export default function ProjectEditor({
     }
   };
 
+  const overviewMedia = content.overview.media;
+  const overviewMediaError = getOverviewMediaError(overviewMedia);
+
   const handleSaveContent = async () => {
+    if (overviewMediaError) {
+      setActiveTab("Overview");
+      return;
+    }
     setSavingContent(true);
     try {
       await updateProjectContent(project.id, content, header.slug);
@@ -224,6 +232,101 @@ export default function ProjectEditor({
 
       {activeTab === "Overview" && (
         <div className="flex flex-col gap-4">
+          <div
+            className="rounded-lg border p-4"
+            style={{ borderColor: "var(--border)" }}
+          >
+            <label
+              htmlFor="overview-media-type"
+              className="block text-sm font-medium mb-2"
+              style={{ color: "var(--foreground)" }}
+            >
+              Overview media
+            </label>
+            <select
+              id="overview-media-type"
+              value={overviewMedia?.type ?? "image"}
+              onChange={(event) => {
+                const type =
+                  event.target.value === "iframe" ? "iframe" : "image";
+                setContent((current) => ({
+                  ...current,
+                  overview: {
+                    ...current.overview,
+                    media: {
+                      type,
+                      iframeUrl: current.overview.media?.iframeUrl ?? "",
+                    },
+                  },
+                }));
+              }}
+              className="w-full rounded-lg border px-3 py-2 text-sm"
+              style={inputStyle}
+            >
+              <option value="image">Image — รูปภาพ</option>
+              <option value="iframe">iframe — เว็บแบบฝัง</option>
+            </select>
+            {overviewMedia?.type === "iframe" ? (
+              <div className="mt-4">
+                <label
+                  htmlFor="overview-iframe-url"
+                  className="block text-sm font-medium mb-2"
+                  style={{ color: "var(--foreground)" }}
+                >
+                  iframe URL
+                </label>
+                <input
+                  id="overview-iframe-url"
+                  type="url"
+                  value={overviewMedia.iframeUrl}
+                  placeholder="https://example.com/embed"
+                  aria-invalid={!!overviewMediaError}
+                  aria-describedby={
+                    overviewMediaError
+                      ? "overview-iframe-error"
+                      : "overview-iframe-hint"
+                  }
+                  onChange={(event) => {
+                    const iframeUrl = event.target.value;
+                    setContent((current) => ({
+                      ...current,
+                      overview: {
+                        ...current.overview,
+                        media: { type: "iframe", iframeUrl },
+                      },
+                    }));
+                  }}
+                  className="w-full rounded-lg border px-3 py-2 text-sm"
+                  style={inputStyle}
+                />
+                <p
+                  id="overview-iframe-hint"
+                  className="text-xs mt-2"
+                  style={{ color: "var(--muted-foreground)" }}
+                >
+                  ใส่ URL ของหน้าที่อนุญาตให้ฝังเป็น iframe เพื่อแสดงแทนภาพ
+                  Overview
+                </p>
+                {overviewMediaError && (
+                  <p
+                    id="overview-iframe-error"
+                    role="alert"
+                    className="text-sm mt-2"
+                    style={{ color: "#dc2626" }}
+                  >
+                    {overviewMediaError}
+                  </p>
+                )}
+              </div>
+            ) : (
+              <p
+                className="text-xs mt-2"
+                style={{ color: "var(--muted-foreground)" }}
+              >
+                ใช้ภาพ Overview ที่ตั้งค่าไว้ในแท็บ Header
+              </p>
+            )}
+          </div>
           <div>
             <div
               className="block text-sm font-medium mb-2"

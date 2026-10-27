@@ -165,6 +165,7 @@ export default function ProjectDetailContent({
 
         <ProjectTabsContent
           imagePath={project.overviewImageUrl}
+          overviewMedia={content.overview.media}
           imageAlt={
             project.overviewImageAlt[locale] || project.overviewImageAlt.en
           }

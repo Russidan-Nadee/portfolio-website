@@ -3,6 +3,10 @@
 
 import { useState } from "react";
 import ProjectImage from "./ProjectImage";
+import {
+  getOverviewMediaError,
+  type OverviewMedia,
+} from "@/lib/project-overview-media";
 
 interface TextItem {
   title: string;
@@ -36,6 +40,7 @@ interface ProjectTabsContentProps {
   content: ResolvedProjectContent;
   imagePath: string;
   imageAlt: string;
+  overviewMedia?: OverviewMedia;
   locale: string;
 }
 
@@ -95,6 +100,7 @@ export default function ProjectTabsContent({
   content,
   imagePath,
   imageAlt,
+  overviewMedia,
   locale,
 }: ProjectTabsContentProps) {
   const [activeTab, setActiveTab] = useState("overview");
@@ -103,6 +109,11 @@ export default function ProjectTabsContent({
   const overviewAspectRatio = WIDESCREEN_OVERVIEW_PATHS.has(overviewPath)
     ? "16 / 9"
     : "4 / 3";
+
+  const iframeUrl =
+    overviewMedia?.type === "iframe" && !getOverviewMediaError(overviewMedia)
+      ? overviewMedia.iframeUrl.trim()
+      : null;
 
   const tabs = [
     { id: "overview", label: t.overview },
@@ -140,7 +151,24 @@ export default function ProjectTabsContent({
       {activeTab === "overview" && (
         <div>
           <div className="mb-8">
-            {imagePath ? (
+            {iframeUrl ? (
+              <div
+                className="relative w-full mb-5 rounded-2xl overflow-hidden shadow-lg"
+                style={{
+                  aspectRatio: overviewAspectRatio,
+                  backgroundColor: "var(--card)",
+                }}
+              >
+                <iframe
+                  src={iframeUrl}
+                  title={imageAlt || t.overview}
+                  className="absolute inset-0 w-full h-full border-0"
+                  loading="lazy"
+                  referrerPolicy="no-referrer"
+                  allowFullScreen
+                />
+              </div>
+            ) : imagePath ? (
               <div
                 className="relative w-full mb-5 rounded-2xl overflow-hidden shadow-lg"
                 style={{
