@@ -87,8 +87,8 @@ export async function uploadProjectGalleryImage(
 }
 
 export async function createProject(data: ProjectHeaderInput) {
-  const last = await prisma.project.findFirst({ orderBy: { order: "desc" } });
-  const order = (last?.order ?? -1) + 1;
+  const first = await prisma.project.findFirst({ orderBy: { order: "asc" } });
+  const order = (first?.order ?? 1) - 1;
 
   const project = await prisma.project.create({
     data: {
